@@ -1,0 +1,126 @@
+//
+//  AddCashMainVc.swift
+//  First Pay
+//
+//  Created by Irum Butt on 23/02/2023.
+//  Copyright © 2023 FMFB Pakistan. All rights reserved.
+//
+
+import UIKit
+import Alamofire
+import AlamofireObjectMapper
+import SwiftKeychainWrapper
+class AddCashMainVc: BaseClassVC {
+    var cbsAccountsObj : GetCBSAccounts?
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        buttonBack.setTitle("", for: .normal)
+        buttonLinkHBLMFBAccount.setTitle("", for: .normal)
+        buttonFromLinkAccount.setTitle("", for: .normal)
+        buttonViabankTransfer.setTitle("", for: .normal)
+        buttonRequestMoney.setTitle("", for: .normal)
+        buttonGetLoan.setTitle("", for: .normal)
+        
+        // Do any additional setup after loading the view.
+    }
+    
+    
+    @IBOutlet weak var buttonBack: UIButton!
+    @IBAction func buttonBack(_ sender: UIButton) {
+        self.dismiss(animated: true)
+    }
+    @IBOutlet weak var buttonFromLinkAccount: UIButton!
+    @IBAction func buttonFromLinkAccount(_ sender: UIButton) {
+        
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        getLinkAccounts()
+    }
+    @IBOutlet weak var buttonLinkHBLMFBAccount: UIButton!
+    
+    @IBAction func buttonLinkHBLMFBAccount(_ sender: UIButton) {
+    }
+    
+    @IBOutlet weak var buttonViabankTransfer: UIButton!
+    
+    @IBAction func buttonViabankTransfer(_ sender: UIButton) {
+    }
+    @IBOutlet weak var buttonRequestMoney: UIButton!
+    @IBAction func buttonRequestMoney(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "RequestMoneyDetailVc") as!   RequestMoneyDetailVc
+             self.navigationController?.pushViewController(vc,animated: true)
+    }
+    @IBOutlet weak var buttonGetLoan: UIButton!
+    
+    @IBAction func buttonGetLoan(_ sender: UIButton) {
+    }
+    
+    private func getLinkAccounts() {
+        
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getCbsAccounts"
+        var userCnic : String?
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!]
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+        
+        print(header)
+        print(compelteUrl)
+        print(params)
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetCBSAccounts>) in
+            
+            
+            self.hideActivityIndicator()
+            
+            self.cbsAccountsObj = response.result.value
+            if response.response?.statusCode == 200 {
+                
+                if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
+                    if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountListVC") as! LinkBankAccountListVC
+//                        vc.accountTitle = cbsAccountsObj?.accdata[0].cbsAccountTitle
+                        
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        
+                        
+                        
+                    }
+                    else{
+                       
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NoBankAccountFoundVc") as! NoBankAccountFoundVc
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                    }
+                }
+                else {
+                    self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
+                }
+            }
+            else {
+                
+//                print(response.result.value)
+//                print(response.response?.statusCode)
+                
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+}

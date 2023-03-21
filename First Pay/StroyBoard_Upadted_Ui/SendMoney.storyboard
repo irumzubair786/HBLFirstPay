@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="7hf-jE-A7S">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Send Money Main Vc-->
+        <scene sceneID="6iN-6x-m54">
+            <objects>
+                <viewController storyboardIdentifier="SendMoney_MainVc" modalPresentationStyle="fullScreen" id="mxA-PE-oAw" customClass="SendMoney_MainVc" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gMz-AZ-cdA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="30o-0e-r9u" userLabel="TOPVIEW">
+                                <rect key="frame" x="0.0" y="50" width="414" height="100"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nyD-Ba-z5f">
+                                        <rect key="frame" x="8" y="34" width="50" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="Tcu-W4-WIv"/>
+                                            <constraint firstAttribute="height" constant="50" id="i7q-A2-wtl"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <backgroundConfiguration key="background" image="Left Button"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" systemColor="systemGreenColor"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="Action_back:" destination="mxA-PE-oAw" eventType="touchUpInside" id="8D2-Q8-uTd"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MONEY TRANSFER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gji-ck-eDz">
+                                        <rect key="frame" x="137" y="66" width="162" height="26"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="162" id="D2t-gG-ay1"/>
+                                            <constraint firstAttribute="height" constant="26" id="sND-kw-pTe"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="gji-ck-eDz" firstAttribute="centerX" secondItem="30o-0e-r9u" secondAttribute="centerX" constant="11" id="OQc-Kq-XJX"/>
+                                    <constraint firstItem="gji-ck-eDz" firstAttribute="centerY" secondItem="nyD-Ba-z5f" secondAttribute="centerY" constant="20" id="TgZ-aH-hD0"/>
+                                    <constraint firstItem="nyD-Ba-z5f" firstAttribute="leading" secondItem="30o-0e-r9u" secondAttribute="leading" constant="8" id="pdy-QC-Pyk"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="t6O-uY-ikL"/>
+                                    <constraint firstAttribute="height" constant="100" id="vpf-Oc-ZXB"/>
+                                    <constraint firstItem="nyD-Ba-z5f" firstAttribute="top" secondItem="30o-0e-r9u" secondAttribute="top" constant="34" id="w7A-3j-XLt"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="VbZ-hi-uqK">
+                                <rect key="frame" x="15" y="190" width="414" height="352"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uv9-VT-4AE">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="First Pay or HBL MFB" translatesAutoresizingMaskIntoConstraints="NO" id="KaB-ok-BMP">
+                                                <rect key="frame" x="15" y="15" width="334" height="65"/>
+                                            </imageView>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X4C-bN-wuM">
+                                                <rect key="frame" x="0.0" y="-13" width="386" height="93"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="93" id="Fta-dx-DIs"/>
+                                                    <constraint firstAttribute="width" constant="386" id="f1d-q1-IyW"/>
+                                                </constraints>
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain">
+                                                    <backgroundConfiguration key="background"/>
+                                                </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="16"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" systemColor="systemGreenColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="Action_FirstPay_Wallet:" destination="mxA-PE-oAw" eventType="touchUpInside" id="51v-97-dNQ"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="KaB-ok-BMP" firstAttribute="leading" secondItem="uv9-VT-4AE" secondAttribute="leading" constant="15" id="Gyo-Bu-SgC"/>
+                                            <constraint firstAttribute="bottom" secondItem="KaB-ok-BMP" secondAttribute="bottom" constant="8" id="Mld-bk-Dkc"/>
+                                            <constraint firstAttribute="trailing" secondItem="KaB-ok-BMP" secondAttribute="trailing" constant="65" id="Ox9-Qq-9pr"/>
+                                            <constraint firstItem="KaB-ok-BMP" firstAttribute="top" secondItem="uv9-VT-4AE" secondAttribute="top" constant="15" id="R3y-8p-eXu"/>
+                                            <constraint firstItem="X4C-bN-wuM" firstAttribute="top" secondItem="uv9-VT-4AE" secondAttribute="top" constant="-13" id="TyF-jJ-fOv"/>
+                                            <constraint firstAttribute="trailing" secondItem="X4C-bN-wuM" secondAttribute="trailing" constant="28" id="cVL-BO-0KY"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FgO-LV-3Po">
+                                        <rect key="frame" x="0.0" y="88" width="414" height="88"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bank Transfer" translatesAutoresizingMaskIntoConstraints="NO" id="0KJ-sA-Djo">
+                                                <rect key="frame" x="15" y="15" width="334" height="65"/>
+                                            </imageView>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aoE-Kj-6iB">
+                                                <rect key="frame" x="8" y="-1" width="356" height="81"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="81" id="7k1-M7-QvL"/>
+                                                    <constraint firstAttribute="width" constant="356" id="cMR-Ry-eOe"/>
+                                                </constraints>
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain">
+                                                    <backgroundConfiguration key="background"/>
+                                                </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="16"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" systemColor="systemGreenColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="Action_HBLMFb_Account:" destination="mxA-PE-oAw" eventType="touchUpInside" id="QyX-EW-pae"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="0KJ-sA-Djo" secondAttribute="bottom" constant="8" id="IkH-Ye-3ii"/>
+                                            <constraint firstItem="aoE-Kj-6iB" firstAttribute="top" secondItem="FgO-LV-3Po" secondAttribute="top" constant="-1" id="PCc-gU-tek"/>
+                                            <constraint firstItem="0KJ-sA-Djo" firstAttribute="top" secondItem="FgO-LV-3Po" secondAttribute="top" constant="15" id="WYZ-Yg-qCQ"/>
+                                            <constraint firstItem="0KJ-sA-Djo" firstAttribute="leading" secondItem="FgO-LV-3Po" secondAttribute="leading" constant="15" id="ccC-Z2-xAj"/>
+                                            <constraint firstAttribute="trailing" secondItem="aoE-Kj-6iB" secondAttribute="trailing" constant="50" id="da5-OT-uE8"/>
+                                            <constraint firstAttribute="trailing" secondItem="0KJ-sA-Djo" secondAttribute="trailing" constant="65" id="k1m-AA-ZMF"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PuD-pS-ekH">
+                                        <rect key="frame" x="0.0" y="176" width="414" height="88"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bank Transfer-2" translatesAutoresizingMaskIntoConstraints="NO" id="3Tu-rT-P1G">
+                                                <rect key="frame" x="15" y="15" width="340" height="65"/>
+                                            </imageView>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tFS-GN-mbR">
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="84"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="382" id="Cjr-KE-aKx"/>
+                                                    <constraint firstAttribute="height" constant="84" id="tdq-tv-r3S"/>
+                                                </constraints>
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain">
+                                                    <backgroundConfiguration key="background"/>
+                                                </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="16"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" systemColor="systemGreenColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="Action_otherBank_Account:" destination="mxA-PE-oAw" eventType="touchUpInside" id="jag-wo-rEv"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="3Tu-rT-P1G" firstAttribute="top" secondItem="PuD-pS-ekH" secondAttribute="top" constant="15" id="1fd-VQ-PfN"/>
+                                            <constraint firstAttribute="bottom" secondItem="3Tu-rT-P1G" secondAttribute="bottom" constant="8" id="FP7-D4-aNH"/>
+                                            <constraint firstAttribute="trailing" secondItem="3Tu-rT-P1G" secondAttribute="trailing" constant="59" id="Fxl-AH-zNV"/>
+                                            <constraint firstAttribute="trailing" secondItem="tFS-GN-mbR" secondAttribute="trailing" constant="32" id="g0a-p2-OE1"/>
+                                            <constraint firstItem="3Tu-rT-P1G" firstAttribute="leading" secondItem="PuD-pS-ekH" secondAttribute="leading" constant="15" id="kjA-Mg-UD9"/>
+                                            <constraint firstItem="tFS-GN-mbR" firstAttribute="top" secondItem="PuD-pS-ekH" secondAttribute="top" id="zCh-OK-45J"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rGs-ci-URj">
+                                        <rect key="frame" x="0.0" y="264" width="414" height="88"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bank Transfer-3" translatesAutoresizingMaskIntoConstraints="NO" id="b5r-KJ-usl">
+                                                <rect key="frame" x="15" y="15" width="334" height="65"/>
+                                            </imageView>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQ3-rv-kSJ">
+                                                <rect key="frame" x="8" y="-1" width="373" height="81"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="373" id="Aua-yu-5oG"/>
+                                                    <constraint firstAttribute="height" constant="81" id="gfk-sm-S6j"/>
+                                                </constraints>
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain">
+                                                    <backgroundConfiguration key="background"/>
+                                                </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="16"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" systemColor="systemGreenColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="Action_Other_Wallet:" destination="mxA-PE-oAw" eventType="touchUpInside" id="DNh-Su-UcR"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="b5r-KJ-usl" firstAttribute="top" secondItem="rGs-ci-URj" secondAttribute="top" constant="15" id="5Sb-gt-cFl"/>
+                                            <constraint firstItem="gQ3-rv-kSJ" firstAttribute="top" secondItem="rGs-ci-URj" secondAttribute="top" constant="-1" id="6Y3-54-Lmr"/>
+                                            <constraint firstAttribute="trailing" secondItem="gQ3-rv-kSJ" secondAttribute="trailing" constant="33" id="HVk-ev-I9L"/>
+                                            <constraint firstItem="b5r-KJ-usl" firstAttribute="leading" secondItem="rGs-ci-URj" secondAttribute="leading" constant="15" id="KSG-63-2LX"/>
+                                            <constraint firstAttribute="bottom" secondItem="b5r-KJ-usl" secondAttribute="bottom" constant="8" id="Te5-JM-F1y"/>
+                                            <constraint firstAttribute="trailing" secondItem="b5r-KJ-usl" secondAttribute="trailing" constant="65" id="hz3-Io-xAs"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="352" id="S66-Jd-MgG"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="T45-mQ-CSU"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="VbZ-hi-uqK" firstAttribute="leading" secondItem="T45-mQ-CSU" secondAttribute="leading" constant="15" id="Bw6-Fa-KUl"/>
+                            <constraint firstItem="30o-0e-r9u" firstAttribute="trailing" secondItem="T45-mQ-CSU" secondAttribute="trailing" id="FH0-H4-5ys"/>
+                            <constraint firstItem="30o-0e-r9u" firstAttribute="leading" secondItem="T45-mQ-CSU" secondAttribute="leading" id="Ig0-fz-EDr"/>
+                            <constraint firstItem="VbZ-hi-uqK" firstAttribute="top" secondItem="30o-0e-r9u" secondAttribute="bottom" constant="40" id="LbM-Nf-M9c"/>
+                            <constraint firstItem="VbZ-hi-uqK" firstAttribute="trailing" secondItem="T45-mQ-CSU" secondAttribute="trailing" constant="15" id="l8c-CN-1gl"/>
+                            <constraint firstItem="30o-0e-r9u" firstAttribute="top" secondItem="gMz-AZ-cdA" secondAttribute="top" constant="50" id="nAE-wY-IOy"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="kHE-tw-vkq"/>
+                    <connections>
+                        <outlet property="back" destination="nyD-Ba-z5f" id="hGE-IP-zEQ"/>
+                        <outlet property="btn1" destination="X4C-bN-wuM" id="8jJ-s6-WpR"/>
+                        <outlet property="btn2" destination="aoE-Kj-6iB" id="wrX-fB-4ia"/>
+                        <outlet property="btn3" destination="tFS-GN-mbR" id="sNV-ee-pqk"/>
+                        <outlet property="btn4" destination="gQ3-rv-kSJ" id="5Qv-tC-tLK"/>
+                        <outlet property="lblMainTitle" destination="gji-ck-eDz" id="iU4-t5-NsQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G5e-vf-eCB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1589.8550724637682" y="65.625"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="dY4-Zm-xrs">
+            <objects>
+                <navigationController storyboardIdentifier="navigateToSendMoney" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" navigationBarHidden="YES" id="7hf-jE-A7S" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ck7-tW-ZW1">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="mxA-PE-oAw" kind="relationship" relationship="rootViewController" id="6eO-Gl-1sy"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XFq-D7-InC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="679.71014492753625" y="65.625"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Bank Transfer" width="631" height="66.5"/>
+        <image name="Bank Transfer-2" width="1264" height="133"/>
+        <image name="Bank Transfer-3" width="1264" height="119"/>
+        <image name="First Pay or HBL MFB" width="1267" height="122"/>
+        <image name="Left Button" width="152" height="153"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

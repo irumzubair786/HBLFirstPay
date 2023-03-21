@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BottomViewVC" customModule="First_Pay" customModuleProvider="target">
+            <connections>
+                <outlet property="btn_QR" destination="Jo6-b8-SeD" id="z3N-mQ-hI8"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bottom-bar" translatesAutoresizingMaskIntoConstraints="NO" id="pHY-ch-9T2">
+                    <rect key="frame" x="0.0" y="5" width="375" height="47"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jo6-b8-SeD">
+                    <rect key="frame" x="167.5" y="1" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Hy9-IN-357"/>
+                        <constraint firstAttribute="width" constant="40" id="p2N-r4-qnA"/>
+                    </constraints>
+                    <state key="normal" image="QR"/>
+                    <connections>
+                        <action selector="btnQrPressed:" destination="-1" eventType="touchUpInside" id="5G9-eT-VgP"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pHY-ch-9T2" secondAttribute="trailing" id="PWP-3H-D2Z"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="pHY-ch-9T2" secondAttribute="bottom" id="YAS-5K-3bn"/>
+                <constraint firstItem="Jo6-b8-SeD" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="gmp-Al-695"/>
+                <constraint firstItem="pHY-ch-9T2" firstAttribute="top" secondItem="Jo6-b8-SeD" secondAttribute="bottom" constant="-36" id="sBD-Ka-CAo"/>
+                <constraint firstItem="pHY-ch-9T2" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="yx2-cR-3lz"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="-329.71014492753625" y="-704.12946428571422"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="QR" width="55" height="55"/>
+        <image name="bottom-bar" width="435" height="47"/>
+    </resources>
+</document>
