@@ -54,5 +54,13 @@ struct GlobalData
     static var GetCitycatagoryID : CtegoryDescriptionModel!
     static var newcatagory : Citycatagory!
     static var checkloanmodel : CheckLoanEligibiltyModellll!  
-
+    static var otpRequired : String?
+    static var branchCode : String?
+    static var branchName : String?
+   
+    
+    
+    
+    
+    
 }

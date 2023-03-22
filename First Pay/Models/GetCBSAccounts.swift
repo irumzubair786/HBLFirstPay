@@ -190,21 +190,19 @@ struct GetCBSAccounts : Mappable {
 
 }
 struct CbsData : Mappable {
-    var accountCbsLinkId : Int?
-    var branchCode : String?
-    var branchName : String?
-    var cbsAccountNo : String?
-    var cbsAccountTitle : String?
-    var cbsAccountType : String?
-    var otpRequired : String?
-    var createdate : String?
-    var createuser : String?
-    var lastupdatedate : String?
-    var lastupdateuser : String?
-    var mobileNo : String?
-    var status : String?
-    var updateindex : String?
-    var tblAccount : String?
+    var accountCategory : String?
+    var accountTitle : String?
+    var accountType : String?
+    var accountCurrency : String?
+    var accountNumber : String?
+    var accountBranchCode : String?
+    var accountStatus : String?
+    var accountCategoryCode : String?
+    var accountTypeId : String?
+    var actualBalance : String?
+    var accountStatusCode : String?
+    var accountCurrencyId : String?
+    var accountBranch : String?
 
     init?(map: Map) {
 
@@ -212,21 +210,20 @@ struct CbsData : Mappable {
 
     mutating func mapping(map: Map) {
 
-        accountCbsLinkId <- map["accountCbsLinkId"]
-        branchCode <- map["branchCode"]
-        branchName <- map["branchName"]
-        cbsAccountNo <- map["cbsAccountNo"]
-        cbsAccountTitle <- map["cbsAccountTitle"]
-        cbsAccountType <- map["cbsAccountType"]
-        otpRequired <- map["otpRequired"]
-        createdate <- map["createdate"]
-        createuser <- map["createuser"]
-        lastupdatedate <- map["lastupdatedate"]
-        lastupdateuser <- map["lastupdateuser"]
-        mobileNo <- map["mobileNo"]
-        status <- map["status"]
-        updateindex <- map["updateindex"]
-        tblAccount <- map["tblAccount"]
+        accountCategory <- map["accountCategory"]
+        accountTitle <- map["accountTitle"]
+        accountType <- map["accountType"]
+        accountCurrency <- map["accountCurrency"]
+        accountNumber <- map["accountNumber"]
+        accountBranchCode <- map["accountBranchCode"]
+        accountStatus <- map["accountStatus"]
+        accountCategoryCode <- map["accountCategoryCode"]
+        accountTypeId <- map["accountTypeId"]
+        actualBalance <- map["actualBalance"]
+        accountStatusCode <- map["accountStatusCode"]
+        accountCurrencyId <- map["accountCurrencyId"]
+        accountBranch <- map["accountBranch"]
     }
+
 
 }

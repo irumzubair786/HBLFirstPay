@@ -19,10 +19,21 @@ class LinkBankAccountListVC: BaseClassVC {
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        getLinkAccounts()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        buttonback.setTitle("", for: .normal)
+        self.tableView.rowHeight = 120
         // Do any additional setup after loading the view.
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    @IBOutlet weak var buttonback: UIButton!
+    @IBAction func buttonback(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true
+        )
+    }
     private func getLinkAccounts() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -55,14 +66,28 @@ class LinkBankAccountListVC: BaseClassVC {
             
             self.cbsAccountsObj = response.result.value
             if response.response?.statusCode == 200 {
-                
+            
                 if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
                     if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
+//                        "cnic" : "3740526510394",
+//                             "imei" : "17C53E82959F494EAA8400280F8616D2",
+//                              "mobileNo" : "03406401050",
+//                              "accountNo" : "0021122403871012",
+//                              "otpRequired" : "Y",
+//                              "otp" : "9718",
+//                              "accountType" : "20",
+//                              "accountTitle" : "IRUM  ZUBAIR",
+//                              "branchCode" : "0002",
+//                              "branchName" : "MURREE ROAD RWP BRANCH",
+//                             "channelId" : "3"
+                        
+                        GlobalData.branchName = cbsAccountsObj?.accdata?[0].accountBranch
+                        GlobalData.branchCode = cbsAccountsObj?.accdata?[0].accountBranchCode
                         
                         self.tableView.delegate = self
                         self.tableView.dataSource = self
                         self.tableView.reloadData()
-                        self.tableView.rowHeight = 150
+                        self.tableView.rowHeight = 120
 
                     }
                    
@@ -102,11 +127,13 @@ extension LinkBankAccountListVC :UITableViewDelegate, UITableViewDataSource {
         let aCell = tableView.dequeueReusableCell(withIdentifier: "cellLinkedAccount") as! cellLinkedAccount
         
         let aRequest =  self.cbsAccountsObj?.accdata?[indexPath.row]
-        aCell.LabelName.text = aRequest?.cbsAccountTitle
-        aCell.labelAccNo.text = aRequest?.cbsAccountNo
-        aCell.labelBankName.text = aRequest?.branchName
+        aCell.LabelName.text = aRequest?.accountTitle
+        aCell.labelAccNo.text = aRequest?.accountNumber
+        aCell.buttonChecked.isHidden = true
+//        aCell.backView.borderColor = .gray
+        aCell.labelBankName.text = aRequest?.accountBranch
         aCell.buttonChecked.tag = indexPath.row
-        
+        aCell.buttonChecked.setTitle("", for: .normal)
         aCell.buttonChecked.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
 
         return aCell
@@ -128,6 +155,8 @@ extension LinkBankAccountListVC :UITableViewDelegate, UITableViewDataSource {
     
         let tag =  indexPath.row
       let cell = tableView.cellForRow(at: IndexPath(row: tag, section: 0)) as! cellLinkedAccount
+//        cell.buttonChecked.isHidden = false
+//        cell.backView.borderColor = .green
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "LinkBankAccountDetailVc") as! LinkBankAccountDetailVc
         self.navigationController?.pushViewController(vc, animated: true)
         self.tableView.reloadData()

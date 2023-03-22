@@ -18,6 +18,7 @@ class cellLinkedAccount: UITableViewCell {
     @IBOutlet weak var img: UIImageView!
     @IBOutlet weak var LabelName: UILabel!
     
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var buttonChecked: UIButton!
     @IBOutlet weak var labelBankName: UILabel!
     @IBOutlet weak var labelAccNo: UILabel!

@@ -35,11 +35,12 @@ class AddCashMainVc: BaseClassVC {
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        getLinkAccounts()
+//        getLinkAccounts()
     }
     @IBOutlet weak var buttonLinkHBLMFBAccount: UIButton!
     
     @IBAction func buttonLinkHBLMFBAccount(_ sender: UIButton) {
+        getLinkAccounts()
     }
     
     @IBOutlet weak var buttonViabankTransfer: UIButton!
