@@ -57,8 +57,7 @@ struct GlobalData
     static var otpRequired : String?
     static var branchCode : String?
     static var branchName : String?
-   
-    
+    static var userAcc : String?
     
     
     

@@ -78,6 +78,12 @@
 		185855122955E45000E6F374 /* TabBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 185855112955E45000E6F374 /* TabBar.storyboard */; };
 		185855152955E84000E6F374 /* MainPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185855142955E83F00E6F374 /* MainPageVC.swift */; };
 		185855182955FA1200E6F374 /* StoryBoards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185855172955FA1200E6F374 /* StoryBoards.swift */; };
+		1858FBF129CB08220007875A /* FromLinkAccountListVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858FBF029CB08220007875A /* FromLinkAccountListVc.swift */; };
+		1858FBF429CB091C0007875A /* cellFromLinkedAccountListVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858FBF329CB091C0007875A /* cellFromLinkedAccountListVc.swift */; };
+		1858FBF629CB09FC0007875A /* UnlinkAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858FBF529CB09FC0007875A /* UnlinkAccountVC.swift */; };
+		1858FBFA29CB0F790007875A /* getLinkAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858FBF929CB0F790007875A /* getLinkAccountModel.swift */; };
+		1858FBFC29CB15D60007875A /* NobankExistsVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858FBFB29CB15D60007875A /* NobankExistsVc.swift */; };
+		1858FBFE29CB716B0007875A /* DelinkSuccessfullVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858FBFD29CB716B0007875A /* DelinkSuccessfullVC.swift */; };
 		185CC810296C2B9800B4AF1D /* cellmainfourTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185CC80F296C2B9800B4AF1D /* cellmainfourTransaction.swift */; };
 		1862AED62952FE9E00EC4293 /* CellFavouriteCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862AED52952FE9E00EC4293 /* CellFavouriteCollectionView.swift */; };
 		1862D0FB295B0A1F0037EFD4 /* mobileVerificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862D0FA295B0A1F0037EFD4 /* mobileVerificationModel.swift */; };
@@ -430,6 +436,12 @@
 		185855112955E45000E6F374 /* TabBar.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBar.storyboard; sourceTree = "<group>"; };
 		185855142955E83F00E6F374 /* MainPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageVC.swift; sourceTree = "<group>"; };
 		185855172955FA1200E6F374 /* StoryBoards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryBoards.swift; sourceTree = "<group>"; };
+		1858FBF029CB08220007875A /* FromLinkAccountListVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FromLinkAccountListVc.swift; sourceTree = "<group>"; };
+		1858FBF329CB091C0007875A /* cellFromLinkedAccountListVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellFromLinkedAccountListVc.swift; sourceTree = "<group>"; };
+		1858FBF529CB09FC0007875A /* UnlinkAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkAccountVC.swift; sourceTree = "<group>"; };
+		1858FBF929CB0F790007875A /* getLinkAccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getLinkAccountModel.swift; sourceTree = "<group>"; };
+		1858FBFB29CB15D60007875A /* NobankExistsVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NobankExistsVc.swift; sourceTree = "<group>"; };
+		1858FBFD29CB716B0007875A /* DelinkSuccessfullVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelinkSuccessfullVC.swift; sourceTree = "<group>"; };
 		185CC80F296C2B9800B4AF1D /* cellmainfourTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellmainfourTransaction.swift; sourceTree = "<group>"; };
 		1862AED52952FE9E00EC4293 /* CellFavouriteCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellFavouriteCollectionView.swift; sourceTree = "<group>"; };
 		1862D0FA295B0A1F0037EFD4 /* mobileVerificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mobileVerificationModel.swift; sourceTree = "<group>"; };
@@ -776,6 +788,12 @@
 		1837C0F329A73D140064212A /* FromLinkAccount */ = {
 			isa = PBXGroup;
 			children = (
+				1858FBF829CB0F630007875A /* Model */,
+				1858FBF229CB08EF0007875A /* cellClasses */,
+				1858FBF029CB08220007875A /* FromLinkAccountListVc.swift */,
+				1858FBFB29CB15D60007875A /* NobankExistsVc.swift */,
+				1858FBFD29CB716B0007875A /* DelinkSuccessfullVC.swift */,
+				1858FBF529CB09FC0007875A /* UnlinkAccountVC.swift */,
 				1837C10029A73F1C0064212A /* AddCashVC.swift */,
 				1837C10229A73F430064212A /* AddCashConfirmationVc.swift */,
 				1837C10429A73F830064212A /* TransactionSuccessfullVc.swift */,
@@ -786,13 +804,13 @@
 		1837C0F429A73D440064212A /* LinkHBLMFB */ = {
 			isa = PBXGroup;
 			children = (
+				1858FBF729CB0F540007875A /* Model */,
 				18F0017929C9A1B300226F3E /* cellClasses */,
 				1837C0F829A73E4E0064212A /* NoBankAccountFoundVc.swift */,
 				1837C0FA29A73E890064212A /* LinkBankAccountListVC.swift */,
 				1837C0FC29A73EB40064212A /* LinkBankAccountDetailVc.swift */,
 				1837C0FE29A73ED80064212A /* LinkBankAccountOTPVerificationVc.swift */,
 				1894484F29C9E4110056A9D5 /* POPUPSuccessfullVc.swift */,
-				1894484D29C9D4FB0056A9D5 /* OtpVerificationModel.swift */,
 			);
 			path = LinkHBLMFB;
 			sourceTree = "<group>";
@@ -992,6 +1010,30 @@
 				185855172955FA1200E6F374 /* StoryBoards.swift */,
 			);
 			path = StoryBoard;
+			sourceTree = "<group>";
+		};
+		1858FBF229CB08EF0007875A /* cellClasses */ = {
+			isa = PBXGroup;
+			children = (
+				1858FBF329CB091C0007875A /* cellFromLinkedAccountListVc.swift */,
+			);
+			path = cellClasses;
+			sourceTree = "<group>";
+		};
+		1858FBF729CB0F540007875A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1894484D29C9D4FB0056A9D5 /* OtpVerificationModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1858FBF829CB0F630007875A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1858FBF929CB0F790007875A /* getLinkAccountModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		1862D0F8295B06510037EFD4 /* New Group */ = {
@@ -1876,6 +1918,7 @@
 				A2BFD1EE25D66A5D00306EB9 /* FTApiResponse.swift in Sources */,
 				35EE7CFA279A8D5700CCE045 /* PreviewViewController.swift in Sources */,
 				184BAF782977DE6F005F6C1C /* Second_ScreenVc.swift in Sources */,
+				1858FBFC29CB15D60007875A /* NobankExistsVc.swift in Sources */,
 				183E856E2965C54A00A9E112 /* cellAmount.swift in Sources */,
 				A273C2C2265E1743004324AA /* DiscountModelUpdate.swift in Sources */,
 				18403EBE294A5C5400B73B6B /* Home_ScreenVC.swift in Sources */,
@@ -1930,6 +1973,7 @@
 				A273C2C8265E1D07004324AA /* DiscountsBrand.swift in Sources */,
 				A2848EE62199692F00B36D56 /* NetworkManager.swift in Sources */,
 				A2C7D45B265F8F1800516B76 /* AllDiscountListModel.swift in Sources */,
+				1858FBF629CB09FC0007875A /* UnlinkAccountVC.swift in Sources */,
 				A26D1167267B4A96009018B7 /* AllCommiteeModel.swift in Sources */,
 				A26D1164267B43ED009018B7 /* CommiteeInsVC.swift in Sources */,
 				A26CBBAB24C6D00900C790B5 /* InstalmentDetailsModel.swift in Sources */,
@@ -1958,6 +2002,7 @@
 				A265596524234E2800A39B4B /* MoviesListModel.swift in Sources */,
 				183E85692965C37200A9E112 /* TransferAmountConfirmationVc.swift in Sources */,
 				184BAF7A2977DE9F005F6C1C /* Third_ScreenVc.swift in Sources */,
+				1858FBF429CB091C0007875A /* cellFromLinkedAccountListVc.swift in Sources */,
 				A273C2CB265E1DB7004324AA /* GetDiscountsModel.swift in Sources */,
 				A207831D219AE9D400F7014F /* NetworkList.swift in Sources */,
 				A23BA75721C25A75008D8A49 /* AvailableLimitsModel.swift in Sources */,
@@ -2011,6 +2056,8 @@
 				A26CBBA924C6CEEF00C790B5 /* InstalmentDetailsTableViewCell.swift in Sources */,
 				A217829022002789005A4135 /* UtilityBillPaymentSuccessModel.swift in Sources */,
 				184104E8296D8BF30034E5EB /* SendMoney_MainVc.swift in Sources */,
+				1858FBF129CB08220007875A /* FromLinkAccountListVc.swift in Sources */,
+				1858FBFE29CB716B0007875A /* DelinkSuccessfullVC.swift in Sources */,
 				A28DFE8A2454528A00B2E1F8 /* GetDisputeTypesModel.swift in Sources */,
 				1837C11329A741170064212A /* AddCashMainVc.swift in Sources */,
 				A2AE064224580A6B00CD88E8 /* GetDeparturesModel.swift in Sources */,
@@ -2022,6 +2069,7 @@
 				1862D0FB295B0A1F0037EFD4 /* mobileVerificationModel.swift in Sources */,
 				18691ACF29953C5F0072157C /* DebitCardAddressVC.swift in Sources */,
 				A20971522284133E00FD65B5 /* main.swift in Sources */,
+				1858FBFA29CB0F790007875A /* getLinkAccountModel.swift in Sources */,
 				1837C10129A73F1C0064212A /* AddCashVC.swift in Sources */,
 				35E4A0AA26D3811B00A83EA1 /* APIs.swift in Sources */,
 				A2848EFE21996AB500B36D56 /* CustomActivityIndicator.swift in Sources */,
@@ -2210,7 +2258,7 @@
 				CODE_SIGN_ENTITLEMENTS = "First Pay/First Pay.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=*]" = YP6FSM85P6;
 				ENABLE_BITCODE = NO;
@@ -2256,7 +2304,7 @@
 				CODE_SIGN_ENTITLEMENTS = "First Pay/First Pay.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = YP6FSM85P6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2299,7 +2347,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = YP6FSM85P6;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -2324,7 +2372,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = YP6FSM85P6;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

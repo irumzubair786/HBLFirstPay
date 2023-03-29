@@ -98,7 +98,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         }
         
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"mobileNo":DataManager.instance.accountNo!]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"mobileNo":textFieldMobileNo.text!]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -134,6 +134,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
                 else {
                     if let messsage = self.genericresponseObj?.messages{
                         UtilManager.showToast(message: messsage)
+                        self.showToast(title: messsage)
                         
                     }
                     
@@ -141,6 +142,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
             }
             else {
                 if let messsage = self.genericresponseObj?.messages{
+                    self.showToast(title: messsage)
                     UtilManager.showToast(message: messsage)
                     
                 }

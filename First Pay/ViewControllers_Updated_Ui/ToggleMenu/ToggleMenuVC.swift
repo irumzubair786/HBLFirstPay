@@ -18,7 +18,10 @@ var CheckLanguage = ""
 var ThemeSelection = ""
 var  dateString  : String?
 class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , WKNavigationDelegate, UINavigationControllerDelegate{
+
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
@@ -46,8 +49,9 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+  
         let cell = tableView.dequeueReusableCell(withIdentifier: "SideBarCell", for: indexPath) as! SideBarCell
+        
         cell.lblLevel.isHidden = true
         cell.btnUpgrade.isHidden = true
         cell.delegate = self
@@ -69,6 +73,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         {
             cell.buttonSidebar.setTitleColor(UIColor.red, for: .normal)
         }
+        
         let tag  = indexPath.row
         let languageCode = UserDefaults.standard.string(forKey: "language-Code") ?? "en"
         cell.buttonSidebar.setTitle((sideItemsArr[indexPath.row]), for: .normal)
@@ -90,6 +95,16 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         {
              popUpLogout()
          }
+      if cell.buttonSidebar.tag == 8
+        {
+          let vc = UIStoryboard(name: "ContactUs", bundle: Bundle.main).instantiateViewController(withIdentifier: "ContactUSVC") as! ContactUSVC
+          self.present(vc, animated: true)
+//          self.navigationController?.pushViewController(vc, animated: true)
+          
+//            let  myDict = [ "name": "ContactUSVC"]
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
+            
+        }
         else
         {
             UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
@@ -148,18 +163,18 @@ private func batteryLevelChanged()
         let navCtrl = drawer.mainViewController as! UINavigationController
         switch indexPath.row {
         case 0:
-            showAlert(title: "", message: "Coming Soon", completion: nil)
+//            showAlert(title: "", message: "Coming Soon", completion: nil)
 //            let homeVC = self.storyboard?.instantiateViewController(withIdentifier: "HomeVC") as! HomeVC
 //
 //            navCtrl.pushViewController(homeVC, animated: true)
             break
         case 1:
-            showToast(title: "Coming Soon")
+//            showToast(title: "Coming Soon")
 //            let enableTouchIDVC = self.storyboard?.instantiateViewController(withIdentifier: "EnableDisableTouchFaceIDVC") as! EnableDisableTouchFaceIDVC
 //            navCtrl.pushViewController(enableTouchIDVC, animated: true)
             break
         case 2:
-            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
+//            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
 //            let vc = self.storyboard?.instantiateViewController(withIdentifier: "AvailableLimitsVC") as! AvailableLimitsVC
 //            navCtrl.pushViewController(vc, animated: true)
             break
@@ -188,10 +203,10 @@ private func batteryLevelChanged()
 //            navCtrl.pushViewController(vc, animated: true)
             break
         case 7:
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "BranchAtmLocatrMainVC") as! BranchAtmLocatrMainVC
-//            navCtrl.pushViewController(vc, animated: true)
+           
             break
         case 8:
+//
 //            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaintenanceCertificateVC") as! MaintenanceCertificateVC
 //            vc.documentData = createPDF()
 //            navCtrl.pushViewController(vc, animated: true)
@@ -199,9 +214,10 @@ private func batteryLevelChanged()
             break
 
         case 9:
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "SocialMediaVC") as! SocialMediaVC
-//            navCtrl.pushViewController(vc, animated: true)
-            break
+//
+////            let vc = self.storyboard?.instantiateViewController(withIdentifier: "SocialMediaVC") as! SocialMediaVC
+////            navCtrl.pushViewController(myDict, animated: true)
+//            break
 //        case 11:
 //
 //
@@ -210,14 +226,14 @@ private func batteryLevelChanged()
             
             break
         case 10:
-            self.popUpLogout()
+//            self.popUpLogout()
             break
         case 11:
 //            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ThemeSelectionVC") as! ThemeSelectionVC
 //             navCtrl.pushViewController(vc, animated: true)
             break
         default:
-           
+//
             drawer.setDrawerState(.closed, animated: true)
         }
         drawer.setDrawerState(.closed, animated: true)
@@ -329,6 +345,10 @@ extension ToggleMenuVC : SideMenuCellDelegate{
         else if (sideItemsArr[tag]  == "Branch/ATM Locator")
         {
             Switcher.presentAboutus(viewController: self)
+        }
+        else if(sideItemsArr[tag]  == "Contact Us")
+        {
+            Switcher.presentPrivacyPolicy(viewController: self)
         }
                 
     }

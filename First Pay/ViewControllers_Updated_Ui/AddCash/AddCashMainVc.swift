@@ -12,6 +12,7 @@ import AlamofireObjectMapper
 import SwiftKeychainWrapper
 class AddCashMainVc: BaseClassVC {
     var cbsAccountsObj : GetCBSAccounts?
+    var LinkedAccountsObj : getLinkedAccountModel?
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
@@ -31,11 +32,8 @@ class AddCashMainVc: BaseClassVC {
     }
     @IBOutlet weak var buttonFromLinkAccount: UIButton!
     @IBAction func buttonFromLinkAccount(_ sender: UIButton) {
+        LinkAccounts()
         
-        
-    }
-    override func viewWillAppear(_ animated: Bool) {
-//        getLinkAccounts()
     }
     @IBOutlet weak var buttonLinkHBLMFBAccount: UIButton!
     
@@ -46,6 +44,9 @@ class AddCashMainVc: BaseClassVC {
     @IBOutlet weak var buttonViabankTransfer: UIButton!
     
     @IBAction func buttonViabankTransfer(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "viaBankTransferStepsVc") as!   viaBankTransferStepsVc
+             self.navigationController?.pushViewController(vc,animated: true)
+       
     }
     @IBOutlet weak var buttonRequestMoney: UIButton!
     @IBAction func buttonRequestMoney(_ sender: UIButton) {
@@ -94,10 +95,7 @@ class AddCashMainVc: BaseClassVC {
 //                        vc.accountTitle = cbsAccountsObj?.accdata[0].cbsAccountTitle
                         
                         self.navigationController?.pushViewController(vc, animated: true)
-                        
-                        
-                        
-                        
+                       
                     }
                     else{
                        
@@ -120,6 +118,62 @@ class AddCashMainVc: BaseClassVC {
     }
     
     
+    private func LinkAccounts() {
+        
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getLinkAccount"
+        
+        
+        var userCnic : String?
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!]
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+        
+        print(header)
+        print(compelteUrl)
+        print(params)
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<getLinkedAccountModel>) in
+            
+            
+            self.hideActivityIndicator()
+            
+            self.LinkedAccountsObj = response.result.value
+            if response.response?.statusCode == 200 {
+               
+                if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
+                    if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
+                        let vc = self.storyboard!.instantiateViewController(withIdentifier: "FromLinkAccountListVc") as! FromLinkAccountListVc
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        
+                       
+                }
+                    
+                }
+                else{
+                   
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "NobankExistsVc") as! NobankExistsVc
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                }
+            }
+            else {
+                self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
+            }
+        }
+
+    }
     
     
     

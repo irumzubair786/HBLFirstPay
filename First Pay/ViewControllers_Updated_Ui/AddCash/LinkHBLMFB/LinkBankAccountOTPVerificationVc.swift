@@ -22,6 +22,9 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     var mothrnameobj: GetVerifyOTp?
     var Fetch_MobNo : String?
     var genResponseObj : GenericResponseModel?
+    var fundsTransSuccessObj: FundsTransferApiResponse?
+    var TotalAmount : String?
+    var userAccountNo : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         otptextField.delegate = self
@@ -111,10 +114,10 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     
     
     @IBOutlet weak var buttonBack: UIButton!
-    
+  
     @IBAction func buttonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
-        
+       
     }
     @IBAction func otptextField(_ sender: OTPTextField) {
         if otptextField?.text?.count == 4
@@ -122,8 +125,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
             buttonNext.setImage(UIImage(named: "]greenarrow"), for: .normal)
             buttonNext.isUserInteractionEnabled = true
             buttonCoontinue.isUserInteractionEnabled = true
-            
-        }
+                   }
         else
         {
                 buttonNext.setImage(UIImage(named: "grayArrow"), for: .normal)
@@ -137,28 +139,26 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     
     @IBOutlet weak var otptextField: OTPTextField!
     @IBOutlet weak var labelMobNo: UILabel!
-    
-    
-   
     @IBOutlet weak var buttonNext: UIButton!
-    
     @IBOutlet weak var buttonCoontinue: UIButton!
     @IBOutlet weak var labelCount: UILabel!
-    
-    
     @IBOutlet weak var buttonResendOtP: UIButton!
     @IBAction func buttonResendOtP(_ sender: UIButton) {
-       
     }
-    
     @IBOutlet weak var buttonResendOtVCall: UIButton!
     @IBAction func buttonResendOtVCall(_ sender: UIButton) {
     }
     
     @IBAction func buttonCoontinue(_ sender: UIButton) {
-        verifyOtpResetPass()
-        
-        
+        if isfromPullFund == true{
+            addCashFT()
+//           api calling
+           
+        }
+        else{
+            
+            verifyOtpResetPass()
+        }
     }
     private func verifyOtpResetPass() {
         
@@ -228,6 +228,101 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
                 
             }
         }
+    }
+    private func addCashFT() {
+        
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        
+        var userCnic : String?
+        
+        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+        }
+        else{
+            userCnic = ""
+        }
+        var requestMoneyId : String?
+        
+        if let iD = DataManager.instance.requesterMoneyId {
+            requestMoneyId = iD
+        }
+        else{
+            requestMoneyId = ""
+        }
+//        if addBeneValue == "N"{
+//            self.nickNameTextField.text = ""
+//        }
+//
+        
+        showActivityIndicator()
+        
+        
+//        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferLocal"
+        
+        
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/addCashFT"
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":GlobalData.userAcc!,"amount":TotalAmount!,"transPurpose":"miscellaneous","accountTitle": DataManager.instance.accountTitle!,"transactionType":"PULL","otp":otptextField.text!] as [String : Any]
+ 
+        print(parameters)
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+        
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        
+        print(params)
+        print(compelteUrl)
+        print(header)
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
+            
+            
+            self.hideActivityIndicator()
+            
+            self.fundsTransSuccessObj = response.result.value
+            if response.response?.statusCode == 200 {
+
+                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
+                    self.movetonext()
+                }
+                else {
+                    if let message = self.fundsTransSuccessObj?.messages{
+                        self.showToast(title: message)
+//                        self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.messages ?? "") ")
+                    }
+                }
+            }
+            else {
+                if let message = self.fundsTransSuccessObj?.messages{
+                    self.showToast(title: message)
+//                    self.showAlert(title: "", message: message, completion: nil)
+                }
+//                print(response.result.value)
+//                print(response.response?.statusCode)
+            }
+        }
+    }
+   func movetonext()
+    {
+        let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransactionSuccessfullVc") as! TransactionSuccessfullVc
+    
+        vc.transactionAmount = TotalAmount
+        vc.transactionId = fundsTransSuccessObj?.data?.authIdResponse
+        vc.transactionType = "Add Cash Linked Account"
+        vc.beneficiaryAccount = GlobalData.userAcc
+        vc.sourceAccount = DataManager.instance.accountNo!
+        vc.dateTime = fundsTransSuccessObj?.data?.transDate
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
 }

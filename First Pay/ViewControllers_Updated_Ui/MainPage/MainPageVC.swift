@@ -102,14 +102,14 @@ class MainPageVC: UIViewController {
     }
     
     @IBAction func Action_Profile(_ sender: UIButton) {
-//        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
-//        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
-//        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
-//        btnAccount.setImage(UIImage(named: "Invite Prangepng"), for: .normal)
-//        print("Done notification work")
-//
-//        let  myDict = [ "name": "ContactUSVC"]
-//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
+        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
+        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
+        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
+        btnAccount.setImage(UIImage(named: "Invite Prangepng"), for: .normal)
+        print("Done notification work")
+
+        let  myDict = [ "name": "ContactUSVC"]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
 
         
     }

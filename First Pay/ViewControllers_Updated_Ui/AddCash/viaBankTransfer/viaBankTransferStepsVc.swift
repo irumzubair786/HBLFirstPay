@@ -12,8 +12,13 @@ class viaBankTransferStepsVc: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        buttonBack.setTitle("", for: .normal)
         // Do any additional setup after loading the view.
     }
     
+    @IBOutlet weak var buttonBack: UIButton!
+    
+    @IBAction func buttonBack(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
 }

@@ -12,7 +12,6 @@ import AlamofireObjectMapper
 import SwiftKeychainWrapper
 import MessageUI
 class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate{
-    
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         switch result.rawValue {
         case MessageComposeResult.cancelled.rawValue :
@@ -46,20 +45,21 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         btnNotification.setTitle("", for: .normal)
         viewScanQR.backgroundColor =  UIColor(hexValue: 0x00CC96)
         btnBack.setTitle("", for: .normal)
+        buttonContinue.isUserInteractionEnabled = false
+        
         btnAlertView.isHidden = true
         btnAlertView.setTitle("", for: .normal)
         appendArray()
-        //        ArryAppend()
+        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(Send(tapGestureRecognizer:)))
+        img_next.addGestureRecognizer(tapGestureRecognizerr)
         
-        // Do any additional setup after loading the view.
+        
     }
     func appendArray(){
         for i in arrCategory{
             myarr.append(category(name: i, isSeleccted: false))
         }
     }
-    
-   
     @IBOutlet weak var viewScanQR: UIView!
     @IBOutlet weak var messageTextView: UITextView!
     @IBOutlet weak var collectionViewCategory: UICollectionView!
@@ -77,6 +77,9 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var btnAlertView: UIButton!
     
+    
+    @IBOutlet weak var img_next: UIImageView!
+    @IBOutlet weak var buttonContinue: UIButton!
     @IBAction func ActionHome(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Dash_Board", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "Home_ScreenVC")
@@ -101,8 +104,15 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
     }
     @IBAction func Action_Send(_ sender: UIButton) {
         
-        btnAlertView.isHidden = false
+       
+        sendComplaint()
         
+        
+    }
+    @objc func Send(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        
+        sendComplaint()
         
     }
 
@@ -114,8 +124,16 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
     
     
     @IBAction func Action_AlertView(_ sender: UIButton) {
-       
-        btnAlertView.isHidden = true
+//
+//        btnAlertView.isHidden = true
+        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+        self.present(vc, animated: true)
+        
+        
+        
+        
+        
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -141,7 +159,14 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         {
             messageTextView.resignFirstResponder()
         }
-  
+//        if (Tfname.text == nil) || (messageTextView.text == nil)
+//            {
+//                buttonContinue.isUserInteractionEnabled = false
+//                let image = UIImage(named: "grayArrow")
+//                img_next.image = image
+//                img_next.isUserInteractionEnabled = false
+//            }
+
         
                return true
         
@@ -151,9 +176,6 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
             messageTextView.text = ""
             
        }
-    
-    
-   
     private func sendComplaint(){
 
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -164,15 +186,16 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         showActivityIndicator()
 
 //        let compelteUrl = GlobalConstants.BASE_URL + "bbscontactUs"
-//
+       var userCnic : String?
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
         
-        let compelteUrl = GlobalConstants.BASE_URL + "v2/bbscontactUs"
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","name":self.Tfname.text!,"category":self.selectedCategory!,"message":self.messageTextView.text!]
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/contactUs"
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","name":self.Tfname.text!,"category":self.selectedCategory!,"message":self.messageTextView.text!,"cnic": userCnic!,"imei": DataManager.instance.imei!]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(result.apiAttribute1)
         print(result.apiAttribute2)
-        let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
 
         let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
@@ -188,23 +211,23 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
             self.genericObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                  
-                    if let message = self.genericObj?.messages{
-                        self.showDefaultAlert(title: "", message:message)
-                    }
+                    self.btnAlertView.isHidden = false
+                   
                 }
                 else {
                     if let message = self.genericObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showToast(title: message)
+//                        self.showDefaultAlert(title: "", message: message)
                     }
                 }
             }
             else {
                 if let message = self.genericObj?.messages{
+                    self.showToast(title: message)
                     self.showDefaultAlert(title: "", message: message)
                 }
-                print(response.result.value)
-                print(response.response?.statusCode)
+//                print(response.result.value)
+//                print(response.response?.statusCode)
             }
         }
 
@@ -218,7 +241,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
                 for i in  myarr{
                     i.isSeleccted = false
                 }
-        
+        selectedCategory =  String(arrCategory[tag])
              self.myarr[tag].isSeleccted = true
 
              cell.btnCategory.setTitleColor(.white, for: .normal)
@@ -226,14 +249,16 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
         cell.btnCategory.setImage(.none, for: .normal)
                 self.collectionViewCategory.reloadData()
-
-       
-
+        if (Tfname.text != nil) && selectedCategory != nil{
+            buttonContinue.isUserInteractionEnabled = true
+            let image = UIImage(named: "]greenarrow")
+            img_next.image = image
+            img_next.isUserInteractionEnabled = true
+            messageTextView.isUserInteractionEnabled = false
+            Tfname.isUserInteractionEnabled = false
+        }
     }
    
-   
-    
-    
     
 }
 extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
