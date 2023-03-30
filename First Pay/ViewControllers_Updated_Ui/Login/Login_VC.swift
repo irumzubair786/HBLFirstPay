@@ -331,6 +331,7 @@ if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og
                                let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
                                print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
                            }
+                            
 //                             DataManager.instance.accountTitle = self.loginObj?.data?.customerHomeScreens?[0].firstName
 //                            DataManager.instance.accountNo = self.loginObj?.data?.customerHomeScreens?[0].accountNo
 //                            DataManager.instance.currentBalance = Double((self.loginObj?.data?.customerHomeScreens?[0].currentBalance)!)

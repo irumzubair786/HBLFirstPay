@@ -14,16 +14,17 @@ import iOSDropDown
 
 class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
     var banksObj:GetBankNames?
-    var banksList = [SingleBank]()
+    var walletList = [WalletList]()
     var sourceBank:String?
     var accountImd : String?
     var varBeneAccountNum:String?
     var Seclected_bank :String?
-    var filteredData: [String]!
+    var filteredData = [mybank]()
     var getBankid = [mybank]()
     var bankId : Int?
     var bankcode : String?
-    var arrBankNameList : [String]?
+    var logo: String?
+//    var arrBankNameList : [String]?
     
     @IBOutlet weak var blurView: UIImageView!
     @IBOutlet weak var MainTitle: UILabel!
@@ -71,7 +72,32 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
         
     }
     
-    
+    func test()
+    {
+        if self.banksObj?.dataobj?.walletList?.count ?? 0  > 0
+                           {
+            var aReq =  self.banksObj?.dataobj?.walletList
+            for item in aReq! ?? []
+            {
+                let temp = mybank()
+                temp.id = item.imdListId!
+                temp.code = item.imdNo!
+                temp.name  = item.bankName!
+                temp.path = item.path!
+                self.getBankid.append(temp)
+            }
+            if let banks = self.banksObj?.dataobj?.walletList{
+                self.walletList = banks
+//                self.arrBankNameList = self.banksObj?.dataobj?.walletList
+            }
+            self.filteredData = getBankid
+            self.tableview.delegate = self
+            self.tableview.dataSource = self
+            self.tableview.reloadData()
+      }
+        
+
+    }
     private func getBankNames() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -86,35 +112,13 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
         
         print(header)
         print(compelteUrl)
-        
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<GetBankNames>) in
             self.hideActivityIndicator()
             if response.response?.statusCode == 200 {
                 self.banksObj = response.result.value
                 if self.banksObj?.responsecode == 2 || self.banksObj?.responsecode == 1 {
-                    
-                    
-                    for i in  self.banksObj?.singleBank! ?? []
-                    {
-                        
-                        let temp = mybank()
-                        temp.id = i.imdListId!
-                        temp.code = i.imdNo!
-                        temp.name  = i.bankName!
-                        self.getBankid.append(temp)
-                    }
-//
-                    if let banks = self.banksObj?.singleBank{
-                        self.banksList = banks
-                        self.arrBankNameList = self.banksObj?.stringBanks
-                        
-                    }
-                    self.filteredData = self.arrBankNameList
-                    self.tableview.delegate = self
-                    self.tableview.dataSource = self
-                    self.tableview.reloadData()
- 
+                    self.test()
                 }
                 else  {
                     if let message = self.banksObj?.messages{
@@ -134,14 +138,14 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
             }
         }
     }
-    func img(tag : Int) -> UIImage{
-        guard let img = UIImage(named: filteredData[tag])else {
-            return UIImage(named: "e803d189c1a961c2b404641ea477128c-1")!
-            
-        }
-        return img
-        
-    }
+//    func img(tag : Int) -> UIImage{
+//        guard let img = UIImage(named: filteredData[tag].path)else {
+//            return UIImage(named: "e803d189c1a961c2b404641ea477128c-1")!
+//
+//        }
+//        return img
+//
+//    }
 
 }
 extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
@@ -160,9 +164,18 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
         let aCell = tableview.dequeueReusableCell(withIdentifier: "cellSelectWalletvc") as! cellSelectWalletvc
         let aRequest = filteredData[indexPath.row]
 //        aCell.backview.dropShadow1()
-        aCell.lblBankNem.text = aRequest
-        aCell.img.image = img(tag: indexPath.row)
-        
+        aCell.lblBankNem.text = aRequest.name
+//        let url = URL.init(fileURLWithPath: filteredData[indexPath.row].path)
+        let url = URL(string:filteredData[indexPath.row].path)
+           if let data = try? Data(contentsOf: url!)
+           {
+               
+               aCell.img.image = UIImage(data: data)
+//             let image: UIImage = UIImage(data: data)
+           }
+   
+    
+       
         return aCell
 
     }
@@ -179,13 +192,14 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
-        Seclected_bank = filteredData[indexPath.row]
+        Seclected_bank = filteredData[indexPath.row].name
         for i in getBankid
         {
             if i.name == Seclected_bank
             {
                 bankId = i.id
                 bankcode = i.code
+                logo = i.path
                 
                 
             }
@@ -197,9 +211,15 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
          GlobalData.Selected_bank = Seclected_bank!
         GlobalData.Selected_bank_id  = bankId!
         GlobalData.Selected_bank_code  = bankcode!
-//        print("city id get",  GlobalData.User_CityId)
-//        aCell.img.image = img(tag: indexPath.row)
-        GlobalData.selected_bank_logo =   img(tag: indexPath.row)
+        
+        let url = URL(string:filteredData[indexPath.row].path)
+           if let data = try? Data(contentsOf: url!)
+           {
+//               aCell.img.image = UIImage(data: data)
+               GlobalData.selected_bank_logo =  UIImage(data: data)
+//             let image: UIImage = UIImage(data: data)
+           }
+        
         self.navigationController?.popViewController(animated: false)
      
     }
@@ -217,7 +237,7 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
                 if(self.filteredData.count == 0){
                    print("searchlist")
                    if(searchBar.text == ""){
-                       self.filteredData = self.arrBankNameList
+                       self.filteredData = self.getBankid
                     print(self.filteredData)
                    }
                 }
@@ -226,13 +246,13 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
             }else{
                  print(searchText)
               
-                self.filteredData = self.arrBankNameList?.filter({ SearchCity -> Bool in
-                    return SearchCity.lowercased().contains(searchText.lowercased())
-                })
+                self.filteredData = self.getBankid.filter({ SearchCity  in
+                    return SearchCity.name.contains(searchText.lowercased())
+                }) as! [mybank]
 //                print(self.searchdoctor)
                 if(filteredData.count == 0){
                     if(searchBar.text == ""){
-                        filteredData = arrBankNameList
+                        filteredData = getBankid
                     }
                    // self.nosearchlb.isHidden = false
                 }else{
@@ -250,8 +270,7 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
         {
             
             searchBar.text = ""
-                
-            filteredData = arrBankNameList
+            filteredData = getBankid
                 
             searchBar.endEditing(true)
                 
@@ -268,4 +287,5 @@ class mybank
     var name = ""
     var code = ""
     var id  = 0
+    var path = ""
 }

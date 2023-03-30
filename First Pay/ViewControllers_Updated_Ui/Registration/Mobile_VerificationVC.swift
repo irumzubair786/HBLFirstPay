@@ -53,12 +53,6 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
             self.btnContinue.isUserInteractionEnabled = true
             self.btn_next_arrow.isUserInteractionEnabled = true
         }
-            
-            
-            
-            
-            
-            
             self.TF_Mobileno.resignFirstResponder()
         }
 
