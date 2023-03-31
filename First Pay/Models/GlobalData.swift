@@ -25,8 +25,8 @@ struct GlobalData
     static var Select_operator_code = ""
     static var Select_operator_id : Int?
     static var Selected_bank_code = ""
-    static var selected_bank_logo : UIImage?
-    static var selected_operator_logo : UIImage?
+    static var selected_bank_logo : String?
+    static var selected_operator_logo : String?
     static var Selected_Company_id : Int?
     static var Selected_Company_code : String?
     static var SelectedCompanyname :String?

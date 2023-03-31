@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
+import SDWebImage
 class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     var arrAmount = ["Rs.100","Rs.250","Rs.500","Rs.1000"]
     var IsSelectedAmount = true
@@ -74,6 +75,9 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     
     func updateui()
     {
+        let url = URL(string:"\(GlobalConstants.BASE_URL)\(GlobalData.selected_operator_logo!)")
+        imgoperator.sd_setImage(with: url)
+        
 //        imgoperator.image = GlobalData.selected_operator_logo
         lblMobileNumber.text =  phoneNumber
         

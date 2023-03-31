@@ -31,7 +31,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         amountTextField.delegate = self
         lblWalletName.text  = ""
         btn_continue.isUserInteractionEnabled = false
-        amountTextField.isUserInteractionEnabled = false
+//        amountTextField.isUserInteractionEnabled = false
 //        getReasonsForTrans()
         UpdateUi()
         // Do any additional setup after loading the view.

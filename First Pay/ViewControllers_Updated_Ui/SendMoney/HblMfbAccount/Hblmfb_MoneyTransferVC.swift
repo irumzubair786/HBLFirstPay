@@ -14,6 +14,7 @@ import MapKit
 import ContactsUI
 import libPhoneNumber_iOS
 import  SwiftKeychainWrapper
+import SDWebImage
 class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     var fundsTransSuccessObj: FundsTransferApiResponse?
 //    var fundsTransSuccessObj: FundsTransferApiResponse?
@@ -107,23 +108,23 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
 
             lblAccName.text = bankname!
 //            otpView.isHidden = true
-            let img = GlobalData.selected_bank_logo
-            bankLogo.image = img
+            let url = URL(string:"\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo)")
+            bankLogo.sd_setImage(with: url)
             
             
         }
         else{
            
             lblMobno.text = number
-            lblname.text = ToaccountTitle!
+            lblname.text = ToaccountTitle 
 //            sourceAccountno.text = ToaccountTitle!
             totalAmount.text = amount
 //            PurposeTf.text = GlobalData.money_Reason
             
             lblAccName.text = bankname!
 //            otpView.isHidden = true
-            let img = GlobalData.selected_bank_logo
-            bankLogo.image = img
+            let url = URL(string:"\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo)")
+            bankLogo.sd_setImage(with: url)
         }
  
     }

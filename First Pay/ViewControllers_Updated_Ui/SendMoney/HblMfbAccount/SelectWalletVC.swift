@@ -11,7 +11,7 @@ import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
 import iOSDropDown
-
+import SDWebImage
 class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
     var banksObj:GetBankNames?
     var walletList = [WalletList]()
@@ -74,29 +74,56 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
     
     func test()
     {
-        if self.banksObj?.dataobj?.walletList?.count ?? 0  > 0
-                           {
-            var aReq =  self.banksObj?.dataobj?.walletList
-            for item in aReq! ?? []
-            {
-                let temp = mybank()
-                temp.id = item.imdListId!
-                temp.code = item.imdNo!
-                temp.name  = item.bankName!
-                temp.path = item.path!
-                self.getBankid.append(temp)
-            }
-            if let banks = self.banksObj?.dataobj?.walletList{
-                self.walletList = banks
-//                self.arrBankNameList = self.banksObj?.dataobj?.walletList
-            }
-            self.filteredData = getBankid
-            self.tableview.delegate = self
-            self.tableview.dataSource = self
-            self.tableview.reloadData()
-      }
-        
+        if isfromBanktoBank == true
+        {
+            if self.banksObj?.dataobj?.bankList?.count ?? 0  > 0
+                               {
+                var aReq =  self.banksObj?.dataobj?.bankList
+                for item in aReq! ?? []
+                {
+                    let temp = mybank()
+                    temp.id = item.imdListId!
+                    temp.code = item.imdNo!
+                    temp.name  = item.bankName!
+                    temp.path = item.path!
+                    self.getBankid.append(temp)
+                }
+//                if let banks = self.banksObj?.dataobj?.bankList{
+//                    self.bankList = banks
+//    //                self.arrBankNameList = self.banksObj?.dataobj?.walletList
+//                }
+                self.filteredData = getBankid
+                self.tableview.delegate = self
+                self.tableview.dataSource = self
+                self.tableview.reloadData()
+          }
 
+        }
+        else
+        {
+            if self.banksObj?.dataobj?.walletList?.count ?? 0  > 0
+                               {
+                var aReq =  self.banksObj?.dataobj?.walletList
+                for item in aReq! ?? []
+                {
+                    let temp = mybank()
+                    temp.id = item.imdListId!
+                    temp.code = item.imdNo!
+                    temp.name  = item.bankName!
+                    temp.path = item.path!
+                    self.getBankid.append(temp)
+                }
+//                if let banks = self.banksObj?.dataobj?.walletList{
+//                    self.walletList = banks
+//    //                self.arrBankNameList = self.banksObj?.dataobj?.walletList
+//                }
+                self.filteredData = getBankid
+                self.tableview.delegate = self
+                self.tableview.dataSource = self
+                self.tableview.reloadData()
+          }
+
+        }
     }
     private func getBankNames() {
         
@@ -160,22 +187,14 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
 //    func numberOfSections(in tableView: UITableView) -> Int {
 //        return 1
 //    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let aCell = tableview.dequeueReusableCell(withIdentifier: "cellSelectWalletvc") as! cellSelectWalletvc
         let aRequest = filteredData[indexPath.row]
-//        aCell.backview.dropShadow1()
         aCell.lblBankNem.text = aRequest.name
-//        let url = URL.init(fileURLWithPath: filteredData[indexPath.row].path)
-        let url = URL(string:filteredData[indexPath.row].path)
-           if let data = try? Data(contentsOf: url!)
-           {
-               
-               aCell.img.image = UIImage(data: data)
-//             let image: UIImage = UIImage(data: data)
-           }
-   
-    
-       
+        let url = URL(string:"\(GlobalConstants.BASE_URL)\(filteredData[indexPath.row].path)")
+        aCell.img.sd_setImage(with: url)
+
         return aCell
 
     }
@@ -208,18 +227,12 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
         }
         
         let aCell = tableview.dequeueReusableCell(withIdentifier: "cellSelectWalletvc") as! cellSelectWalletvc
-         GlobalData.Selected_bank = Seclected_bank!
+        GlobalData.Selected_bank = Seclected_bank!
         GlobalData.Selected_bank_id  = bankId!
         GlobalData.Selected_bank_code  = bankcode!
-        
-        let url = URL(string:filteredData[indexPath.row].path)
-           if let data = try? Data(contentsOf: url!)
-           {
-//               aCell.img.image = UIImage(data: data)
-               GlobalData.selected_bank_logo =  UIImage(data: data)
-//             let image: UIImage = UIImage(data: data)
-           }
-        
+       
+        GlobalData.selected_bank_logo = filteredData[indexPath.row].path
+
         self.navigationController?.popViewController(animated: false)
      
     }
@@ -227,6 +240,7 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
             
             
         {
+          
           self.filteredData.removeAll()
             print("from searchbar")
 
@@ -241,14 +255,19 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
                     print(self.filteredData)
                    }
                 }
-               
-            
+
+
             }else{
                  print(searchText)
-              
-                self.filteredData = self.getBankid.filter({ SearchCity  in
-                    return SearchCity.name.contains(searchText.lowercased())
-                }) as! [mybank]
+
+                self.filteredData = (self.getBankid.filter({selectbank -> Bool in
+                    return selectbank.name.lowercased().contains(searchText.lowercased())
+                }))
+
+                
+//                self.filteredData = self.getBankid.filter({ SearchCity  in
+//                    return SearchCity.name.contains(searchText.lowercased())
+//                }) as! [mybank]
 //                print(self.searchdoctor)
                 if(filteredData.count == 0){
                     if(searchBar.text == ""){
@@ -258,7 +277,7 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
                 }else{
                     //self.nosearchlb.isHidden = true
                 }
-                
+
             }
 
             tableview.reloadData()

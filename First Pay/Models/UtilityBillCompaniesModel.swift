@@ -37,9 +37,50 @@ class UtilityBillCompaniesModel: Mappable {
 
 class SingleCompanyList : Mappable {
     
+//    var ubpCompaniesId : Int?
+//    var code : String?
+//    var createdate : Int?
+//    var createuser : Int?
+//    var depth : Int?
+//    var descr : String?
+//    var lastupdatedate : String?
+//    var lastupdateuser : String?
+//    var name : String?
+//    var status : String?
+//    var updateindex : String?
+//    var parentId : Int?
+//    var parentName : String?
+//    var tblTransDoc : String?
+//
+//    required init?(map: Map){ }
+//
+//    func mapping(map: Map){
+//
+//        ubpCompaniesId <- map ["ubpCompaniesId"]
+//        code <- map ["code"]
+//        createdate <- map ["createdate"]
+//        createuser <- map ["createuser"]
+//        depth <- map ["depth"]
+//        descr <- map ["descr"]
+//        lastupdatedate <- map ["lastupdatedate"]
+//        lastupdateuser <- map ["lastupdateuser"]
+//        name <- map ["name"]
+//        status <- map ["status"]
+//        updateindex <- map ["updateindex"]
+//        parentId <- map ["parentId"]
+//        parentName <- map ["parentName"]
+//        tblTransDoc <- map ["tblTransDoc"]
+//
+//
+//    }
+//
+//    init(code:String, name: String) {
+//        self.code = code
+//        self.name = name
+//    }
     var ubpCompaniesId : Int?
     var code : String?
-    var createdate : Int?
+    var createdate : String?
     var createuser : Int?
     var depth : Int?
     var descr : String?
@@ -48,34 +89,29 @@ class SingleCompanyList : Mappable {
     var name : String?
     var status : String?
     var updateindex : String?
-    var parentId : Int?
+    var parentId : String?
     var parentName : String?
-    var tblTransDoc : String?
-        
-    required init?(map: Map){ }
-    
-    func mapping(map: Map){
-        
-        ubpCompaniesId <- map ["ubpCompaniesId"]
-        code <- map ["code"]
-        createdate <- map ["createdate"]
-        createuser <- map ["createuser"]
-        depth <- map ["depth"]
-        descr <- map ["descr"]
-        lastupdatedate <- map ["lastupdatedate"]
-        lastupdateuser <- map ["lastupdateuser"]
-        name <- map ["name"]
-        status <- map ["status"]
-        updateindex <- map ["updateindex"]
-        parentId <- map ["parentId"]
-        parentName <- map ["parentName"]
-        tblTransDoc <- map ["tblTransDoc"]
-        
-        
+    var path : String?
+
+    required init?(map: Map) {
+
     }
-    
-    init(code:String, name: String) {
-        self.code = code
-        self.name = name
+
+    func mapping(map: Map) {
+
+        ubpCompaniesId <- map["ubpCompaniesId"]
+        code <- map["code"]
+        createdate <- map["createdate"]
+        createuser <- map["createuser"]
+        depth <- map["depth"]
+        descr <- map["descr"]
+        lastupdatedate <- map["lastupdatedate"]
+        lastupdateuser <- map["lastupdateuser"]
+        name <- map["name"]
+        status <- map["status"]
+        updateindex <- map["updateindex"]
+        parentId <- map["parentId"]
+        parentName <- map["parentName"]
+        path <- map["path"]
     }
 }

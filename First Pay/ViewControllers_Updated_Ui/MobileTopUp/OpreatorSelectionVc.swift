@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
-
+import SDWebImage
 class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     var parentCompanyID : Int?
     var billCompanyListObj : UtilityBillCompaniesModel?
@@ -19,6 +19,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     var getOperator = [myOperator]()
     var operatorid : Int?
     var operatorcode : String?
+    var logo : String?
     var dummyarr : [String]?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +76,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
                         temp.code = i.code!
                         temp.id = i.ubpCompaniesId!
                         temp.name = i.name!
+                        temp.path = i.path ?? ""
                         self.getOperator.append(temp)
                     }
                     
@@ -96,14 +98,14 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
-    func img(tag : Int) -> UIImage{
-        guard let img = UIImage(named: dummyarr![tag])else {
-            return UIImage(named: "11")!
-            
-        }
-        return img
-        
-    }
+//    func img(tag : Int) -> UIImage{
+//        guard let img = UIImage(named: dummyarr![tag])else {
+//            return UIImage(named: "11")!
+//
+//        }
+//        return img
+//
+//    }
 
 
 
@@ -112,7 +114,7 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return  dummyarr?.count ?? 0
+        return  getOperator.count ?? 0
    
     }
 //    func numberOfSections(in tableView: UITableView) -> Int {
@@ -121,10 +123,12 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let aCell = tableView.dequeueReusableCell(withIdentifier: "cellOperator") as! cellOperator
        
-        let aRequest = dummyarr?[indexPath.row]
+        let aRequest = getOperator[indexPath.row]
 //        aCell.backview.dropShadow1()
-        aCell.lblOperator.text  = aRequest
-//        aCell.imageView?.image = img(tag: indexPath.row)
+        aCell.lblOperator.text  = aRequest.name
+        let url = URL(string:"\(GlobalConstants.BASE_URL)\(getOperator[indexPath.row].path)")
+        aCell.imgoperatoe.sd_setImage(with: url)
+
 //m        aCell.lblcityname.text =
         return aCell
 
@@ -142,13 +146,14 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
-        seclectedOperator = (dummyarr?[indexPath.row])!
+        seclectedOperator = (getOperator[indexPath.row].name)
         for i in getOperator
         {
             if i.name == seclectedOperator
             {
                 operatorid = i.id
                 operatorcode = i.code
+                logo = i.path
             }
 
         }
@@ -160,7 +165,8 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
         GlobalData.Selected_operator = seclectedOperator
         GlobalData.Select_operator_id = operatorid
         GlobalData.Select_operator_code = operatorcode!
-        GlobalData.selected_operator_logo = img(tag: indexPath.row)
+        GlobalData.selected_operator_logo = getOperator[indexPath.row].path
+//        GlobalData.selected_operator_logo = img(tag: indexPath.row)
     
         
         self.navigationController?.popViewController(animated: false)
@@ -171,4 +177,5 @@ class myOperator
     var code = ""
     var id = 0
     var name = ""
+    var path = ""
 }

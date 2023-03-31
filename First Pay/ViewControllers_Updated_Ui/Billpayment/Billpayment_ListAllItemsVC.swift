@@ -10,20 +10,21 @@ import UIKit
 import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
+import SDWebImage
 class Billpayment_ListAllItemsVC: BaseClassVC , UISearchBarDelegate{
     var BillComapnyid : Int?
     var utilityBillCompany : String?
     var billCompanyListObj : UtilityBillCompaniesModel?
     var comapniesList = [SingleCompanyList]()
-    var getClassBillComapny = [BillCompany]()
     var Bill_id : Int?
     var Bill_code : String?
     var bill_arr : [String]?
     var Selected_Company = ""
     var Selected_Company_id : Int?
+    var logo: String?
     var Selected_Company_code : String?
-    var filteredData: [String]!
-    
+    var filteredData = [BillCompany]()
+    var getClassBillComapny = [BillCompany]()
     override func viewDidLoad() {
         super.viewDidLoad()
         print("u get id", BillComapnyid)
@@ -85,10 +86,11 @@ class Billpayment_ListAllItemsVC: BaseClassVC , UISearchBarDelegate{
                         temp.code = i.code!
                         temp.id = i.ubpCompaniesId!
                         temp.name = i.name!
+                        temp.path = i.path ?? ""
                         self.getClassBillComapny.append(temp)
                         
                     }
-                    self.filteredData =  self.bill_arr
+                    self.filteredData =  self.getClassBillComapny
                     self.tableView.delegate = self
                     self.tableView.dataSource = self
                     self.tableView.reloadData()
@@ -114,14 +116,15 @@ extension Billpayment_ListAllItemsVC: UITableViewDelegate, UITableViewDataSource
        
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return filteredData?.count ?? 0
+        return filteredData.count ?? 0
    
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell_Billpayment_ListAllItemsVC") as! cell_Billpayment_ListAllItemsVC
-        let aRequest = filteredData?[indexPath.row]
-        cell.lblname.text = aRequest
-       
+        let aRequest = filteredData[indexPath.row]
+        cell.lblname.text = aRequest.name
+        let url = URL(string:"\(GlobalConstants.BASE_URL)\(filteredData[indexPath.row].path)")
+        cell.img.sd_setImage(with: url)
         return cell
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -137,13 +140,15 @@ extension Billpayment_ListAllItemsVC: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
-        Selected_Company = (filteredData?[indexPath.row])!
+        Selected_Company = (filteredData[indexPath.row].name)
         for i in getClassBillComapny
         {
             if i.name == Selected_Company
             {
                 Selected_Company_id = i.id
                 Selected_Company_code = i.code
+                logo = i.path
+                
             }
 
         }
@@ -156,7 +161,7 @@ extension Billpayment_ListAllItemsVC: UITableViewDelegate, UITableViewDataSource
         GlobalData.Selected_bil_Company = Selected_Company
         GlobalData.Selected_Company_id = Selected_Company_id
         GlobalData.Selected_Company_code = Selected_Company_code!
-//        GlobalData.selected_operator_logo = img(tag: indexPath.row)
+        GlobalData.selected_operator_logo = filteredData[indexPath.row].path
         let vc = storyboard?.instantiateViewController(withIdentifier: "Pay_BillPayment_VC") as! Pay_BillPayment_VC
         vc.BillComapnyid = BillComapnyid!
         vc.utilityBillCompany =  GlobalData.Selected_Company_code
@@ -177,7 +182,7 @@ extension Billpayment_ListAllItemsVC: UITableViewDelegate, UITableViewDataSource
                 if(self.filteredData.count == 0){
                    print("searchlist")
                    if(searchBar.text == ""){
-                       self.filteredData = self.bill_arr
+                       self.filteredData = self.getClassBillComapny
                     print(self.filteredData)
                    }
                 }
@@ -186,13 +191,13 @@ extension Billpayment_ListAllItemsVC: UITableViewDelegate, UITableViewDataSource
             }else{
                  print(searchText)
               
-                self.filteredData = self.bill_arr?.filter({ SearchCity -> Bool in
-                    return SearchCity.lowercased().contains(searchText.lowercased())
-                })
+                self.filteredData = (self.getClassBillComapny.filter({ SearchCity -> Bool in
+                    return SearchCity.name .lowercased().contains(searchText.lowercased())
+                }))
 //                print(self.searchdoctor)
                 if(filteredData.count == 0){
                     if(searchBar.text == ""){
-                        filteredData = bill_arr
+                        filteredData = getClassBillComapny
                     }
                    // self.nosearchlb.isHidden = false
                 }else{
@@ -211,7 +216,7 @@ extension Billpayment_ListAllItemsVC: UITableViewDelegate, UITableViewDataSource
             
             searchBar.text = ""
                 
-            filteredData = bill_arr
+            filteredData = getClassBillComapny
                 
             searchBar.endEditing(true)
                 
@@ -226,4 +231,5 @@ class BillCompany
     var code = ""
     var id = 0
     var name = ""
+    var path = ""
 }
