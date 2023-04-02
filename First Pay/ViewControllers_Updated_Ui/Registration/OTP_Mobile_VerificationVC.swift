@@ -16,7 +16,8 @@ import SafariServices
 import Foundation
 import OTPTextField
 import CoreLocation
-import OneSignal
+//import OneSignal
+
 var genericResponseObj : GenericResponse?
 class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     var genericResponseObj : GenericResponse?
@@ -360,28 +361,29 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     
     
     func getOneSignalUUIDD(){
-         
-         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+         //One Signal Start
+//         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+//
+//         let hasPrompted = status.permissionStatus.hasPrompted
+//         print("hasPrompted = \(hasPrompted)")
+//         let userStatus = status.permissionStatus.status
+//         print("userStatus = \(userStatus)")
+//
+//         let isSubscribed = status.subscriptionStatus.subscribed
+//         print("isSubscribed = \(isSubscribed)")
+//         let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
+//         print("userSubscri ptionSetting = \(userSubscriptionSetting)")
+//         let userID = status.subscriptionStatus.userId
+//         print("userID = \(userID)")
+//        DataManager.instance.userUUID = userID
+//         let pushToken = status.subscriptionStatus.pushToken
+//         print("pushToken = \(pushToken)")
+//
+//     let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
+//                print("Received Notification - \(notification?.payload.notificationID) - \(notification?.payload.title)")
+//            }
+        //One Signal End
 
-         let hasPrompted = status.permissionStatus.hasPrompted
-         print("hasPrompted = \(hasPrompted)")
-         let userStatus = status.permissionStatus.status
-         print("userStatus = \(userStatus)")
-
-         let isSubscribed = status.subscriptionStatus.subscribed
-         print("isSubscribed = \(isSubscribed)")
-         let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
-         print("userSubscri ptionSetting = \(userSubscriptionSetting)")
-         let userID = status.subscriptionStatus.userId
-         print("userID = \(userID)")
-        DataManager.instance.userUUID = userID
-         let pushToken = status.subscriptionStatus.pushToken
-         print("pushToken = \(pushToken)")
-     
-     let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
-                print("Received Notification - \(notification?.payload.notificationID) - \(notification?.payload.title)")
-            }
-         
      }
 
     

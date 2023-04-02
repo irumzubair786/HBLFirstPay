@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
-import OneSignal
+//import OneSignal
 import Siren
 import IQKeyboardManager
 //@UIApplicationMain
@@ -47,49 +47,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Siren Pod for Version Check
         self.setupSiren()
-        
-        let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
-                  // This block gets called when the user reacts to a notification received
-                  let payload: OSNotificationPayload? = result?.notification.payload
-                  
-//                  print("Message: \(payload!.body)")
-            
-            if let notiMessage = payload!.body {
-                let saveSuccessful : Bool = KeychainWrapper.standard.set(notiMessage, forKey: "notiMessage")
-//                print("Notification Message SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-            }
-            
-//            let mainStoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//            let homePage = mainStoryboard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
-//            homePage.notificationMessage = payload?.body
-//            self.window?.rootViewController = homePage
-            
-//                  print("badge number:", payload?.badge ?? "nil")
-//                  print("notification sound:", payload?.sound ?? "nil")
-                  
-                  if let additionalData = result!.notification.payload!.additionalData {
-//                      print("additionalData = \(additionalData)")
-                      
-                  }
-              }
-        
-        //Remove this method to stop OneSignal Debugging
-         OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
-        
-         //START OneSignal initialization code
-         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false, kOSSettingsKeyInAppLaunchURL: false]
-         
-         
-         OneSignal.initWithLaunchOptions(launchOptions,
-           appId: "12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d",
-           handleNotificationAction: notificationOpenedBlock,
-           settings: onesignalInitSettings)
-        
-         OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
-         OneSignal.promptForPushNotifications(userResponse: { accepted in
-//           print("User accepted notifications: \(accepted)")
-         })
-        
+//        //OneSignal Start
+//        let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
+//                  // This block gets called when the user reacts to a notification received
+//                  let payload: OSNotificationPayload? = result?.notification.payload
+//
+////                  print("Message: \(payload!.body)")
+//
+//            if let notiMessage = payload!.body {
+//                let saveSuccessful : Bool = KeychainWrapper.standard.set(notiMessage, forKey: "notiMessage")
+////                print("Notification Message SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+//            }
+//
+////            let mainStoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+////            let homePage = mainStoryboard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
+////            homePage.notificationMessage = payload?.body
+////            self.window?.rootViewController = homePage
+//
+////                  print("badge number:", payload?.badge ?? "nil")
+////                  print("notification sound:", payload?.sound ?? "nil")
+//
+//                  if let additionalData = result!.notification.payload!.additionalData {
+////                      print("additionalData = \(additionalData)")
+//
+//                  }
+//              }
+//
+//        //Remove this method to stop OneSignal Debugging
+//         OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+//
+//         //START OneSignal initialization code
+//         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false, kOSSettingsKeyInAppLaunchURL: false]
+//
+//
+//         OneSignal.initWithLaunchOptions(launchOptions,
+//           appId: "12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d",
+//           handleNotificationAction: notificationOpenedBlock,
+//           settings: onesignalInitSettings)
+//
+//         OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
+//         OneSignal.promptForPushNotifications(userResponse: { accepted in
+////           print("User accepted notifications: \(accepted)")
+//         })
+        //OneSignal Start
+
 
         return true
     }

@@ -20,7 +20,8 @@ import CryptoSwift
 import RNCryptor
 import PasswordTextField
 import CoreLocation
-import OneSignal
+//import OneSignal
+
 class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var homeObj : HomeModel?
  var concateString = ""
@@ -233,23 +234,26 @@ if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og
         self.present(vc, animated: true)
     }
     func getOneSignalUUIDD(){
-         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
-         let hasPrompted = status.permissionStatus.hasPrompted
-         print("hasPrompted = \(hasPrompted)")
-         let userStatus = status.permissionStatus.status
-         print("userStatus = \(userStatus)")
-         let isSubscribed = status.subscriptionStatus.subscribed
-         print("isSubscribed = \(isSubscribed)")
-         let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
-         print("userSubscri ptionSetting = \(userSubscriptionSetting)")
-         let userID = status.subscriptionStatus.userId
-         print("userID = \(userID)")
-        DataManager.instance.userUUID = userID
-         let pushToken = status.subscriptionStatus.pushToken
-         print("pushToken = \(pushToken)")
-     let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
-                print("Received Notification - \(notification?.payload.notificationID) - \(notification?.payload.title)")
-            }
+        //One Signal Start
+//         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+//         let hasPrompted = status.permissionStatus.hasPrompted
+//         print("hasPrompted = \(hasPrompted)")
+//         let userStatus = status.permissionStatus.status
+//         print("userStatus = \(userStatus)")
+//         let isSubscribed = status.subscriptionStatus.subscribed
+//         print("isSubscribed = \(isSubscribed)")
+//         let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
+//         print("userSubscri ptionSetting = \(userSubscriptionSetting)")
+//         let userID = status.subscriptionStatus.userId
+//         print("userID = \(userID)")
+//        DataManager.instance.userUUID = userID
+//         let pushToken = status.subscriptionStatus.pushToken
+//         print("pushToken = \(pushToken)")
+//     let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
+//                print("Received Notification - \(notification?.payload.notificationID) - \(notification?.payload.title)")
+//            }
+        //One Signal End
+
      }
     func loginAction() {
         if !NetworkConnectivity.isConnectedToInternet(){
