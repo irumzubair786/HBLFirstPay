@@ -74,7 +74,7 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
     
     func test()
     {
-        if isfromBanktoBank == true
+        if isfromBanktoBank == false
         {
             if self.banksObj?.dataobj?.bankList?.count ?? 0  > 0
                                {

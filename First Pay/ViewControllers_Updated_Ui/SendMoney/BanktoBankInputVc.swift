@@ -306,6 +306,8 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = walletNumberTf.text!
+          vc.ToaccountTitle = transactionApiResponseObj?.data?.accountTitle!
+            vc.bankname = selectWallettf.text!
               vc.amount = amountTextField.text!
               isfromFirstPayWallet = false
               isfromHblMbfAccount = false

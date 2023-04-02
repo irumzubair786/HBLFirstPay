@@ -252,7 +252,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         }
     }
     private func navigateToConfirmation(){
-        
+       
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = tfAccountNo.text!
               vc.amount = amountTextField.text!

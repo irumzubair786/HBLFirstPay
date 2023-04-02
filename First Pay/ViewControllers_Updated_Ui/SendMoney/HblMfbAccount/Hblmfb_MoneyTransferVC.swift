@@ -13,7 +13,7 @@ import AlamofireObjectMapper
 import MapKit
 import ContactsUI
 import libPhoneNumber_iOS
-import  SwiftKeychainWrapper
+import SwiftKeychainWrapper
 import SDWebImage
 class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     var fundsTransSuccessObj: FundsTransferApiResponse?
@@ -75,11 +75,11 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         totalAmount.text = "Rs \(amount!)"
         if  isfromFirstPayWallet == true{
             
-               
-                lblMobno.text = number
+            
+                lblMobno.text = number!
                 lblname.text = ToaccountTitle!
 //                sourceAccountno.text = ToaccountTitle!
-                totalAmount.text = amount
+                totalAmount.text = amount!
 //                PurposeTf.text = ""
             lblAccName.text = "FirstPay Wallet"
             bankLogo.image = UIImage(named: "First Pay")
@@ -93,22 +93,26 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
             lblname.text = ToaccountTitle!
 //            sourceAccountno.text = ToaccountTitle!
             lblAccName.text = "HBL MFB Account"
-            bankLogo.image = UIImage(named: "unnamed 2")
+            var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
+            let url = URL(string:concateString)
+            bankLogo.sd_setImage(with: url)
+           
 //            otpView.isHidden = falseo
             
         }
         else if isfromBanktoBank == true{
             
             
-            lblMobno.text = number
+            lblMobno.text = number!
             lblname.text = ToaccountTitle!
 //            sourceAccountno.text = ToaccountTitle!
-            totalAmount.text = amount
+            totalAmount.text = amount!
 //            PurposeTf.text = GlobalData.money_Reason
 
             lblAccName.text = bankname!
 //            otpView.isHidden = true
-            let url = URL(string:"\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo)")
+            var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
+            let url = URL(string:concateString)
             bankLogo.sd_setImage(with: url)
             
             
@@ -121,9 +125,10 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
             totalAmount.text = amount
 //            PurposeTf.text = GlobalData.money_Reason
             
-            lblAccName.text = bankname!
+            lblAccName.text = bankname
 //            otpView.isHidden = true
-            let url = URL(string:"\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo)")
+            var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
+            let url = URL(string:concateString)
             bankLogo.sd_setImage(with: url)
         }
  
@@ -285,6 +290,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
+                        UtilManager.showAlertMessage(message: message, viewController: self)
+//                        self.showToast(title: message)
                         self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.messages ?? "") ")
                     }
                 }
@@ -370,6 +377,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
+                        UtilManager.showAlertMessage(message: message, viewController: self)
+//                        self.showToast(title: message)
                         self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.data?.responseCode ?? 90)  \(self.fundsTransSuccessObj?.data?.responseDescr ?? "") ")
                     }
                 }

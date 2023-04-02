@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
+import SDWebImage
 class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     var successmodelobj : FundsTransferApiResponse?
 //    var dueDate:String?
@@ -89,6 +90,11 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
         lblDate.text = dueDate
         lbl_Status.text = status
         TextfieldAmount.text = totalAmount
+        
+        var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_operator_logo ?? "")"
+        let url = URL(string: concateString)
+        bank_logo.sd_setImage(with: url)
+        
     }
     private func billPyment() {
         if !NetworkConnectivity.isConnectedToInternet(){
