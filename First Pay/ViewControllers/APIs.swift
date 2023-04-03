@@ -77,19 +77,25 @@ struct APIs {
         return String(data: data, encoding: String.Encoding.utf8)
     }
     
-    static func postAPI(url: String, parameters: [String: Any], headers: HTTPHeaders?, completion: @escaping(_ response: JSON?, Bool, _ errorMsg: String) -> Void) {
+    static func postAPI(apiName: APIs.name, parameters: [String: Any], headers: HTTPHeaders? = nil, completion: @escaping(_ response: JSON?, Bool, _ errorMsg: String) -> Void) {
         
-        let stringParamters = APIs.json(from: parameters)
+        let baseClass = BaseClassVC()
+        let result = (baseClass.splitString(stringToSplit: baseClass.base64EncodedString(params: parameters)))
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
 
-        let url = URL(string: url)!
+        let completeUrl = APIPath.baseUrl + apiName.rawValue
+        let url = URL(string: completeUrl)!
         let jsonData = stringParamters!.data(using: .utf8, allowLossyConversion: false)!
 
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url)        
         request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
-        request.addValue("\(DataManager.instance.accessToken ?? "nil")", forHTTPHeaderField: "Authorization")
-
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("\(DataManager.instance.accessToken!)", forHTTPHeaderField: "Authorization")
+//        let hardCodedToken = "Bearer-MrhQVYIOkuistFtZwgba6bvqAtw5uQN6esgQavwflk2Hh18JufVOtKu3Rab9WbuH6s/ezC1dumUqqvkWK/y5QtIC9qypzytOvmqHP/uXIdSb8MZydcQjLzDm+U9NQZTdsBR5lNIOcOV5KwalcxJ/BREAujNzmdAdkmR8nOYwP5kp9RaH+uPDmEuOOwpoUe+7yD/f6ffpFvinp/57bV19wCvQqtomDCFVvz9Fxwvd2+IxQqrBgHYCuTFm1ErfB3JPo77MWLhKeayJnHxh4ZIzNMzvluDtAenKCqHMYO0efkg7aQDOVYaneO1q4xahSWK8"
+//        request.addValue(hardCodedToken, forHTTPHeaderField: "Authorization")
         request.httpBody = jsonData
 
         //print("\(APIs.json(from: parameters)))")
@@ -160,8 +166,12 @@ struct APIs {
     
     enum name: String {
         //MARK:- Auth
-        case LoginUser_multi = "LoginUser_multi"
-        case Login = "Auth/Login"
+        case getActiveLoan = "NanoLoan/v1/getActiveLoan"
+        case applyLoan = "NanoLoan/v1/applyLoan"
+        case nanoLoanEligibilityCheck = "NanoLoan/v1/nanoLoanEligibilityCheck"
+        case getLoanCharges = "NanoLoan/v1/getLoanCharges"
+        case getActiveLoanToPay = "NanoLoan/v1/getActiveLoanToPay"
+        case payActiveLoan = "NanoLoan/v1/payActiveLoan"
     }
     
 }

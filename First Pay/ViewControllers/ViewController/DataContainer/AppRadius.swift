@@ -20,6 +20,12 @@ extension UIView {
             self.layer.borderWidth = 1
         }
     }
+    func roundCorners(corners: UIRectCorner, radius: CGFloat){
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
+    }
     
     @discardableResult
     func radiusLineDashedStroke(pattern: [NSNumber]? = [2,2], radius: CGFloat? = 12, color: UIColor? = .red) -> CALayer {

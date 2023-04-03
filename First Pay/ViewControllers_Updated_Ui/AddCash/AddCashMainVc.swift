@@ -33,7 +33,6 @@ class AddCashMainVc: BaseClassVC {
     @IBOutlet weak var buttonFromLinkAccount: UIButton!
     @IBAction func buttonFromLinkAccount(_ sender: UIButton) {
         LinkAccounts()
-        
     }
     @IBOutlet weak var buttonLinkHBLMFBAccount: UIButton!
     
@@ -56,6 +55,8 @@ class AddCashMainVc: BaseClassVC {
     @IBOutlet weak var buttonGetLoan: UIButton!
     
     @IBAction func buttonGetLoan(_ sender: UIButton) {
+        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     private func getLinkAccounts() {
@@ -128,7 +129,6 @@ class AddCashMainVc: BaseClassVC {
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getLinkAccount"
-        
         
         var userCnic : String?
         userCnic = UserDefaults.standard.string(forKey: "userCnic")

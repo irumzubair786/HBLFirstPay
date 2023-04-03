@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class NanoLoanContainer: UIViewController {
 
@@ -13,6 +14,8 @@ class NanoLoanContainer: UIViewController {
     @IBOutlet weak var imageViewLineApply: UIImageView!
     @IBOutlet weak var labelTitleRepay: UILabel!
     @IBOutlet weak var imageViewLineRepay: UIImageView!
+    @IBOutlet weak var buttonBack: UIButton!
+    
     @IBOutlet weak var labelTitleHistory: UILabel!
     @IBOutlet weak var imageViewLineHistory: UIImageView!
     
@@ -33,6 +36,8 @@ class NanoLoanContainer: UIViewController {
 
         // Do any additional setup after loading the view.
         loadFirstController()
+        
+        getActiveLoan()
     }
     
     func loadFirstController() {
@@ -97,6 +102,9 @@ class NanoLoanContainer: UIViewController {
     @IBAction func buttonHistory(_ sender: Any) {
         openHistoryViewController()
     }
+    @IBAction func buttonBack(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     func resetTitleAndLine(currentTitle: UILabel, currentLine: UIImageView) {
         labelTitleApply.textColor = .clrLightGray
@@ -109,6 +117,34 @@ class NanoLoanContainer: UIViewController {
         
         currentTitle.textColor = .clrBlack
         currentLine.backgroundColor = .clrOrange
+    }
+    
+    
+    
+    func getActiveLoan() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)"
+        ]
+        
+//        let parameters: Parameters = [
+//            "cnic" : "3740587129163",
+//            "imei" : "215fb89f5402bef6",
+//            "channelId" : "3"
+//        ]
+        APIs.postAPI(apiName: .getActiveLoan, parameters: parameters) { response, success, errorMsg in
+            if success {
+                if response?["data"].count ?? 0 == 0 {
+//                    self.openRepayViewController()
+                }
+                else {
+                    
+                }
+            }
+        }
     }
 
 }
