@@ -17,6 +17,13 @@ class NanoLoanRepayViewController: UIViewController {
     @IBOutlet weak var buttonBenifits: UIButton!
     @IBOutlet weak var buttonMarkupCalendar: UIButton!
 
+    var modelGetActiveLoanToPay: ModelGetActiveLoanToPay? {
+        didSet {
+            self.openNanoLoanRepayConfirmationVC()
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,18 +49,15 @@ class NanoLoanRepayViewController: UIViewController {
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            "nlDisbursementId" : "1"
+            "nlDisbursementId" : "\(DataManager.instance.nano_loanDisbursementId ?? "1")"
         ]
         
-        APIs.postAPI(apiName: .getActiveLoanToPay, parameters: parameters) { response, success, errorMsg in
+        APIs.postAPI(apiName: .getActiveLoanToPay, parameters: parameters) { responseData, success, errorMsg in
             if success {
-                self.openNanoLoanRepayConfirmationVC()
-                if response?["data"].count ?? 0 == 0 {
-                    
-                }
-                else {
-                    
-                }
+                let model: ModelGetActiveLoanToPay? = APIs.decodeDataToObject(data: responseData)
+                print(model)
+                print(model)
+                self.modelGetActiveLoanToPay = model
             }
         }
     }
@@ -68,4 +72,49 @@ class NanoLoanRepayViewController: UIViewController {
         vc.modalPresentationStyle = .overFullScreen
         self.present(vc, animated: true)
     }
+}
+
+extension NanoLoanRepayViewController {
+    // MARK: - ModelGetActiveLoanToPay
+    struct ModelGetActiveLoanToPay: Codable {
+        let responsecode: Int
+        let responseblock: JSONNull?
+        let messages: String
+        let data: DataClass
+    }
+
+    // MARK: - DataClass
+    struct DataClass: Codable {
+        let chargesAmount, principalAmount, markupAmount: Int
+        let statusDescr: JSONNull?
+        let status: Int
+    }
+
+    // MARK: - Encode/decode helpers
+
+    class JSONNull: Codable, Hashable {
+
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+
+        public var hashValue: Int {
+            return 0
+        }
+
+        public init() {}
+
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
+    }
+
 }

@@ -12,12 +12,33 @@ class NanoLoanHistoryPayAbleLoanAmountCell: UITableViewCell {
     @IBOutlet weak var buttonRepay: UIButton!
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var viewRepayButton: UIView!
+    @IBOutlet weak var labelAmount: UILabel!
+    @IBOutlet weak var labelTitle: UILabel!
+    
+    @IBOutlet weak var labelAvailedLoanAmount: UILabel!
+    @IBOutlet weak var labelAvailedLoanTitle: UILabel!
+    @IBOutlet weak var labelDueDateTitle: UILabel!
+    @IBOutlet weak var labelDueDate: UILabel!
+    
+    
+    @IBOutlet weak var buttonViewDetails: UIButton!
+
+    
+    var modelCurrentLoan: NanoLoanApplyViewController.ModelCurrentLoan? {
+        didSet {
+            labelAmount.text =
+            "RS. \((modelCurrentLoan?.loanAmount ?? 0) + (modelCurrentLoan?.totalMarkupAmount ?? 0))"
+            labelDueDate.text =
+            "\(modelCurrentLoan?.endDate ?? "")"
+            labelAvailedLoanAmount.text = "RS. \(modelCurrentLoan?.loanAmount ?? 0)"
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         viewBackGround.radius()
         DispatchQueue.main.async {
-            self.viewBackGround.radiusLineDashedStroke()
+            self.viewBackGround.radiusLineDashedStroke(color: .clrGreen)
             self.buttonRepay.radius(color: .clrGreen)
             self.viewRepayButton.radius()
         }

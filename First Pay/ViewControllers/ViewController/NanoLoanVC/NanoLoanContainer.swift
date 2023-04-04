@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 
 class NanoLoanContainer: UIViewController {
-
+    
     @IBOutlet weak var labelTitleApply: UILabel!
     @IBOutlet weak var imageViewLineApply: UIImageView!
     @IBOutlet weak var labelTitleRepay: UILabel!
@@ -33,7 +33,7 @@ class NanoLoanContainer: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         loadFirstController()
         
@@ -53,9 +53,9 @@ class NanoLoanContainer: UIViewController {
                 withIdentifier: "NanoLoanApplyViewController", // Storyboard ID
                 parent: self,
                 container: self.containerView){ [self] vc in
-                // do things when embed complete
+                    // do things when embed complete
                     self.nanoLoanApplyViewController = vc as? NanoLoanApplyViewController
-            }
+                }
         }
         resetTitleAndLine(currentTitle: labelTitleApply, currentLine: imageViewLineApply)
         title = "MY LOANS"
@@ -70,9 +70,9 @@ class NanoLoanContainer: UIViewController {
                 withIdentifier: "NanoLoanRepayViewController", // Storyboard ID
                 parent: self,
                 container: self.containerView){ [self] vc in
-                // do things when embed complete
+                    // do things when embed complete
                     self.nanoLoanRepayViewController = vc as? NanoLoanRepayViewController
-            }
+                }
         }
         resetTitleAndLine(currentTitle: labelTitleRepay, currentLine: imageViewLineRepay)
         title = "MY LOANS"
@@ -81,15 +81,21 @@ class NanoLoanContainer: UIViewController {
     func openHistoryViewController() {
         if self.nanoLoanHistoryViewController != nil {
             ViewEmbedder.embed(parent: self, container: containerView, child: self.nanoLoanHistoryViewController, previous: nil)
+            DispatchQueue.main.async {
+                self.nanoLoanHistoryViewController.modelGetActiveLoan = self.modelGetActiveLoan
+            }
         }
         else {
             ViewEmbedder.embed(
                 withIdentifier: "NanoLoanHistoryViewController", // Storyboard ID
                 parent: self,
                 container: self.containerView){ [self] vc in
-                // do things when embed complete
+                    // do things when embed complete
                     self.nanoLoanHistoryViewController = vc as? NanoLoanHistoryViewController
-            }
+                    DispatchQueue.main.async {
+                        self.nanoLoanHistoryViewController.modelGetActiveLoan = self.modelGetActiveLoan
+                    }
+                }
         }
         resetTitleAndLine(currentTitle: labelTitleHistory, currentLine: imageViewLineHistory)
     }
@@ -110,7 +116,7 @@ class NanoLoanContainer: UIViewController {
         labelTitleApply.textColor = .clrLightGray
         labelTitleRepay.textColor = .clrLightGray
         labelTitleHistory.textColor = .clrLightGray
-
+        
         imageViewLineApply.backgroundColor = .clrLightGray
         imageViewLineRepay.backgroundColor = .clrLightGray
         imageViewLineHistory.backgroundColor = .clrLightGray
@@ -120,7 +126,14 @@ class NanoLoanContainer: UIViewController {
     }
     
     
-    
+    var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
+        didSet {
+            if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
+                self.openRepayViewController()
+                self.nanoLoanApplyViewController.modelGetActiveLoan = modelGetActiveLoan
+            }
+        }
+    }
     func getActiveLoan() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         
@@ -129,24 +142,16 @@ class NanoLoanContainer: UIViewController {
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)"
         ]
-        
-//        let parameters: Parameters = [
-//            "cnic" : "3740587129163",
-//            "imei" : "215fb89f5402bef6",
-//            "channelId" : "3"
-//        ]
-        APIs.postAPI(apiName: .getActiveLoan, parameters: parameters) { response, success, errorMsg in
+        APIs.postAPI(apiName: .getActiveLoan, parameters: parameters) { responseData, success, errorMsg in
             if success {
-                if response?["data"].count ?? 0 == 0 {
-//                    self.openRepayViewController()
-                }
-                else {
-                    
-                }
+                let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
+                self.modelGetActiveLoan = model
+                print(self.modelGetActiveLoan)
+                print(self.modelGetActiveLoan)
             }
         }
     }
-
+    
 }
 
 

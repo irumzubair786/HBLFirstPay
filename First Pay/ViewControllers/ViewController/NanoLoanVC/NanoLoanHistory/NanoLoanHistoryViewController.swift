@@ -11,6 +11,15 @@ class NanoLoanHistoryViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
+    var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
+        didSet {
+            if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
+                
+            }
+            tableView.reloadData()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NanoLoanHistoryPayAbleLoanAmountCell.register(tableView: tableView)
@@ -20,11 +29,8 @@ class NanoLoanHistoryViewController: UIViewController {
         tableView.dataSource = self
         tableView.reloadData()
     }
-    
-
-
-
 }
+
 // MARK: TableView Delegates
 extension NanoLoanHistoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -35,18 +41,18 @@ extension NanoLoanHistoryViewController: UITableViewDelegate, UITableViewDataSou
         return UITableViewAutomaticDimension
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return modelGetActiveLoan?.data.loanHistory.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
+        if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NanoLoanHistoryPayAbleLoanAmountCell") as! NanoLoanHistoryPayAbleLoanAmountCell
-            // if change internet package is true then we dont need to show subscribed package
+            cell.modelCurrentLoan = modelGetActiveLoan?.data.loanHistory[indexPath.row]
             return cell
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NanoLoanHistoryPastLoanCell") as! NanoLoanHistoryPastLoanCell
-            // if change internet package is true then we dont need to show subscribed package
+            cell.modelCurrentLoan = modelGetActiveLoan?.data.loanHistory[indexPath.row-1]
             return cell
         }
     }

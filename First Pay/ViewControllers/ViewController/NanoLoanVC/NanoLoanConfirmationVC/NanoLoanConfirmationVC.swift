@@ -20,6 +20,19 @@ class NanoLoanConfirmationVC: UIViewController {
     
     @IBOutlet weak var buttonGetLoan: UIButton!
     @IBOutlet weak var viewGetLoanButton: UIView!
+    
+    var modelGetLoanCharges: NanoLoanApplyViewController.ModelGetLoanCharges? {
+        didSet {
+
+        }
+    }
+    var modelApplyLoan: ModelApplyLoan? {
+        didSet {
+            self.openNanoLoanConfirmationVC()
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,19 +59,16 @@ class NanoLoanConfirmationVC: UIViewController {
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
             "amount" : "1000",
-            "productId" : "2",
+            "productId" : "\(DataManager.instance.NanoloanProductid ?? 2)",
             "loanPurpose" : "2",
         ]
         
-        APIs.postAPI(apiName: .applyLoan, parameters: parameters) { response, success, errorMsg in
-            self.openNanoLoanConfirmationVC()
+        APIs.postAPI(apiName: .applyLoan, parameters: parameters) { responseData, success, errorMsg in
             if success {
-                if response?["data"].count ?? 0 == 0 {
-                    
-                }
-                else {
-                    
-                }
+                let model: ModelApplyLoan? = APIs.decodeDataToObject(data: responseData)
+                print(model)
+                print(model)
+                self.modelApplyLoan = model
             }
         }
     }
@@ -70,3 +80,39 @@ class NanoLoanConfirmationVC: UIViewController {
     
 }
 
+extension NanoLoanConfirmationVC {
+    // MARK: - ModelApplyLoan
+    struct ModelApplyLoan: Codable {
+        let messages: String
+        let responsecode: Int
+        let responseblock, data: JSONNull?
+    }
+
+    // MARK: - Encode/decode helpers
+
+    class JSONNull: Codable, Hashable {
+
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+
+        public var hashValue: Int {
+            return 0
+        }
+
+        public init() {}
+
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
+    }
+
+}

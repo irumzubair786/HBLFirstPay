@@ -15,6 +15,13 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     @IBOutlet weak var viewBackGroundTotalAmount: UIView!
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var buttonRepayNow: UIButton!
+    
+    var modelPayActiveLoan: ModelPayActiveLoan? {
+        didSet {
+            self.openNanoLoanRepaySucessfullVC()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewBackGroundTotalAmount.radius()
@@ -34,18 +41,16 @@ class NanoLoanRepayConfirmationVC: UIViewController {
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            "nlDisbursementId" : "304"
+            "nlDisbursementId" : "\(DataManager.instance.nano_loanDisbursementId ?? "1")"
         ]
         
-        APIs.postAPI(apiName: .payActiveLoan, parameters: parameters) { response, success, errorMsg in
+        APIs.postAPI(apiName: .payActiveLoan, parameters: parameters) { responseData, success, errorMsg in
             self.openNanoLoanRepaySucessfullVC()
             if success {
-                if response?["data"].count ?? 0 == 0 {
-                    self.openNanoLoanRepaySucessfullVC()
-                }
-                else {
-                    
-                }
+                let model: ModelPayActiveLoan? = APIs.decodeDataToObject(data: responseData)
+                print(model)
+                print(model)
+                self.modelPayActiveLoan = model
             }
         }
     }
@@ -54,6 +59,41 @@ class NanoLoanRepayConfirmationVC: UIViewController {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanRepaySucessfullVC") as! NanoLoanRepaySucessfullVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    
+}
+
+
+extension NanoLoanRepayConfirmationVC {
+    // MARK: - ModelPayActiveLoan
+    struct ModelPayActiveLoan: Codable {
+        let messages: String
+        let responseblock, data: JSONNull?
+        let responsecode: Int
+    }
+
+    // MARK: - Encode/decode helpers
+
+    class JSONNull: Codable, Hashable {
+
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+
+        public var hashValue: Int {
+            return 0
+        }
+
+        public init() {}
+
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
+    }
 }

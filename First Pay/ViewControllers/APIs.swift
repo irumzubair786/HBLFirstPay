@@ -77,7 +77,7 @@ struct APIs {
         return String(data: data, encoding: String.Encoding.utf8)
     }
     
-    static func postAPI(apiName: APIs.name, parameters: [String: Any], headers: HTTPHeaders? = nil, completion: @escaping(_ response: JSON?, Bool, _ errorMsg: String) -> Void) {
+    static func postAPI(apiName: APIs.name, parameters: [String: Any], headerWithToken: String? = nil , headers: HTTPHeaders? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         
         let baseClass = BaseClassVC()
         let result = (baseClass.splitString(stringToSplit: baseClass.base64EncodedString(params: parameters)))
@@ -87,17 +87,30 @@ struct APIs {
         //let postData = stringParamters!.data(using: .utf8)
 
         let completeUrl = APIPath.baseUrl + apiName.rawValue
+        
         let url = URL(string: completeUrl)!
         let jsonData = stringParamters!.data(using: .utf8, allowLossyConversion: false)!
 
         var request = URLRequest(url: url)        
         request.httpMethod = HTTPMethod.post.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("\(DataManager.instance.accessToken!)", forHTTPHeaderField: "Authorization")
-//        let hardCodedToken = "Bearer-MrhQVYIOkuistFtZwgba6bvqAtw5uQN6esgQavwflk2Hh18JufVOtKu3Rab9WbuH6s/ezC1dumUqqvkWK/y5QtIC9qypzytOvmqHP/uXIdSb8MZydcQjLzDm+U9NQZTdsBR5lNIOcOV5KwalcxJ/BREAujNzmdAdkmR8nOYwP5kp9RaH+uPDmEuOOwpoUe+7yD/f6ffpFvinp/57bV19wCvQqtomDCFVvz9Fxwvd2+IxQqrBgHYCuTFm1ErfB3JPo77MWLhKeayJnHxh4ZIzNMzvluDtAenKCqHMYO0efkg7aQDOVYaneO1q4xahSWK8"
-//        request.addValue(hardCodedToken, forHTTPHeaderField: "Authorization")
+        
+        var tempHeader = ""
+        if headerWithToken != nil {
+            request.addValue(headerWithToken!, forHTTPHeaderField: "Authorization")
+            tempHeader = headerWithToken!
+        }
+        else {
+            request.addValue("\(DataManager.instance.accessToken!)", forHTTPHeaderField: "Authorization")
+            tempHeader = "\(DataManager.instance.accessToken!)"
+        }
+        
+        print("Url: \(completeUrl)")
+        print("Parameters: \(parameters)")
+        print("Headers: \(tempHeader)")
+        
         request.httpBody = jsonData
-
         //print("\(APIs.json(from: parameters)))")
         
         Alamofire.request(request).responseJSON { response in
@@ -105,20 +118,27 @@ struct APIs {
 
             switch response.result {
             case .success(let json):
+                let modelGetActiveLoan = try? JSONDecoder().decode(NanoLoanApplyViewController.ModelGetLoanCharges.self, from: response.data!)
+                print(modelGetActiveLoan)
+                
                 let serverResponse = JSON(response.value!)
+                
+                print("Request Headers: \(String(describing: request.allHTTPHeaderFields))")
+                print("Request Url: \(String(describing: request.url))")
+                print("Request Parameters: \(parameters)")
                 print("JSON: \(serverResponse)")
                 print("JSON: \(json)")
                 switch response.response?.statusCode {
                 case 200 :
                     if serverResponse["responsecode"] == 1 {
-                        completion(serverResponse, true, "")
+                        completion(response.data, true, "")
                     }
                     else {
-                        completion(serverResponse, false, serverResponse["message"].string ?? "")
+                        completion(response.data, false, serverResponse["message"].string ?? "")
                     }
                     break
                 default :
-                    completion(serverResponse, false, serverResponse["message"].string ?? "")
+                    completion(response.data, false, serverResponse["message"].string ?? "")
                     break
                 }
             case .failure( _):
@@ -137,7 +157,28 @@ struct APIs {
         }
     }
     
-    
+    static func decodeDataToObject<T: Codable>(data : Data?)->T?{
+        if let dt = data{
+            do{
+                return try JSONDecoder().decode(T.self, from: dt)
+                
+            }  catch let DecodingError.dataCorrupted(context) {
+                print(context)
+            } catch let DecodingError.keyNotFound(key, context) {
+                print("Key '\(key)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+            } catch let DecodingError.valueNotFound(value, context) {
+                print("Value '\(value)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+            } catch let DecodingError.typeMismatch(type, context)  {
+                print("Type '\(type)' mismatch:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+            } catch {
+                print("error: ", error)
+            }
+        }
+        return nil
+    }
     
     
     //Working Code with URLSession Request
