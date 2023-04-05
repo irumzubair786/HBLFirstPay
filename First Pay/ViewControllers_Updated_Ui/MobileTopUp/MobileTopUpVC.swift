@@ -35,6 +35,9 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         Tf_mobileNumber.delegate  = self
         selectOperator.delegate = self
         lblMainTitle.textColor = .black
+        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+
+        img_next_arrow.addGestureRecognizer(tapGestureRecognizerr)
         // Do any additional setup after loading the view.
     }
     
@@ -55,9 +58,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         vc.phoneNumber = Tf_mobileNumber.text!
         self.navigationController?.pushViewController(vc, animated: true)
         
-        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        img_next_arrow.isUserInteractionEnabled = true
-        img_next_arrow.addGestureRecognizer(tapGestureRecognizerr)
+        
       
         
 

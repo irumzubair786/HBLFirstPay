@@ -26,10 +26,14 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60
-        
+         getcnic()
         lblAccountTitle.text = DataManager.instance.accountTitle
         lblAccountNumber.text = DataManager.instance.accountNo
         lblEmail.text = ""
+//        let date = Date()
+//        let df = DateFormatter()
+//        df.dateFormat = "yyyy-MM-dd"
+//        dateString = df.string(from: date)
         // Do any additional setup after loading the view.
     }
     @IBOutlet weak var btnProfileImg: UIButton!
@@ -73,7 +77,6 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         {
             cell.buttonSidebar.setTitleColor(UIColor.red, for: .normal)
         }
-        
         let tag  = indexPath.row
         let languageCode = UserDefaults.standard.string(forKey: "language-Code") ?? "en"
         cell.buttonSidebar.setTitle((sideItemsArr[indexPath.row]), for: .normal)
@@ -104,6 +107,12 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
 //            let  myDict = [ "name": "ContactUSVC"]
 //            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
             
+        }
+        if cell.buttonSidebar.tag == 5
+        {
+            let vc = UIStoryboard(name: "MaintenanceCertificate", bundle: Bundle.main).instantiateViewController(withIdentifier: "MaintenenceCertificate") as! MaintenenceCertificate
+            vc.documentData = createPDF()
+            self.present(vc, animated: true)
         }
         else
         {
@@ -277,7 +286,8 @@ private func batteryLevelChanged()
     var userCnic : String?
     func getcnic()
     {
-      
+    userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        
     if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
         userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
     }
@@ -289,43 +299,69 @@ private func batteryLevelChanged()
 }
     func getHTML() -> String {
         return """
-            <p style='margin: 0cm 0cm 0cm 72pt;font-family: "Times New Roman", serif;line-height: 24px;'><span style="font-size:24px;line-height: 36px;font-family: Arial, sans-serif;">
-        <img src= "app_logo-1.png"
-             width="30"
-             height="30" />
-               
-                The HBL Microfinance Bank Ltd</span></p>
-                <div style="border-style: none none solid;border-bottom-width: 1pt;border-bottom-color: windowtext;padding: 0cm 0cm 1pt;">
-                    <p style='margin: 0cm;font-size:16px;font-family: "Times New Roman", serif;border: none;padding: 0cm;'>&nbsp; &nbsp;&nbsp;</p>
-                </div>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;text-align: right;'><span style="font-size:13px;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;text-align: right;'><span style="font-size:13px;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;text-align: right;'><span style="font-size:13px;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">Date: \(dateString! ?? "")</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><strong><u><span style="font-family: Calibri, sans-serif;">ACCOUNT MAINTENANCE CERTIFICATE&nbsp;</span></u></strong></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><strong><u><span style="font-family: Calibri, sans-serif;"><span style="text-decoration: none;">&nbsp;</span></span></u></strong></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;line-height: 24px;'><span style="font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-size:15px;font-family: Calibri, sans-serif;">This is to certify that&nbsp;</span><strong><span style="font-size:13px;font-family: Calibri, sans-serif;"> \(DataManager.instance.accountTitle! ?? "") &nbsp; &nbsp;</span></strong><span style="font-size:13px;font-family: Calibri, sans-serif;">having <strong>CNIC   \(userCnic! ?? "")  </strong>&nbsp;</span><span style="font-size:15px;font-family: Calibri, sans-serif;">is maintaining &nbsp;</span><span style="font-size:15px;font-family: Calibri, sans-serif;">account &nbsp;A/C#</span><strong><span style="font-size:13px;font-family: Calibri, sans-serif;"> \(DataManager.instance.accountNo! ?? ""). &nbsp;</span></strong><span style="font-size:15px;font-family: Calibri, sans-serif;"> <strong></strong></span>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;text-align: justify;'><span style="font-size:15px;font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;text-align: justify;'><span style="font-size:15px;font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;text-align: justify;line-height: 24px;'><span style="font-size:15px;line-height: 22px;font-family: Calibri, sans-serif;">This certificate is issued on request of the customer without taking any risk and responsibility&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;text-align: justify;line-height: 24px;'><span style="font-size:15px;line-height: 22px;font-family: Calibri, sans-serif;">on undersigned and part of the bank.</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;text-align: justify;line-height: 24px;'><span style="font-size:15px;line-height: 22px;font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;text-align: justify;line-height: 24px;'><span style="font-size:15px;line-height: 22px;font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;"> The HBL Microfinance Bank </span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">16<sup>th</sup> &amp; 17<sup>th</sup> Floor HBL Tower,</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">Blue Area, Islamabad</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">Toll Free 0800-34778 or 0800-42563</span></p>
-                <p style='margin: 0cm;font-family: "Times New Roman", serif;'><span style="font-family: Calibri, sans-serif;">&nbsp;</span></p>
-                
-        """
+        
+        
+        
+        
+        <html>
+        <head>
+        <style>
+        h1 {text-align: center;}
+        h1 {text-align: center;}
+        
+        
+        
+        p {text-align: center;color: gray}
+        p {text-align: center;}
+        p {text-align: center;}
+        p {text-align: center;}
+        p {text-align: center;}
+        
+        div {text-align: center;}
+        </style>
+        </head>
+        <body>
 
+        
+        
+        <h1> </h1>
+        <h1>Account Maintenance
+        Certificate</h1>
+        <h1> </h1>
+        
+        
+        <p>This Is To Certify That </p>
+        <p>
+        \(DataManager.instance.accountTitle!)
+        </p>
+        
+        <p>
+        
+        Having CNIC #\(userCnic!)
+        </p>
+        
+        <p>
+        Is Maintaining Account A/c#
+        </p>
+        
+        
+        <p>
+         \(DataManager.instance.accountNo!)
+         </p>
+        
+        <p>
+        This Certificate Is Issued On Request Of The Customer Without Taking Any
+        Risk And Responsibility On
+        Undersigned And Part Of The Bank.
+        HBL Microfinance Bank Ltd 16th & 17th Flooi oft
+        HBL Tower, Blue Area, Islamabad Toll Free 0800-34778 Or 0800-42563</p>
+        <div></div>
+
+        </body>
+        </html>
+        """
     }
+
     
    
 }

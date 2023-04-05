@@ -309,6 +309,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
           vc.ToaccountTitle = transactionApiResponseObj?.data?.accountTitle!
             vc.bankname = selectWallettf.text!
               vc.amount = amountTextField.text!
+        vc.OTPREQ = transactionApiResponseObj?.data?.oTPREQ!
               isfromFirstPayWallet = false
               isfromHblMbfAccount = false
                isfromBanktoBank = false
@@ -319,7 +320,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
     
     
     private func movetonext(){
-        
+//        des
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = walletNumberTf.text!
               vc.amount = amountTextField.text!
@@ -328,6 +329,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
               isfromHblMbfAccount = false
                isfromBanktoBank = true
         vc.bankname = selectWallettf.text!
+        vc.OTPREQ = transactionApiResponseObj?.data?.oTPREQ!
         self.navigationController?.pushViewController(vc, animated: true)
 
     }

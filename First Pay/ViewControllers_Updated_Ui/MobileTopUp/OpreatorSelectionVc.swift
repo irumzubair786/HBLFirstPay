@@ -33,10 +33,11 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func Action_hideoperatorView(_ sender: UIButton) {
+       
     }
    
     
-    
+   
     
     private func getCompanies() {
         
@@ -44,7 +45,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
             self.showToast(title: "No Internet Available")
             return
         }
-        
+       
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
@@ -127,8 +128,9 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
 //        aCell.backview.dropShadow1()
         aCell.lblOperator.text  = aRequest.name
         let url = URL(string:"\(GlobalConstants.BASE_URL)\(getOperator[indexPath.row].path)")
-        aCell.imgoperatoe.sd_setImage(with: url)
-
+    print("url",url!)
+        aCell.imgoperatoe.sd_setImage(with: url!)
+    
 //m        aCell.lblcityname.text =
         return aCell
 

@@ -42,10 +42,10 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         pinTextField.isSecureTextEntry = true
         getIMEI()
         getIPAddressmac()
-       
+        
         self.pinTextField.addDoneButtonOnKeyboardWithAction { [self] in
-            self.loginAction()
-            self.pinTextField.resignFirstResponder()
+        self.loginAction()
+        self.pinTextField.resignFirstResponder()
         }
         
         

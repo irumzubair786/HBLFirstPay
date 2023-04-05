@@ -97,6 +97,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         ///set title color here to white
            let setimg = UIImage(named: "")
         cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+        cell.btnAmount.borderColor = UIColor.clear
 //        cell.btnAmount.borderColor = .clear
         let a = cell.btnAmount.currentTitle
         let x = a?.substring(from: 3)
@@ -110,6 +111,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             img_next_arrow.isUserInteractionEnabled = true
             lblAmountLimit.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
             self.collectionView.reloadData()
+        
     
         
         

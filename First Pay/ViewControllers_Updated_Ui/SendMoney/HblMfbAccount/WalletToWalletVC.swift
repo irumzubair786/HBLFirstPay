@@ -257,7 +257,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
               vc.number = tfAccountNo.text!
               vc.amount = amountTextField.text!
            vc.ToaccountTitle = self.transactionApiResponseObj?.data?.accountTitle!
-
+        vc.OTPREQ = self.transactionApiResponseObj?.data?.oTPREQ!
               isfromFirstPayWallet = true
               isfromHblMbfAccount = false
         self.navigationController?.pushViewController(vc, animated: true)

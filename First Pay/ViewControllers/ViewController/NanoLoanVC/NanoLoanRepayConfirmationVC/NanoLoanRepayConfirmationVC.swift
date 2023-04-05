@@ -34,7 +34,6 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     @IBAction func buttonRepayNow(_ sender: Any) {
         payActiveLoan()
     }
-    
     func payActiveLoan() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [

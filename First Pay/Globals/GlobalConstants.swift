@@ -10,9 +10,9 @@ import Foundation
 
 class GlobalConstants {
     // Live
-//    public static let BASE_URL = "https://bb.hblmfb.com/"
+    public static let BASE_URL = "https://bb.hblmfb.com/"
  // Stagging
-    public static let BASE_URL = "http://bbuat.hblmfb.com/"
+//    public static let BASE_URL = "http://bbuat.hblmfb.com/"
 
    
 }
@@ -26,7 +26,7 @@ class GlobalOTPTypes {
     public static let OTP_BENEFICARY = "BEN"                                             //BENEFICARY
     public static let OTP_LINK_ACCOUNT = "LA"                                            //LINK ACCOUNT
     public static let OTP_BALANCE_PULL = "PUSH"                                          //BENEFICARY
-    public static let OTP_BALANCE_PUSH  = "PULL"                                         //BENEFICARY
+    public static let OTP_BALANCE_PUSH  = "PULL"                                        //BENEFICARY
     
     // LOAD BALANCE
     public static let LOAD_BALANCE_PUSH  = "PUSH"

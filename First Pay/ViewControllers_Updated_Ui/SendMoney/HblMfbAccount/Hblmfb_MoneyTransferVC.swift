@@ -23,6 +23,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     var number: String?
     var ToaccountTitle : String?
     var bankname : String?
+    var OTPREQ : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         print("GlobalData.money_Reason",  number)
@@ -71,72 +72,84 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     }
     func updateUI()
     {
-        amountTextField.text = "Rs \(amount!)"
-        totalAmount.text = "Rs \(amount!)"
-        if  isfromFirstPayWallet == true{
-            
-            
+        if OTPREQ == "N"
+        {
+            otpTextField.isHidden = true
+        }
+            amountTextField.text = "Rs \(amount!)"
+            totalAmount.text = "Rs \(amount!)"
+            if  isfromFirstPayWallet == true{
+                
+                
+                    lblMobno.text = number!
+                    lblname.text = ToaccountTitle!
+    //                sourceAccountno.text = ToaccountTitle!
+                    totalAmount.text = amount!
+    //                PurposeTf.text = ""
+                lblAccName.text = "FirstPay Wallet"
+                bankLogo.image = UIImage(named: "First Pay")
+    //            otpView.isHidden = false
+                
+            }
+            else  if isfromHblMbfAccount == true{
+    //            PurposeTf.text = GlobalData.money_Reason
+              
+                lblMobno.text = number
+                lblname.text = ToaccountTitle!
+    //            sourceAccountno.text = ToaccountTitle!
+                lblAccName.text = "HBL MFB Account"
+                var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
+                let url = URL(string:concateString)
+                bankLogo.sd_setImage(with: url)
+               
+    //            otpView.isHidden = falseo
+                
+            }
+            else if isfromBanktoBank == true{
+                
+                
                 lblMobno.text = number!
                 lblname.text = ToaccountTitle!
-//                sourceAccountno.text = ToaccountTitle!
+    //            sourceAccountno.text = ToaccountTitle!
                 totalAmount.text = amount!
-//                PurposeTf.text = ""
-            lblAccName.text = "FirstPay Wallet"
-            bankLogo.image = UIImage(named: "First Pay")
-//            otpView.isHidden = false
-            
-        }
-        else  if isfromHblMbfAccount == true{
-//            PurposeTf.text = GlobalData.money_Reason
-          
-            lblMobno.text = number
-            lblname.text = ToaccountTitle!
-//            sourceAccountno.text = ToaccountTitle!
-            lblAccName.text = "HBL MFB Account"
-            var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
-            let url = URL(string:concateString)
-            bankLogo.sd_setImage(with: url)
-           
-//            otpView.isHidden = falseo
-            
-        }
-        else if isfromBanktoBank == true{
-            
-            
-            lblMobno.text = number!
-            lblname.text = ToaccountTitle!
-//            sourceAccountno.text = ToaccountTitle!
-            totalAmount.text = amount!
-//            PurposeTf.text = GlobalData.money_Reason
+    //            PurposeTf.text = GlobalData.money_Reason
 
-            lblAccName.text = bankname!
-//            otpView.isHidden = true
-            var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
-            let url = URL(string:concateString)
-            bankLogo.sd_setImage(with: url)
-            
-            
+                lblAccName.text = bankname!
+    //            otpView.isHidden = true
+                var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
+                let url = URL(string:concateString)
+                bankLogo.sd_setImage(with: url)
+                
+                
+            }
+            else{
+               
+                lblMobno.text = number
+                lblname.text = ToaccountTitle
+    //            sourceAccountno.text = ToaccountTitle!
+                totalAmount.text = amount
+    //            PurposeTf.text = GlobalData.money_Reason
+                
+                lblAccName.text = bankname
+    //            otpView.isHidden = true
+                var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
+                let url = URL(string:concateString)
+                bankLogo.sd_setImage(with: url)
+            }
+     
+        
         }
-        else{
-           
-            lblMobno.text = number
-            lblname.text = ToaccountTitle 
-//            sourceAccountno.text = ToaccountTitle!
-            totalAmount.text = amount
-//            PurposeTf.text = GlobalData.money_Reason
-            
-            lblAccName.text = bankname
-//            otpView.isHidden = true
-            var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
-            let url = URL(string:concateString)
-            bankLogo.sd_setImage(with: url)
-        }
- 
-    }
+    
     override func viewWillAppear(_ animated: Bool) {
 
         if isFromReason == true{
             PurposeTf.text = GlobalData.money_Reason
+            if OTPREQ == "N"
+            {
+                img_next_arrow.image = UIImage(named: "]greenarrow")
+             
+                btn_Next.isUserInteractionEnabled = true
+            }
         }
         else {
             PurposeTf.text = ""
@@ -158,21 +171,24 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     
         return newLength <= 4
     }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
+       
+            if otpTextField.text?.count == 4
+            {
+                
+                img_next_arrow.image = UIImage(named: "]greenarrow")
+             
+                btn_Next.isUserInteractionEnabled = true
+            }
+            else
+            {
+    //            let image = UIImage(named:"grayArrow")
+                img_next_arrow.image = UIImage(named: "grayArrow")
+                btn_Next.isUserInteractionEnabled = false
+            }
         
-        if otpTextField.text?.count == 4
-        {
-            
-            img_next_arrow.image = UIImage(named: "]greenarrow")
-         
-            btn_Next.isUserInteractionEnabled = true
-        }
-        else
-        {
-//            let image = UIImage(named:"grayArrow")
-            img_next_arrow.image = UIImage(named: "grayArrow")
-            btn_Next.isUserInteractionEnabled = false
-        }
+        
         
         
     }
