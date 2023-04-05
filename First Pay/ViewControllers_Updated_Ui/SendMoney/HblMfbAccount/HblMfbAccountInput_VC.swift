@@ -14,7 +14,7 @@ import ContactsUI
 import libPhoneNumber_iOS
 class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
     private let contactPicker = CNContactPickerViewController()
-    var minvalu  = 100
+    var minvalu  = 1
     var maxvalu = 25000
     var reasonsObj : GetReasonsModel?
     var reasonsList : [String]?

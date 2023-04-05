@@ -48,7 +48,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var back: UIButton!
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var lblAccName: UILabel!
-    var minvalu  = 100
+    var minvalu  = 1
     var maxvalu = 10000
     @IBOutlet weak var lblAlertAmount: UILabel!
     @IBOutlet weak var amountTextField: UITextField!
@@ -83,7 +83,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 
                     lblMobno.text = number!
                     lblname.text = ToaccountTitle!
-    //                sourceAccountno.text = ToaccountTitle!
+                sourceAccountno.text = DataManager.instance.accountNo!
                     totalAmount.text = amount!
     //                PurposeTf.text = ""
                 lblAccName.text = "FirstPay Wallet"
@@ -96,7 +96,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
               
                 lblMobno.text = number
                 lblname.text = ToaccountTitle!
-    //            sourceAccountno.text = ToaccountTitle!
+                sourceAccountno.text = DataManager.instance.accountNo!
                 lblAccName.text = "HBL MFB Account"
                 var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
                 let url = URL(string:concateString)
@@ -110,7 +110,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 
                 lblMobno.text = number!
                 lblname.text = ToaccountTitle!
-    //            sourceAccountno.text = ToaccountTitle!
+                sourceAccountno.text = DataManager.instance.accountNo!
                 totalAmount.text = amount!
     //            PurposeTf.text = GlobalData.money_Reason
 
@@ -126,7 +126,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                
                 lblMobno.text = number
                 lblname.text = ToaccountTitle
-    //            sourceAccountno.text = ToaccountTitle!
+                sourceAccountno.text = DataManager.instance.accountNo!
                 totalAmount.text = amount
     //            PurposeTf.text = GlobalData.money_Reason
                 
@@ -273,9 +273,9 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
 //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferLocal"
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferLocal"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":number!,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle": DataManager.instance.accountTitle!,"beneficiaryName":"","beneficiaryMobile":
-                        "","beneficiaryEmail":"","addBeneficiary":"N","otp": otpTextField.text!,"requestMoneyId":GlobalData.moneyReasonid!,"accountType": DataManager.instance.accountType!] as [String : Any]
- 
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":number!,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"beneficiaryName":"","beneficiaryMobile":
+            "","beneficiaryEmail":"","addBeneficiary":"N","otp":otpTextField.text ?? "","requestMoneyId":GlobalData.moneyReasonid!,"accountType":DataManager.instance.accountType!] as [String : Any]
+        
        
         print(parameters)
         
@@ -363,7 +363,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferIbft"
 
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"accountNo":number!,"accountIMD":GlobalData.Selected_bank_code,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":DataManager.instance.accountTitle!,"benificiaryIBAN":DataManager.instance.accountNo!,"otp": otpTextField.text!,"accountType":DataManager.instance.accountType!]
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"accountNo":number!,"accountIMD":GlobalData.Selected_bank_code,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"benificiaryIBAN":DataManager.instance.accountNo!,"otp": otpTextField.text ?? "","accountType":DataManager.instance.accountType!]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
 

@@ -104,7 +104,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         
     }
     
-    var minvalu  = 100
+    var minvalu  = 1
     var maxvalu = 25000
     @IBOutlet weak var selectWallettf: UITextField!
     @IBOutlet weak var back: UIButton!

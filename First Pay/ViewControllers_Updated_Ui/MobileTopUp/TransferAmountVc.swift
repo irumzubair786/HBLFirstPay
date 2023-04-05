@@ -33,7 +33,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
 
         // Do any additional setup after loading the view.
     }
-    var minValue = 100
+    var minValue = 1
     var maxValue = 10000
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var btnContinue: UIButton!

@@ -83,7 +83,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
     @IBOutlet weak var btn_next: UIButton!
     
     @IBOutlet weak var lblMainTitle: UILabel!
-    var minvalu  = 100
+    var minvalu  = 1
     var maxvalu = 25000
     @IBOutlet weak var lblAlertAmount: UILabel!
     @IBOutlet weak var amountTextField: UITextField!

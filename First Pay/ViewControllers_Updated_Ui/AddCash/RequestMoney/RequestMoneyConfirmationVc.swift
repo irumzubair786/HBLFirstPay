@@ -30,7 +30,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
     }
     var accountTitle: String?
     var accountNo: String?
-    var minValue = 100
+    var minValue = 1
     var maxValue = 10000
     var genResponseObj : GenericResponse?
     override func viewDidLoad() {

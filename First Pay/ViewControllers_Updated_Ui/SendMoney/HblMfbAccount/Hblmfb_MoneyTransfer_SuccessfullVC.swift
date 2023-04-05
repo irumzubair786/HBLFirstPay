@@ -32,7 +32,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
         btnShare.setTitle("", for: .normal)
         lblWalletName.isHidden = true
         lblwalletNameValue.isHidden = true
-//        lblFee.isHidden = true
+        lblFee.isHidden = true
 //        lblFeeCharged.isHidden = true
         UpdateUi()
         // Do any additional setup after loading the view.
@@ -92,8 +92,8 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
         {
            
             lblTransactionId.text  = TransactionId
-            lblTransType.text = "FirstPay Wallet"
-            lblSourceAccount.text = Toaccounttitle!
+            lblTransType.text = "Wallet to Wallet"
+            lblSourceAccount.text = "FirstPay Account \(DataManager.instance.accountNo!)"
             lblDateTime.text = TransactionDate!
             lblFee.text = "Rs 0.00"
             lblBeneficiaryAccount.text = number!
@@ -102,7 +102,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
         else if isfromHblMbfAccount == true
         {            lblTransactionId.text  = TransactionId
             lblTransType.text = "HBL MFB Transfer"
-            lblSourceAccount.text = Toaccounttitle!
+            lblSourceAccount.text = DataManager.instance.accountNo!
             lblDateTime.text = TransactionDate!
             lblFee.text = "Rs 0.00"
             lblBeneficiaryAccount.text = number!
@@ -116,7 +116,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
             lblWalletName.text = "HBL MFB Transfer"
             lblTransactionId.text  = TransactionId
             lblTransType.text = "Bank Name"
-            lblSourceAccount.text = Toaccounttitle!
+            lblSourceAccount.text = DataManager.instance.accountNo!
             lblDateTime.text = TransactionDate!
             lblBeneficiaryAccount.text = number!
             lblwalletNameValue.text = GlobalData.Selected_bank
@@ -135,7 +135,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
             lblBeneficiaryAccount.text = number!
             lblWalletName.text = "Wallet Transfer"
             lblwalletNameValue.text = GlobalData.Selected_bank
-            lblSourceAccount.text = Toaccounttitle!
+            lblSourceAccount.text = DataManager.instance.accountTitle!
             lblDateTime.text = TransactionDate!
             lblFee.text = "Rs 0.00"
             
