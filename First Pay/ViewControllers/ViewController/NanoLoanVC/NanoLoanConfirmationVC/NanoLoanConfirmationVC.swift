@@ -14,25 +14,72 @@ class NanoLoanConfirmationVC: UIViewController {
     @IBOutlet weak var viewBackGroundHint: UIView!
     @IBOutlet weak var viewLoanAmountBackGround: UIView!
     @IBOutlet weak var buttonTermsAndConditions: UIButton!
-    
     @IBOutlet weak var buttonBack: UIButton!
-    
-    
     @IBOutlet weak var buttonGetLoan: UIButton!
     @IBOutlet weak var viewGetLoanButton: UIView!
     
-    var modelGetLoanCharges: NanoLoanApplyViewController.ModelGetLoanCharges? {
+    
+    @IBOutlet weak var labelOtherDescription: UILabel!
+    @IBOutlet weak var labelLoanAmount: UILabel!
+    @IBOutlet weak var labelAmountDescription: UILabel!
+    
+    @IBOutlet weak var labelLoanDurationTitle: UILabel!
+    
+    @IBOutlet weak var labelLoanDuration: UILabel!
+    
+    @IBOutlet weak var labelDueDateTitle: UILabel!
+    @IBOutlet weak var labelDueDate: UILabel!
+
+    
+    @IBOutlet weak var labelDailyMarkupAmountTitle: UILabel!
+    @IBOutlet weak var labelDailyMarkupAmount: UILabel!
+    
+    @IBOutlet weak var labelTotalMonthlyMarkupTitle: UILabel!
+    @IBOutlet weak var labelTotalMonthlyMarkup: UILabel!
+    
+    @IBOutlet weak var labelAmountRapidDueDateTitle: UILabel!
+    @IBOutlet weak var labelAmountRapidDueDate: UILabel!
+
+    
+    
+    var selectedAmount: Int? {
         didSet {
 
         }
     }
     var modelApplyLoan: ModelApplyLoan? {
         didSet {
-            self.openNanoLoanConfirmationVC()
+            if modelApplyLoan?.responsecode == 1 {
+                self.openNanoLoanConfirmationVC()
+            }
+            else {
+                //MARK: - Loan Failed Successfully
+            }
+        }
+    }
+    var modelNanoLoanEligibilityCheck: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? {
+        didSet {
+            
         }
     }
     
-    
+    var modelGetLoanCharges: NanoLoanApplyViewController.ModelGetLoanCharges? {
+        didSet {
+            let totalLoanAmount = selectedAmount!
+            let dailyMArkupFee = (modelGetLoanCharges?.data["markupAmountPerDay"] as? Double ?? 0)
+            let totalMarkupFee = (modelGetLoanCharges?.data["markupAmountPerDay"] as? Double ?? 0) * (modelGetLoanCharges?.data["noOfDays"] as? Double ?? 0)
+            let noOfDays = (modelGetLoanCharges?.data["noOfDays"] as? Double ?? 0)
+            let processingFee = (modelGetLoanCharges?.data["processingFeeAmount"] as? Double ?? 0)
+            let amountRapidOnDueDate = (Double(totalLoanAmount) + totalMarkupFee)
+                                   
+            labelLoanAmount.text = "RS. \(totalLoanAmount))"
+            labelOtherDescription.text = "Processing Fee of Rs. \(processingFee) and FED of Rs. \("-----") will be deducted upfront from the applied loan amount."
+            labelLoanDuration.text = "\(noOfDays) Days"
+            labelDailyMarkupAmount.text = "RS. \(dailyMArkupFee)"
+            labelTotalMonthlyMarkup.text = "RS. \(totalMarkupFee)"
+            labelAmountRapidDueDate.text = "RS. \(amountRapidOnDueDate)"
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -58,8 +105,8 @@ class NanoLoanConfirmationVC: UIViewController {
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            "amount" : "1000",
-            "productId" : "\(DataManager.instance.NanoloanProductid ?? 2)",
+            "amount" : "\(selectedAmount!)",
+            "productId" : "\(Int(modelGetLoanCharges?.data["nlProductId"] as? Double ?? 0))",
             "loanPurpose" : "2",
         ]
         
@@ -77,7 +124,6 @@ class NanoLoanConfirmationVC: UIViewController {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanSuccessfullVC") as! NanoLoanSuccessfullVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
 }
 
 extension NanoLoanConfirmationVC {

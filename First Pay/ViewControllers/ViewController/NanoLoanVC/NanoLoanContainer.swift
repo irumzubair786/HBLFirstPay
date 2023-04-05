@@ -100,6 +100,10 @@ class NanoLoanContainer: UIViewController {
         resetTitleAndLine(currentTitle: labelTitleHistory, currentLine: imageViewLineHistory)
     }
     @IBAction func buttonApply(_ sender: Any) {
+        //MARK: - if current loan already exist Apply will be disabled
+        if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
+            return
+        }
         openApplyLoanViewController()
     }
     @IBAction func buttonRepay(_ sender: Any) {

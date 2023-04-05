@@ -24,9 +24,9 @@ import CoreLocation
 
 class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var homeObj : HomeModel?
- var concateString = ""
- var ecn = ""
- let encryptionkey = "65412399991212FF65412399991212FF65412399991212FF"
+    var concateString = ""
+    var ecn = ""
+    let encryptionkey = "65412399991212FF65412399991212FF65412399991212FF"
     var viaBio : Bool = false
     var loginObj : login?
     var flag :Bool = false
@@ -36,7 +36,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         lbl_InvalidPassword.isHidden = true
         pinTextField.delegate = self
         show_text.setTitle("", for: .normal)
-//        pinTextField.resignFirstResponder()
+        //        pinTextField.resignFirstResponder()
         pinTextField.keyboardType = .namePhonePad
         self.hideKeyboardWhenTappedAround()
         pinTextField.isSecureTextEntry = true
@@ -44,18 +44,28 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         getIPAddressmac()
         
         self.pinTextField.addDoneButtonOnKeyboardWithAction { [self] in
-        self.loginAction()
-        self.pinTextField.resignFirstResponder()
+            self.pinTextField.resignFirstResponder()
+            self.loginAction()
         }
+        self.pinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         
         
         
         // Do any additional setup after loading the view.
     }
-  
-//    --------------------
-//    outlets
-//    --------------------
+    
+    @objc func changeTextInTextField() {
+        if self.pinTextField.text?.count == 6 {
+            self.pinTextField.resignFirstResponder()
+            self.loginAction()
+        }
+        print(self.pinTextField.text)
+    }
+    
+    
+    //    --------------------
+    //    outlets
+    //    --------------------
     @IBOutlet weak var btnTouchId: UIButton!
     @IBOutlet weak var btnFaceiD: UIButton!
     @IBOutlet weak var lbl_InvalidPassword: UILabel!
@@ -66,7 +76,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     
     @IBAction func Show_Passowrd(_ sender: UIButton) {
         flag = true
-         if flag == false
+        if flag == false
         {
             pinTextField.isSecureTextEntry  = true
         }
@@ -89,17 +99,17 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         }
     }
     
-//    func textFieldDidEndEditing(_ textField: PinCodeTextField) {
-//       navigateToHome()
-//    }
+    //    func textFieldDidEndEditing(_ textField: PinCodeTextField) {
+    //       navigateToHome()
+    //    }
     
     @IBAction func forgotAction(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "ForgotPassword", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ForgotPassword_SetNewPassVC") 
+        let vc = storyboard.instantiateViewController(withIdentifier: "ForgotPassword_SetNewPassVC")
         DataManager.instance.forgotPassword == true
-//        self.present(vc, animated: true)
+        //        self.present(vc, animated: true)
         self.navigationController?.pushViewController(vc, animated: true)
-
+        
     }
     
     func getIPAddressmac(){
@@ -116,86 +126,86 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         getOneSignalUUIDD()
         
     }
-   
+    
     private func saveInDataManager(){
-//        AccessTokenEncrypt(plaintext: (self.loginObj?.userData?.token)!, password: encryptionkey)
-//        print(self.loginObj?.userData?.token)
-
-if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og.png") {
-    let task = URLSession.shared.dataTask(with: url) { data, response, error in
-        guard let data = data, error == nil else { return }
+        //        AccessTokenEncrypt(plaintext: (self.loginObj?.userData?.token)!, password: encryptionkey)
+        //        print(self.loginObj?.userData?.token)
         
-        DispatchQueue.main.async { /// execute on main thread
-//                    let pngImage =  UIImage(data: data)
-//                    UserDefaults.standard.set(pngImage, forKey: "proImage")
+        if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og.png") {
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data, error == nil else { return }
+                
+                DispatchQueue.main.async { /// execute on main thread
+                    //                    let pngImage =  UIImage(data: data)
+                    //                    UserDefaults.standard.set(pngImage, forKey: "proImage")
+                }
+            }
+            task.resume()
         }
+        
+        self.navigateToHome()
+        
     }
-    task.resume()
-}
-       
-          self.navigateToHome()
-
-}
     //MARK: - TextField Delegates
     
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//
-//        if range.length + range.location > (textField.text?.count)!{
-//            return false
-//        }
-//        let newLength:Int = (textField.text?.count)! + string.count - range.length
-//        if pinTextField?.text?.count == 6 {
-//            print("done", pinTextField.text)
-//            print("pin count", pinTextField.text?.count)
-//            self.loginAction()
-////            self.navigateToHome()
-//
-//        }
-//
-//       return true
-//    }
-////
+    //    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    //
+    //        if range.length + range.location > (textField.text?.count)!{
+    //            return false
+    //        }
+    //        let newLength:Int = (textField.text?.count)! + string.count - range.length
+    //        if pinTextField?.text?.count == 6 {
+    //            print("done", pinTextField.text)
+    //            print("pin count", pinTextField.text?.count)
+    //            self.loginAction()
+    ////            self.navigateToHome()
+    //
+    //        }
+    //
+    //       return true
+    //    }
+    ////
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            if(textField == pinTextField){
-                let characterCountLimit = 6
-                let startingLength = textField.text?.count ?? 0
-                let lengthToAdd = string.count
-                let lengthToReplace = range.length
-                let newLength = startingLength + lengthToAdd - lengthToReplace
-                print("count",newLength)
-//                loginAction()
-//                if newLength == 6
-//                {
-//                    loginAction()
-//
-//                }
-                return newLength <= characterCountLimit
-                
-               
-
-              return true
-            }
+        if(textField == pinTextField){
+            let characterCountLimit = 6
+            let startingLength = textField.text?.count ?? 0
+            let lengthToAdd = string.count
+            let lengthToReplace = range.length
+            let newLength = startingLength + lengthToAdd - lengthToReplace
+            print("count",newLength)
+            //                loginAction()
+            //                if newLength == 6
+            //                {
+            //                    loginAction()
+            //
+            //                }
+            return newLength <= characterCountLimit
+            
+            
+            
             return true
         }
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        if pinTextField?.text?.count == 6
-//        {
-////              loginAction()
-////            navigateToHome()
-//
-//        }
-//        else{
-//
-//        }
-////            return true
-//    }
+        return true
+    }
+    //    func textFieldDidEndEditing(_ textField: UITextField) {
+    //        if pinTextField?.text?.count == 6
+    //        {
+    ////              loginAction()
+    ////            navigateToHome()
+    //
+    //        }
+    //        else{
+    //
+    //        }
+    ////            return true
+    //    }
     
     func authenticateUserViaTouchID() {
         let touchIDManager = PITouchIDManager()
         touchIDManager.authenticateUser(success: { () -> () in
             OperationQueue.main.addOperation({ () -> Void in
                 self.loginAction()
-//                self.navigateToHome()
+                //                self.navigateToHome()
                 
             })
         }, failure: { (evaluationError: NSError) -> () in
@@ -230,38 +240,38 @@ if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og
     @IBAction func textfieldPin(_ sender: PasswordTextField) {
         if pinTextField.text?.count == 6
         {
-//            loginAction()
+            //            loginAction()
         }
     }
     private func navigateToHome()
     {
-//     LoginChnaged
+        //     LoginChnaged
         let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
         self.present(vc, animated: true)
     }
     func getOneSignalUUIDD(){
         //One Signal Start
-//         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
-//         let hasPrompted = status.permissionStatus.hasPrompted
-//         print("hasPrompted = \(hasPrompted)")
-//         let userStatus = status.permissionStatus.status
-//         print("userStatus = \(userStatus)")
-//         let isSubscribed = status.subscriptionStatus.subscribed
-//         print("isSubscribed = \(isSubscribed)")
-//         let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
-//         print("userSubscri ptionSetting = \(userSubscriptionSetting)")
-//         let userID = status.subscriptionStatus.userId
-//         print("userID = \(userID)")
-//        DataManager.instance.userUUID = userID
-//         let pushToken = status.subscriptionStatus.pushToken
-//         print("pushToken = \(pushToken)")
-//     let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
-//                print("Received Notification - \(notification?.payload.notificationID) - \(notification?.payload.title)")
-//            }
+        //         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        //         let hasPrompted = status.permissionStatus.hasPrompted
+        //         print("hasPrompted = \(hasPrompted)")
+        //         let userStatus = status.permissionStatus.status
+        //         print("userStatus = \(userStatus)")
+        //         let isSubscribed = status.subscriptionStatus.subscribed
+        //         print("isSubscribed = \(isSubscribed)")
+        //         let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
+        //         print("userSubscri ptionSetting = \(userSubscriptionSetting)")
+        //         let userID = status.subscriptionStatus.userId
+        //         print("userID = \(userID)")
+        //        DataManager.instance.userUUID = userID
+        //         let pushToken = status.subscriptionStatus.pushToken
+        //         print("pushToken = \(pushToken)")
+        //     let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
+        //                print("Received Notification - \(notification?.payload.notificationID) - \(notification?.payload.title)")
+        //            }
         //One Signal End
-
-     }
+        
+    }
     func loginAction() {
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
@@ -271,7 +281,7 @@ if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og
         var pessi : String?
         var userCnic : String?
         
-//      let compelteUrl = GlobalConstants.BASE_URL + "v2/fundsTransferIbft"
+        //      let compelteUrl = GlobalConstants.BASE_URL + "v2/fundsTransferIbft"
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/login"
         
         if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
@@ -291,31 +301,31 @@ if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og
         else{
             userCnic = ""
         }
-
-//userCnic!
-//    "\(DataManager.instance.userCnic!)
-//        mustChange
+        
+        //userCnic!
+        //    "\(DataManager.instance.userCnic!)
+        //        mustChange
         guard let cnic = UserDefaults.standard.string(forKey: "userCnic")else {
             let parameters = ["cnic":   "\(DataManager.instance.userCnic!)","loginPin":"\(pessi!)","imeiNo":"\(DataManager.instance.imei!)","ipAddress":"\(DataManager.instance.ipAddress! )","channelId":"\(DataManager.instance.channelID )","longitude":"\(DataManager.instance.Longitude!)","latitude":"\(DataManager.instance.Latitude!)","uuid":"\(DataManager.instance.userUUID ?? "e5f458f7-a1ad-4398-92ba-62c15a22738d")" ,"osVersion": "\(systemVersion ?? "")"]
             return
         }
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["cnic":   userCnic!,"loginPin":"\(pessi!)","imeiNo":"\(DataManager.instance.imei!)","ipAddress":"\(DataManager.instance.ipAddress! )","channelId":"\(DataManager.instance.channelID )","longitude":"\(DataManager.instance.Longitude!)","latitude":"\(DataManager.instance.Latitude!)","uuid":"\(DataManager.instance.userUUID ?? "e5f458f7-a1ad-4398-92ba-62c15a22738d")" ,"osVersion": "\(systemVersion ?? "")"]
-//        testcase
+        //        testcase
         
-//        GlobalData.lat = DataManager.instance.Latitude
-//        GlobalData.long = DataManager.instance.Longitude
+        //        GlobalData.lat = DataManager.instance.Latitude
+        //        GlobalData.long = DataManager.instance.Longitude
         print(parameters)
         
         let result = splitString(stringToSplit: base64EncodedString(params: parameters))
-//        print(parameters)
-//        print(result.apiAttribute1)
-//        print(result.apiAttribute2)
+        //        print(parameters)
+        //        print(result.apiAttribute1)
+        //        print(result.apiAttribute2)
         
-
+        
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-          
-
+        
+        
         // longitude and latitude round off to 4 digits
         
         let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecret]
@@ -324,9 +334,9 @@ if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og
         print(params)
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
-//
+        //
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<login>) in
-//            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
+            //            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
             self.hideActivityIndicator()
             self.loginObj = response.result.value
             if response.response?.statusCode == 200 {
@@ -334,42 +344,42 @@ if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og
                 if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                     if self.loginObj?.data != nil{
                         if let accessToken = self.loginObj?.data?.token{
-                           DataManager.instance.accessToken = accessToken
+                            DataManager.instance.accessToken = accessToken
                             DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType
-                           DataManager.instance.customerId = self.loginObj?.data?.customerHomeScreens?[0].customerId
-                           print("\(accessToken)")
-                           if let passKey = self.pinTextField.text{
-                               let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
-                               print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-                           }
+                            DataManager.instance.customerId = self.loginObj?.data?.customerHomeScreens?[0].customerId
+                            print("\(accessToken)")
+                            if let passKey = self.pinTextField.text{
+                                let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                                print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                            }
                             
-//                             DataManager.instance.accountTitle = self.loginObj?.data?.customerHomeScreens?[0].firstName
-//                            DataManager.instance.accountNo = self.loginObj?.data?.customerHomeScreens?[0].accountNo
-//                            DataManager.instance.currentBalance = Double((self.loginObj?.data?.customerHomeScreens?[0].currentBalance)!)
-//                            DataManager.instance.balanceDate = self.loginObj?.data?.customerHomeScreens?[0].balanceDate
-                           self.saveInDataManager()
+                            //                             DataManager.instance.accountTitle = self.loginObj?.data?.customerHomeScreens?[0].firstName
+                            //                            DataManager.instance.accountNo = self.loginObj?.data?.customerHomeScreens?[0].accountNo
+                            //                            DataManager.instance.currentBalance = Double((self.loginObj?.data?.customerHomeScreens?[0].currentBalance)!)
+                            //                            DataManager.instance.balanceDate = self.loginObj?.data?.customerHomeScreens?[0].balanceDate
+                            self.saveInDataManager()
                             
-                       }
-                    }
-                }
-                else{
-                        if let message = self.loginObj?.messages{
-                            self.lbl_InvalidPassword.isHidden = false
-                            self.lbl_InvalidPassword.text = "Invalid Password Entered"
-//                        self.showDefaultAlert(title: "", message: message)
                         }
                     }
                 }
+                else{
+                    if let message = self.loginObj?.messages{
+                        self.lbl_InvalidPassword.isHidden = false
+                        self.lbl_InvalidPassword.text = "Invalid Password Entered"
+                        //                        self.showDefaultAlert(title: "", message: message)
+                    }
+                }
+            }
             else{
                 self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
-//                if let message = self.loginObj?.messages{
-//                    self.showDefaultAlert(title: "", message: message)
-//                }
+                //                if let message = self.loginObj?.messages{
+                //                    self.showDefaultAlert(title: "", message: message)
+                //                }
             }
-                print(response.result.value)
-                print(response.response?.statusCode)
-            }
-}
+            print(response.result.value)
+            print(response.response?.statusCode)
+        }
+    }
 }
 extension Login_VC: PinCodeTextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: PinCodeTextField) -> Bool {
@@ -381,7 +391,7 @@ extension Login_VC: PinCodeTextFieldDelegate {
     }
     func textFieldShouldEndEditing(_ textField: PinCodeTextField) -> Bool {
         self.loginAction()
-//        self.navigateToHome()
+        //        self.navigateToHome()
         
         return true
     }
