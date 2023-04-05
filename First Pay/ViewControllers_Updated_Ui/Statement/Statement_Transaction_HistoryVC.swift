@@ -135,11 +135,7 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
                }
         self.navigationController!.pushViewController(detailsVC, animated: false)
     }
-    
-    
-   
-       
-    
+  
     var dateFrom = NSDate()
     var dateTo = NSDate()
     var isFrom:String?
@@ -162,10 +158,12 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         tableView.rowHeight = 109
         getMiniStatementwithoutDates()
         btnShow.setTitle("", for: .normal)
-//        btnShow.isHidden = true
-        ToDateTextfiled.isUserInteractionEnabled = false
-        // Do any additional setup after loading the view.
+//        ToDateTextfiled.isUserInteractionEnabled = false
+//        datePicker.date = NSDate() as Date
+//        datePicker.datePickerMode = .date
+//       fromDateTextfield.inputView = datePicker
     }
+    
     @objc func methodOfReceivedNotification(notification: Notification) {
         
          let disputeVC = self.storyboard!.instantiateViewController(withIdentifier: "Statement_History_Detail_VC") as! Statement_History_Detail_VC
@@ -176,10 +174,10 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     
-        // Dispose of any resources that can be recreated.
     }
     let datePicker = UIDatePicker()
    
+    
     @IBOutlet weak var btnShow: UIButton!
     @IBOutlet weak var ToDateTextfiled: UITextField!
     @IBOutlet weak var fromDateTextfield: UITextField!
@@ -190,9 +188,32 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
 
     @IBOutlet weak var lblTodate: UILabel!
     @IBOutlet weak var lblfromdate: UILabel!
+        @objc func datePickerValueChanged(sender: UIDatePicker) {
+
+
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd-MM-yyyy"
+            if isFrom == "dateFrom"{
+    //         var getFromDate = dateFormatter.string(from: sender.date)
+    //            getFromDate = getFromDate.substring(to: 10)
+                fromDateTextfield.text = dateFormatter.string(from: sender.date)
+                dateFrom =  sender.date as NSDate
+                self.fromNewDateVar = sender.date
+            }
+            else if isFrom == "dateTo"{
+                var  gettodatevalue =  dateFormatter.string(from: sender.date)
+                gettodatevalue = gettodatevalue.substring(to: 10)
+    //            ToDateTextfiled.text = dateFormatter.string(from: sender.date)
+                dateTo = sender.date as NSDate
+            }
+        }
+        
+    
     @IBAction func fromDate(_ sender: UITextField) {
+        
         let datePickerObj: UIDatePicker = UIDatePicker()
         datePickerObj.datePickerMode = UIDatePickerMode.date
+        fromDateTextfield.inputView = datePickerObj
         sender.inputView = datePickerObj
         isFrom = "dateFrom"
         datePickerObj.maximumDate = datePickerObj.date
@@ -216,25 +237,25 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
 
     }
     
-    @objc func datePickerValueChanged(sender: UIDatePicker) {
-
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy"
-        if isFrom == "dateFrom"{
-//         var getFromDate = dateFormatter.string(from: sender.date)
-//            getFromDate = getFromDate.substring(to: 10)
-            fromDateTextfield.text = dateFormatter.string(from: sender.date)
-            dateFrom =  sender.date as NSDate
-            self.fromNewDateVar = sender.date
-        }
-        else if isFrom == "dateTo"{
-            var  gettodatevalue =  dateFormatter.string(from: sender.date)
-            gettodatevalue = gettodatevalue.substring(to: 10)
-//            ToDateTextfiled.text = dateFormatter.string(from: sender.date)
-            dateTo = sender.date as NSDate
-        }
-    }
+//    @objc func datePickerValueChanged(sender: UIDatePicker) {
+//
+//
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "dd-MM-yyyy"
+//        if isFrom == "dateFrom"{
+////         var getFromDate = dateFormatter.string(from: sender.date)
+////            getFromDate = getFromDate.substring(to: 10)
+//            fromDateTextfield.text = dateFormatter.string(from: sender.date)
+//            dateFrom =  sender.date as NSDate
+//            self.fromNewDateVar = sender.date
+//        }
+//        else if isFrom == "dateTo"{
+//            var  gettodatevalue =  dateFormatter.string(from: sender.date)
+//            gettodatevalue = gettodatevalue.substring(to: 10)
+////            ToDateTextfiled.text = dateFormatter.string(from: sender.date)
+//            dateTo = sender.date as NSDate
+//        }
+//    }
    
     
     func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
@@ -253,7 +274,7 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         return nil
     }
     
-   
+  
     
     @IBAction func toDate(_ sender: UITextField) {
         let currentDate = self.fromNewDateVar

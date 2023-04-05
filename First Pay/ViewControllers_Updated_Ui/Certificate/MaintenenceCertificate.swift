@@ -16,35 +16,33 @@ class MaintenenceCertificate: UIViewController {
 //    @IBOutlet weak var pdfView = PDFView!()
     
     var pdfFile: String?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
     
         pdfView.translatesAutoresizingMaskIntoConstraints = false
         pdfViewContainer.addSubview(pdfView)
-
+       
         pdfView.leadingAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.leadingAnchor).isActive = true
         pdfView.trailingAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.trailingAnchor).isActive = true
         pdfView.topAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.topAnchor).isActive = true
         pdfView.bottomAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.bottomAnchor).isActive = true
-
+        pdfView.isUserInteractionEnabled = false
+        pdfView.borderColor = UIColor.gray
+        
         if let data = documentData {
           pdfView.document = PDFDocument(data: data)
           pdfView.autoScales = true
         }
         // Do any additional setup after loading the view.
     }
-    
-
     @IBOutlet weak var pdfViewContainer: UIView!
     @IBOutlet weak var buttonBack: UIButton!
-   
     @IBOutlet weak var buttonDownload: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-    
+
     @IBAction func buttonDownload(_ sender: UIButton) {
         guard let pdfData = documentData else { return }
         

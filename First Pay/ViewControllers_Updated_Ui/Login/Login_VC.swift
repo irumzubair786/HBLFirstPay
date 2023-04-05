@@ -164,24 +164,31 @@ if let url = URL(string: "http://www.apple.com/euro/ios/ios8/a/generic/images/og
                 let newLength = startingLength + lengthToAdd - lengthToReplace
                 print("count",newLength)
 //                loginAction()
+//                if newLength == 6
+//                {
+//                    loginAction()
+//
+//                }
                 return newLength <= characterCountLimit
-//                navigateToHome()
+                
+               
 
+              return true
             }
             return true
         }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if pinTextField?.text?.count == 6
-        {
-//              loginAction()
-//            navigateToHome()
-            
-        }
-        else{
-            
-        }
-//            return true
-    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        if pinTextField?.text?.count == 6
+//        {
+////              loginAction()
+////            navigateToHome()
+//
+//        }
+//        else{
+//
+//        }
+////            return true
+//    }
     
     func authenticateUserViaTouchID() {
         let touchIDManager = PITouchIDManager()
