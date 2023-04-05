@@ -33,6 +33,11 @@ class NanoLoanApplyViewController: UIViewController {
             if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
                 
             }
+            else {
+                DispatchQueue.main.async {
+                    self.nanoLoanEligibilityCheck()
+                }
+            }
         }
     }
     var modelNanoLoanEligibilityCheck: ModelNanoLoanEligibilityCheck? {
@@ -47,27 +52,21 @@ class NanoLoanApplyViewController: UIViewController {
     }
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         
         viewBenifitRepaying.circle()
         viewApplyButton.circle()
         viewEnterLoanAmount.radius()
         ApplyAmountCell.register(collectionView: collectionViewLoanAmounts)
-        
-        nanoLoanEligibilityCheck()
     }
-    
     @IBAction func buttonApply(_ sender: Any) {
         getLoanCharges()
     }
     @IBAction func buttonCreditLimitImprove(_ sender: Any) {
         
     }
-    
     func nanoLoanEligibilityCheck() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
@@ -75,7 +74,9 @@ class NanoLoanApplyViewController: UIViewController {
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)"
         ]
-        
+        //NOTE:
+//        agar currentLoan object me data araha ha to ye api call ni ho ge
+//        agar ni a raha to ye api call karin ga r data disply karwa dain ga
         APIs.postAPI(apiName: .nanoLoanEligibilityCheck, parameters: parameters) { responseData, success, errorMsg in
             if success {
                 let model: ModelNanoLoanEligibilityCheck? = APIs.decodeDataToObject(data: responseData)

@@ -130,7 +130,13 @@ class NanoLoanContainer: UIViewController {
         didSet {
             if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
                 self.openRepayViewController()
-                self.nanoLoanApplyViewController.modelGetActiveLoan = modelGetActiveLoan
+            }
+            else {
+                if nanoLoanApplyViewController != nil {
+                    DispatchQueue.main.async {
+                        self.nanoLoanApplyViewController.modelGetActiveLoan = self.modelGetActiveLoan
+                    }
+                }
             }
         }
     }
