@@ -16,9 +16,55 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var buttonRepayNow: UIButton!
     
+    @IBOutlet weak var labelAmount: UILabel!
+    @IBOutlet weak var labelLoanNumberTitle: UILabel!
+    @IBOutlet weak var labelLoanNumber: UILabel!
+
+    @IBOutlet weak var labelLoanAvailedAmountTitle: UILabel!
+    @IBOutlet weak var labelLoanAvailedAmount: UILabel!
+    
+    @IBOutlet weak var labelDueDateTitle: UILabel!
+    @IBOutlet weak var labelDueDate: UILabel!
+    
+    @IBOutlet weak var labelProcessingFeeTitle: UILabel!
+    @IBOutlet weak var labelProcessingFee: UILabel!
+    
+    @IBOutlet weak var labelMarkupChargedTitle: UILabel!
+    @IBOutlet weak var labelMarkupCharged: UILabel!
+    
     var modelPayActiveLoan: ModelPayActiveLoan? {
         didSet {
-            self.openNanoLoanRepaySucessfullVC()
+            if modelPayActiveLoan?.responsecode == 0 {
+                self.showAlertCustomPopup(title: "Alert", message: modelPayActiveLoan?.messages ?? "Empty Message", imageIcon: "ss", buttonName: ["OK", "CANCEL"], viewController: self)
+            }
+            else {
+                self.openNanoLoanRepaySucessfullVC()
+            }
+        }
+    }
+    
+    
+    
+    var modelGetActiveLoanToPay: NanoLoanRepayViewController.ModelGetActiveLoanToPay? {
+        didSet {
+            if let getActiveLoanToPay = modelGetActiveLoanToPay?.data {
+                
+                
+            }
+        }
+    }
+    
+    var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
+        didSet {
+            if let currentLoan = modelGetActiveLoan?.data.currentLoan.first {
+                labelLoanNumber.text = "\(currentLoan.loanNo)"
+                labelAmount.text = "RS. \(currentLoan.installmentAmount)"
+                labelLoanAvailedAmount.text = "RS. \(currentLoan.loanAmount)"
+                labelDueDate.text = currentLoan.endDate
+                labelProcessingFee.text = "0.00"
+                labelMarkupCharged.text = "RS. \(currentLoan.totalMarkupAmount)"
+                viewBackGroundTotalAmount.radiusLineDashedStroke()
+            }
         }
     }
     
@@ -35,22 +81,26 @@ class NanoLoanRepayConfirmationVC: UIViewController {
         payActiveLoan()
     }
     func payActiveLoan() {
+        let currentLoan = modelGetActiveLoan?.data.currentLoan.first
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            "nlDisbursementId" : "\(DataManager.instance.nano_loanDisbursementId ?? "1")"
+            "nlDisbursementId" : "\(currentLoan?.nlDisbursementID ?? 0)"
         ]
         
         APIs.postAPI(apiName: .payActiveLoan, parameters: parameters) { responseData, success, errorMsg in
-            self.openNanoLoanRepaySucessfullVC()
-            if success {
-                let model: ModelPayActiveLoan? = APIs.decodeDataToObject(data: responseData)
-                print(model)
-                print(model)
-                self.modelPayActiveLoan = model
-            }
+//            if success {
+//                let model: ModelPayActiveLoan? = APIs.decodeDataToObject(data: responseData)
+//                print(model)
+//                print(model)
+//                self.modelPayActiveLoan = model
+//            }
+            let model: ModelPayActiveLoan? = APIs.decodeDataToObject(data: responseData)
+            print(model)
+            print(model)
+            self.modelPayActiveLoan = model
         }
     }
     

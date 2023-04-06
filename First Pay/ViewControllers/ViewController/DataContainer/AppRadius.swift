@@ -13,11 +13,12 @@ extension UIView {
     func circle() {
         self.layer.cornerRadius = self.frame.height / 2
     }
-    func radius(radius: Int? = 12, color: UIColor? = nil) {
-        self.layer.cornerRadius = 12
+    func radius(radius: CGFloat? = 12, color: UIColor? = nil, borderWidth: CGFloat? = 1) {
+        self.layer.cornerRadius = radius!
+        self.clipsToBounds = true
         if color != nil {
             self.layer.borderColor = color?.cgColor
-            self.layer.borderWidth = 1
+            self.layer.borderWidth = borderWidth!
         }
     }
     func roundCorners(corners: UIRectCorner, radius: CGFloat){
@@ -28,18 +29,25 @@ extension UIView {
     }
     
     @discardableResult
-    func radiusLineDashedStroke(pattern: [NSNumber]? = [2,2], radius: CGFloat? = 12, color: UIColor? = .red) -> CALayer {
-            let borderLayer = CAShapeLayer()
-
+    func radiusLineDashedStroke(pattern: [NSNumber]? = [4,4], radius: CGFloat? = 12, color: UIColor? = .red) -> CALayer {
+        let borderLayer = CAShapeLayer()
+        
         borderLayer.strokeColor = color?.cgColor
-            borderLayer.lineDashPattern = pattern
-            borderLayer.frame = bounds
-            borderLayer.fillColor = nil
+        borderLayer.lineDashPattern = pattern
+        borderLayer.frame = bounds
+        borderLayer.fillColor = nil
         borderLayer.path = UIBezierPath(roundedRect: bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: radius!, height: radius!)).cgPath
-
-            layer.addSublayer(borderLayer)
-            return borderLayer
-        }
+        
+        layer.addSublayer(borderLayer)
+        return borderLayer
+    }
+    func setShadow(){
+        self.layer.masksToBounds = false
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
+        self.layer.shadowRadius = 5
+        self.layer.shadowOpacity = 0.3
+        self.layer.cornerRadius = 6
+    }
 }
 
 

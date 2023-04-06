@@ -64,6 +64,9 @@ class NanoLoanContainer: UIViewController {
     func openRepayViewController() {
         if self.nanoLoanRepayViewController != nil {
             ViewEmbedder.embed(parent: self, container: containerView, child: self.nanoLoanRepayViewController, previous: nil)
+            DispatchQueue.main.async {
+                self.nanoLoanRepayViewController.modelGetActiveLoan = self.modelGetActiveLoan
+            }
         }
         else {
             ViewEmbedder.embed(
@@ -72,6 +75,9 @@ class NanoLoanContainer: UIViewController {
                 container: self.containerView){ [self] vc in
                     // do things when embed complete
                     self.nanoLoanRepayViewController = vc as? NanoLoanRepayViewController
+                    DispatchQueue.main.async {
+                        self.nanoLoanRepayViewController.modelGetActiveLoan = self.modelGetActiveLoan
+                    }
                 }
         }
         resetTitleAndLine(currentTitle: labelTitleRepay, currentLine: imageViewLineRepay)
