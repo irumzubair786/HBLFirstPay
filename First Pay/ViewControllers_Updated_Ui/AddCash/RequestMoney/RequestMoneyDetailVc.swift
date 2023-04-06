@@ -25,6 +25,7 @@ class RequestMoneyDetailVc: BaseClassVC, UITextFieldDelegate, UITextViewDelegate
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imageNextArrow.addGestureRecognizer(tapGestureRecognizer)
         textFieldMobileNumber.delegate =  self
+        self.textFieldMobileNumber.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
     
@@ -49,7 +50,26 @@ class RequestMoneyDetailVc: BaseClassVC, UITextFieldDelegate, UITextViewDelegate
      buttonContinue.isUserInteractionEnabled = true
       imageNextArrow.isUserInteractionEnabled = true
      }
+        
 }
+    @objc func changeTextInTextField() {
+        if textFieldMobileNumber.text!.count < 11
+        {
+        let img = UIImage(named: "grayArrow")
+        imageNextArrow.image = img
+        buttonContinue.isUserInteractionEnabled = false
+            imageNextArrow.isUserInteractionEnabled = false
+      }
+  else
+   {
+    let img = UIImage(named: "]greenarrow")
+    imageNextArrow.image = img
+     buttonContinue.isUserInteractionEnabled = true
+      imageNextArrow.isUserInteractionEnabled = true
+     }
+       
+    }
+    
                        
 @IBOutlet weak var buttonContactList: UIButton!
                            
@@ -198,12 +218,26 @@ extension RequestMoneyDetailVc: CNContactPickerDelegate {
         let phoneUtil = NBPhoneNumberUtil()
 
           do {
-            
+          
             let phoneNumber: NBPhoneNumber = try phoneUtil.parse(contactNumber, defaultRegion: "PK")
             let formattedString: String = try phoneUtil.format(phoneNumber, numberFormat: .NATIONAL)
 
             print("Formatted String : \(formattedString)")
             self.textFieldMobileNumber.text = replaceSpaceWithEmptyString(aStr: formattedString)
+              if textFieldMobileNumber.text!.count < 11
+              {
+              let img = UIImage(named: "grayArrow")
+              imageNextArrow.image = img
+              buttonContinue.isUserInteractionEnabled = false
+                  imageNextArrow.isUserInteractionEnabled = false
+            }
+        else
+         {
+          let img = UIImage(named: "]greenarrow")
+          imageNextArrow.image = img
+           buttonContinue.isUserInteractionEnabled = true
+            imageNextArrow.isUserInteractionEnabled = true
+           }
           }
           catch let error as NSError {
               print(error.localizedDescription)

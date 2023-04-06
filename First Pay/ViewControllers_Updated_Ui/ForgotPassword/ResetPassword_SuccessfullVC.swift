@@ -36,7 +36,8 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         
         lbl1.textColor = UIColor.gray
         btnnext.isUserInteractionEnabled = true
-
+        self.enterPinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        self.enterConfirmPinTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingChanged)
         
     }
     @IBOutlet weak var Alert_view: UIView!
@@ -270,14 +271,28 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         }
         
     }
-
+    @objc func changeTextInTextField() {
+        
+        if self.enterPinTextField.text?.count == 6 {
+            self.enterPinTextField.resignFirstResponder()
+            
+        }
+        print(self.enterPinTextField.text)
+    }
+    @objc func changeTextInTextField2() {
+        
+        if self.enterConfirmPinTextField.text?.count == 6 {
+            
+            self.enterConfirmPinTextField.resignFirstResponder()
+            
+        }
+        print(self.enterConfirmPinTextField.text)
+    }
         func movetonext()
                          {
                              print("doneeeeees")
                              setLoginPin()
-//                             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
-//                             self.navigationController?.pushViewController(vc, animated: true)
-            
+
                              
             }
     private func setLoginPin() {

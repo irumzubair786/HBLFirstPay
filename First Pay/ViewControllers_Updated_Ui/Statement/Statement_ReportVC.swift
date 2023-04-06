@@ -418,6 +418,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
                 }
                 else {
                     if let message = self.disputeTypesObj?.messages{
+                        UtilManager.showAlertMessage(message: message, viewController: self)
                         self.showAlert(title: "", message: message, completion: nil)
                     }
                 }
@@ -425,7 +426,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
             else {
                 
                 if let message = self.disputeTypesObj?.messages{
-                self.showDefaultAlert(title: "", message: message)
+                    UtilManager.showAlertMessage(message: message, viewController: self)
             }
                 
             }

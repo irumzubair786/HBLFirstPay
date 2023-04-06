@@ -28,9 +28,11 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
         enterPinTextField.isUserInteractionEnabled = true
         enterConfirmPinTextField.isUserInteractionEnabled = true
         self.lblMainTitle.text = "Set Password"
-        ConvertLanguage()
+        
         dismissKeyboard()
         
+        self.enterPinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        self.enterConfirmPinTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingChanged)
         blur_view.isHidden = true
 //        btnContinue.isUserInteractionEnabled = false
         let tapGestureRecognizers = UITapGestureRecognizer(target: self, action: #selector(BlurviewTapped(tapGestureRecognizer:)))
@@ -85,27 +87,32 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
        else if isValidPassword() == true
                 
         {
-//           let image = UIImage(named: "Confirm")
-//           btnContinue.setImage(image, for:.normal)
-//           btnContinue.isUserInteractionEnabled = true
+
             setLoginPin()
-//            Alert_view.isHidden = false
-//            blur_view.isHidden = false
-//            popalert()
+
         }
 
 
     }
-    
-    func ConvertLanguage()
-    {
-//    
-//        lblMainTitle.text = "Set Password".addLocalizableString(languageCode: languageCode)
-//        enterPinTextField.placeholder = "Enter New Passord".addLocalizableString(languageCode: languageCode)
-//        enterConfirmPinTextField.placeholder = "Confirm password".addLocalizableString(languageCode: languageCode)
-       
-          
+   
+    @objc func changeTextInTextField() {
+        
+        if self.enterPinTextField.text?.count == 6 {
+            self.enterPinTextField.resignFirstResponder()
+            
+        }
+        print(self.enterPinTextField.text)
     }
+    @objc func changeTextInTextField2() {
+        
+        if self.enterConfirmPinTextField.text?.count == 6 {
+            
+            self.enterConfirmPinTextField.resignFirstResponder()
+            
+        }
+        print(self.enterConfirmPinTextField.text)
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

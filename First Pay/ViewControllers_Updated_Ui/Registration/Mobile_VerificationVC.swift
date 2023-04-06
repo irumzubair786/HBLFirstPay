@@ -19,7 +19,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     let encryptionkey = "65412399991212FF65412399991212FF65412399991212FF"
     override func viewDidLoad(){
         super.viewDidLoad()
-       getIMEI()
+        getIMEI()
         getIPAddressmac()
         getWiFiAddress()
         TF_Mobileno.delegate = self
@@ -28,35 +28,70 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         btnContinue.isUserInteractionEnabled = false
         btn_next_arrow.isUserInteractionEnabled = false
         TF_Mobileno.mode = .localNumber
-        TF_Mobileno.addDoneButtonOnKeyboardWithAction { [self] in
-            print("end editing")
-            if self.TF_Mobileno.text?.count ?? 0 < 11
-            {
-                TF_Mobileno.perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
-                self.lblinvalid.isHidden = false
-                self.lblinvalid.text = "Invalid Phone Number."
-                self.TF_Mobileno.resignFirstResponder()
-                self.lblinvalid.text = "Invalid Phone Number."
-                let image = UIImage(named:"grayArrow")
-                self.btn_next_arrow.setImage(image, for: .normal)
-                self.btnContinue.isUserInteractionEnabled = false
-            }
-
-            else if self.TF_Mobileno.text == ""
-        {
-                self.lblinvalid.isHidden = true
-        }
-        else{
-            self.lblinvalid.isHidden = true
-            let image = UIImage(named:"]greenarrow")
-            self.btn_next_arrow.setImage(image, for: .normal)
-            self.btnContinue.isUserInteractionEnabled = true
-            self.btn_next_arrow.isUserInteractionEnabled = true
-        }
-            self.TF_Mobileno.resignFirstResponder()
-        }
-
+        self.TF_Mobileno.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
     }
+        
+//        TF_Mobileno.addDoneButtonOnKeyboardWithAction { [self] in
+//            print("end editing")
+//            if self.TF_Mobileno.text?.count ?? 0 < 11
+//            {
+//                TF_Mobileno.perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
+//                self.lblinvalid.isHidden = false
+//                self.lblinvalid.text = "Invalid Phone Number."
+//                self.TF_Mobileno.resignFirstResponder()
+//                self.lblinvalid.text = "Invalid Phone Number."
+//                let image = UIImage(named:"grayArrow")
+//                self.btn_next_arrow.setImage(image, for: .normal)
+//                self.btnContinue.isUserInteractionEnabled = false
+//            }
+//
+//            else if self.TF_Mobileno.text == ""
+//        {
+//                self.lblinvalid.isHidden = true
+//        }
+//        else{
+//            self.lblinvalid.isHidden = true
+//            let image = UIImage(named:"]greenarrow")
+//            self.btn_next_arrow.setImage(image, for: .normal)
+//            self.btnContinue.isUserInteractionEnabled = true
+//            self.btn_next_arrow.isUserInteractionEnabled = true
+//        }
+//            self.TF_Mobileno.resignFirstResponder()
+//        }
+
+//    }
+    
+    @objc func changeTextInTextField() {
+        print("end editing")
+        if self.TF_Mobileno.text?.count ?? 0 < 12
+        {
+            TF_Mobileno.perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
+            self.lblinvalid.isHidden = false
+            self.lblinvalid.text = "Invalid Phone Number."
+            self.TF_Mobileno.resignFirstResponder()
+            self.lblinvalid.text = "Invalid Phone Number."
+            let image = UIImage(named:"grayArrow")
+            self.btn_next_arrow.setImage(image, for: .normal)
+            self.btnContinue.isUserInteractionEnabled = false
+        }
+
+        else if self.TF_Mobileno.text == ""
+    {
+            self.lblinvalid.isHidden = true
+    }
+    else{
+        self.lblinvalid.isHidden = true
+        let image = UIImage(named:"]greenarrow")
+        self.btn_next_arrow.setImage(image, for: .normal)
+        self.btnContinue.isUserInteractionEnabled = true
+        self.btn_next_arrow.isUserInteractionEnabled = true
+    }
+        self.TF_Mobileno.resignFirstResponder()
+    }
+    
+    
+    
+    
     override func getWiFiAddress() -> [String] {
         
         var addresses = [String]()

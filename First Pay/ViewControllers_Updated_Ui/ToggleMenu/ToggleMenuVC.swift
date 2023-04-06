@@ -110,8 +110,14 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         }
         if cell.buttonSidebar.tag == 5
         {
+            
+//            let vc = UIStoryboard(name: "MaintenanceCertificate", bundle: Bundle.main).instantiateViewController(withIdentifier: "CertificateVc") as! CertificateVc
+//
+//            self.present(vc, animated: true)
+            
             let vc = UIStoryboard(name: "MaintenanceCertificate", bundle: Bundle.main).instantiateViewController(withIdentifier: "MaintenenceCertificate") as! MaintenenceCertificate
             vc.documentData = createPDF()
+
             self.present(vc, animated: true)
         }
         else
@@ -260,7 +266,7 @@ private func batteryLevelChanged()
 
         // 3. Assign paperRect and printableRect
 
-        let page = CGRect(x: 0, y: 0, width: 595.2, height: 430.0) // A4, 72 dpi
+        let page = CGRect(x: 0, y: 0, width: 612.2, height: 800.0) // A4, 72 dpi
         let printable = page.insetBy(dx: 0, dy: 0)
 
         render.setValue(NSValue(cgRect: page), forKey: "paperRect")
@@ -299,66 +305,64 @@ private func batteryLevelChanged()
 }
     func getHTML() -> String {
         return """
-        
-        
-        
-        
         <html>
-        <head>
-        <style>
-        h1 {text-align: center;}
-        h1 {text-align: center;}
-        
-        
-        
-        p {text-align: center;color: gray}
-        p {text-align: center;}
-        p {text-align: center;}
-        p {text-align: center;}
-        p {text-align: center;}
-        
-        div {text-align: center;}
-        </style>
-        </head>
-        <body>
+               <body>
+               <p>
+               <img src="HBL Logo.pdf" style="width: 300px;">
+                       <img src="FirstPayIcon.pdf" style="width: 300px;">
+               <script>
+               var dt = new Date();
+               document.getElementById("datetime").innerHTML = (("0"+dt.getDate()).slice(-2)) +"."+ (("0"+(dt.getMonth()+1)).slice(-2)) +"."+ (dt.getFullYear()) ;
+               </script>
+               <h3>
+               <p style="text-align: center;"><b>ACCOUNT MAINTENANCE </b></p>
+                        <p style="text-align: center;"><b>
+                  CERTIFICATE </b></p>
+               </h3>
+              </br>
+              <style>
+                       p {
+                        font-size: 24px;
+                         }
+                         </style>
+               <p style="text-align: center;" style="font-size: 300px;">
+               This is to certify that</p>
+               <p style="text-align: center;">
+               <b>\(DataManager.instance.accountTitle!)</b></p>
+               <p style="text-align: center;">
+               having CNIC # <b>\(userCnic!)</b></p>
+               <p style="text-align: center;">
+               is maintaining  account  A/C# <b>\(DataManager.instance.accountNo!)</b>
+               </p>
+               <p style="text-align: center;">
+               This certificate is issued on request
+               </p>
+               <p style="text-align: center;">
+               of the customer without taking any
+               </p>
+               <p style="text-align: center;">
+               risk and responsibility
+               on
+               </p>
+               <p style="text-align: center;">
+               undersigned and part of the bank.
+               </p>
+               </br>
 
-        
-        
-        <h1> </h1>
-        <h1>Account Maintenance
-        Certificate</h1>
-        <h1> </h1>
-        
-        
-        <p>This Is To Certify That </p>
-        <p>
-        \(DataManager.instance.accountTitle!)
-        </p>
-        
-        <p>
-        
-        Having CNIC #\(userCnic!)
-        </p>
-        
-        <p>
-        Is Maintaining Account A/c#
-        </p>
-        
-        
-        <p>
-         \(DataManager.instance.accountNo!)
-         </p>
-        
-        <p>
-        This Certificate Is Issued On Request Of The Customer Without Taking Any
-        Risk And Responsibility On
-        Undersigned And Part Of The Bank.
-        HBL Microfinance Bank Ltd 16th & 17th Flooi oft
-        HBL Tower, Blue Area, Islamabad Toll Free 0800-34778 Or 0800-42563</p>
-        <div></div>
-
-        </body>
-        </html>
+               <p style="text-align: center;">
+               HBL MicroFinance Bank Ltd
+               16th & 17th Floor
+               </p>
+               <p style="text-align: center;">
+               HBL Tower,
+               Blue Area, Islamabad<br>
+               </p>
+               <p style="text-align: center;">
+               Toll Free 0800-42563 OR 0800-34778<br>
+               </p>
+               </body>
+               
+               </html>
         """
     }
 

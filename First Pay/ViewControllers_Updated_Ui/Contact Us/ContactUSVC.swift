@@ -118,7 +118,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
 
     @IBAction func Action_Back(_ sender: UIButton) {
           self.dismiss(animated: true)
-        
+        self.navigationController?.popViewController(animated: true)
     }
     
     

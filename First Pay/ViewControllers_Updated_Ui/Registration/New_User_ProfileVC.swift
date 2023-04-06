@@ -412,6 +412,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         return true
     }
    
+    
+    
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == TF_CnicNo
         {

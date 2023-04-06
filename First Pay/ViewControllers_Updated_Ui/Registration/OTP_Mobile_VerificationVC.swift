@@ -40,6 +40,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         getOneSignalUUIDD()
         btnResendotpCall.isUserInteractionEnabled = false
         btn_next_arrow.isUserInteractionEnabled = false
+        self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
     }
     
     //    -------------------------------
@@ -150,8 +151,27 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     
         return newLength <= 4
     }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-       
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//
+//        if TF_otp.text?.count == 4
+//        {
+//            let image = UIImage(named:"]greenarrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btn_next_arrow.isUserInteractionEnabled = true
+//        }
+//        else
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btn_next_arrow.isUserInteractionEnabled = false
+//        }
+//
+//
+//
+//    }
+    
+    @objc func changeTextInTextField() {
+        
         if TF_otp.text?.count == 4
         {
             let image = UIImage(named:"]greenarrow")
@@ -164,10 +184,9 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             btn_next_arrow.setImage(image, for: .normal)
             btn_next_arrow.isUserInteractionEnabled = false
         }
-        
-        
-        
+
     }
+    
     
     
     @IBAction func BtnNextArrow(_ sender: UIButton) {

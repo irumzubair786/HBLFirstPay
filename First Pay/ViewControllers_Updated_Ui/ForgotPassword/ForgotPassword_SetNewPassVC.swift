@@ -29,7 +29,13 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
 //        IMG_NEXT_ARROW.isUserInteractionEnabled = false
         IMG_NEXT_ARROW.addGestureRecognizer(tapGestureRecognizerr)
         mobileNumberTextField.mode = .localNumber
-        cnicTextField.mode = .cnic
+//        cnicTextField.mode = .cnic
+//
+        self.mobileNumberTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        
+//        self.cnicTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingChanged)
+        
+        
     }
     var phoneArr = ["0301","0302","0303","0304","0305","0306","0307","0308","0309","0310","0311", "0312","0313","0314","0315","0316","0317","0318","0319","0320","0321","0322","0323","0324","0325","0331","0332","0333","0334","0335","0336","0340","0341","0342","0343","0344","0345","0346","0347","0348","0349","0355"]
     
@@ -81,7 +87,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
             btn_next.isUserInteractionEnabled = false
             let image = UIImage(named: "grayArrow")
             IMG_NEXT_ARROW.image = image
-//
+//0
             
         }
 
@@ -116,61 +122,61 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     
     
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        let newLength = (textField.text?.count)! + string.count - range.length
-        
-        if textField == mobileNumberTextField
-        { mobileNumberTextField.isUserInteractionEnabled = true
-           
-            if mobileNumberTextField.text?.count == 4
-
-            {
-                var flag: Bool = false
-                for i in phoneArr
-                {
-                    if(i == mobileNumberTextField.text)
-                    {
-                        flag = true
-                    }
-
-                }
-                if flag == false{
-                    lblInvalidMobileNo.isHidden = false
-                    btn_next.isUserInteractionEnabled = false
-                    let image = UIImage(named: "grayArrow")
-                    IMG_NEXT_ARROW.image = image
-                    
-                }
-                else{
-                    lblInvalidMobileNo.isHidden = true
-
-                }
-                
-                
-            }
-           
-
-            return newLength <= 11
-        }
-
-        if textField == cnicTextField{
-            cnicTextField.isUserInteractionEnabled = true
-            return newLength <= 13
-        }
-        
-        
-        if textField == cnicTextField
-        {
-            lbl_InvalidCnic.isHidden = true
-        }
-        
-        
-        
-        
-        
-       return true
-    }
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//
+//        let newLength = (textField.text?.count)! + string.count - range.length
+//
+//        if textField == mobileNumberTextField
+//        { mobileNumberTextField.isUserInteractionEnabled = true
+//
+//            if mobileNumberTextField.text?.count == 4
+//
+//            {
+//                var flag: Bool = false
+//                for i in phoneArr
+//                {
+//                    if(i == mobileNumberTextField.text)
+//                    {
+//                        flag = true
+//                    }
+//
+//                }
+//                if flag == false{
+//                    lblInvalidMobileNo.isHidden = false
+//                    btn_next.isUserInteractionEnabled = false
+//                    let image = UIImage(named: "grayArrow")
+//                    IMG_NEXT_ARROW.image = image
+//
+//                }
+//                else{
+//                    lblInvalidMobileNo.isHidden = true
+//
+//                }
+//
+//
+//            }
+//
+//
+//            return newLength <= 11
+//        }
+//
+//        if textField == cnicTextField{
+//            cnicTextField.isUserInteractionEnabled = true
+//            return newLength <= 15
+//        }
+//
+//
+//        if textField == cnicTextField
+//        {
+//            lbl_InvalidCnic.isHidden = true
+//        }
+//
+//
+//
+//
+//
+//       return true
+//    }
     func textFieldDidEndEditing(_ textField: UITextField) {
 //        let getFirstDigit = mobileNumberTextField?.text?.substring(to: 1)
 //        print("getFirstDigit done ",getFirstDigit )
@@ -222,6 +228,79 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         
     }
 
+    @objc func changeTextInTextField() {
+        if mobileNumberTextField.text?.count ?? 0 < 12
+        {
+            lblInvalidMobileNo.isHidden = false
+            lblInvalidMobileNo.text = "Invalid Mobile Number.Please enter correct number."
+            btn_next.isUserInteractionEnabled = false
+            let image = UIImage(named: "grayArrow")
+            IMG_NEXT_ARROW.image = image
+//
+            
+        }
+       
+        else
+        {
+            lblInvalidMobileNo.isHidden = true
+            
+        }
+    }
+    @objc func changeTextInTextField2() {
+        let a = cnicTextField.text?.replacingOccurrences(of: "-", with: "")
+        
+        if (cnicTextField.text?.count ?? 0) == 15
+        {
+            let image = UIImage(named: "]greenarrow")
+            IMG_NEXT_ARROW.image = image
+//                btn_next.setImage(image, for: .normal)
+            btn_next.isUserInteractionEnabled = true
+            lbl_InvalidCnic.isHidden = true
+            lblInvalidMobileNo.isHidden = true
+ 
+        }
+        else if (cnicTextField.text?.count ?? 0) != 15
+        {
+            lbl_InvalidCnic.isHidden = false
+            lbl_InvalidCnic.text = "Invalid Cnic"
+            btn_next.isUserInteractionEnabled = false
+            let image = UIImage(named: "grayArrow")
+            IMG_NEXT_ARROW.image = image
+        }
+        
+        
+        
+        
+        
+//        if cnicTextField.text?.count ?? 0 < 15
+//        {
+//            lbl_InvalidCnic.isHidden = false
+//            lbl_InvalidCnic.text = "Invalid Cnic"
+//            btn_next.isUserInteractionEnabled = false
+//            let image = UIImage(named: "grayArrow")
+//            IMG_NEXT_ARROW.image = image
+//
+//        }
+//
+//        else if cnicTextField.text == ""
+//        {
+//            lbl_InvalidCnic.isHidden = true
+////        }
+////        else
+//        {
+//
+//            let image = UIImage(named: "]greenarrow")
+//            IMG_NEXT_ARROW.image = image
+////                btn_next.setImage(image, for: .normal)
+//            btn_next.isUserInteractionEnabled = true
+//            lbl_InvalidCnic.isHidden = true
+//            lblInvalidMobileNo.isHidden = true
+//
+//        }
+        
+    }
+    
+    
 
 private func verifyCustResetPass() {
 
@@ -322,4 +401,113 @@ NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post
     
     
     
+}
+extension ForgotPassword_SetNewPassVC{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        if textField == mobileNumberTextField
+//        {
+//            if range.lowerBound <= 11{
+//                if string.isBackspace{
+//                    if textField.text?.count == 6{
+//                        textField.text?.removeLast(1)
+//
+//                    }
+//
+//                    btn_next.backgroundColor = .gray
+//                    btn_next.isUserInteractionEnabled = false
+//
+//                    return true
+//                }
+//                else{
+//
+//                    guard string.isNumeric(string: textField.text! as NSString, range: range) else { return false }
+//
+//                    //  insert 03 as prefix
+//                    if textField.text?.count == 0{
+//
+//                        return (string == "0")
+//                    }
+//
+//                    if textField.text?.count == 1{
+//
+//                        return (string == "3")
+//                    }
+//
+//                    //  insert space after 03xx
+//                    if textField.text?.count == 4{
+//                        DispatchQueue.main.async {
+//                            textField.text! += "-"+string
+//                        }
+//                    }
+//                    let field = "\(textField.text ?? "")\(string)"
+//
+////                    btn_next.isUserInteractionEnabled = field.count == 12 ? true : false
+////                    btn_next.backgroundColor = field.count == 12 ? .green : .gray
+//                    return true
+//                }
+//
+//            }
+//            return false
+//        }
+//        //  will limit characters
+//        else
+//        {
+            if range.lowerBound <= 14{
+                if string.isBackspace{
+                    if textField.text?.count == 15{ textField.text?.removeLast(1) }
+                    if textField.text?.count == 7{ textField.text?.removeLast(1) }
+//
+//                    lbl_InvalidCnic.isHidden = false
+//                    lbl_InvalidCnic.text = "Invalid Cnic"
+//                    btn_next.isUserInteractionEnabled = false
+//                    let image = UIImage(named: "grayArrow")
+//                    IMG_NEXT_ARROW.image = image
+                    
+                    return true
+                }
+                else{
+                    
+                    guard string.isNumeric(string: textField.text! as NSString, range: range) else { return false }
+                    
+                    //  insert space after 03xx
+                    if textField.text?.count == 5{
+                        DispatchQueue.main.async {
+                            textField.text! += "-"+string
+                        }
+                    }else if textField.text?.count == 13{
+                        DispatchQueue.main.async {
+                            textField.text! += "-"+string
+                            
+                        }
+                    }
+                    let field = "\(textField.text ?? "")\(string)"
+                   
+                    
+                    if field.count == 14
+                    {
+                        let image = UIImage(named: "]greenarrow")
+                        IMG_NEXT_ARROW.image = image
+            //                btn_next.setImage(image, for: .normal)
+                        btn_next.isUserInteractionEnabled = true
+                        lbl_InvalidCnic.isHidden = true
+                        lblInvalidMobileNo.isHidden = true
+                    }
+                    else
+                        
+                    {
+                        lbl_InvalidCnic.isHidden = false
+                        lbl_InvalidCnic.text = "Invalid Cnic"
+                        btn_next.isUserInteractionEnabled = false
+                        let image = UIImage(named: "grayArrow")
+                        IMG_NEXT_ARROW.image = image
+                    }
+                   
+                    return true
+                }
+                
+            }
+            return false
+//        }
+        
+    }
 }

@@ -39,6 +39,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         IMG_NEXT_ARROW.isUserInteractionEnabled = true
         IMG_NEXT_ARROW.addGestureRecognizer(tapGestureRecognizerr)
         getIMEI()
+        self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
     @IBOutlet weak var lblMobNo: UILabel!
@@ -140,7 +141,22 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         btnVerify.isUserInteractionEnabled = true
         
     }
-    
+    @objc func changeTextInTextField() {
+        
+        if TF_otp.text?.count == 4
+        {
+            let image  = UIImage(named: "]greenarrow")
+            IMG_NEXT_ARROW.image = image
+            btnVerify.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named:"grayArrow")
+            IMG_NEXT_ARROW.image = image
+            btnVerify.isUserInteractionEnabled = false
+        }
+
+    }
     @IBAction func Action_Verify(_ sender: UIButton) {
         if TF_otp.text?.count == 0
         {
