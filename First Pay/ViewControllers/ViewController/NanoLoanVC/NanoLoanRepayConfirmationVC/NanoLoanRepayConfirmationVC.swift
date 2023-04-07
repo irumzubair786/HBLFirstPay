@@ -90,7 +90,7 @@ class NanoLoanRepayConfirmationVC: UIViewController {
             "nlDisbursementId" : "\(currentLoan?.nlDisbursementID ?? 0)"
         ]
         
-        APIs.postAPI(apiName: .payActiveLoan, parameters: parameters) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .payActiveLoan, parameters: parameters, viewController: self) { responseData, success, errorMsg in
 //            if success {
 //                let model: ModelPayActiveLoan? = APIs.decodeDataToObject(data: responseData)
 //                print(model)
@@ -114,9 +114,18 @@ class NanoLoanRepayConfirmationVC: UIViewController {
 extension NanoLoanRepayConfirmationVC {
     // MARK: - ModelPayActiveLoan
     struct ModelPayActiveLoan: Codable {
-        let messages: String
-        let responseblock, data: JSONNull?
         let responsecode: Int
+        let messages: String
+        let data: ModelPayActiveLoanData
+        let responseblock: JSONNull?
+    }
+
+    // MARK: - ModelPayActiveLoanData
+    struct ModelPayActiveLoanData: Codable {
+        let statusDescr: String
+        let status, principalAmount: Int
+        let markupAmount: Double
+        let chargesAmount: Int
     }
 
     // MARK: - Encode/decode helpers

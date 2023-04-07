@@ -112,7 +112,7 @@ class NanoLoanRepayViewController: UIViewController {
             "nlDisbursementId" :  "\(currentLoan?.nlDisbursementID ?? 0)"
         ]
         
-        APIs.postAPI(apiName: .getActiveLoanToPay, parameters: parameters) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .getActiveLoanToPay, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             if success {
                 let model: ModelGetActiveLoanToPay? = APIs.decodeDataToObject(data: responseData)
                 print(model)

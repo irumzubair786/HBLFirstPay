@@ -15,4 +15,14 @@ extension UIViewController {
         alertCustomPopup.modalPresentationStyle = .overFullScreen
         viewController.present(alertCustomPopup, animated: true)
     }
+    
+    public func showActivityIndicator2() {
+        customActivityIndicatory(self.view, startAnimate: true)
+//            ESActivityIndicator.startAnimatingIndicator(self.view)
+    }
+    
+    public func hideActivityIndicator2() {
+        customActivityIndicatory(self.view, startAnimate: false)
+//            ESActivityIndicator.stopAnimatingIndicator(<#T##ESActivityIndicator#>)
+    }
 }

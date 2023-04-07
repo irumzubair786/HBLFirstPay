@@ -77,7 +77,7 @@ struct APIs {
         return String(data: data, encoding: String.Encoding.utf8)
     }
     
-    static func postAPI(apiName: APIs.name, parameters: [String: Any], headerWithToken: String? = nil , headers: HTTPHeaders? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    static func postAPI(apiName: APIs.name, parameters: [String: Any], headerWithToken: String? = nil , headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         
         let baseClass = BaseClassVC()
         let result = (baseClass.splitString(stringToSplit: baseClass.base64EncodedString(params: parameters)))
@@ -112,10 +112,15 @@ struct APIs {
         
         request.httpBody = jsonData
         //print("\(APIs.json(from: parameters)))")
+        if let vc = viewController {
+            vc.showActivityIndicator2()
+        }
         
         Alamofire.request(request).responseJSON { response in
             print("Response: \(response)")
-
+            if let vc = viewController {
+                vc.hideActivityIndicator2()
+            }
             switch response.result {
             case .success(let json):
                 let modelGetActiveLoan = try? JSONDecoder().decode(NanoLoanApplyViewController.ModelGetLoanCharges.self, from: response.data!)

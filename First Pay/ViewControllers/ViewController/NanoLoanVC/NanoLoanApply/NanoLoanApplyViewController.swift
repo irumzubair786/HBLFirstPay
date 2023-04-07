@@ -105,7 +105,7 @@ class NanoLoanApplyViewController: UIViewController {
         //NOTE:
         //        agar currentLoan object me data araha ha to ye api call ni ho ge
         //        agar ni a raha to ye api call karin ga r data disply karwa dain ga
-        APIs.postAPI(apiName: .nanoLoanEligibilityCheck, parameters: parameters) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .nanoLoanEligibilityCheck, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             if success {
                 let model: ModelNanoLoanEligibilityCheck? = APIs.decodeDataToObject(data: responseData)
                 print(model)
@@ -126,7 +126,7 @@ class NanoLoanApplyViewController: UIViewController {
             "productId" : "\(DataManager.instance.NanoloanProductid ?? 2)"
         ]
         
-        APIs.postAPI(apiName: .getLoanCharges, parameters: parameters) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .getLoanCharges, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             if success {
                 let model: ModelGetLoanCharges? = APIs.decodeDataToObject(data: responseData)
                 print(model)

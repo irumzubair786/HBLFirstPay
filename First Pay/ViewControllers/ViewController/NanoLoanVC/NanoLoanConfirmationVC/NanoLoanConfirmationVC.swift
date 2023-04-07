@@ -110,7 +110,7 @@ class NanoLoanConfirmationVC: UIViewController {
             "loanPurpose" : "2",
         ]
         
-        APIs.postAPI(apiName: .applyLoan, parameters: parameters) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .applyLoan, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             if success {
                 let model: ModelApplyLoan? = APIs.decodeDataToObject(data: responseData)
                 print(model)

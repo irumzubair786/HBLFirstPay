@@ -95,7 +95,6 @@ class BaseClassVC: UIViewController {
     public func showActivityIndicator() {
         customActivityIndicatory(self.view, startAnimate: true)
 //            ESActivityIndicator.startAnimatingIndicator(self.view)
-      
     }
     
     public func hideActivityIndicator() {

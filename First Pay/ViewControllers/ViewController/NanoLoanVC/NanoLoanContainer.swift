@@ -158,7 +158,7 @@ class NanoLoanContainer: UIViewController {
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)"
         ]
-        APIs.postAPI(apiName: .getActiveLoan, parameters: parameters) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .getActiveLoan, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             if success {
                 let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
                 self.modelGetActiveLoan = model
