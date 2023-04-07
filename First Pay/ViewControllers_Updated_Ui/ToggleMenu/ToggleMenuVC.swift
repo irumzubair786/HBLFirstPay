@@ -350,7 +350,7 @@ private func batteryLevelChanged()
                </br>
 
                <p style="text-align: center;">
-               HBL MicroFinance Bank Ltd
+               HBL Microfinance Bank Ltd
                16th & 17th Floor
                </p>
                <p style="text-align: center;">
