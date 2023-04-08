@@ -14,12 +14,16 @@ import GolootloWebViewLibrary
 import RNCryptor
 import SwiftKeychainWrapper
 import WebKit
+import Alamofire
+import AlamofireObjectMapper
 var CheckLanguage = ""
 var ThemeSelection = ""
 var  dateString  : String?
 class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , WKNavigationDelegate, UINavigationControllerDelegate{
-
-    
+    var maskingCNic: String?
+    var maskingAccountNo : String?
+    var availableLimitObj: AvailableLimitsModel?
+    var genResObj: GenericResponse?
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -30,6 +34,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         lblAccountTitle.text = DataManager.instance.accountTitle
         lblAccountNumber.text = DataManager.instance.accountNo
         lblEmail.text = ""
+       
 //        let date = Date()
 //        let df = DateFormatter()
 //        df.dateFormat = "yyyy-MM-dd"
@@ -46,6 +51,51 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         lblAccountTitle.text = DataManager.instance.accountTitle
         lblAccountNumber.text = DataManager.instance.accountNo
     }
+    func masking()
+        {
+//            37x05xxx10xx4
+//
+            userCnic = UserDefaults.standard.string(forKey: "userCnic")
+            var a = userCnic!
+            maskingCNic = a.substring(to: 2)
+            var concate = maskingCNic!
+            var x = a.substring(with: 2..<3)
+            x = x.replacingOccurrences(of: "\(x)", with: "X")
+            concate = "\(concate)\(x)"
+            var d = a.substring(with: 3..<5)
+            concate = "\(concate)\(x)\(d)"
+            var x1 = a.substring(with: 5..<8)
+            x1 = x1.replacingOccurrences(of: "\(x1)", with: "XXX")
+            concate = "\(maskingCNic!)\(x)\(d)\(x1)"
+            var x2 = a.substring(with: 8..<10)
+            concate = "\(maskingCNic!)\(x)\(d)\(x1)\(x2)"
+            var x3 = a.substring(with: 10..<12)
+            x3 = x3.replacingOccurrences(of: "\(x3)", with: "XX")
+            concate = "\(maskingCNic!)\(x)\(d)\(x1)\(x2)\(x3)"
+            var x4 = a.substring(with: 12..<13)
+            concate = "\(maskingCNic!)\(x)\(d)\(x1)\(x2)\(x3)\(x4)"
+            print("concate",concate)
+            maskingCNic = concate
+            
+//            034064x1xx0
+           var b =  DataManager.instance.accountNo!
+            maskingAccountNo = b.substring(to: 6)
+            var concate1 = maskingAccountNo!
+            var y = b.substring(with: 6..<7)
+            y = y.replacingOccurrences(of: "\(y)", with: "X")
+            concate1 = "\(maskingAccountNo!)\(y)"
+
+            var y1 = b.substring(with: 7..<8)
+            concate1 = "\(maskingAccountNo!)\(y)\(y1)"
+            var y2 = b.substring(with: 8..<10)
+            y2 = y2.replacingOccurrences(of: "\(y2)", with: "XX")
+            concate1 = "\(maskingAccountNo!)\(y)\(y1)\(y2)"
+            var y3 = b.substring(with: 10..<11)
+            concate1 = "\(maskingAccountNo!)\(y)\(y1)\(y2)\(y3)"
+            print("concate1",concate1)
+            maskingAccountNo = concate1
+            
+        }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("count is ", sideItemsArr.count)
         print("countimg  is ", sideBarImgsArr.count)
@@ -92,47 +142,258 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     {
         
         let tag = _sender.tag
-
+        
         let cell = tableView.cellForRow(at: IndexPath(row: tag, section: 0)) as! SideBarCell
-         if cell.buttonSidebar.tag ==  9
+        if cell.buttonSidebar.tag ==  9
         {
-             popUpLogout()
-         }
+            popUpLogout()
+        }
+        if cell.buttonSidebar.tag == 1
+        {
+            //            levelapicall
+            getAvailableLimits()
+            
+        }
+    
+        if cell.buttonSidebar.tag == 2
+        {
+            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
+        }
+        
+        if cell.buttonSidebar.tag == 3
+        {
+            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
+        }
+        if cell.buttonSidebar.tag == 4
+        {
+            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
+        }
+        
+        if cell.buttonSidebar.tag == 6
+        {
+            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
+        }
+        if cell.buttonSidebar.tag == 7
+        {
+            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
+        }
       if cell.buttonSidebar.tag == 8
         {
           let vc = UIStoryboard(name: "ContactUs", bundle: Bundle.main).instantiateViewController(withIdentifier: "ContactUSVC") as! ContactUSVC
           self.present(vc, animated: true)
-//          self.navigationController?.pushViewController(vc, animated: true)
-          
-//            let  myDict = [ "name": "ContactUSVC"]
-//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
-            
         }
         if cell.buttonSidebar.tag == 5
         {
-            
-//            let vc = UIStoryboard(name: "MaintenanceCertificate", bundle: Bundle.main).instantiateViewController(withIdentifier: "CertificateVc") as! CertificateVc
-//
-//            self.present(vc, animated: true)
-            
             let vc = UIStoryboard(name: "MaintenanceCertificate", bundle: Bundle.main).instantiateViewController(withIdentifier: "MaintenenceCertificate") as! MaintenenceCertificate
             vc.documentData = createPDF()
 
             self.present(vc, animated: true)
         }
-        else
-        {
-            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
-        }
+        
+       
         
     }
-
+////    ----------getaccountlimits
+    private func getAvailableLimits() {
+  //
+          if !NetworkConnectivity.isConnectedToInternet(){
+              self.showToast(title: "No Internet Available")
+              return
+          }
+  
+          showActivityIndicator()
+          var userCnic : String?
+          if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+              userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+          }
+          else{
+              userCnic = ""
+          }
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+  
+  //        let compelteUrl = GlobalConstants.BASE_URL + "getAccLimits"
+          let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getLevelLimits"
+  
+          let parameters : Parameters = ["cnic":userCnic!, "accountType" : DataManager.instance.accountType ?? "20", "imeiNo": DataManager.instance.imei!,"channelId": DataManager.instance.channelID ]
+  
+          print(parameters)
+  
+  
+          let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+  
+          let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+  
+  
+          let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+  
+          print(params)
+          print(compelteUrl)
+  
+  
+          NetworkManager.sharedInstance.enableCertificatePinning()
+  
+  
+          NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<AvailableLimitsModel>) in
+  
+              self.hideActivityIndicator()
+  
+              self.availableLimitObj = response.result.value
+  
+              if response.response?.statusCode == 200 {
+  
+                  if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+  
+                      self.updateUI()
+  //                                    self.fromlevel1()
+                  }
+                  else {
+                      if let message = self.availableLimitObj?.messages{
+                          self.showDefaultAlert(title: "", message: message)
+                      }
+                  }
+              }
+              else {
+                  if let message = self.availableLimitObj?.messages{
+                      self.showDefaultAlert(title: "", message: message)
+                  }
+//                  print(response.result.value)
+//                  print(response.response?.statusCode)
+              }
+          }
+      }
+    private func updateUI(){
+        
+        if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
+        {
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+            if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
+                vc.balanceLimit = Int(balnceLimit)
+                print("balnceLimit",balnceLimit)
+            }
+            if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
+                vc.balanceLimit1 = Int(balnceLimit1)
+                print("balnceLimit",balnceLimit1)
+            }
+          
+            if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
+                vc.totalDailyLimitCr = Int(dailyTotalCr)
+            }
+            if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
+                vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
+            }
+            
+            
+            if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
+            }
+            if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
+            }
+            
+            
+            if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr = Int(yearlyTotalCr)
+            }
+            if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
+            }
+            if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
+                vc.totalDailyLimitDr = Int(totalDailyLimitDr)
+            }
+            if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
+                vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
+            }
+            if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
+            }
+            if let  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
+            }
+            if let  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
+            }
+            if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
+            }
+         
+            else
+            {
+                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+                if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
+                    vc.balanceLimit = Int(balnceLimit)
+                    print("balnceLimit",balnceLimit)
+                }
+                if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
+                    vc.balanceLimit1 = Int(balnceLimit1)
+                    print("balnceLimit",balnceLimit1)
+                }
+                
+                if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
+                    vc.totalDailyLimitCr = Int(dailyTotalCr)
+                }
+                if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
+                    vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
+                }
+                
+                
+                if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
+                    vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
+                }
+                if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
+                    vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
+                }
+                
+                
+                if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
+                    vc.totalYearlyLimitCr = Int(yearlyTotalCr)
+                }
+                if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
+                    vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
+                }
+                
+                //        dr
+                if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
+                    vc.totalDailyLimitDr = Int(totalDailyLimitDr)
+                }
+                if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
+                    vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
+                }
+                if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
+                    vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
+                }
+                if let  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
+                    vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
+                }
+                if let  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
+                    vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
+                }
+                if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
+                    vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
+                }
+                
+                
+            }
+            
+            self.present(vc, animated: true)
+            
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     let encryptionkey = "65412399991212FF65412399991212FF65412399991212FF"
   
     var sideMenuOpen = false
     let pickerAccountType = UIPickerView()
     
-    let sideItemsArr   :[String] =  ["Login Methods","My Account & Limits","Branch/ATM Locator","My Transactions","My Approvals", "Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
+    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","Branch/ATM Locator","My Transactions","My Approvals", "Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
    //Group 427321287.transactions 1
        var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","BranchLocator","transactions 1","myApproval","Maintenance Certoficate","FAQ","Terms and","Group 427321287","Logout"]
    
@@ -256,6 +517,7 @@ private func batteryLevelChanged()
     
     
     func createPDF() -> Data {
+        masking()
         let html = getHTML()
         let fmt = UIMarkupTextPrintFormatter(markupText: html)
 
@@ -300,29 +562,19 @@ private func batteryLevelChanged()
     else{
         userCnic = ""
     }
-//        <img src="app_logo-1" width="32" height="32">
-        
 }
     func getHTML() -> String {
         return """
         <html>
                <body>
-               <p>
-               <img src="HBL Logo.pdf" style="width: 300px;">
-                       <img src="FirstPayIcon.pdf" style="width: 300px;">
-               <script>
-               var dt = new Date();
-               document.getElementById("datetime").innerHTML = (("0"+dt.getDate()).slice(-2)) +"."+ (("0"+(dt.getMonth()+1)).slice(-2)) +"."+ (dt.getFullYear()) ;
-               </script>
                <h3>
                <p style="text-align: center;"><b>ACCOUNT MAINTENANCE </b></p>
                         <p style="text-align: center;"><b>
                   CERTIFICATE </b></p>
                </h3>
-              </br>
               <style>
                        p {
-                        font-size: 24px;
+                        font-size: 28px;
                          }
                          </style>
                <p style="text-align: center;" style="font-size: 300px;">
@@ -330,9 +582,11 @@ private func batteryLevelChanged()
                <p style="text-align: center;">
                <b>\(DataManager.instance.accountTitle!)</b></p>
                <p style="text-align: center;">
-               having CNIC # <b>\(userCnic!)</b></p>
+               having CNIC # <b>\(maskingCNic!)</b></p>
                <p style="text-align: center;">
-               is maintaining  account  A/C# <b>\(DataManager.instance.accountNo!)</b>
+               is maintaining  account  A/C# </p>
+            <p style="text-align: center;">
+           <b>\(maskingAccountNo!)</b>
                </p>
                <p style="text-align: center;">
                This certificate is issued on request
@@ -347,7 +601,7 @@ private func batteryLevelChanged()
                <p style="text-align: center;">
                undersigned and part of the bank.
                </p>
-               </br>
+             
 
                <p style="text-align: center;">
                HBL Microfinance Bank Ltd

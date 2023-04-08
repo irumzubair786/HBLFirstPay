@@ -31,7 +31,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         mobileNumberTextField.mode = .localNumber
 //        cnicTextField.mode = .cnic
 //
-        self.mobileNumberTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        self.mobileNumberTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingDidEnd)
         
 //        self.cnicTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingChanged)
         

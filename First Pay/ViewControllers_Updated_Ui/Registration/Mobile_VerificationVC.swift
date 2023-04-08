@@ -11,12 +11,13 @@ import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
 import RNCryptor
-
+import Foundation
 let systemVersion = UIDevice.current.systemVersion
 let devicemodel = UIDevice.current.localizedModel
 class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     var mobileRegistrationObj : mobileRegistrationModel?
     let encryptionkey = "65412399991212FF65412399991212FF65412399991212FF"
+  
     override func viewDidLoad(){
         super.viewDidLoad()
         getIMEI()
@@ -28,7 +29,10 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         btnContinue.isUserInteractionEnabled = false
         btn_next_arrow.isUserInteractionEnabled = false
         TF_Mobileno.mode = .localNumber
-        self.TF_Mobileno.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        self.TF_Mobileno.addTarget(self, action: #selector(changeTextInTextField), for: .editingDidEnd)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.NSNotification.Name.UIKeyboardWillShow, object: nil)
+
+       
     }
         
 //        TF_Mobileno.addDoneButtonOnKeyboardWithAction { [self] in
@@ -60,6 +64,10 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
 //        }
 
 //    }
+    @objc func keyboardWillShow(_ notification: Notification) {
+        // Hide your button here
+        btnContinue.isHidden = false
+    }
     
     @objc func changeTextInTextField() {
         print("end editing")
@@ -209,14 +217,15 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         return newLength <= 11
         
     }
-    private func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
-    {
-        TF_Mobileno.resignFirstResponder()
-        return true;
-    }
+//    private func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
+//    {
+//        TF_Mobileno.resignFirstResponder()
+//        return true;
+//    }
     
     private func textFieldDidEndEditing(_ textField: NumberTextField) {
 
+       
             if TF_Mobileno.text?.count ?? 0 < 11
             {
                 

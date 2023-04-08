@@ -23,7 +23,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var homeObj : HomeModel?
     var banObj : GenericResponse?
     var getDebitDetailsObj : GetDebitCardModel?
-   
+    var availableLimitObj: AvailableLimitsModel?
     var topBtnarr =  ["SendMoney", "Mobile Topup", "PayBill","First Option","DebitCard","SeeAll"]
 
     override func viewDidLoad() {
@@ -40,6 +40,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         imgLevel.isHidden = true
         
         homeAction()
+        let tapGestureRecognizerrs = UITapGestureRecognizer(target: self, action: #selector(MovetoAccountLevel(tapGestureRecognizer:)))
+        imgLevel.isUserInteractionEnabled = true
+        imgLevel.addGestureRecognizer(tapGestureRecognizerrs)
 //       tapGestures()
 //        NotificationCenter.default.removeObserver(self)
 //        NotificationCenter.default.addObserver(self, selector: #selector(viewDidLoadCustom), name: Notification.Name("LanguageChangeThroughObserver"), object: nil)
@@ -167,12 +170,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         
     }
 
-    @objc func viewDidLoadCustom() {
-        
-
-        
-        
-    }
     func homeAction() {
         showActivityIndicator()
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -321,7 +318,12 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         let vc = storyboard.instantiateViewController(withIdentifier: "MinistatemnetMainVc")
         self.present(vc, animated: true)
     }
-       
+      
+    @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        
+        getAvailableLimits()
+    }
     
     // MARK: - Api Call
     var checkDebitCardObj : GetDebitCardCheckModel?
@@ -499,7 +501,193 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
         }
     }
-    
+    ////    ----------getaccountlimits
+        private func getAvailableLimits() {
+      //
+              if !NetworkConnectivity.isConnectedToInternet(){
+                  self.showToast(title: "No Internet Available")
+                  return
+              }
+      
+              showActivityIndicator()
+              var userCnic : String?
+              if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                  userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+              }
+              else{
+                  userCnic = ""
+              }
+            userCnic = UserDefaults.standard.string(forKey: "userCnic")
+      
+      //        let compelteUrl = GlobalConstants.BASE_URL + "getAccLimits"
+              let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getLevelLimits"
+      
+              let parameters : Parameters = ["cnic":userCnic!, "accountType" : DataManager.instance.accountType ?? "20", "imeiNo": DataManager.instance.imei!,"channelId": DataManager.instance.channelID ]
+      
+              print(parameters)
+      
+      
+              let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+      
+              let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+      
+      
+              let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+      
+              print(params)
+              print(compelteUrl)
+      
+      
+              NetworkManager.sharedInstance.enableCertificatePinning()
+      
+      
+              NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<AvailableLimitsModel>) in
+      
+                  self.hideActivityIndicator()
+      
+                  self.availableLimitObj = response.result.value
+      
+                  if response.response?.statusCode == 200 {
+      
+                      if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+      
+                          self.updateUI()
+      //                                    self.fromlevel1()
+                      }
+                      else {
+                          if let message = self.availableLimitObj?.messages{
+                              self.showDefaultAlert(title: "", message: message)
+                          }
+                      }
+                  }
+                  else {
+                      if let message = self.availableLimitObj?.messages{
+                          self.showDefaultAlert(title: "", message: message)
+                      }
+    //                  print(response.result.value)
+    //                  print(response.response?.statusCode)
+                  }
+              }
+          }
+        private func updateUI(){
+            
+            if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
+            {
+                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
+                if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
+                    vc.balanceLimit = Int(balnceLimit)
+                    print("balnceLimit",balnceLimit)
+                }
+                if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
+                    vc.balanceLimit1 = Int(balnceLimit1)
+                    print("balnceLimit",balnceLimit1)
+                }
+              
+                if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
+                    vc.totalDailyLimitCr = Int(dailyTotalCr)
+                }
+                if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
+                    vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
+                }
+                
+                
+                if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
+                    vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
+                }
+                if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
+                    vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
+                }
+                
+                
+                if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
+                    vc.totalYearlyLimitCr = Int(yearlyTotalCr)
+                }
+                if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
+                    vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
+                }
+                if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
+                    vc.totalDailyLimitDr = Int(totalDailyLimitDr)
+                }
+                if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
+                    vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
+                }
+                if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
+                    vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
+                }
+                if let  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
+                    vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
+                }
+                if let  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
+                    vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
+                }
+                if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
+                    vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
+                }
+             
+                else
+                {
+                    let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+                    if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
+                        vc.balanceLimit = Int(balnceLimit)
+                        print("balnceLimit",balnceLimit)
+                    }
+                    if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
+                        vc.balanceLimit1 = Int(balnceLimit1)
+                        print("balnceLimit",balnceLimit1)
+                    }
+                    
+                    if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
+                        vc.totalDailyLimitCr = Int(dailyTotalCr)
+                    }
+                    if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
+                        vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
+                    }
+                    
+                    
+                    if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
+                        vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
+                    }
+                    if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
+                        vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
+                    }
+                    
+                    
+                    if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
+                        vc.totalYearlyLimitCr = Int(yearlyTotalCr)
+                    }
+                    if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
+                        vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
+                    }
+                    
+                    //        dr
+                    if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
+                        vc.totalDailyLimitDr = Int(totalDailyLimitDr)
+                    }
+                    if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
+                        vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
+                    }
+                    if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
+                        vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
+                    }
+                    if let  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
+                        vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
+                    }
+                    if let  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
+                        vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
+                    }
+                    if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
+                        vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
+                    }
+                    
+                    
+                }
+                
+                self.present(vc, animated: true)
+                
+            }
+            
+            
+        }
     
 //class end
 }

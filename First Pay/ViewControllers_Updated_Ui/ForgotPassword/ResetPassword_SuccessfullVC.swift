@@ -37,7 +37,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         lbl1.textColor = UIColor.gray
         btnnext.isUserInteractionEnabled = true
         self.enterPinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-        self.enterConfirmPinTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingChanged)
+        self.enterConfirmPinTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingDidEnd)
         
     }
     @IBOutlet weak var Alert_view: UIView!

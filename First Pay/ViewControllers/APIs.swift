@@ -218,6 +218,7 @@ struct APIs {
         case getLoanCharges = "NanoLoan/v1/getLoanCharges"
         case getActiveLoanToPay = "NanoLoan/v1/getActiveLoanToPay"
         case payActiveLoan = "NanoLoan/v1/payActiveLoan"
+        case getLevelLimits = ""
     }
     
 }

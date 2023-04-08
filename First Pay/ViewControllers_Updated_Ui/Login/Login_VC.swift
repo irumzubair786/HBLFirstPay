@@ -33,6 +33,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        self.showAlertCustomPopup(title: "", message: "",buttonName: ["OK","CANCEL"],viewController: self)
         lbl_InvalidPassword.isHidden = true
         pinTextField.delegate = self
         show_text.setTitle("", for: .normal)
@@ -48,8 +50,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.loginAction()
         }
         self.pinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-        
-        
+      
         
         // Do any additional setup after loading the view.
     }
@@ -352,6 +353,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                             if let passKey = self.pinTextField.text{
                                 let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
                                 print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                                
                             }
                             
                             //                             DataManager.instance.accountTitle = self.loginObj?.data?.customerHomeScreens?[0].firstName
