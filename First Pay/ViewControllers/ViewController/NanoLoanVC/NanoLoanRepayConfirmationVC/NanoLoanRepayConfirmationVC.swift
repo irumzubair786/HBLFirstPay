@@ -35,7 +35,7 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     var modelPayActiveLoan: ModelPayActiveLoan? {
         didSet {
             if modelPayActiveLoan?.responsecode == 0 {
-                self.showAlertCustomPopup(title: "Alert", message: modelPayActiveLoan?.messages ?? "Empty Message", imageIcon: "ss", buttonName: ["OK", "CANCEL"], viewController: self)
+                self.showAlertCustomPopup(title: "Alert", message: modelPayActiveLoan?.messages ?? "Empty Message", imageIcon: "ss", buttonName: ["OK", "CANCEL"])
             }
             else {
                 self.openNanoLoanRepaySucessfullVC()

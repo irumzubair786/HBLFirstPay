@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 extension UIViewController {
-    func showAlertCustomPopup(title:String? = "", message: String? = "", imageIcon: String? = nil, buttonName: [String]? = ["OK"], viewController: UIViewController) {
+    func showAlertCustomPopup(title:String? = "", message: String? = "", imageIcon: String? = nil, buttonName: [String]? = ["OK"]) {
         let alertCustomPopup = UIStoryboard.init(name: "AlertPopup", bundle: nil).instantiateViewController(withIdentifier: "AlertPopupMessage") as! AlertPopupMessage
         alertCustomPopup.modalPresentationStyle = .overFullScreen
-        viewController.present(alertCustomPopup, animated: true)
+        self.present(alertCustomPopup, animated: true)
     }
     
     public func showActivityIndicator2() {

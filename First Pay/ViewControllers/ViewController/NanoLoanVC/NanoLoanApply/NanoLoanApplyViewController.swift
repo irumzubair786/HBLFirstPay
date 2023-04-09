@@ -50,11 +50,15 @@ class NanoLoanApplyViewController: UIViewController {
     }
     var modelNanoLoanEligibilityCheck: ModelNanoLoanEligibilityCheck? {
         didSet {
-            if modelNanoLoanEligibilityCheck?.data.count ?? 0 > 0 {
-                labelLoanAmountDescription.text = "You can Apply a loan between Rs. \(modelNanoLoanEligibilityCheck?.data.first?.minAmount ?? 0)-\(modelNanoLoanEligibilityCheck?.data.first?.maxAmount ?? 0)"
-                labelOtherDescription.text = modelNanoLoanEligibilityCheck?.data.first?.nlProductDescr ?? ""
-                
-                collectionViewLoanAmounts.reloadData()
+            if modelNanoLoanEligibilityCheck?.responsecode == 0 {
+                self.showAlertCustomPopup(title: "Alert!", message: modelNanoLoanEligibilityCheck?.messages)
+            }
+            else {
+                if modelNanoLoanEligibilityCheck?.data.count ?? 0 > 0 {
+                    labelLoanAmountDescription.text = "You can Apply a loan between Rs. \(modelNanoLoanEligibilityCheck?.data.first?.minAmount ?? 0)-\(modelNanoLoanEligibilityCheck?.data.first?.maxAmount ?? 0)"
+                    labelOtherDescription.text = modelNanoLoanEligibilityCheck?.data.first?.nlProductDescr ?? ""
+                    collectionViewLoanAmounts.reloadData()
+                }
             }
         }
     }
