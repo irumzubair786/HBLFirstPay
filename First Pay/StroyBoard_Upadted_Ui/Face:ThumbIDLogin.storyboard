@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Login Methods Vc-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginMethodsVc" modalPresentationStyle="fullScreen" id="Y6W-OH-hqX" customClass="loginMethodsVc" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -41,6 +41,9 @@
                                                 <color key="value" systemColor="systemGreenColor"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="buttonback:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="tN6-pC-0JM"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="L O G I N   M E T H O D S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w21-ve-YGq">
                                         <rect key="frame" x="102" y="47" width="221.5" height="21"/>
@@ -62,7 +65,7 @@
                                     <constraint firstItem="w21-ve-YGq" firstAttribute="top" secondItem="tg4-Qk-eX4" secondAttribute="top" constant="47" id="acM-me-HFJ"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HVZ-Mj-AFq">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HVZ-Mj-AFq">
                                 <rect key="frame" x="0.0" y="116" width="375" height="81"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="faceicon" translatesAutoresizingMaskIntoConstraints="NO" id="pUM-eU-Z0Q">
@@ -89,10 +92,14 @@
                                             <constraint firstAttribute="width" constant="162" id="bCe-Ek-kKR"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Change password">
+                                        <buttonConfiguration key="configuration" style="gray" title="       Change ">
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
                                             <color key="baseForegroundColor" red="0.80000000000000004" green="0.40784313729999999" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="baseBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="buttonChangePassowrd:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="GWW-WB-MnV"/>
+                                        </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line" translatesAutoresizingMaskIntoConstraints="NO" id="qhm-Db-R1X">
                                         <rect key="frame" x="16" y="57" width="344" height="30"/>
@@ -116,7 +123,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z2m-E7-yzn">
-                                <rect key="frame" x="0.0" y="197" width="375" height="81"/>
+                                <rect key="frame" x="0.0" y="116" width="375" height="81"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbicon" translatesAutoresizingMaskIntoConstraints="NO" id="poG-fn-JjB">
                                         <rect key="frame" x="15" y="15" width="40" height="40"/>
@@ -162,6 +169,9 @@
                                             <constraint firstAttribute="width" constant="47" id="89b-Bj-RUM"/>
                                             <constraint firstAttribute="height" constant="31" id="GRd-y8-lio"/>
                                         </constraints>
+                                        <connections>
+                                            <action selector="butttonEnableFaceid:" destination="Y6W-OH-hqX" eventType="valueChanged" id="ihc-1W-aYQ"/>
+                                        </connections>
                                     </switch>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -184,7 +194,7 @@
                                 <rect key="frame" x="0.0" y="359" width="375" height="308"/>
                                 <subviews>
                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LMM-R9-e2E">
-                                        <rect key="frame" x="155.5" y="14" width="64" height="3"/>
+                                        <rect key="frame" x="149.5" y="14" width="64" height="3"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="3" id="M3X-eS-Ojk"/>
@@ -209,7 +219,7 @@
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deactivate My Card" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ThI-nF-pCP">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disable Bio-Metric Login" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ThI-nF-pCP">
                                         <rect key="frame" x="64.5" y="30.5" width="246" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="246" id="5DF-xg-vOQ"/>
@@ -245,6 +255,9 @@
                                                         <real key="value" value="23"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="buttonDisable:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="3eb-no-2A1"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TD4-Sk-JfX">
                                                 <rect key="frame" x="94" y="99" width="201" height="44"/>
@@ -265,6 +278,9 @@
                                                         <real key="value" value="23"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="buttonNotNow:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="xma-WL-mlf"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -285,7 +301,7 @@
                                     <constraint firstItem="QYA-ZV-HL8" firstAttribute="top" secondItem="ONa-iU-EVn" secondAttribute="bottom" constant="8" id="4oI-75-4zM"/>
                                     <constraint firstItem="ONa-iU-EVn" firstAttribute="top" secondItem="ThI-nF-pCP" secondAttribute="bottom" constant="7.5" id="5Do-DY-fgD"/>
                                     <constraint firstItem="LMM-R9-e2E" firstAttribute="centerY" secondItem="Mip-YZ-oUs" secondAttribute="centerY" multiplier="0.1" id="6W6-sd-gZt"/>
-                                    <constraint firstItem="LMM-R9-e2E" firstAttribute="centerX" secondItem="Mip-YZ-oUs" secondAttribute="centerX" id="XYO-T6-LPb"/>
+                                    <constraint firstItem="LMM-R9-e2E" firstAttribute="centerX" secondItem="Mip-YZ-oUs" secondAttribute="centerX" constant="-6" id="XYO-T6-LPb"/>
                                     <constraint firstItem="ThI-nF-pCP" firstAttribute="centerY" secondItem="Mip-YZ-oUs" secondAttribute="centerY" multiplier="0.3" id="ieB-cI-Tjo"/>
                                     <constraint firstAttribute="bottom" secondItem="QYA-ZV-HL8" secondAttribute="bottom" id="lRV-LI-fyv"/>
                                     <constraint firstItem="ONa-iU-EVn" firstAttribute="leading" secondItem="Mip-YZ-oUs" secondAttribute="leading" constant="27" id="qgm-ht-i9P"/>
@@ -309,18 +325,26 @@
                             <constraint firstItem="HVZ-Mj-AFq" firstAttribute="top" secondItem="tg4-Qk-eX4" secondAttribute="bottom" constant="8" id="oJn-4r-cDl"/>
                             <constraint firstItem="z2m-E7-yzn" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="v0q-cd-yry"/>
                             <constraint firstItem="tg4-Qk-eX4" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="wHq-7l-cdZ"/>
-                            <constraint firstItem="z2m-E7-yzn" firstAttribute="top" secondItem="HVZ-Mj-AFq" secondAttribute="bottom" id="z5m-Du-hxX"/>
+                            <constraint firstItem="z2m-E7-yzn" firstAttribute="top" secondItem="HVZ-Mj-AFq" secondAttribute="bottom" constant="-81" id="z5m-Du-hxX"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="buttonChangePassowrd" destination="erv-qh-xGJ" id="SNH-Qg-uiX"/>
+                        <outlet property="buttonDisable" destination="y4V-Gc-ocW" id="onp-YK-h6L"/>
+                        <outlet property="buttonNotNow" destination="TD4-Sk-JfX" id="a7A-PE-qge"/>
+                        <outlet property="buttonback" destination="ERc-hX-JZK" id="jSB-Oj-yzD"/>
+                        <outlet property="butttonEnableFaceid" destination="Vk7-cJ-0z1" id="Wy8-XE-Rp6"/>
+                        <outlet property="viewdisble" destination="Mip-YZ-oUs" id="Rsi-Jj-mnL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-687" y="1"/>
+            <point key="canvasLocation" x="-687.20000000000005" y="0.44977511244377816"/>
         </scene>
-        <!--View Controller-->
+        <!--Bio Metric Login Vc-->
         <scene sceneID="4iV-TT-XKg">
             <objects>
-                <viewController id="iSA-nz-lKX" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BioMetricLoginVc" modalPresentationStyle="fullScreen" id="iSA-nz-lKX" customClass="BioMetricLoginVc" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TVJ-62-U5X">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="730"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -349,6 +373,9 @@
                                                 <color key="value" systemColor="systemGreenColor"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="buttonback:" destination="iSA-nz-lKX" eventType="touchUpInside" id="lgk-st-4NV"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BIO-METRIC LOGIN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fb9-WA-jmO">
                                         <rect key="frame" x="83" y="47" width="221.5" height="21"/>
@@ -376,6 +403,9 @@
                                     <backgroundConfiguration key="background" image="faceidpng"/>
                                     <color key="baseBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="buttonface:" destination="iSA-nz-lKX" eventType="touchUpInside" id="fMX-4e-jtW"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BGa-bX-VZG">
                                 <rect key="frame" x="70" y="138" width="80" height="80"/>
@@ -388,6 +418,9 @@
                                     <backgroundConfiguration key="background" image="thumb"/>
                                     <color key="baseBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="buttonThumb:" destination="iSA-nz-lKX" eventType="touchUpInside" id="yXC-II-fjz"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BIO-METRIC LOGIN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="drM-Kf-Idk">
                                 <rect key="frame" x="70" y="261" width="235" height="35"/>
@@ -408,7 +441,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Enabling Finger Print and face Login you agree to the  " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3n-5l-XTD">
-                                <rect key="frame" x="27" y="492" width="321" height="41"/>
+                                <rect key="frame" x="27" y="456" width="321" height="41"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="41" id="FMQ-9C-m1i"/>
                                 </constraints>
@@ -417,7 +450,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8nd-Sc-sKU">
-                                <rect key="frame" x="73" y="526" width="229" height="35"/>
+                                <rect key="frame" x="73" y="490" width="229" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="zRU-CF-oUC"/>
                                 </constraints>
@@ -427,9 +460,12 @@
                                     <color key="baseForegroundColor" red="0.80000000000000004" green="0.40784313729999999" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="baseBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="buttonContinue:" destination="iSA-nz-lKX" eventType="touchUpInside" id="Xeu-KK-AKa"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="og9-QO-TAa">
-                                <rect key="frame" x="50" y="566" width="275" height="59"/>
+                                <rect key="frame" x="50" y="530" width="275" height="59"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="59" id="xdd-sn-8kR"/>
@@ -450,23 +486,26 @@
                                         <color key="value" systemColor="systemGreenColor"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="buttonContinue:" destination="iSA-nz-lKX" eventType="touchUpInside" id="4uR-7K-lbr"/>
+                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="]greenarrow" translatesAutoresizingMaskIntoConstraints="NO" id="ZmJ-C8-alR">
-                                <rect key="frame" x="266" y="573" width="45" height="45"/>
+                                <rect key="frame" x="266" y="537" width="45" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="bCy-Vu-8Ew"/>
                                     <constraint firstAttribute="width" constant="45" id="gLb-84-T6e"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="how it work" translatesAutoresizingMaskIntoConstraints="NO" id="nB1-y0-Kt3">
-                                <rect key="frame" x="94" y="631" width="176" height="25"/>
+                                <rect key="frame" x="94" y="610" width="176" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="0MG-RV-lYK"/>
                                     <constraint firstAttribute="width" constant="176" id="TT6-Mc-rak"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wn5-xw-CO0">
-                                <rect key="frame" x="27" y="651" width="321" height="72"/>
+                                <rect key="frame" x="27" y="659" width="321" height="72"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="72" id="hBZ-sc-Nxg"/>
                                 </constraints>
@@ -479,11 +518,11 @@
                         <viewLayoutGuide key="safeArea" id="a9G-yI-tOR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="nB1-y0-Kt3" firstAttribute="top" secondItem="ZmJ-C8-alR" secondAttribute="bottom" constant="13" id="0ae-hS-Nbd"/>
+                            <constraint firstItem="nB1-y0-Kt3" firstAttribute="top" secondItem="ZmJ-C8-alR" secondAttribute="bottom" constant="28" id="0ae-hS-Nbd"/>
                             <constraint firstItem="a9G-yI-tOR" firstAttribute="trailing" secondItem="wn5-xw-CO0" secondAttribute="trailing" constant="27" id="0jj-h7-MLb"/>
                             <constraint firstItem="yJ2-zS-SXu" firstAttribute="top" secondItem="drM-Kf-Idk" secondAttribute="bottom" constant="5" id="24s-N1-uTp"/>
                             <constraint firstItem="8nd-Sc-sKU" firstAttribute="top" secondItem="L3n-5l-XTD" secondAttribute="bottom" constant="-7" id="3Ag-68-cdk"/>
-                            <constraint firstAttribute="bottom" secondItem="ZmJ-C8-alR" secondAttribute="bottom" constant="112" id="3qK-Wi-6xy"/>
+                            <constraint firstAttribute="bottom" secondItem="ZmJ-C8-alR" secondAttribute="bottom" constant="148" id="3qK-Wi-6xy"/>
                             <constraint firstItem="drM-Kf-Idk" firstAttribute="leading" secondItem="a9G-yI-tOR" secondAttribute="leading" constant="70" id="6VD-QT-m7L"/>
                             <constraint firstItem="a9G-yI-tOR" firstAttribute="trailing" secondItem="8nd-Sc-sKU" secondAttribute="trailing" constant="73" id="Aw4-ey-CES"/>
                             <constraint firstItem="L3n-5l-XTD" firstAttribute="leading" secondItem="a9G-yI-tOR" secondAttribute="leading" constant="27" id="FG1-Co-zJy"/>
@@ -492,12 +531,12 @@
                             <constraint firstItem="a9G-yI-tOR" firstAttribute="trailing" secondItem="wXT-LG-qeb" secondAttribute="trailing" id="HiB-Yj-L7L"/>
                             <constraint firstItem="a9G-yI-tOR" firstAttribute="trailing" secondItem="L3n-5l-XTD" secondAttribute="trailing" constant="27" id="Nwp-tk-alF"/>
                             <constraint firstItem="8nd-Sc-sKU" firstAttribute="leading" secondItem="a9G-yI-tOR" secondAttribute="leading" constant="73" id="O3n-hF-HTN"/>
-                            <constraint firstItem="a9G-yI-tOR" firstAttribute="bottom" secondItem="wn5-xw-CO0" secondAttribute="bottom" constant="7" id="Pf9-4E-FpY"/>
+                            <constraint firstItem="a9G-yI-tOR" firstAttribute="bottom" secondItem="wn5-xw-CO0" secondAttribute="bottom" constant="-1" id="Pf9-4E-FpY"/>
                             <constraint firstItem="a9G-yI-tOR" firstAttribute="trailing" secondItem="og9-QO-TAa" secondAttribute="trailing" constant="50" id="QhW-Kf-h1g"/>
                             <constraint firstItem="yJ2-zS-SXu" firstAttribute="leading" secondItem="a9G-yI-tOR" secondAttribute="leading" constant="27" id="Rzv-WH-Xh0"/>
                             <constraint firstItem="a9G-yI-tOR" firstAttribute="trailing" secondItem="Tov-HE-Jj9" secondAttribute="trailing" constant="73" id="T0h-Gc-Ti4"/>
                             <constraint firstItem="BGa-bX-VZG" firstAttribute="top" secondItem="wXT-LG-qeb" secondAttribute="bottom" constant="30" id="TAi-IT-j6c"/>
-                            <constraint firstItem="nB1-y0-Kt3" firstAttribute="top" secondItem="og9-QO-TAa" secondAttribute="bottom" constant="6" id="TfQ-h2-mg9"/>
+                            <constraint firstItem="nB1-y0-Kt3" firstAttribute="top" secondItem="og9-QO-TAa" secondAttribute="bottom" constant="21" id="TfQ-h2-mg9"/>
                             <constraint firstItem="Tov-HE-Jj9" firstAttribute="height" secondItem="BGa-bX-VZG" secondAttribute="height" multiplier="1.1125" constant="-13" id="Whu-31-wxR"/>
                             <constraint firstItem="ZmJ-C8-alR" firstAttribute="leading" secondItem="og9-QO-TAa" secondAttribute="trailing" constant="-59" id="cr0-QC-6IY"/>
                             <constraint firstItem="Tov-HE-Jj9" firstAttribute="top" secondItem="wXT-LG-qeb" secondAttribute="bottom" constant="32" id="dbg-sV-Ued"/>
@@ -514,15 +553,21 @@
                         </constraints>
                     </view>
                     <size key="freeformSize" width="375" height="730"/>
+                    <connections>
+                        <outlet property="buttonThumb" destination="BGa-bX-VZG" id="2OF-dn-aqh"/>
+                        <outlet property="buttonback" destination="3Wn-wm-4wJ" id="1QO-kR-5Pq"/>
+                        <outlet property="buttonface" destination="Tov-HE-Jj9" id="bBl-se-g07"/>
+                        <outlet property="img_next" destination="ZmJ-C8-alR" id="eAr-ls-hae"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4h2-7Z-gMJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2" y="29"/>
         </scene>
-        <!--Web ViewVC-->
+        <!--Termsand Conditionslogin Methods Vc-->
         <scene sceneID="rgA-y3-5YC">
             <objects>
-                <viewController storyboardIdentifier="WebView_VC" id="5zY-eb-r7z" customClass="WebView_VC" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TermsandConditionsloginMethodsVc" modalPresentationStyle="fullScreen" id="5zY-eb-r7z" customClass="TermsandConditionsloginMethodsVc" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zHb-DI-GDa">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="730"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -548,7 +593,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="Action_back:" destination="5zY-eb-r7z" eventType="touchUpInside" id="vmq-BD-EoB"/>
+                                    <action selector="buttonBack:" destination="5zY-eb-r7z" eventType="touchUpInside" id="Xod-VS-XzT"/>
                                 </connections>
                             </button>
                             <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="bLq-7A-VnU" userLabel="Logo_View">
@@ -631,6 +676,9 @@
                                         <color key="value" systemColor="systemGreenColor"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="buttonContinue:" destination="5zY-eb-r7z" eventType="touchUpInside" id="7lh-hA-VVL"/>
+                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="]greenarrow" translatesAutoresizingMaskIntoConstraints="NO" id="I4K-lG-2aP">
                                 <rect key="frame" x="285" y="668" width="45" height="45"/>
@@ -670,7 +718,7 @@
                     </view>
                     <size key="freeformSize" width="414" height="730"/>
                     <connections>
-                        <outlet property="lblMainTitle" destination="Pkk-EX-dcj" id="joT-41-Qgb"/>
+                        <outlet property="buttonBack" destination="jlt-G8-b81" id="VpL-rx-u7z"/>
                         <outlet property="webViewOutlet" destination="FLu-4c-b0a" id="lGb-NN-pPn"/>
                     </connections>
                 </viewController>

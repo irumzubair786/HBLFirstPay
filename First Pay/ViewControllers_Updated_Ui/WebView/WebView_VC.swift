@@ -174,7 +174,8 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
     
     
     @IBAction func Action_back(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
+//        self.navigationController?.popViewController(animated: true)
 //        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
 //        self.navigationController?.pushViewController(vc, animated: true)
         

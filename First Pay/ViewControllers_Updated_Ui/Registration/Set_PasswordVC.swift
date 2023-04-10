@@ -340,6 +340,16 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
                 if response.response?.statusCode == 200 {
                     
                     if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
+                        UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                        let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
+                        print("Remover \(removePessi)")
+                        var userCnic : String?
+                        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+                        }
+                            else{
+                                userCnic = ""
+                            }
                         self.Alert_view.isHidden = false
                         self.blur_view.isHidden = false
                       

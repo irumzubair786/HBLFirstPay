@@ -101,7 +101,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
         }
         else if isfromHblMbfAccount == true
         {            lblTransactionId.text  = TransactionId
-            lblTransType.text = "HBL MFB Transfer"
+            lblTransType.text = "HBL MfB Transfer"
             lblSourceAccount.text = DataManager.instance.accountNo!
             lblDateTime.text = TransactionDate!
             lblFee.text = "Rs 0.00"
@@ -113,7 +113,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
             
             lblWalletName.isHidden = false
             lblwalletNameValue.isHidden = false
-            lblWalletName.text = "HBL MFB Transfer"
+            lblWalletName.text = "HBL MfB Transfer"
             lblTransactionId.text  = TransactionId
             lblTransType.text = "Bank Name"
             lblSourceAccount.text = DataManager.instance.accountNo!

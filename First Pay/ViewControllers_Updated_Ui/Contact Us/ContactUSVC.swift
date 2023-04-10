@@ -46,7 +46,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         viewScanQR.backgroundColor =  UIColor(hexValue: 0x00CC96)
         btnBack.setTitle("", for: .normal)
         buttonContinue.isUserInteractionEnabled = false
-        
+        Tfname.placeholder = "Enter Name"
         btnAlertView.isHidden = true
         btnAlertView.setTitle("", for: .normal)
         appendArray()
@@ -118,7 +118,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
 
     @IBAction func Action_Back(_ sender: UIButton) {
           self.dismiss(animated: true)
-        self.navigationController?.popViewController(animated: true)
+//        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -272,17 +272,18 @@ extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
         if(myarr[indexPath.row].isSeleccted == true){
             cell.btnCategory.setTitleColor(.white, for: .normal)  ///set title color here to white
             
-            cell.backView.backgroundColor =   UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+            cell.backView.backgroundColor =   UIColor(hexString: "CC6801")
             cell.btnCategory.setImage(.none, for: .normal)
 //            cell.btnCategory.backgroundColor = .orange
         }else{
             //set title color here to black
             cell.btnCategory.setTitleColor(.black, for: .normal)
-            cell.btnCategory.backgroundColor = .clear
-            cell.backView.backgroundColor = .clear
+//            buttonDisable.backgroundColor = UIColor(hexString: "CC6801")
+            cell.btnCategory.backgroundColor = UIColor.clear
+            cell.backView.backgroundColor = UIColor.clear
             let setimg = UIImage(named: "")
             cell.btnCategory.setImage(setimg, for: .normal)
-            cell.btnCategory.backgroundColor = .clear
+            cell.btnCategory.backgroundColor = UIColor.clear
             
         }
         cell.btnCategory.setTitle(myarr[indexPath.row].name, for: .normal)

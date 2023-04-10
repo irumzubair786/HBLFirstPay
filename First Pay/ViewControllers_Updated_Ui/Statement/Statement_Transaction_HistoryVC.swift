@@ -325,9 +325,17 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
     
     
     @IBAction func back(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-        self.present(vc, animated: true)
+        if isfromSideMenu == true
+        {
+            self.dismiss(animated: true)
+        }
+        else
+        {
+            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+            self.present(vc, animated: true)
+        }
+       
 //        self.navigationController?.popViewController(animated: true)
     }
     

@@ -47,7 +47,11 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         
         self.pinTextField.addDoneButtonOnKeyboardWithAction { [self] in
             self.pinTextField.resignFirstResponder()
-            self.loginAction()
+            
+            if self.pinTextField.text?.count == 6 {
+                self.pinTextField.resignFirstResponder()
+                self.loginAction()
+            }
         }
         self.pinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
       
@@ -88,6 +92,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         }
         
     }
+    
     
     @IBAction func loginActionviaTouchID(_ sender: UIButton) {
         if KeychainWrapper.standard.bool(forKey: "enableTouchID") == true {
@@ -289,6 +294,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
             pessi = KeychainWrapper.standard.string(forKey: "userKey")
         }
+        
         else if let password = pinTextField.text {
             pessi = password
         }
@@ -303,7 +309,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         else{
             userCnic = ""
         }
-        
+        pessi = UserDefaults.standard.string(forKey: "userKey")
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
         //userCnic!
         //    "\(DataManager.instance.userCnic!)
         //        mustChange
@@ -311,7 +318,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             let parameters = ["cnic":   "\(DataManager.instance.userCnic!)","loginPin":"\(pessi!)","imeiNo":"\(DataManager.instance.imei!)","ipAddress":"\(DataManager.instance.ipAddress! )","channelId":"\(DataManager.instance.channelID )","longitude":"\(DataManager.instance.Longitude!)","latitude":"\(DataManager.instance.Latitude!)","uuid":"\(DataManager.instance.userUUID ?? "e5f458f7-a1ad-4398-92ba-62c15a22738d")" ,"osVersion": "\(systemVersion ?? "")"]
             return
         }
-        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        
         let parameters = ["cnic":   userCnic!,"loginPin":"\(pessi!)","imeiNo":"\(DataManager.instance.imei!)","ipAddress":"\(DataManager.instance.ipAddress! )","channelId":"\(DataManager.instance.channelID )","longitude":"\(DataManager.instance.Longitude!)","latitude":"\(DataManager.instance.Latitude!)","uuid":"\(DataManager.instance.userUUID ?? "e5f458f7-a1ad-4398-92ba-62c15a22738d")" ,"osVersion": "\(systemVersion ?? "")"]
         //        testcase
         

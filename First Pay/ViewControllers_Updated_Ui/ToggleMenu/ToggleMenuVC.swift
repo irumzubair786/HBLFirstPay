@@ -19,9 +19,11 @@ import AlamofireObjectMapper
 var CheckLanguage = ""
 var ThemeSelection = ""
 var  dateString  : String?
+var isfromSideMenu : Bool = false
 class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , WKNavigationDelegate, UINavigationControllerDelegate{
     var maskingCNic: String?
     var maskingAccountNo : String?
+ 
     var availableLimitObj: AvailableLimitsModel?
     var genResObj: GenericResponse?
     override func viewDidLoad() {
@@ -34,13 +36,23 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         lblAccountTitle.text = DataManager.instance.accountTitle
         lblAccountNumber.text = DataManager.instance.accountNo
         lblEmail.text = ""
-       
+        NotificationCenter.default.removeObserver(self)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(batteryLevelChanged), name: Notification.Name("batteryLevelChanged"), object: nil)
 //        let date = Date()
 //        let df = DateFormatter()
 //        df.dateFormat = "yyyy-MM-dd"
 //        dateString = df.string(from: date)
         // Do any additional setup after loading the view.
     }
+    @objc private func batteryLevelChanged(
+    ){
+        UserDefaults.standard.synchronize()
+        DataManager.accountPic = ""
+        UserDefaults.standard.setValue(nil, forKey: "proImage")
+        KeychainWrapper.standard.set(true, forKey: "enableTouchID")
+    }
+
     @IBOutlet weak var btnProfileImg: UIButton!
     @IBOutlet var tableView: UITableView!
    
@@ -105,23 +117,37 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
   
         let cell = tableView.dequeueReusableCell(withIdentifier: "SideBarCell", for: indexPath) as! SideBarCell
+
+            if indexPath.row == 1
+            {
+                
+                if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
+                {
+                    
+                    
+                    cell.lblLevel.isHidden = false
+                    cell.btnUpgrade.isHidden = false
+                }
+                else
+                {
+                    cell.lblLevel.isHidden = true
+                    cell.btnUpgrade.isHidden = true
+                    
+                }
+            }
         
-        cell.lblLevel.isHidden = true
-        cell.btnUpgrade.isHidden = true
+        
+        
+        
+            else{
+                cell.lblLevel.isHidden = true
+                cell.btnUpgrade.isHidden = true
+            }
+        
         cell.delegate = self
         cell.lblLevel.tag = indexPath.row
         
-        if indexPath.row == 1
-        {
-            
-            cell.lblLevel.isHidden = false
-            cell.btnUpgrade.isHidden = false
-            
-        }
-        else{
-            cell.lblLevel.isHidden = true
-            cell.btnUpgrade.isHidden = true
-        }
+        
         if indexPath.row == 9
             
         {
@@ -144,16 +170,24 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         let tag = _sender.tag
         
         let cell = tableView.cellForRow(at: IndexPath(row: tag, section: 0)) as! SideBarCell
-        if cell.buttonSidebar.tag ==  9
+        if cell.buttonSidebar.tag == 0
         {
-            popUpLogout()
+            let vc = UIStoryboard(name: "Face:ThumbIDLogin", bundle: Bundle.main).instantiateViewController(withIdentifier: "loginMethodsVc") as! loginMethodsVc
+            self.present(vc, animated: true)
         }
         if cell.buttonSidebar.tag == 1
         {
-            //            levelapicall
             getAvailableLimits()
             
         }
+        if cell.buttonSidebar.tag == 2
+        {
+            let storyboard = UIStoryboard(name: "MiniStatement", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "MinistatemnetMainVc")
+            isfromSideMenu = true
+            self.present(vc, animated: true)
+        }
+       
     
         if cell.buttonSidebar.tag == 2
         {
@@ -162,33 +196,45 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         
         if cell.buttonSidebar.tag == 3
         {
-            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
-        }
-        if cell.buttonSidebar.tag == 4
-        {
-            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
-        }
-        
-        if cell.buttonSidebar.tag == 6
-        {
-            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
-        }
-        if cell.buttonSidebar.tag == 7
-        {
-            UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
-        }
-      if cell.buttonSidebar.tag == 8
-        {
-          let vc = UIStoryboard(name: "ContactUs", bundle: Bundle.main).instantiateViewController(withIdentifier: "ContactUSVC") as! ContactUSVC
-          self.present(vc, animated: true)
-        }
-        if cell.buttonSidebar.tag == 5
-        {
             let vc = UIStoryboard(name: "MaintenanceCertificate", bundle: Bundle.main).instantiateViewController(withIdentifier: "MaintenenceCertificate") as! MaintenenceCertificate
             vc.documentData = createPDF()
 
             self.present(vc, animated: true)
         }
+        
+        
+        if cell.buttonSidebar.tag == 4
+        {
+            
+            let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
+         
+          vc.forHTML = true
+            vc.forFaqs = true
+            vc.forTerms = false
+            self.present(vc, animated: true)
+//            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+       
+        if cell.buttonSidebar.tag == 5
+        {
+            let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
+          vc.forHTML = true
+            vc.forFaqs = false
+            vc.forTerms = true
+            self.present(vc, animated: true)
+//            self.navigationController?.pushViewController(vc, animated: true)
+        }
+      if cell.buttonSidebar.tag == 6
+        {
+          let vc = UIStoryboard(name: "ContactUs", bundle: Bundle.main).instantiateViewController(withIdentifier: "ContactUSVC") as! ContactUSVC
+          self.present(vc, animated: true)
+        }
+        if cell.buttonSidebar.tag ==  7
+        {
+            popUpLogout()
+        }
+      
         
        
         
@@ -265,7 +311,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         
         if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
         {
-            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
             if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                 vc.balanceLimit = Int(balnceLimit)
                 print("balnceLimit",balnceLimit)
@@ -393,9 +439,9 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     var sideMenuOpen = false
     let pickerAccountType = UIPickerView()
     
-    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","Branch/ATM Locator","My Transactions","My Approvals", "Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
+    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","My Transactions", "Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
    //Group 427321287.transactions 1
-       var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","BranchLocator","transactions 1","myApproval","Maintenance Certoficate","FAQ","Terms and","Group 427321287","Logout"]
+       var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","transactions 1","Maintenance Certoficate","FAQ","Terms and","Group 427321287","Logout"]
    
        
     
@@ -412,13 +458,6 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         
     }
 
-private func batteryLevelChanged()
-{
-    UserDefaults.standard.synchronize()
-    DataManager.accountPic = ""
-    UserDefaults.standard.setValue(nil, forKey: "proImage")
-    KeychainWrapper.standard.set(true, forKey: "enableTouchID")
-}
 
     
     

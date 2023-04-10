@@ -333,6 +333,17 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
             if response.response?.statusCode == 200 {
                 
                 if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
+                    UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                    let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
+                    print("Remover \(removePessi)")
+                    var userCnic : String?
+                    if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                        userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+                    }
+                        else{
+                            userCnic = ""
+                        }
+                    
                     self.Alert_view.isHidden = false
                     self.blur_view.isHidden = false
                   
@@ -452,6 +463,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                     DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
                     DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
                     print("\(accessToken)")
+                     UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
                      if let passKey = self.enterPinTextField.text{
                         let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
                         print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
@@ -498,7 +510,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     private func saveInDataManager(){
       
                
-               
+          UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
                 AccessTokenEncrypt(plaintext: (self.loginObj?.userData?.token)!, password: encryptionkey)
                 print(self.loginObj?.userData?.token)
         

@@ -206,7 +206,9 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
             userCnic = ""
         }
 //        {"osVersion": "15.5", "appVersion": "3.1.2", "deviceModel": "iPhone", "channelId": "1", "mobileNo": "03406401050", "imeiNo": "B0749FED5A5D48A38C9DBFF01F4A5663", "cnic": "3740526510394", "otpin": "4231"}
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":DataManager.instance.userCnic!,"mobileNo":(Fetch_MobNo!),"imeiNo":DataManager.instance.imei!,"appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel, "otpin": TF_otp.text!] as [String : Any]
+        
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"mobileNo":(Fetch_MobNo!),"imeiNo":DataManager.instance.imei!,"appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel, "otpin": TF_otp.text!] as [String : Any]
         
         print(parameters)
         
@@ -259,13 +261,15 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
                 
                 else {
                     if let message = self.genResponseObj?.messages {
-                        self.showAlert(title: "", message: message, completion: nil)
+                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        
                     }
                 }
             }
             else {
                 if let message = self.genResponseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
+                    UtilManager.showAlertMessage(message: message, viewController: self)
+                   
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
