@@ -27,19 +27,21 @@ extension NanoLoanApplyViewController {
     
     // MARK: - CurrentLoan
     struct ModelCurrentLoan: Codable {
-        let nlDisbursementID, accountID, loanAvailedAmount: Int
-            let dueDate: String
-            let daysTillDueDate, principalAmountOS: Int
-            let markupAmountOS, totalPayable: Double
-            let loanAvailDate: String
+        let nlDisbursementID, daysTillDueDate, accountID: Int?
+            let loanAvailDate: String?
+            let totalPayable: Double?
+            let dueDate: String?
+            let markupAmountOS: Double?
+            let loanAvailedAmount, principalAmountOS: Int?
 
             enum CodingKeys: String, CodingKey {
                 case nlDisbursementID = "nlDisbursementId"
+                case daysTillDueDate
                 case accountID = "accountId"
-                case loanAvailedAmount, dueDate, daysTillDueDate
-                case principalAmountOS = "principalAmountOs"
+                case loanAvailDate, totalPayable, dueDate
                 case markupAmountOS = "markupAmountOs"
-                case totalPayable, loanAvailDate
+                case loanAvailedAmount
+                case principalAmountOS = "principalAmountOs"
             }
     }
     
@@ -53,15 +55,23 @@ extension NanoLoanApplyViewController {
     
     // MARK: - Datum
     struct ModelNanoLoanEligibilityCheckData: Codable {
-        let nlProductID, maxAmount, minAmount, avgAmount: Int
-        let nlProductDescr: String
-        let repaymentFrequency, processingFeeAmount, markupfee, markupAmountPerDay: Int?
-        let loanAmount, noOfDays: Int?
-        
-        enum CodingKeys: String, CodingKey {
-            case nlProductID = "nlProductId"
-            case maxAmount, minAmount, avgAmount, nlProductDescr, repaymentFrequency, processingFeeAmount, markupfee, markupAmountPerDay, loanAmount, noOfDays
-        }
+        let repaymentFrequency: String
+            let noOfDays: JSONNull?
+            let minAmount, nlProductID: Int
+            let loanAmount: JSONNull?
+            let markupfee: Int
+            let redirect: JSONNull?
+            let maxAmount: Int
+            let markupAmountPerDay: JSONNull?
+            let nlProductDescr: String
+            let avgAmount: Int
+            let processingFeeAmount: JSONNull?
+
+            enum CodingKeys: String, CodingKey {
+                case repaymentFrequency, noOfDays, minAmount
+                case nlProductID = "nlProductId"
+                case loanAmount, markupfee, redirect, maxAmount, markupAmountPerDay, nlProductDescr, avgAmount, processingFeeAmount
+            }
     }
     
     // MARK: - ModelGetLoanCharges

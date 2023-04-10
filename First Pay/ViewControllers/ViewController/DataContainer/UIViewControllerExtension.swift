@@ -10,12 +10,16 @@ import Foundation
 import UIKit
 
 extension UIViewController {
-    func showAlertCustomPopup(title:String? = "", message: String? = "", iconName: String? = nil, buttonNames: [String]? = ["OK"]) {
+    func showAlertCustomPopup(title:String? = "", message: String? = "", iconName: IconNames.iconNameError = .iconError, buttonNames: [[String: AnyObject]]? = [[
+        "buttonName": "OK",
+        "buttonBackGroundColor": UIColor.clrOrange,
+        "buttonTextColor": UIColor.white]] as? [[String: AnyObject]]) {
+            
         let alertCustomPopup = UIStoryboard.init(name: "AlertPopup", bundle: nil).instantiateViewController(withIdentifier: "AlertPopupMessage") as! AlertPopupMessage
         alertCustomPopup.titleMessage = title!
         alertCustomPopup.message = message!
-        alertCustomPopup.buttonArray = buttonNames!
-        alertCustomPopup.iconName = iconName!
+        alertCustomPopup.arrayButtonNames = buttonNames!
+        alertCustomPopup.iconName = iconName.rawValue
         
         alertCustomPopup.modalPresentationStyle = .overFullScreen
         self.present(alertCustomPopup, animated: true)
@@ -47,4 +51,14 @@ extension UIViewController {
         customActivityIndicatory(self.view, startAnimate: false)
 //            ESActivityIndicator.stopAnimatingIndicator(<#T##ESActivityIndicator#>)
     }
+    
+    func dismissToViewController<T>(viewController: T) {
+        for controller in self.navigationController!.viewControllers as Array {
+            if controller.isKind(of: viewController.self as! AnyClass) {
+                self.navigationController!.popToViewController(controller, animated: true)
+                break
+            }
+        }
+    }
+    
 }

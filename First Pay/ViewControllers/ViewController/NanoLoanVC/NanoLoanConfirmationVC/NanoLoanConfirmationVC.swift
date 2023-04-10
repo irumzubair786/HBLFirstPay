@@ -54,6 +54,7 @@ class NanoLoanConfirmationVC: UIViewController {
             }
             else {
                 //MARK: - Loan Failed Successfully
+                self.showAlertCustomPopup(title: "Error!", message: modelApplyLoan?.messages ?? "", iconName: .iconError)
             }
         }
     }
@@ -65,20 +66,24 @@ class NanoLoanConfirmationVC: UIViewController {
     
     var modelGetLoanCharges: NanoLoanApplyViewController.ModelGetLoanCharges? {
         didSet {
-            let totalLoanAmount = selectedAmount!
-            let dailyMArkupFee = (modelGetLoanCharges?.data.markupAmountPerDay ?? 0)
-            let totalMarkupFee = (modelGetLoanCharges?.data.markupAmountTotal ?? 0)
+            let totalLoanAmount = (modelGetLoanCharges?.data.loanAmount ?? 0).twoDecimal()
+            let dailyMarkupFee = (modelGetLoanCharges?.data.markupAmountPerDay ?? 0).twoDecimal()
+            let totalMarkupFee = (modelGetLoanCharges?.data.markupAmountTotal ?? 0).twoDecimal()
             let loanDuration = (modelGetLoanCharges?.data.loanDuration)
-            
-            let processingFee = (modelGetLoanCharges?.data.processingFeeAmount ?? 0)
+            let dueDate = (modelGetLoanCharges?.data.dueDate)
+
+            let processingFee = (modelGetLoanCharges?.data.processingFeeAmount ?? 0).twoDecimal()
+            let processingFed = (modelGetLoanCharges?.data.fed ?? 0).twoDecimal()
+
             let amountRapidOnDueDate = (modelGetLoanCharges?.data.amountToBeRepaid ?? 0)
                                    
-            labelLoanAmount.text = "RS. \(totalLoanAmount))"
-            labelOtherDescription.text = "Processing Fee of Rs. \(processingFee) and FED of Rs. \("-----") will be deducted upfront from the applied loan amount."
+            labelLoanAmount.text = "Rs. \(totalLoanAmount)"
+            labelOtherDescription.text = "Processing Fee of Rs. \(processingFee) and FED of Rs. \(processingFed) will be deducted upfront from the applied loan amount."
             labelLoanDuration.text = loanDuration
-            labelDailyMarkupAmount.text = "RS. \(dailyMArkupFee)"
-            labelTotalMonthlyMarkup.text = "RS. \(totalMarkupFee)"
-            labelAmountRapidDueDate.text = "RS. \(amountRapidOnDueDate)"
+            labelDueDate.text = dueDate
+            labelDailyMarkupAmount.text = "Rs. \(dailyMarkupFee)"
+            labelTotalMonthlyMarkup.text = "Rs. \(totalMarkupFee)"
+            labelAmountRapidDueDate.text = "Rs. \(amountRapidOnDueDate)"
         }
     }
     override func viewDidLoad() {
@@ -112,17 +117,14 @@ class NanoLoanConfirmationVC: UIViewController {
         ]
         
         APIs.postAPI(apiName: .applyLoan, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            if success {
-                let model: ModelApplyLoan? = APIs.decodeDataToObject(data: responseData)
-                print(model)
-                print(model)
-                self.modelApplyLoan = model
-            }
+            let model: ModelApplyLoan? = APIs.decodeDataToObject(data: responseData)
+            self.modelApplyLoan = model
         }
     }
     
     func openNanoLoanConfirmationVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanSuccessfullVC") as! NanoLoanSuccessfullVC
+        
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -30,23 +30,45 @@ class NanoLoanSuccessfullVC: UIViewController {
     @IBOutlet weak var labelAmountRapidDueDate: UILabel!
     
     @IBOutlet weak var buttonDownLoad: UIButton!
-    @IBAction func buttonDownLoad(_ sender: Any) {
-    }
-    @IBOutlet weak var buttonSend: UIButton!
     
-    @IBAction func buttonSend(_ sender: Any) {
+    @IBOutlet weak var buttonShare: UIButton!
+    @IBOutlet weak var viewBackGroundHint: UIView!
+
+    
+    var modelApplyLoan: NanoLoanConfirmationVC.ModelApplyLoan? {
+        didSet {
+            labelAmount.text = "Rs. \(modelApplyLoan?.data.disbursedAmount ?? 0)"
+            labelAmountDescription.text = "Processing fee of Rs. \((modelApplyLoan?.data.processingFee ?? 0).twoDecimal()) and FED of Rs. \((modelApplyLoan?.data.fed ?? 0).twoDecimal()) has been charged."
+            labelTransactionId.text = "\(modelApplyLoan?.data.transactionID ?? 0)"
+            labelDateTime.text = "\(modelApplyLoan?.data.dateTime ?? "")"
+            labelLoanNumber.text = "\(modelApplyLoan?.data.loanNo ?? "")"
+            labelLoanAvailedAmount.text = "Rs. \((modelApplyLoan?.data.loanAmount ?? 0).twoDecimal())"
+            labelRepaymentDueDate.text = "\(modelApplyLoan?.data.dueDate ?? "")"
+            labelAmountRapidDueDate.text = "Rs. \((modelApplyLoan?.data.repaidAmount ?? 0).twoDecimal())"
+        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        viewBackGroundHint.radius()
     }
     @IBAction func buttonCancel(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        dismissToViewController(viewController: AddCashMainVc.self)
     }
     @IBAction func buttonGetNewLoan(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        dismissToViewController(viewController: AddCashMainVc.self)
+    }
+    @IBAction func buttonDownLoad(_ sender: Any) {
+        let myImageScreenShot: UIImage? = self.view.getScreenshot()
+        print(myImageScreenShot)
+        myImageScreenShot?.shareScreenShot(viewController: self)
+        
+    }
+    @IBAction func buttonShare(_ sender: Any) {
+        let myImageScreenShot: UIImage? = self.view.getScreenshot()
+        print(myImageScreenShot)
+        myImageScreenShot?.shareScreenShot(viewController: self)
     }
     
-
+    
 }

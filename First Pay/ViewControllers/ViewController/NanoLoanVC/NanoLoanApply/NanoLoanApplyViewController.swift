@@ -63,9 +63,12 @@ class NanoLoanApplyViewController: UIViewController {
             }
             else {
                 if modelNanoLoanEligibilityCheck?.data?.count ?? 0 > 0 {
-                    labelLoanAmountDescription.text = "You can Apply a loan between Rs. \(modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0)-\(modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0)"
-                    labelOtherDescription.text = modelNanoLoanEligibilityCheck?.data?.first?.nlProductDescr ?? ""
-                    collectionViewLoanAmounts.reloadData()
+                    viewBackGround.isHidden = false
+                    
+                    labelLoanAmountDescription.text = "You can Apply a loan between Rs. \((modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0).twoDecimal()) - \((modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0).twoDecimal())"
+                    
+                    labelOtherDescription.text = "Enjoy the lowest markup rate of \((modelNanoLoanEligibilityCheck?.data?.first?.markupfee ?? 0).twoDecimal())% monthly on loans. Repay early and save on daily markup amount."
+                                        collectionViewLoanAmounts.reloadData()
                 }
                 else {
 
@@ -75,7 +78,12 @@ class NanoLoanApplyViewController: UIViewController {
     }
     var modelGetLoanCharges: ModelGetLoanCharges? {
         didSet {
-            openConfirmationLoanVC()
+            if modelGetLoanCharges?.responsecode == 0 {
+                self.showAlertCustomPopup(title: "Error", message: modelGetLoanCharges?.messages ?? "", iconName: .iconError)
+            }
+            else {
+                openConfirmationLoanVC()
+            }
         }
     }
     
@@ -84,12 +92,16 @@ class NanoLoanApplyViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         textFieldAmount.text = "PKR "
+        viewBackGround.isHidden = true
         
-        viewBenifitRepaying.circle()
         viewApplyButton.circle()
         viewEnterLoanAmount.radius()
         ApplyAmountCell.register(collectionView: collectionViewLoanAmounts)
         textFieldAmount.addTarget(self, action: #selector(changeAmountInTextField), for: .editingChanged)
+        DispatchQueue.main.async {
+            self.viewBenifitRepaying.circle()
+            self.viewBenifitRepaying.radiusLineDashedStroke(radius: self.viewBenifitRepaying.frame.height / 2, color: .clrGreen)
+        }
     }
     func validationError() -> Bool {
         let text = textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: "")
@@ -141,12 +153,8 @@ class NanoLoanApplyViewController: UIViewController {
         ]
         
         APIs.postAPI(apiName: .getLoanCharges, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            if success {
-                let model: ModelGetLoanCharges? = APIs.decodeDataToObject(data: responseData)
-                print(model)
-                print(model)
-                self.modelGetLoanCharges = model
-            }
+            let model: ModelGetLoanCharges? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetLoanCharges = model
         }
     }
     
@@ -193,14 +201,17 @@ extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ApplyAmountCell", for: indexPath) as! ApplyAmountCell
-        cell.labelAmount.text = "PKR \(getLoanAmount(index: indexPath.item))"
+        cell.labelAmount.text = "PKR \(getLoanAmount(index: indexPath.item).twoDecimal())"
         if selectedAmountIndex != nil && indexPath.item == selectedAmountIndex {
             cell.viewBackGround.backgroundColor = .clrOrange
+            cell.labelAmount.textColor = .white
         }
         else {
-            cell.viewBackGround.backgroundColor = .clrBlackWithOccupacy20
+            cell.viewBackGround.backgroundColor = .clrExtraLightGray
+            cell.labelAmount.textColor = .clrTextNormal
         }
-        
+        cell.viewBackGround.borderColor = .clrBlackWithOccupacy20
+        cell.viewBackGround.borderWidth = 1
         return cell
     }
     

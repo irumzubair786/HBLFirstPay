@@ -23,13 +23,13 @@ class NanoLoanRepayViewController: UIViewController {
     @IBOutlet weak var labelLoanAvailedAmount: UILabel!
     @IBOutlet weak var labelDueDateTitle: UILabel!
     @IBOutlet weak var labelDueDate: UILabel!
-
+    
     @IBOutlet weak var labelOutStandingMarkupAmountTitle: UILabel!
     @IBOutlet weak var labelOutStandingMarkupAmount: UILabel!
-
+    
     @IBOutlet weak var labelDaysTillDueDateTitle: UILabel!
     @IBOutlet weak var labelDaysTillDueDate: UILabel!
-
+    
     @IBOutlet weak var viewBackGroundAmount: UIView!
     @IBOutlet weak var viewDescriptionIfDueDate: UIView!
     @IBOutlet weak var viewDescriptionIfDueDateBackground: UIView!
@@ -41,10 +41,15 @@ class NanoLoanRepayViewController: UIViewController {
     @IBOutlet weak var stackViewRemainingDays: UIStackView!
     
     var callBackButtonApply: (()->())!
-
+    
     var modelGetActiveLoanToPay: ModelGetActiveLoanToPay? {
         didSet {
-            self.openNanoLoanRepayConfirmationVC()
+            if modelGetActiveLoanToPay?.responsecode == 0 {
+                self.showAlertCustomPopup(title: "Error!", message: modelGetActiveLoanToPay?.messages, iconName: .iconError)
+            }
+            else {
+                self.openNanoLoanRepayConfirmationVC()
+            }
         }
     }
     
@@ -52,11 +57,11 @@ class NanoLoanRepayViewController: UIViewController {
         didSet {
             if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
                 if let currentLoan = modelGetActiveLoan?.data.currentLoan.first {
-                    labelAmount.text = "RS. \(currentLoan.principalAmountOS)"
-                    labelLoanAvailedAmount.text = "RS. \(currentLoan.loanAvailedAmount)"
-                    labelDueDate.text = "\(currentLoan.dueDate)"
-                    labelOutStandingMarkupAmount.text = "RS. \(currentLoan.principalAmountOS)"
-                    let remaningDays = currentLoan.dueDate.compareDateDifferenceFromCurrentDate()
+                    labelAmount.text = "Rs. \((currentLoan.principalAmountOS ?? 0).twoDecimal())"
+                    labelLoanAvailedAmount.text = "Rs. \((currentLoan.loanAvailedAmount ?? 0).twoDecimal())"
+                    labelDueDate.text = "\(currentLoan.dueDate ?? "")"
+                    labelOutStandingMarkupAmount.text = "Rs. \((currentLoan.principalAmountOS ?? 0).twoDecimal())"
+                    let remaningDays = currentLoan.daysTillDueDate ?? 0
                     labelDaysTillDueDate.text = "\(remaningDays) \(remaningDays == 0 ? "Last Day" : remaningDays == 1 ? "Day" : "Days") "
                     
                     if remaningDays < 0 {
@@ -91,19 +96,19 @@ class NanoLoanRepayViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
-        viewBenifitRepaying.circle()
         viewApplyButton.circle()
         viewOverDueLabel.radius(color: .clrLightRed)
         viewDescriptionIfDueDateBackground.radius()
         viewOverDueLabel.circle()
         viewDescriptionIfDueDateBackground.backgroundColor = .clrLightRedWithOccupacy05
         DispatchQueue.main.async {
-            
+            self.viewBenifitRepaying.circle()
+            self.viewBenifitRepaying.radiusLineDashedStroke(radius: self.viewBenifitRepaying.frame.height / 2, color: .clrGreen)
         }
-
+        
     }
     @IBAction func buttonMarkupCalendar(_ sender: Any) {
     }
@@ -111,15 +116,7 @@ class NanoLoanRepayViewController: UIViewController {
         openNanoLoanBenifitVC()
     }
     @IBAction func buttonRepayNow(_ sender: Any) {
-        let number = 4444440094
-        number.commaRepresentation
-        if #available(iOS 15.0, *) {
-            print(number.formatted())
-        } else {
-            // Fallback on earlier versions
-        }
-        
-//        getActiveLoanToPay()
+        getActiveLoanToPay()
     }
     
     func getActiveLoanToPay() {
@@ -133,12 +130,8 @@ class NanoLoanRepayViewController: UIViewController {
         ]
         
         APIs.postAPI(apiName: .getActiveLoanToPay, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            if success {
-                let model: ModelGetActiveLoanToPay? = APIs.decodeDataToObject(data: responseData)
-                print(model)
-                print(model)
-                self.modelGetActiveLoanToPay = model
-            }
+            let model: ModelGetActiveLoanToPay? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetActiveLoanToPay = model
         }
     }
     
@@ -162,47 +155,56 @@ extension NanoLoanRepayViewController {
     // MARK: - ModelGetActiveLoanToPay
     struct ModelGetActiveLoanToPay: Codable {
         let responsecode: Int
-        let data: DataClass
+        let data: ModelGetActiveLoanToPayData?
         let responseblock: JSONNull?
         let messages: String
     }
-
+    
     // MARK: - DataClass
     struct ModelGetActiveLoanToPayData: Codable {
-        let loanAmount, processingFeeAmount: Int
-        let loanDuration, dueDate: String
-        let markupAmountPerDay: Double
-        let markupAmountTotal, amountToBeRepaid: Int
-        let fed: Double
+        let loanNumber: String?
+        let statusDescr, dateTime: JSONNull?
+        let loanAvailedAmount, processingFee, daysTillDueDate: Int?
+        let transRefNum: JSONNull?
+        let status: Int?
+        let outstandingMarkupAmount: Double?
+        let dueDate: String?
+        let payableTotalAmount: Double?
+        let nlDisbursementID: Int?
+        
+        enum CodingKeys: String, CodingKey {
+            case loanNumber, statusDescr, dateTime, loanAvailedAmount, processingFee, daysTillDueDate, transRefNum, status, outstandingMarkupAmount, dueDate, payableTotalAmount
+            case nlDisbursementID = "nlDisbursementId"
+        }
     }
-
+    
     // MARK: - Encode/decode helpers
-
+    
     class JSONNull: Codable, Hashable {
-
+        
         public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
             return true
         }
-
+        
         public var hashValue: Int {
             return 0
         }
-
+        
         public init() {}
-
+        
         public required init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
             if !container.decodeNil() {
                 throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
             }
         }
-
+        
         public func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             try container.encodeNil()
         }
     }
-
+    
 }
 
 extension String {
@@ -221,7 +223,7 @@ extension String {
         // Replace the hour (time) of both dates with 00:00
         let date1 = calendar.startOfDay(for: currentDate) // firstDate
         let date2 = calendar.startOfDay(for: selectedDate!) // secondDate
-
+        
         let components = calendar.dateComponents([.day], from: date1, to: date2)
         return components.day ?? 0
     }
@@ -238,7 +240,7 @@ extension String {
         // Replace the hour (time) of both dates with 00:00
         let date1 = calendar.startOfDay(for: currentDate) // firstDate
         let date2 = calendar.startOfDay(for: selectedDate!) // secondDate
-
+        
         let components = calendar.dateComponents([.day], from: date1, to: date2)
         return components.day ?? 0
     }

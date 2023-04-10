@@ -61,15 +61,22 @@ class AlertPopupMessage: UIViewController {
     @IBOutlet weak var labelErrorCode: UILabel!
     
     @IBOutlet weak var labelDescription: UILabel!
-    var arrayButtonNames = [String]()
+    
+    
+    var titleMessage = ""
+    var message = ""
+    //Sample Button Array
+//    ["buttonName": "",
+//     "buttonBackGroundColor": UIColor,
+//     "buttonTextColor": UIColor
+//    ]
+    var arrayButtonNames = [[String: AnyObject]]()
+    var complitionButtonAction: ((String)->())!
+    var iconName = ""
+    
     override func viewDidAppear(_ animated: Bool) {
         self.view.drawBackgroundBlur(withTag: 999)
     }
-    var titleMessage = ""
-    var message = ""
-    var buttonArray = [String]()
-    var complitionButtonAction: ((String)->())!
-    var iconName = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         viewBackGround.radius(radius: 40)
@@ -94,26 +101,49 @@ class AlertPopupMessage: UIViewController {
         viewButtonThree.isHidden = true
         viewButtonFour.isHidden = true
         viewButtonFive.isHidden = true
-
+        //MARK: - Sample
+//        ["buttonName": "",
+//         "buttonBackGroundColor": UIColor,
+//         "buttonTextColor": UIColor
+//        ]
         for (index, buttonName) in arrayButtonNames.enumerated() {
             if index == 0 {
-                labelButtonOne.text = buttonName
+                labelButtonOne.text = buttonName["buttonName"] as? String
+                labelButtonOne.textColor = buttonName["buttonTextColor"] as? UIColor
+                viewButtonOneInner.backgroundColor = buttonName[
+                    "buttonBackGroundColor"] as? UIColor
             }
             if index == 1 {
-                labelButtonTwo.text = buttonName
                 viewButtonOne.isHidden = false
+                
+                labelButtonTwo.text = buttonName["buttonName"] as? String
+                labelButtonTwo.textColor = buttonName["buttonTextColor"] as? UIColor
+                viewButtonTwoInner.backgroundColor = buttonName[
+                    "buttonBackGroundColor"] as? UIColor
             }
             if index == 2 {
-                labelButtonThree.text = buttonName
                 viewButtonTwo.isHidden = false
+                
+                labelButtonThree.text = buttonName["buttonName"] as? String
+                labelButtonThree.textColor = buttonName["buttonTextColor"] as? UIColor
+                viewButtonThreeInner.backgroundColor = buttonName[
+                    "buttonBackGroundColor"] as? UIColor
             }
             if index == 3 {
-                labelButtonFour.text = buttonName
                 viewButtonThree.isHidden = false
+                
+                labelButtonFour.text = buttonName["buttonName"] as? String
+                labelButtonFour.textColor = buttonName["buttonTextColor"] as? UIColor
+                viewButtonFourInner.backgroundColor = buttonName[
+                    "buttonBackGroundColor"] as? UIColor
             }
             if index == 4 {
-                labelButtonFive.text = buttonName
                 viewButtonFour.isHidden = false
+                
+                labelButtonFive.text = buttonName["buttonName"] as? String
+                labelButtonFive.textColor = buttonName["buttonTextColor"] as? UIColor
+                viewButtonFiveInner.backgroundColor = buttonName[
+                    "buttonBackGroundColor"] as? UIColor
             }
         }
         viewButtonOneInner.radius(color: .clrOrange, borderWidth: 1)
@@ -131,10 +161,11 @@ class AlertPopupMessage: UIViewController {
     }
     
     func buttonPressed(buttonNumber: Int) {
+        let buttonName = self.arrayButtonNames[buttonNumber]["buttonName"] as? String ?? "Error Button"
         self.view.backgroundColor = .clear
         view.viewWithTag(999)?.removeFromSuperview()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.complitionButtonAction(self.arrayButtonNames[buttonNumber])
+            self.complitionButtonAction?(buttonName)
             self.dismiss(animated: true)
         }
     }

@@ -24,8 +24,8 @@ class NanoLoanHistoryPastLoanCell: UITableViewCell {
 
     var modelCurrentLoan: NanoLoanApplyViewController.ModelCurrentLoan? {
         didSet {
-            labelAmount.text = "RS. \(modelCurrentLoan?.loanAvailedAmount ?? 0)"
-            labelRePaymentAmount.text = "RS. \(modelCurrentLoan?.principalAmountOS ?? 0)"
+            labelAmount.text = "Rs. \((modelCurrentLoan?.loanAvailedAmount ?? 0).twoDecimal())"
+            labelRePaymentAmount.text = "Rs. \((modelCurrentLoan?.principalAmountOS ?? 0).twoDecimal())"
             labelAvailedDate.text = "\(modelCurrentLoan?.loanAvailDate ?? "")"
         }
     }

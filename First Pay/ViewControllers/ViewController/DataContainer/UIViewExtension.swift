@@ -35,6 +35,21 @@ extension UIView {
         blurredView.tag = withTag
         self.insertSubview(blurredView, at: 0)
     }
+    func getScreenshot() -> UIImage? {
+        //creates new image context with same size as view
+        // UIGraphicsBeginImageContextWithOptions (scale=0.0) for high res capture
+        UIGraphicsBeginImageContextWithOptions(self.frame.size, true, 0.0)
+
+        // renders the view's layer into the current graphics context
+        if let context = UIGraphicsGetCurrentContext() { self.layer.render(in: context) }
+
+        // creates UIImage from what was drawn into graphics context
+        let screenshot: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
+
+        // clean up newly created context and return screenshot
+        UIGraphicsEndImageContext()
+        return screenshot
+    }
 }
 final class CustomVisualEffectView: UIVisualEffectView {
     /// Create visual effect view with given effect and its intensity

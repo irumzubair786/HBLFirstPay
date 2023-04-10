@@ -17,6 +17,9 @@ extension UIColor {
     static let clrLightGrayCalendar = UIColor(hexString: "8F92A1")
 
     static let clrLightGray = UIColor(hexString: "BDBDBD")
+    static let clrExtraLightGray = UIColor(hexString: "F5F5F5")
+
+    
     static let clrOrange = UIColor(hexString: "F19434")
     static let clrLightRed = UIColor(hexString: "EE6266")
     static let clrBlack = UIColor(hexString: "202734")
