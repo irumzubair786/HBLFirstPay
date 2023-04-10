@@ -25,10 +25,20 @@ class VerifiedAccountVC: UIViewController {
     var totalMonthlyLimitCr1 : Int?
     var totalYearlyLimitCr1 : Int?
     var balanceLimit1 : Int?
+    var  formattedString : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
+                let number = balanceLimit
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+//        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+       formattedString = formatter.string(from: NSNumber(value: number!)) ?? ""
+        
+        
         fetchDataFromApi()
+
         // Do any additional setup after loading the view.
     }
     @IBOutlet weak var buttonBack: UIButton!
@@ -54,7 +64,7 @@ class VerifiedAccountVC: UIViewController {
     
     func fetchDataFromApi()
     {
-        labelBalnaceLimitLevel0.text = "\(balanceLimit!)"
+        labelBalnaceLimitLevel0.text = "\(formattedString!)"
         labelBalnaceLimitLevel1.text =  "\(balanceLimit1!)"
         
         labelDailyLimitCrlevel0.text = "\(totalDailyLimitCr!)"

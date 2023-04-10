@@ -311,7 +311,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         
         if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
         {
-            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
             if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                 vc.balanceLimit = Int(balnceLimit)
                 print("balnceLimit",balnceLimit)
@@ -606,17 +606,20 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         return """
         <html>
                <body>
+        
                <h3>
                <p style="text-align: center;"><b>ACCOUNT MAINTENANCE </b></p>
-                        <p style="text-align: center;"><b>
-                  CERTIFICATE </b></p>
+                        <p style="text-align, Inter: center;"><b>
+                    <p style="text-align: center;">
+                   CERTIFICATE </b></p>
                </h3>
               <style>
+
                        p {
                         font-size: 28px;
                          }
                          </style>
-               <p style="text-align: center;" style="font-size: 300px;">
+               <p style="text-align: center;" style="font-size: 200px;">
                This is to certify that</p>
                <p style="text-align: center;">
                <b>\(DataManager.instance.accountTitle!)</b></p>
@@ -642,7 +645,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                </p>
              
 
-               <p style="text-align: center;">
+             <p style="text-align: center;" style="font-size: 150px;">
                HBL Microfinance Bank Ltd
                16th & 17th Floor
                </p>
@@ -654,7 +657,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                Toll Free 0800-42563 OR 0800-34778<br>
                </p>
                </body>
-               
+             
                </html>
         """
     }
