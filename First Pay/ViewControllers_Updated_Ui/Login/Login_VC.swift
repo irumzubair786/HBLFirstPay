@@ -49,6 +49,9 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.pinTextField.resignFirstResponder()
             
             if self.pinTextField.text?.count == 6 {
+            UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
+             let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
+                                    print("Remover \(removePessi)")
                 self.pinTextField.resignFirstResponder()
                 self.loginAction()
             }
@@ -62,6 +65,10 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     @objc func changeTextInTextField() {
         
         if self.pinTextField.text?.count == 6 {
+            UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
+             let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
+             print("Remover \(removePessi)")
+            
             self.pinTextField.resignFirstResponder()
             self.loginAction()
         }
