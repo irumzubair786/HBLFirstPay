@@ -74,7 +74,7 @@ class AlertPopupMessage: UIViewController {
         viewBackGround.radius(radius: 40)
         setUISetting()
         
-        if iconName != nil {
+        if iconName != "" {
             imageViewMessageIcon.image = UIImage(named: iconName)
         }
         else {
