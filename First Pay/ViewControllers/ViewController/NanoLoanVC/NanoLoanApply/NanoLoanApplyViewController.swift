@@ -28,6 +28,7 @@ class NanoLoanApplyViewController: UIViewController {
     
     @IBOutlet weak var imageViewForwordButtonGray: UIImageView!
     
+    @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var textFieldAmount: UITextField!
     var selectedAmountIndex: Int? {
         didSet {
@@ -51,13 +52,23 @@ class NanoLoanApplyViewController: UIViewController {
     var modelNanoLoanEligibilityCheck: ModelNanoLoanEligibilityCheck? {
         didSet {
             if modelNanoLoanEligibilityCheck?.responsecode == 0 {
-                self.showAlertCustomPopup(title: "Alert!", message: modelNanoLoanEligibilityCheck?.messages)
+                self.viewBackGround.isHidden = true
+                self.showEmptyView(message: modelNanoLoanEligibilityCheck?.messages, iconName: "repayEmptyIcon", buttonName: "Apply") { callBackAction, emptyView in
+                    if callBackAction {
+                        print("Function call")
+                        //self.viewBackGround.isHidden = false
+                        //emptyView.removeFromSuperview()
+                    }
+                }
             }
             else {
-                if modelNanoLoanEligibilityCheck?.data.count ?? 0 > 0 {
-                    labelLoanAmountDescription.text = "You can Apply a loan between Rs. \(modelNanoLoanEligibilityCheck?.data.first?.minAmount ?? 0)-\(modelNanoLoanEligibilityCheck?.data.first?.maxAmount ?? 0)"
-                    labelOtherDescription.text = modelNanoLoanEligibilityCheck?.data.first?.nlProductDescr ?? ""
+                if modelNanoLoanEligibilityCheck?.data?.count ?? 0 > 0 {
+                    labelLoanAmountDescription.text = "You can Apply a loan between Rs. \(modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0)-\(modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0)"
+                    labelOtherDescription.text = modelNanoLoanEligibilityCheck?.data?.first?.nlProductDescr ?? ""
                     collectionViewLoanAmounts.reloadData()
+                }
+                else {
+
                 }
             }
         }
@@ -82,8 +93,8 @@ class NanoLoanApplyViewController: UIViewController {
     }
     func validationError() -> Bool {
         let text = textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: "")
-        let minAmount = (modelNanoLoanEligibilityCheck?.data.first?.minAmount ?? 0) - 1
-        let maxAmount = (modelNanoLoanEligibilityCheck?.data.first?.maxAmount ?? 0) + 1
+        let minAmount = (modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0) - 1
+        let maxAmount = (modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0) + 1
         if (Int(text)! > minAmount && Int(text)! < maxAmount) {
             return false
         }
@@ -111,11 +122,10 @@ class NanoLoanApplyViewController: UIViewController {
         //        agar ni a raha to ye api call karin ga r data disply karwa dain ga
         APIs.postAPI(apiName: .nanoLoanEligibilityCheck, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             if success {
-                let model: ModelNanoLoanEligibilityCheck? = APIs.decodeDataToObject(data: responseData)
-                print(model)
-                print(model)
-                self.modelNanoLoanEligibilityCheck = model
+                
             }
+            let model: ModelNanoLoanEligibilityCheck? = APIs.decodeDataToObject(data: responseData)
+            self.modelNanoLoanEligibilityCheck = model
         }
     }
     
@@ -155,16 +165,14 @@ class NanoLoanApplyViewController: UIViewController {
         textFieldAmount.text = format(with: "PKR XXXXXX", phone: text)
         if textFieldAmount.text != "" {
             text = textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: "")
-            let minAmount = (modelNanoLoanEligibilityCheck?.data.first?.minAmount ?? 0) - 1
-            let maxAmount = (modelNanoLoanEligibilityCheck?.data.first?.maxAmount ?? 0) + 1
+            let minAmount = (modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0) - 1
+            let maxAmount = (modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0) + 1
 
             let selectedColor = (Int(text)! > minAmount && Int(text)! < maxAmount) ? UIColor.clrGreen : UIColor.clrLightRed
             
             textFieldAmount.attributedText = attributedText(textField: textFieldAmount, withString: textFieldAmount.text!, boldString: text, boldStringColor: selectedColor)
         }
     }
-    
-    
 }
 
 
@@ -209,13 +217,13 @@ extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionV
     
     func getLoanAmount(index: Int) -> Int {
         if index == 0 {
-            return modelNanoLoanEligibilityCheck?.data.first?.minAmount ?? 0
+            return modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0
         }
         else if index == 1 {
-            return modelNanoLoanEligibilityCheck?.data.first?.avgAmount ?? 0
+            return modelNanoLoanEligibilityCheck?.data?.first?.avgAmount ?? 0
         }
         else if index == 2 {
-            return modelNanoLoanEligibilityCheck?.data.first?.maxAmount ?? 0
+            return modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0
         }
         else {
             return 0
@@ -225,107 +233,7 @@ extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionV
     
 }
 
-extension NanoLoanApplyViewController {
-    // This file was generated from JSON Schema using quicktype, do not modify it directly.
-    // To parse the JSON, add this file to your project and do:
-    
-    // MARK: - ModelGetActiveLoan
-    struct ModelGetActiveLoan: Codable {
-        let messages: String
-        let responseblock: JSONNull?
-        let responsecode: Int
-        let data: ModelActiveLoanData
-    }
-    
-    // MARK: - DataClass
-    struct ModelActiveLoanData: Codable {
-        let loanHistory, currentLoan: [ModelCurrentLoan]
-    }
-    
-    // MARK: - CurrentLoan
-    struct ModelCurrentLoan: Codable {
-        let loanAmount: Int
-        let accountNo: String
-        let markupRate: Int
-        let accountTitle: String
-        let installmentAmount: Int
-        let startDate: String
-        let nlDisbursementID, totalInstallments, totalMarkupAmount: Int
-        let loanNo, endDate, nlProductDescr: String
-        
-        enum CodingKeys: String, CodingKey {
-            case loanAmount = "loan_amount"
-            case accountNo = "account_no"
-            case markupRate = "markup_rate"
-            case accountTitle = "account_title"
-            case installmentAmount = "installment_amount"
-            case startDate = "start_date"
-            case nlDisbursementID = "nl_disbursement_id"
-            case totalInstallments = "total_installments"
-            case totalMarkupAmount = "total_markup_amount"
-            case loanNo = "loan_no"
-            case endDate = "end_date"
-            case nlProductDescr = "nl_product_descr"
-        }
-    }
-    
-    // MARK: - ModelNanoLoanEligibilityCheck
-    struct ModelNanoLoanEligibilityCheck: Codable {
-        let responsecode: Int
-        let data: [ModelNanoLoanEligibilityCheckData]
-        let responseblock: JSONNull?
-        let messages: String
-    }
-    
-    // MARK: - Datum
-    struct ModelNanoLoanEligibilityCheckData: Codable {
-        let nlProductID, maxAmount, minAmount, avgAmount: Int
-        let nlProductDescr: String
-        let repaymentFrequency, processingFeeAmount, markupfee, markupAmountPerDay: Int?
-        let loanAmount, noOfDays: Int?
-        
-        enum CodingKeys: String, CodingKey {
-            case nlProductID = "nlProductId"
-            case maxAmount, minAmount, avgAmount, nlProductDescr, repaymentFrequency, processingFeeAmount, markupfee, markupAmountPerDay, loanAmount, noOfDays
-        }
-    }
-    
-    
-    // MARK: - ModelGetLoanCharges
-    struct ModelGetLoanCharges: Codable {
-        let responsecode: Int
-        let responseblock: JSONNull?
-        let messages: String
-        let data: [String: Double?]
-    }
-    
-    
-    // MARK: - Encode/decode helpers
-    class JSONNull: Codable, Hashable {
-        
-        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
-            return true
-        }
-        
-        public var hashValue: Int {
-            return 0
-        }
-        
-        public init() {}
-        
-        public required init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-            if !container.decodeNil() {
-                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
-            }
-        }
-        
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-            try container.encodeNil()
-        }
-    }
-}
+
 
 
 /// mask example: `+X (XXX) XXX-XXXX`

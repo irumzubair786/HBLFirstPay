@@ -45,14 +45,20 @@ extension NanoLoanHistoryViewController: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 && indexPath.row == 0 {
+        
+        var row = indexPath.row
+        if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 && row != 0 {
+            row -= 1
+        }
+        
+        if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 && row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NanoLoanHistoryPayAbleLoanAmountCell") as! NanoLoanHistoryPayAbleLoanAmountCell
-            cell.modelCurrentLoan = modelGetActiveLoan?.data.loanHistory[indexPath.row]
+            cell.modelCurrentLoan = modelGetActiveLoan?.data.loanHistory[row]
             return cell
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NanoLoanHistoryPastLoanCell") as! NanoLoanHistoryPastLoanCell
-            cell.modelCurrentLoan = modelGetActiveLoan?.data.loanHistory[indexPath.row-1]
+            cell.modelCurrentLoan = modelGetActiveLoan?.data.loanHistory[row]
             return cell
         }
     }

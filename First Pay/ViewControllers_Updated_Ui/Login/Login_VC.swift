@@ -291,6 +291,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.showToast(title: "No Internet Available")
             return
         }
+        UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
         showActivityIndicator()
         var pessi : String?
         var userCnic : String?

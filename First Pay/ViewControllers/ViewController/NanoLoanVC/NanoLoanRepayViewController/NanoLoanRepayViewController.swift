@@ -37,7 +37,11 @@ class NanoLoanRepayViewController: UIViewController {
     @IBOutlet weak var viewOverDueLabel: UIView!
     @IBOutlet weak var labelOverDue: UILabel!
     
+    @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var stackViewRemainingDays: UIStackView!
+    
+    var callBackButtonApply: (()->())!
+
     var modelGetActiveLoanToPay: ModelGetActiveLoanToPay? {
         didSet {
             self.openNanoLoanRepayConfirmationVC()
@@ -48,11 +52,11 @@ class NanoLoanRepayViewController: UIViewController {
         didSet {
             if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
                 if let currentLoan = modelGetActiveLoan?.data.currentLoan.first {
-                    labelAmount.text = "RS. \(currentLoan.installmentAmount)"
-                    labelLoanAvailedAmount.text = "RS. \(currentLoan.loanAmount)"
-                    labelDueDate.text = "\(currentLoan.endDate)"
-                    labelOutStandingMarkupAmount.text = "RS. \(currentLoan.installmentAmount)"
-                    let remaningDays = currentLoan.endDate.compareDateDifferenceFromCurrentDate()
+                    labelAmount.text = "RS. \(currentLoan.principalAmountOS)"
+                    labelLoanAvailedAmount.text = "RS. \(currentLoan.loanAvailedAmount)"
+                    labelDueDate.text = "\(currentLoan.dueDate)"
+                    labelOutStandingMarkupAmount.text = "RS. \(currentLoan.principalAmountOS)"
+                    let remaningDays = currentLoan.dueDate.compareDateDifferenceFromCurrentDate()
                     labelDaysTillDueDate.text = "\(remaningDays) \(remaningDays == 0 ? "Last Day" : remaningDays == 1 ? "Day" : "Days") "
                     
                     if remaningDays < 0 {
@@ -70,7 +74,15 @@ class NanoLoanRepayViewController: UIViewController {
                         viewDescriptionIfDueDate.isHidden = true
                         self.viewBackGroundAmount.setShadow()
                     }
-                    
+                }
+            }
+            else {
+                self.viewBackGround.isHidden = true
+                self.showEmptyView(message: "No Loan History Found. Tap Apply to Get New Loan", iconName: "repayEmptyIcon", buttonName: "Apply") { callBackActionApply, emptyView in
+                    if callBackActionApply {
+                        print("Function call")
+                        self.callBackButtonApply?()
+                    }
                 }
             }
         }
@@ -99,7 +111,15 @@ class NanoLoanRepayViewController: UIViewController {
         openNanoLoanBenifitVC()
     }
     @IBAction func buttonRepayNow(_ sender: Any) {
-        getActiveLoanToPay()
+        let number = 4444440094
+        number.commaRepresentation
+        if #available(iOS 15.0, *) {
+            print(number.formatted())
+        } else {
+            // Fallback on earlier versions
+        }
+        
+//        getActiveLoanToPay()
     }
     
     func getActiveLoanToPay() {
@@ -142,16 +162,18 @@ extension NanoLoanRepayViewController {
     // MARK: - ModelGetActiveLoanToPay
     struct ModelGetActiveLoanToPay: Codable {
         let responsecode: Int
+        let data: DataClass
         let responseblock: JSONNull?
         let messages: String
-        let data: ModelGetActiveLoanToPayData
     }
 
     // MARK: - DataClass
     struct ModelGetActiveLoanToPayData: Codable {
-        let chargesAmount, principalAmount, markupAmount: Int
-        let statusDescr: String?
-        let status: Int
+        let loanAmount, processingFeeAmount: Int
+        let loanDuration, dueDate: String
+        let markupAmountPerDay: Double
+        let markupAmountTotal, amountToBeRepaid: Int
+        let fed: Double
     }
 
     // MARK: - Encode/decode helpers

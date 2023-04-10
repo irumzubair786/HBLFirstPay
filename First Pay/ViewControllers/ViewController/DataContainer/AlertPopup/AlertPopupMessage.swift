@@ -59,6 +59,7 @@ class AlertPopupMessage: UIViewController {
     
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelErrorCode: UILabel!
+    
     @IBOutlet weak var labelDescription: UILabel!
     var arrayButtonNames = [String]()
     override func viewDidAppear(_ animated: Bool) {

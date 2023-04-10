@@ -66,6 +66,9 @@ class NanoLoanContainer: UIViewController {
             ViewEmbedder.embed(parent: self, container: containerView, child: self.nanoLoanRepayViewController, previous: nil)
             DispatchQueue.main.async {
                 self.nanoLoanRepayViewController.modelGetActiveLoan = self.modelGetActiveLoan
+                self.nanoLoanRepayViewController.callBackButtonApply = {
+                    self.openApplyLoanViewController()
+                }
             }
         }
         else {
@@ -77,6 +80,9 @@ class NanoLoanContainer: UIViewController {
                     self.nanoLoanRepayViewController = vc as? NanoLoanRepayViewController
                     DispatchQueue.main.async {
                         self.nanoLoanRepayViewController.modelGetActiveLoan = self.modelGetActiveLoan
+                        self.nanoLoanRepayViewController.callBackButtonApply = {
+                            self.openApplyLoanViewController()
+                        }
                     }
                 }
         }

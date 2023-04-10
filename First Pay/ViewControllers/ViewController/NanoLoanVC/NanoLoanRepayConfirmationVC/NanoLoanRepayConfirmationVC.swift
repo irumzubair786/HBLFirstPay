@@ -57,12 +57,12 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
             if let currentLoan = modelGetActiveLoan?.data.currentLoan.first {
-                labelLoanNumber.text = "\(currentLoan.loanNo)"
-                labelAmount.text = "RS. \(currentLoan.installmentAmount)"
-                labelLoanAvailedAmount.text = "RS. \(currentLoan.loanAmount)"
-                labelDueDate.text = currentLoan.endDate
+//                labelLoanNumber.text = "\(currentLoan.loanNo)"
+                labelAmount.text = "RS. \(currentLoan.principalAmountOS)"
+                labelLoanAvailedAmount.text = "RS. \(currentLoan.loanAvailedAmount)"
+                labelDueDate.text = currentLoan.dueDate
                 labelProcessingFee.text = "0.00"
-                labelMarkupCharged.text = "RS. \(currentLoan.totalMarkupAmount)"
+                labelMarkupCharged.text = "RS. \(currentLoan.markupAmountOS)"
                 viewBackGroundTotalAmount.radiusLineDashedStroke()
             }
         }
@@ -115,21 +115,21 @@ extension NanoLoanRepayConfirmationVC {
     // MARK: - ModelPayActiveLoan
     struct ModelPayActiveLoan: Codable {
         let responsecode: Int
-        let messages: String
-        let data: ModelPayActiveLoanData
+        let data: DataClass
         let responseblock: JSONNull?
+        let messages: String
     }
 
-    // MARK: - ModelPayActiveLoanData
-    struct ModelPayActiveLoanData: Codable {
-        let statusDescr: String
-        let status, principalAmount: Int
-        let markupAmount: Double
-        let chargesAmount: Int
+    // MARK: - DataClass
+    struct DataClass: Codable {
+        let loanAmount, processingFeeAmount: Int
+        let loanDuration, dueDate: String
+        let markupAmountPerDay: Double
+        let markupAmountTotal, amountToBeRepaid: Int
+        let fed: Double
     }
 
     // MARK: - Encode/decode helpers
-
     class JSONNull: Codable, Hashable {
 
         public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {

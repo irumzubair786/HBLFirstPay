@@ -21,6 +21,23 @@ extension UIViewController {
         self.present(alertCustomPopup, animated: true)
     }
     
+    func showEmptyView(message: String? = "", iconName: String? = nil, buttonName: String? = "OK", complition: @escaping(_ actionCall: Bool, _ emptyView: UIView) -> Void) {
+        
+//        , completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+            
+        let emptyVC = UIStoryboard.init(name: "AlertPopup", bundle: nil).instantiateViewController(withIdentifier: "EmptyVC") as! EmptyVC
+        emptyVC.messageDescription = message!
+        emptyVC.buttonName = buttonName!
+        emptyVC.iconName = iconName!
+        emptyVC.callBackButtonAction = {
+            complition(true, emptyVC.view)
+        }
+        emptyVC.view.frame = self.view.frame
+        self.view.addSubview(emptyVC.view)
+        
+//        emptyVC.modalPresentationStyle = .overFullScreen
+//        self.present(emptyVC, animated: false)
+    }
     public func showActivityIndicator2() {
         customActivityIndicatory(self.view, startAnimate: true)
 //            ESActivityIndicator.startAnimatingIndicator(self.view)

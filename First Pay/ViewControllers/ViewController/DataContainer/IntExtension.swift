@@ -13,7 +13,7 @@ extension Int {
 
     private static var commaFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
+        formatter.numberStyle = .currency
         return formatter
     }()
 

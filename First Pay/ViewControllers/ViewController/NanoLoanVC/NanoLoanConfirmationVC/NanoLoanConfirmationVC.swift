@@ -66,15 +66,16 @@ class NanoLoanConfirmationVC: UIViewController {
     var modelGetLoanCharges: NanoLoanApplyViewController.ModelGetLoanCharges? {
         didSet {
             let totalLoanAmount = selectedAmount!
-            let dailyMArkupFee = (modelGetLoanCharges?.data["markupAmountPerDay"] as? Double ?? 0)
-            let totalMarkupFee = (modelGetLoanCharges?.data["markupAmountPerDay"] as? Double ?? 0) * (modelGetLoanCharges?.data["noOfDays"] as? Double ?? 0)
-            let noOfDays = (modelGetLoanCharges?.data["noOfDays"] as? Double ?? 0)
-            let processingFee = (modelGetLoanCharges?.data["processingFeeAmount"] as? Double ?? 0)
-            let amountRapidOnDueDate = (Double(totalLoanAmount) + totalMarkupFee)
+            let dailyMArkupFee = (modelGetLoanCharges?.data.markupAmountPerDay ?? 0)
+            let totalMarkupFee = (modelGetLoanCharges?.data.markupAmountTotal ?? 0)
+            let loanDuration = (modelGetLoanCharges?.data.loanDuration)
+            
+            let processingFee = (modelGetLoanCharges?.data.processingFeeAmount ?? 0)
+            let amountRapidOnDueDate = (modelGetLoanCharges?.data.amountToBeRepaid ?? 0)
                                    
             labelLoanAmount.text = "RS. \(totalLoanAmount))"
             labelOtherDescription.text = "Processing Fee of Rs. \(processingFee) and FED of Rs. \("-----") will be deducted upfront from the applied loan amount."
-            labelLoanDuration.text = "\(noOfDays) Days"
+            labelLoanDuration.text = loanDuration
             labelDailyMarkupAmount.text = "RS. \(dailyMArkupFee)"
             labelTotalMonthlyMarkup.text = "RS. \(totalMarkupFee)"
             labelAmountRapidDueDate.text = "RS. \(amountRapidOnDueDate)"
@@ -106,7 +107,7 @@ class NanoLoanConfirmationVC: UIViewController {
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
             "amount" : "\(selectedAmount!)",
-            "productId" : "\(Int(modelGetLoanCharges?.data["nlProductId"] as? Double ?? 0))",
+            "productId" : "\(Int(modelNanoLoanEligibilityCheck?.data?.first?.nlProductID ?? 0))",
             "loanPurpose" : "2",
         ]
         
@@ -129,9 +130,25 @@ class NanoLoanConfirmationVC: UIViewController {
 extension NanoLoanConfirmationVC {
     // MARK: - ModelApplyLoan
     struct ModelApplyLoan: Codable {
-        let messages: String
         let responsecode: Int
-        let responseblock, data: JSONNull?
+        let data: ModelApplyLoanData
+        let responseblock: JSONNull?
+        let messages: String
+    }
+
+    // MARK: - DataClass
+    struct ModelApplyLoanData: Codable {
+        let transactionID: Int
+        let dateTime, loanNo: String
+        let loanAmount: Int
+        let dueDate: String
+        let repaidAmount, processingFee: Int
+        let fed, disbursedAmount: Double
+
+        enum CodingKeys: String, CodingKey {
+            case transactionID = "transactionId"
+            case dateTime, loanNo, loanAmount, dueDate, repaidAmount, processingFee, fed, disbursedAmount
+        }
     }
 
     // MARK: - Encode/decode helpers

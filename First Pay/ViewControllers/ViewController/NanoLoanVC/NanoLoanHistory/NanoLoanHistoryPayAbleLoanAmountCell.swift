@@ -27,10 +27,10 @@ class NanoLoanHistoryPayAbleLoanAmountCell: UITableViewCell {
     var modelCurrentLoan: NanoLoanApplyViewController.ModelCurrentLoan? {
         didSet {
             labelAmount.text =
-            "RS. \((modelCurrentLoan?.loanAmount ?? 0) + (modelCurrentLoan?.totalMarkupAmount ?? 0))"
+            "RS. \(Double(modelCurrentLoan?.principalAmountOS ?? 0) + (modelCurrentLoan?.markupAmountOS ?? 0))"
             labelDueDate.text =
-            "\(modelCurrentLoan?.endDate ?? "")"
-            labelAvailedLoanAmount.text = "RS. \(modelCurrentLoan?.loanAmount ?? 0)"
+            "\(modelCurrentLoan?.dueDate ?? "")"
+            labelAvailedLoanAmount.text = "RS. \(modelCurrentLoan?.loanAvailedAmount ?? 0)"
         }
     }
     override func awakeFromNib() {
