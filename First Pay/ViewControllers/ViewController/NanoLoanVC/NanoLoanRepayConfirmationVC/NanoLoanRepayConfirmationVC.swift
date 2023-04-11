@@ -84,13 +84,14 @@ class NanoLoanRepayConfirmationVC: UIViewController {
         payActiveLoan()
     }
     func payActiveLoan() {
+        
         let currentLoan = modelGetActiveLoan?.data.currentLoan.first
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            "nlDisbursementId" : "\(modelGetActiveLoanToPay?.data?.nlDisbursementID ?? 0)"
+            "nlDisbursementId" : "\(currentLoan?.nlDisbursementID ?? 0)"
         ]
         
         APIs.postAPI(apiName: .payActiveLoan, parameters: parameters, viewController: self) { responseData, success, errorMsg in
@@ -101,11 +102,12 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     
     func openNanoLoanRepaySucessfullVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanRepaySucessfullVC") as! NanoLoanRepaySucessfullVC
-        vc.modelPayActiveLoan = modelPayActiveLoan
+        DispatchQueue.main.async {
+            vc.modelPayActiveLoan = self.modelPayActiveLoan
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
-
 
 extension NanoLoanRepayConfirmationVC {
     // MARK: - ModelPayActiveLoan
@@ -118,22 +120,22 @@ extension NanoLoanRepayConfirmationVC {
 
     // MARK: - DataClass
     struct ModelPayActiveLoanData: Codable {
+        let loanAvailedAmount: Int
+        let statusDescr: String
+        let processingFee: Int
         let payableTotalAmount: Double
-            let loanAvailedAmount: Int
-            let dueDate: JSONNull?
-            let outstandingMarkupAmount: Double
-            let daysTillDueDate, status: Int
-            let statusDescr: String
-            let nlDisbursementID: Int
-            let loanNumber: JSONNull?
-            let processingFee, transRefNum: Int
-            let dateTime: String
-
-            enum CodingKeys: String, CodingKey {
-                case payableTotalAmount, loanAvailedAmount, dueDate, outstandingMarkupAmount, daysTillDueDate, status, statusDescr
-                case nlDisbursementID = "nlDisbursementId"
-                case loanNumber, processingFee, transRefNum, dateTime
-            }
+        let loanNumber: JSONNull?
+        let outstandingMarkupAmount: Double
+        let status, daysTillDueDate, nlDisbursementID: Int
+        let dateTime: String
+        let dueDate: JSONNull?
+        let transRefNum: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case loanAvailedAmount, statusDescr, processingFee, payableTotalAmount, loanNumber, outstandingMarkupAmount, status, daysTillDueDate
+            case nlDisbursementID = "nlDisbursementId"
+            case dateTime, dueDate, transRefNum
+        }
     }
 
     // MARK: - Encode/decode helpers
