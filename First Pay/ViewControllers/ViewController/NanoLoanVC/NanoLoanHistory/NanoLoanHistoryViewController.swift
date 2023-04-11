@@ -9,12 +9,25 @@ import UIKit
 
 class NanoLoanHistoryViewController: UIViewController {
 
+    @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var tableView: UITableView!
-
+    var callBackButtonApply: (()->())!
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
             if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
-                
+                viewBackGround.isHidden = false
+            }
+            else if modelGetActiveLoan?.data.loanHistory.count ?? 0 > 0 {
+                viewBackGround.isHidden = false
+            }
+            else {
+                self.viewBackGround.isHidden = true
+                self.showEmptyView(message: "No Loan History Found. Tap Apply to Get New Loan", iconName: "historyClockIcon", buttonName: "Apply") { callBackActionApply, emptyView in
+                    if callBackActionApply {
+                        print("Function call")
+                        self.callBackButtonApply?()
+                    }
+                }
             }
             tableView.reloadData()
         }
@@ -28,6 +41,10 @@ class NanoLoanHistoryViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
+    }
+    
+    @objc func tapOnRepay() {
+        callBackButtonApply?()
     }
 }
 
@@ -54,6 +71,7 @@ extension NanoLoanHistoryViewController: UITableViewDelegate, UITableViewDataSou
         if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 && row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NanoLoanHistoryPayAbleLoanAmountCell") as! NanoLoanHistoryPayAbleLoanAmountCell
             cell.modelCurrentLoan = modelGetActiveLoan?.data.loanHistory[row]
+            cell.buttonRepay.addTarget(self, action: #selector(tapOnRepay), for: .touchUpInside)
             return cell
         }
         else {
@@ -62,6 +80,7 @@ extension NanoLoanHistoryViewController: UITableViewDelegate, UITableViewDataSou
             return cell
         }
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         

@@ -18,8 +18,8 @@ class EmptyVC: UIViewController {
     
     
     var messageDescription = ""
-    var buttonName = ""
-    var iconName = ""
+    var buttonName = "OK"
+    var iconName = "historyClockIcon"
     
     var callBackButtonAction: (()->())!
     override func viewDidLoad() {
@@ -29,6 +29,7 @@ class EmptyVC: UIViewController {
         
         labelDescription.text = messageDescription
         labelButtonName.text = buttonName
+        imageViewIcon.image = UIImage(named: iconName)
         self.viewButtonBackGround.radiusLineDashedStroke(radius: viewButtonBackGround.frame.height / 2 ,color: .clrLightGray)
     }
 
