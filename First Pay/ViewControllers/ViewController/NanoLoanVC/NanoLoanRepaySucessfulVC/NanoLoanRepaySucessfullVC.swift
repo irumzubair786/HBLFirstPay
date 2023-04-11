@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PDFKit
 
 class NanoLoanRepaySucessfullVC: UIViewController {
 
@@ -45,12 +46,68 @@ class NanoLoanRepaySucessfullVC: UIViewController {
     
     @IBAction func buttonDownLoad(_ sender: Any) {
         let myImageScreenShot: UIImage? = self.view.getScreenshot()
-        print(myImageScreenShot)
-        myImageScreenShot?.shareScreenShot(viewController: self)
+        let imageArray = [myImageScreenShot!]
+        if let yourPDF = imageArray.makePDF() {
+            if saveFile(pdfDocument: yourPDF) {
+                self.showAlertCustomPopup(title: "Sucess!", message: "File Download sucessfully", iconName: .iconError)
+            }
+            else {
+                self.showAlertCustomPopup(title: "Error!", message: "Error occured during saving PDF File", iconName: .iconError)
+            }
+        }
+        else {
+            self.showAlertCustomPopup(title: "Error!", message: "Error occured during created PDF File", iconName: .iconError)
+        }
     }
     @IBAction func buttonShare(_ sender: Any) {
         let myImageScreenShot: UIImage? = self.view.getScreenshot()
         print(myImageScreenShot)
         myImageScreenShot?.shareScreenShot(viewController: self)
+    }
+}
+
+func saveFile(pdfDocument: PDFDocument) -> Bool {
+    let fileManager = FileManager.default
+    
+    do {
+        let documentDirectory = try fileManager.url(for: .documentDirectory, in: .allDomainsMask, appropriateFor:nil, create:true)
+
+        let fileURL = documentDirectory.appendingPathComponent("pdfFile.pdf")
+        // Get the raw data of your PDF document
+        if let data = pdfDocument.dataRepresentation() {
+            // The url to save the data to
+            // Save the data to the url
+            do {
+                try! data.write(to: fileURL)
+            } catch {
+                //handle write error here
+                print("Error")
+            }
+            do {
+                if FileManager.default.fileExists(atPath: fileURL.path) {
+                    print("FILE AVAILABLE")
+                    return true
+                } else {
+                    print("FILE NOT AVAILABLE")
+                }
+            } catch {
+                print(error)
+            }
+        }
+    } catch {
+        print(error)
+    }
+    return false
+}
+
+extension Array where Element: UIImage {
+    
+      func makePDF()-> PDFDocument? {
+        let pdfDocument = PDFDocument()
+        for (index,image) in self.enumerated() {
+            let pdfPage = PDFPage(image: image)
+            pdfDocument.insert(pdfPage!, at: index)
+        }
+        return pdfDocument
     }
 }

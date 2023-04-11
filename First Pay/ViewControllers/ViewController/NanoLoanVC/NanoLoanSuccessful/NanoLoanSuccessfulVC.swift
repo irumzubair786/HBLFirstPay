@@ -60,9 +60,18 @@ class NanoLoanSuccessfullVC: UIViewController {
     }
     @IBAction func buttonDownLoad(_ sender: Any) {
         let myImageScreenShot: UIImage? = self.view.getScreenshot()
-        print(myImageScreenShot)
-        myImageScreenShot?.shareScreenShot(viewController: self)
-        
+        let imageArray = [myImageScreenShot!]
+        if let yourPDF = imageArray.makePDF() {
+            if saveFile(pdfDocument: yourPDF) {
+                self.showAlertCustomPopup(title: "Sucess!", message: "File Download sucessfully", iconName: .iconError)
+            }
+            else {
+                self.showAlertCustomPopup(title: "Error!", message: "Error occured during saving PDF File", iconName: .iconError)
+            }
+        }
+        else {
+            self.showAlertCustomPopup(title: "Error!", message: "Error occured during created PDF File", iconName: .iconError)
+        }
     }
     @IBAction func buttonShare(_ sender: Any) {
         let myImageScreenShot: UIImage? = self.view.getScreenshot()
