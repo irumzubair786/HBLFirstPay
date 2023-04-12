@@ -68,6 +68,14 @@ func checkIdEnable()
         let unSaveAccountPreview : Bool = KeychainWrapper.standard.set(false, forKey: "enableTouchID")
         print("Successfully Added to KeyChainWrapper \(unSaveAccountPreview)")
         self.showToast(title: "Successfully Deactivated")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            
+            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+            self.present(vc, animated: true)
+        }
+
     }
     
     @IBAction func buttonNotNow(_ sender: UIButton) {

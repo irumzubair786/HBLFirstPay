@@ -311,55 +311,55 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         
         if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
         {
-            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
             if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
-                vc.balanceLimit = Int(balnceLimit)
+               balanceLimit = Int(balnceLimit)
                 print("balnceLimit",balnceLimit)
             }
             if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
-                vc.balanceLimit1 = Int(balnceLimit1)
+              balanceLimit1 = Int(balnceLimit1)
                 print("balnceLimit",balnceLimit1)
             }
           
             if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
-                vc.totalDailyLimitCr = Int(dailyTotalCr)
+               totalDailyLimitCr = Int(dailyTotalCr)
             }
             if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
-                vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
+                totalDailyLimitCr1 = Int(dailyTotalCr1)
             }
             
             
             if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
-                vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
+               totalMonthlyLimitCr = Int(monthlyTotalCr)
             }
             if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
-                vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
+                totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
             }
             
             
             if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
-                vc.totalYearlyLimitCr = Int(yearlyTotalCr)
+                totalYearlyLimitCr = Int(yearlyTotalCr)
             }
             if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
-                vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
+                totalYearlyLimitCr1 = Int(yearlyTotalCr1)
             }
-            if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
-                vc.totalDailyLimitDr = Int(totalDailyLimitDr)
+            if  var  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
+                totalDailyLimitDr = Int(totalDailyLimitDr)
             }
-            if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
-                vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
+            if var  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
+                totalDailyLimitDr1 = Int(totalDailyLimitDr1)
             }
-            if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
-                vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
+            if var  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
+                totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
             }
-            if let  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
-                vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
+            if var  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
+                totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
             }
-            if let  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
-                vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
+            if var  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
+                totalYearlyLimitDr = Int(totalYearlyLimitDr)
             }
-            if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
-                vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
+            if var  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
+                totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
             }
          
             else

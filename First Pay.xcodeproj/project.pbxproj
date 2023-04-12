@@ -194,6 +194,8 @@
 		18F6EA9629880DB900B4FA1A /* BillPayment_ConfirmationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6EA9529880DB900B4FA1A /* BillPayment_ConfirmationVC.swift */; };
 		18F6EA9829880DD700B4FA1A /* BillPayment_SuccessfullVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6EA9729880DD700B4FA1A /* BillPayment_SuccessfullVC.swift */; };
 		18F77F90294509C0005E5AA2 /* Set_PasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F77F8F294509C0005E5AA2 /* Set_PasswordVC.swift */; };
+		18FA709D29E562F700DF3FFE /* cellMyAccountVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FA709C29E562F700DF3FFE /* cellMyAccountVc.swift */; };
+		18FA709F29E5A45E00DF3FFE /* MyAccountLimitsVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FA709E29E5A45D00DF3FFE /* MyAccountLimitsVc.swift */; };
 		1F75CF3DEC4358B48D83C557 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 681FA40A1BFA3EA69FCA6740 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		3503AD69276500B1001168DE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3503AD66276500B1001168DE /* Localizable.strings */; };
 		3519B0EF28F3FC8200323BB0 /* FirstPay Urdu TC.html in Resources */ = {isa = PBXBuildFile; fileRef = 3519B0EE28F3FC8200323BB0 /* FirstPay Urdu TC.html */; };
@@ -605,6 +607,8 @@
 		18F6EA9529880DB900B4FA1A /* BillPayment_ConfirmationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillPayment_ConfirmationVC.swift; sourceTree = "<group>"; };
 		18F6EA9729880DD700B4FA1A /* BillPayment_SuccessfullVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillPayment_SuccessfullVC.swift; sourceTree = "<group>"; };
 		18F77F8F294509C0005E5AA2 /* Set_PasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set_PasswordVC.swift; sourceTree = "<group>"; };
+		18FA709C29E562F700DF3FFE /* cellMyAccountVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellMyAccountVc.swift; sourceTree = "<group>"; };
+		18FA709E29E5A45D00DF3FFE /* MyAccountLimitsVc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAccountLimitsVc.swift; sourceTree = "<group>"; };
 		23B9E745ECCACDE3715CCEC6 /* Pods-First Wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-First Wallet.release.xcconfig"; path = "Pods/Target Support Files/Pods-First Wallet/Pods-First Wallet.release.xcconfig"; sourceTree = "<group>"; };
 		23D26F6625884B86E2870AA0 /* Pods-First Wallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-First Wallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-First Wallet/Pods-First Wallet.debug.xcconfig"; sourceTree = "<group>"; };
 		256FB421C09C213B4E930788 /* Pods-First WalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-First WalletTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-First WalletTests/Pods-First WalletTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -860,6 +864,7 @@
 		1823A8E029E21F1E0068016D /* LoginMethods */ = {
 			isa = PBXGroup;
 			children = (
+				18FA709929E55A4500DF3FFE /* CellClasses */,
 				1823A8E129E21F480068016D /* loginMethodsVc.swift */,
 				1823A8E329E21F6D0068016D /* BioMetricLoginVc.swift */,
 				1823A8E529E21FAD0068016D /* TermsandConditionsloginMethodsVc.swift */,
@@ -1114,6 +1119,7 @@
 			children = (
 				184C8AA129E1C04300BB319E /* VerifiedAccountVC.swift */,
 				184C8AA329E1C05700BB319E /* UnVerifiedAccountVC.swift */,
+				18FA709E29E5A45D00DF3FFE /* MyAccountLimitsVc.swift */,
 			);
 			path = AccountLimit;
 			sourceTree = "<group>";
@@ -1600,6 +1606,14 @@
 				18F6EA9129880D7900B4FA1A /* cell_Billpayment_ListAllItemsVC.swift */,
 			);
 			path = cellClasses;
+			sourceTree = "<group>";
+		};
+		18FA709929E55A4500DF3FFE /* CellClasses */ = {
+			isa = PBXGroup;
+			children = (
+				18FA709C29E562F700DF3FFE /* cellMyAccountVc.swift */,
+			);
+			path = CellClasses;
 			sourceTree = "<group>";
 		};
 		1EFBFBC7B15CD46B5AAEE0EB /* Frameworks */ = {
@@ -2203,6 +2217,7 @@
 				1843CF18296C79B300DB8AE6 /* MinistatemnetMainVc.swift in Sources */,
 				18ACC72F299BA2B80098163C /* cellDebitCardNameSelection.swift in Sources */,
 				189DD27929D9A4F800BBF940 /* AppRadius.swift in Sources */,
+				18FA709D29E562F700DF3FFE /* cellMyAccountVc.swift in Sources */,
 				A2709B082417AD3700F1049F /* GetDebitCardCheckModel.swift in Sources */,
 				A21632A421F0A471003EBD45 /* UtilityBillPaymentUserDetailsModel.swift in Sources */,
 				1837C10B29A740370064212A /* RequestMoneyDetailVc.swift in Sources */,
@@ -2417,6 +2432,7 @@
 				A267E71F2662621000D74685 /* categoryDescriptionModel.swift in Sources */,
 				A2090E78219C4D05005CA2DD /* ViewRounded.swift in Sources */,
 				A2090E74219C4252005CA2DD /* LoginActionModel.swift in Sources */,
+				18FA709F29E5A45E00DF3FFE /* MyAccountLimitsVc.swift in Sources */,
 				35A26BAE27AA707000C310E8 /* InvitationFriendModel.swift in Sources */,
 				A273C2C5265E1BA5004324AA /* DiscountCategory.swift in Sources */,
 				A273C2BC265E0594004324AA /* DiscountCollectionviewcell.swift in Sources */,

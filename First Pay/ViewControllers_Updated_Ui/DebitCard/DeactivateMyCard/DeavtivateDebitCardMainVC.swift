@@ -54,7 +54,29 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
     
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var labelCardNumber: UILabel!
-    
+    func getValueFromAPI()
+    {
+//        for anObject in self.getDebitDetailsObj?.newCarddata
+//        {
+//            if let name = anObject.debitCardTitle {
+//                self.labelName.text = name
+//            }
+//            if let pan =  anObject.pan {
+//                self.labelCardNumber.text = pan
+//            }
+//            if let month = anObject.cardExpiryMonth {
+//                if let year = anObject.cardExpiryYear{
+//                    self.labeldate.text = "\(month)" + "/\(year)"
+//                }
+//            }
+//          
+//            if let accountID = anObject.accountDebitCardId{
+//                GlobalData.accountDebitCardId = Int(accountID)
+////                self.accountDebitCardId = "\(accountID)"
+//            }
+        }
+
+    }
     private func getDebitCard() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -107,25 +129,6 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
                 
                 if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
                 
-                    for anObject in self.getDebitDetailsObj?.debitCardData! ?? []
-                    {
-                        if let name = anObject.debitCardTitle {
-                            self.labelName.text = name
-                        }
-                        if let pan = anObject.pan {
-                            self.labelCardNumber.text = pan
-                        }
-                        if let month = anObject.cardExpiryMonth {
-                            if let year = anObject.cardExpiryYear{
-                                self.labeldate.text = "\(month)" + "/\(year)"
-                            }
-                        }
-                      
-                        if let accountID = anObject.accountDebitCardId{
-                            GlobalData.accountDebitCardId = Int(accountID)
-            //                self.accountDebitCardId = "\(accountID)"
-                        }
-                    }
                   
 //                    self.updateUI()
                     

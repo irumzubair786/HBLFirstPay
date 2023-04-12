@@ -43,14 +43,22 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         let tapGestureRecognizerrs = UITapGestureRecognizer(target: self, action: #selector(MovetoAccountLevel(tapGestureRecognizer:)))
         imgLevel.isUserInteractionEnabled = true
         imgLevel.addGestureRecognizer(tapGestureRecognizerrs)
+        
+        
+        let tapGestureRecognizr = UITapGestureRecognizer(target: self, action: #selector(moveToDebitCard(tapGestureRecognizer:)))
+        viewDebitCard.isUserInteractionEnabled = true
+        viewDebitCard.addGestureRecognizer(tapGestureRecognizerrs)
 //       tapGestures()
 //        NotificationCenter.default.removeObserver(self)
 //        NotificationCenter.default.addObserver(self, selector: #selector(viewDidLoadCustom), name: Notification.Name("LanguageChangeThroughObserver"), object: nil)
 //        
     }
     @IBOutlet weak var toggleMenu: UIImageView!
-    
     @IBOutlet weak var imageAddCash: UIImageView!
+    
+    
+    @IBOutlet weak var viewDebitCard: UIImageView!
+    
     
     func AddCash(){
         
@@ -222,7 +230,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     private func saveInDataManager(index : Int){
         getCurrentBal = homeObj?.userData?[0].currentBalance
         
-        lblAmount.text =   "\(getCurrentBal!)"
+        lblAmount.text =   "Rs.\(getCurrentBal!)"
         
         lblName.text =  homeObj?.userData?[0].accountTitile
         LblMobNo.text =  homeObj?.userData?[0].accountNo
@@ -319,10 +327,17 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         self.present(vc, animated: true)
     }
       
+    @objc func moveToDebitCard(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        getDebitCardCheck()
+    }
+    
+    
+    
     @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
-        getAvailableLimits()
+        getDebitCard()
     }
     
     // MARK: - Api Call
@@ -473,13 +488,25 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                     }
                     else
                     {
-                        if
-                            self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
-                        {
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
-                            self.present(vc, animated: true)
+                        
+                        if self.getDebitDetailsObj?.newCarddata != nil{
+                            if
+                                self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
+                            {
+                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
+                                self.present(vc, animated: true)
+                            }
+                            else if self.getDebitDetailsObj?.newCarddata?.apiFlow == "DeactivateCard"
+                            {
+                                
+                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                                self.present(vc, animated: true)
+                                
+                            }
                         }
+                        
                     }
                     
                 }

@@ -18,6 +18,8 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     var setLoginPinObj : setLoginPinModel?
     var mainTitle: String?
     var MobNo : String?
+    var pessi : String?
+    var userCnic : String?
     var genericResponseObj : GenericResponse?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -336,6 +338,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                     UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
                     let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
                     print("Remover \(removePessi)")
+                    
                     var userCnic : String?
                     if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
                         userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
@@ -343,7 +346,16 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                         else{
                             userCnic = ""
                         }
-                    
+                    UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                    if let passKey = self.enterPinTextField.text{
+                        let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                        print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                        if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
+                            self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
+                            print("password saved"
+                            )
+                        }
+                    }
                     self.Alert_view.isHidden = false
                     self.blur_view.isHidden = false
                   
@@ -393,8 +405,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         
     
     
-    var pessi : String?
-    var userCnic : String?
+    
     
 //        let compelteUrl = GlobalConstants.BASE_URL + "login"
     let compelteUrl = GlobalConstants.BASE_URL + "v2/login"
@@ -467,6 +478,14 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                      if let passKey = self.enterPinTextField.text{
                         let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
                         print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                         if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
+                             self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
+                             print("password saved"
+                                   )
+                             }
+                         
+                         
+                         
                     }
                     self.saveInDataManager()
                 }

@@ -82,7 +82,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
             self.btn_next_arrow.setImage(image, for: .normal)
             self.btnContinue.isUserInteractionEnabled = false
         }
-
+        
         else if self.TF_Mobileno.text == ""
     {
             self.lblinvalid.isHidden = true
@@ -210,7 +210,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
                 
             }
             return newLength <= 11
-            
+            changeTextInTextField()
             
            
     }

@@ -112,13 +112,13 @@ class UnVerifiedAccountVC: UIViewController {
     
     func CommaSepration()
       {
-          let number = balanceLimit
-          let formatter = NumberFormatter()
+          var number = balanceLimit
+          var formatter = NumberFormatter()
           formatter.numberStyle = .decimal
   //        formatter.maximumFractionDigits = 2
           formatter.locale = Locale(identifier: "en_US")
           comabalanceLimit = (formatter.string(from: NSNumber(value: number!)))!
-          
+           
           
           let number1 = balanceLimit1
           let formatters = NumberFormatter()

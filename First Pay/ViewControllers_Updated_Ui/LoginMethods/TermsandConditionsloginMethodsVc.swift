@@ -51,10 +51,9 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
         self.showToast(title: "Successfully Activated")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             
-//            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "loginMethodsVc")
-//            as! loginMethodsVc
-//            self.present(vc, animated: true)
+            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+            self.present(vc, animated: true)
         }
     }
     
