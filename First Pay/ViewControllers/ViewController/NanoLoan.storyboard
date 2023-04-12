@@ -398,13 +398,13 @@
                                                                                         </constraints>
                                                                                     </view>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Due Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wtl-dE-gN5">
-                                                                                        <rect key="frame" x="38" y="9.5" width="41.5" height="11"/>
+                                                                                        <rect key="frame" x="38" y="9.5" width="146.5" height="11"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                                         <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="24 - Nov - 2022" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SZt-gA-8kl">
-                                                                                        <rect key="frame" x="87.5" y="8" width="197.5" height="14.5"/>
+                                                                                        <rect key="frame" x="192.5" y="8" width="92.5" height="14.5"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                                                                         <color key="textColor" red="0.93333333333333335" green="0.38431372549019605" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
@@ -478,13 +478,13 @@
                                                                                         </constraints>
                                                                                     </view>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Days Till Due Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cm2-Do-Wnh">
-                                                                                        <rect key="frame" x="38" y="9.5" width="192" height="11"/>
+                                                                                        <rect key="frame" x="38" y="9.5" width="82.5" height="11"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                                         <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="24 Days" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zNB-VE-QMn">
-                                                                                        <rect key="frame" x="238" y="8" width="47" height="14.5"/>
+                                                                                        <rect key="frame" x="128.5" y="8" width="156.5" height="14.5"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                                                                         <color key="textColor" red="0.0" green="0.80000000000000004" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
@@ -845,11 +845,22 @@ Please Pay on the earliest to avoid additional late fees &amp; being reported to
                                                             <constraint firstAttribute="width" constant="40" id="SgH-yH-bL1"/>
                                                         </constraints>
                                                     </imageView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pzj-ND-HpI">
+                                                        <rect key="frame" x="0.0" y="0.0" width="125" height="50"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <connections>
+                                                            <action selector="buttonBack:" destination="wuk-td-2Pn" eventType="touchUpInside" id="uAT-9i-UcS"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="bKa-A1-jVl" firstAttribute="leading" secondItem="yZH-Ee-syo" secondAttribute="leading" constant="20" id="27e-aq-d2M"/>
+                                                    <constraint firstItem="pzj-ND-HpI" firstAttribute="top" secondItem="yZH-Ee-syo" secondAttribute="top" id="4kA-ge-1C5"/>
+                                                    <constraint firstItem="pzj-ND-HpI" firstAttribute="leading" secondItem="yZH-Ee-syo" secondAttribute="leading" id="HLC-4I-Ht4"/>
                                                     <constraint firstItem="bKa-A1-jVl" firstAttribute="centerY" secondItem="yZH-Ee-syo" secondAttribute="centerY" id="Xbu-DL-rN6"/>
+                                                    <constraint firstAttribute="bottom" secondItem="pzj-ND-HpI" secondAttribute="bottom" id="bGw-0x-LTP"/>
+                                                    <constraint firstAttribute="trailing" secondItem="pzj-ND-HpI" secondAttribute="trailing" id="pXo-eI-qyb"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hGm-Mz-5Id">
@@ -930,13 +941,14 @@ Please Pay on the earliest to avoid additional late fees &amp; being reported to
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="buttonBack" destination="pzj-ND-HpI" id="sDD-nc-8yB"/>
                         <outlet property="collectionView" destination="IWb-JS-ZSS" id="O7b-3P-cuT"/>
                         <outlet property="headerViewLocal" destination="qoe-de-BI6" id="eCv-Lt-QXA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t4E-Gy-Llb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-138" y="0.0"/>
+            <point key="canvasLocation" x="-138.40000000000001" y="-0.44977511244377816"/>
         </scene>
         <!--Nano Loan Repay ConfirmationVC-->
         <scene sceneID="CZ6-vw-Pgg">
@@ -2636,13 +2648,13 @@ on Due Date</string>
                                                                                         </constraints>
                                                                                     </view>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Loan Availed Amount" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z5h-CI-owe">
-                                                                                        <rect key="frame" x="38" y="9.5" width="174.5" height="11"/>
+                                                                                        <rect key="frame" x="38" y="9.5" width="94.5" height="11"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                                         <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="RS. 240.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4d5-rU-PH9">
-                                                                                        <rect key="frame" x="220.5" y="8" width="64.5" height="14.5"/>
+                                                                                        <rect key="frame" x="140.5" y="8" width="144.5" height="14.5"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                                                                         <color key="textColor" red="0.94509803920000002" green="0.58039215690000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
@@ -2675,13 +2687,13 @@ on Due Date</string>
                                                                                         </constraints>
                                                                                     </view>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Loan Availed Amount" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJA-vy-Z8D">
-                                                                                        <rect key="frame" x="38" y="9.5" width="192" height="11"/>
+                                                                                        <rect key="frame" x="38" y="9.5" width="94.5" height="11"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                                         <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="24 Days" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uN2-4y-EkA">
-                                                                                        <rect key="frame" x="238" y="8" width="47" height="14.5"/>
+                                                                                        <rect key="frame" x="140.5" y="8" width="144.5" height="14.5"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                                                                         <color key="textColor" red="0.0" green="0.80000000000000004" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>

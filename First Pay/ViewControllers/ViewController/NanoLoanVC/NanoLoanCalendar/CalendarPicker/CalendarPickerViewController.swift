@@ -1,9 +1,26 @@
 
 import UIKit
+import Alamofire
 
 class CalendarPickerViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var buttonBack: UIButton!
+    var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
+        didSet {
+            
+        }
+    }
+    var modelGetSchCalendar: ModelGetSchCalendar? {
+        didSet {
+            if modelGetSchCalendar?.responsecode == 0 {
+                self.showAlertCustomPopup(title: "Error!", message: modelGetSchCalendar?.messages, iconName: .iconError)
+            }
+            else {
+                collectionView.reloadData()
+            }
+        }
+    }
     
     //    @IBOutlet weak var monthLabel: UILabel!
     // MARK: Views
@@ -79,7 +96,9 @@ class CalendarPickerViewController: UIViewController {
     private var baseDate: Date! = nil {
         didSet {
             days = generateDaysInMonth(for: baseDate)
-            collectionView.reloadData()
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
             headerView.baseDate = baseDate
         }
     }
@@ -118,12 +137,25 @@ class CalendarPickerViewController: UIViewController {
     @IBOutlet weak var headerViewLocal: UIView!
     // MARK: View Lifecycle
     override func viewDidAppear(_ animated: Bool) {
-        collectionView.reloadData()
+//        collectionView.reloadData()
+    }
+   
+    @IBAction func buttonBack(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         let cellNib = UINib(nibName: "CalendarDateCollectionViewCell", bundle: nil)
         collectionView.register(cellNib, forCellWithReuseIdentifier: "CalendarDateCollectionViewCell")
+        
+        
+        let cellNibStart = UINib(nibName: "CalendarStartDateCell", bundle: nil)
+        collectionView.register(cellNibStart, forCellWithReuseIdentifier: "CalendarStartDateCell")
+        
+        
+        let cellNibEnd = UINib(nibName: "CalendarEndDateCell", bundle: nil)
+        collectionView.register(cellNibEnd, forCellWithReuseIdentifier: "CalendarEndDateCell")
+        
         
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
@@ -220,7 +252,9 @@ class CalendarPickerViewController: UIViewController {
         self.baseDate = Date()
         headerView.baseDate = baseDate
         self.selectedDate = baseDate
-        collectionView.reloadData()
+//        collectionView.reloadData()
+        
+        loadCalendarData()
     }
     
     override func viewWillTransition(
@@ -229,6 +263,26 @@ class CalendarPickerViewController: UIViewController {
     ) {
         super.viewWillTransition(to: size, with: coordinator)
         collectionView.reloadData()
+    }
+    
+    
+    
+    func loadCalendarData() {
+        let currentLoan = modelGetActiveLoan?.data.currentLoan.first
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+            "nlDisbursementId" :  "\(currentLoan?.nlDisbursementID ?? 0)"
+        ]
+        //NOTE:
+        //        agar currentLoan object me data araha ha to ye api call ni ho ge
+        //        agar ni a raha to ye api call karin ga r data disply karwa dain ga
+        APIs.postAPI(apiName: .getSchCalendar, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            let model: ModelGetSchCalendar? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetSchCalendar = model
+        }
     }
 }
 
@@ -364,14 +418,86 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         let day = days[indexPath.row]
         
+        let type = getCellType(day: day)
+        if type == "startDateRecord" {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarStartDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarStartDateCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            
+            return cell
+        }
+        else if type == "endDateRecord" {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarEndDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarEndDateCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            
+            return cell
+        }
+//        else if type == "recordFound" {
+//
+//        }
+        else {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier,
+                for: indexPath) as! CalendarDateCollectionViewCell
+            // swiftlint:disable:previous force_cast
+            //        cell.labelDate.text = day.number
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            
+            return cell
+        }
         
+    
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier,
             for: indexPath) as! CalendarDateCollectionViewCell
         // swiftlint:disable:previous force_cast
         //        cell.labelDate.text = day.number
+        cell.modelGetSchCalendar = modelGetSchCalendar
         cell.day = day
+        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        (cell as! CalendarDateCollectionViewCell).updateStatus()
+    }
+    
+    func getCellType(day: Day?) -> String {
+        if let tempDate = day?.date.convertDateToStringForCalendar() {
+//            print(tempDate)
+            if modelGetSchCalendar == nil {
+                return "default"
+            }
+            else {
+                if let modelDate = modelGetSchCalendar?.data.dates[tempDate] {
+                    if let startDate = modelGetSchCalendar?.data.startDate {
+                        let compare = startDate.compareDateDifferenceToDate2(toDate: day!.date)
+                        if compare == 0 {
+                            return "startDateRecord"
+                        }
+                    }
+                    if let endDate = modelGetSchCalendar?.data.endDate {
+                        let compare = endDate.compareDateDifferenceToDate2(toDate: day!.date)
+                        if compare == 0 {
+                            return "endDateRecord"
+                        }
+                    }
+                    return "recordFound"
+                }
+                else {
+                    return "default"
+                }
+            }
+        }
+        else {
+            return "default"
+        }
     }
 }
 

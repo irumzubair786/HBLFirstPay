@@ -111,6 +111,7 @@ class NanoLoanRepayViewController: UIViewController {
         
     }
     @IBAction func buttonMarkupCalendar(_ sender: Any) {
+        openMarkupCalendar()
     }
     @IBAction func buttonBenifits(_ sender: Any) {
         openNanoLoanBenifitVC()
@@ -148,6 +149,12 @@ class NanoLoanRepayViewController: UIViewController {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanBenifitVC") as! NanoLoanBenifitVC
         vc.modalPresentationStyle = .overFullScreen
         self.present(vc, animated: true)
+    }
+    func openMarkupCalendar() {
+        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "CalendarPickerViewController") as! CalendarPickerViewController
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modelGetActiveLoan = modelGetActiveLoan
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -243,5 +250,45 @@ extension String {
         
         let components = calendar.dateComponents([.day], from: date1, to: date2)
         return components.day ?? 0
+    }
+    
+    
+    func compareDateDifferenceToDate2(toDate: Date, toFormat: String? = "yyyy-mm-dd", fromFormat: String? = "MM/dd/yyyy") -> Int {
+        
+        let toDateString = self.components(separatedBy: " ")
+        let toFormatter = DateFormatter()
+        toFormatter.dateFormat = toFormat
+        let selectedDate = toFormatter.date(from: toDateString.first!)
+        if selectedDate == nil {
+            return 99
+        }
+        
+        let currentDateString = toFormatter.string(from: toDate)
+        let currentDate = toFormatter.date(from: currentDateString)!
+        
+        let calendar = Calendar.current
+        // Replace the hour (time) of both dates with 00:00
+        let date1 = calendar.startOfDay(for: currentDate) // firstDate
+        let date2 = calendar.startOfDay(for: selectedDate!) // secondDate
+        
+        let components = calendar.dateComponents([.day], from: date1, to: date2)
+        return components.day ?? 0
+    }
+}
+
+extension Date {
+    func convertDateToStringForCalendar() -> String {
+        let toFormatter = DateFormatter()
+        toFormatter.dateFormat = "yyyy-MMM-dd"
+        var currentDateString = toFormatter.string(from: self)
+//        print(currentDateString)
+        let currentDate = toFormatter.date(from: currentDateString)
+//        print(currentDate)
+        toFormatter.dateFormat = "dd-MMM-yy"
+        currentDateString = toFormatter.string(from: currentDate!)
+//        print(currentDateString)
+        let toDateString = currentDateString.components(separatedBy: " ").first
+//        print(toDateString!.uppercased() ?? "Error in date conversion")
+        return toDateString?.uppercased() ?? ""
     }
 }

@@ -169,6 +169,11 @@
 		18D130C92941C406000C396E /* BB.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 18D130C82941C406000C396E /* BB.pdf */; };
 		18D130CB2941C45A000C396E /* FirstPay-Urdu-TC.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 18D130CA2941C45A000C396E /* FirstPay-Urdu-TC.pdf */; };
 		18D130D72941E059000C396E /* HomeVc_withoutLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D130D62941E059000C396E /* HomeVc_withoutLogin.swift */; };
+		18D8C3AD29E6B92100E39184 /* CalendarPickerVCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D8C3AC29E6B92100E39184 /* CalendarPickerVCModel.swift */; };
+		18D8C3B329E7447B00E39184 /* CalendarEndDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D8C3B129E7447B00E39184 /* CalendarEndDateCell.swift */; };
+		18D8C3B429E7447B00E39184 /* CalendarEndDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18D8C3B229E7447B00E39184 /* CalendarEndDateCell.xib */; };
+		18D8C3B729E7449600E39184 /* CalendarStartDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D8C3B529E7449600E39184 /* CalendarStartDateCell.swift */; };
+		18D8C3B829E7449600E39184 /* CalendarStartDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18D8C3B629E7449600E39184 /* CalendarStartDateCell.xib */; };
 		18D92DFF294B468D009E7C75 /* Cell_Billpayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D92DFE294B468D009E7C75 /* Cell_Billpayment.swift */; };
 		18DFF3B82976A6EC00EB848F /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DFF3B72976A6EC00EB848F /* CustomCell.swift */; };
 		18DFF3BC2976EFDD00EB848F /* extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DFF3BB2976EFDD00EB848F /* extentions.swift */; };
@@ -575,6 +580,11 @@
 		18D130C82941C406000C396E /* BB.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = BB.pdf; path = "First Pay/New GrouRebrading Terms And Cond/BB.pdf"; sourceTree = SOURCE_ROOT; };
 		18D130CA2941C45A000C396E /* FirstPay-Urdu-TC.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "FirstPay-Urdu-TC.pdf"; path = "First Pay/New GrouRebrading Terms And Cond/Urdu T And Conditons/FirstPay-Urdu-TC.pdf"; sourceTree = SOURCE_ROOT; };
 		18D130D62941E059000C396E /* HomeVc_withoutLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVc_withoutLogin.swift; sourceTree = "<group>"; };
+		18D8C3AC29E6B92100E39184 /* CalendarPickerVCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerVCModel.swift; sourceTree = "<group>"; };
+		18D8C3B129E7447B00E39184 /* CalendarEndDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEndDateCell.swift; sourceTree = "<group>"; };
+		18D8C3B229E7447B00E39184 /* CalendarEndDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarEndDateCell.xib; sourceTree = "<group>"; };
+		18D8C3B529E7449600E39184 /* CalendarStartDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarStartDateCell.swift; sourceTree = "<group>"; };
+		18D8C3B629E7449600E39184 /* CalendarStartDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarStartDateCell.xib; sourceTree = "<group>"; };
 		18D92DFE294B468D009E7C75 /* Cell_Billpayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell_Billpayment.swift; sourceTree = "<group>"; };
 		18DFF3B72976A6EC00EB848F /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomCell.swift; path = "First Pay/ViewControllers/CustomCell.swift"; sourceTree = SOURCE_ROOT; };
 		18DFF3BB2976EFDD00EB848F /* extentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = extentions.swift; path = "First Pay/extentions.swift"; sourceTree = SOURCE_ROOT; };
@@ -1293,6 +1303,7 @@
 		189DD24B29D9A4F800BBF940 /* NanoLoanCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				18D8C3AE29E7442700E39184 /* CalendarPickerCell */,
 				189DD24C29D9A4F800BBF940 /* Models */,
 				189DD25029D9A4F800BBF940 /* CalendarPicker */,
 			);
@@ -1312,14 +1323,12 @@
 		189DD25029D9A4F800BBF940 /* CalendarPicker */ = {
 			isa = PBXGroup;
 			children = (
-				189DD28329D9BA0800BBF940 /* CalendarDateCollectionViewCell.swift */,
-				189DD27F29D9BA0700BBF940 /* CalendarDateCollectionViewCell.xib */,
-				189DD27D29D9BA0700BBF940 /* CalendarDateCollectionViewCell2.swift */,
 				189DD28029D9BA0700BBF940 /* CalendarPickerFooterView.swift */,
 				189DD28129D9BA0700BBF940 /* CalendarPickerHeaderView.swift */,
 				189DD28229D9BA0800BBF940 /* CalendarPickerHeaderView.xib */,
 				189DD28429D9BA0800BBF940 /* CalendarPickerHeaderView2.swift */,
 				189DD27E29D9BA0700BBF940 /* CalendarPickerViewController.swift */,
+				18D8C3AC29E6B92100E39184 /* CalendarPickerVCModel.swift */,
 			);
 			path = CalendarPicker;
 			sourceTree = "<group>";
@@ -1499,6 +1508,36 @@
 				187F3AD829655A730098A59B /* DashBoardVC.swift */,
 			);
 			path = DashBoard;
+			sourceTree = "<group>";
+		};
+		18D8C3AE29E7442700E39184 /* CalendarPickerCell */ = {
+			isa = PBXGroup;
+			children = (
+				18D8C3B029E7444700E39184 /* CalendarEndDateCell */,
+				18D8C3AF29E7443900E39184 /* CalendarStartDateCell */,
+				189DD28329D9BA0800BBF940 /* CalendarDateCollectionViewCell.swift */,
+				189DD27F29D9BA0700BBF940 /* CalendarDateCollectionViewCell.xib */,
+				189DD27D29D9BA0700BBF940 /* CalendarDateCollectionViewCell2.swift */,
+			);
+			path = CalendarPickerCell;
+			sourceTree = "<group>";
+		};
+		18D8C3AF29E7443900E39184 /* CalendarStartDateCell */ = {
+			isa = PBXGroup;
+			children = (
+				18D8C3B529E7449600E39184 /* CalendarStartDateCell.swift */,
+				18D8C3B629E7449600E39184 /* CalendarStartDateCell.xib */,
+			);
+			path = CalendarStartDateCell;
+			sourceTree = "<group>";
+		};
+		18D8C3B029E7444700E39184 /* CalendarEndDateCell */ = {
+			isa = PBXGroup;
+			children = (
+				18D8C3B129E7447B00E39184 /* CalendarEndDateCell.swift */,
+				18D8C3B229E7447B00E39184 /* CalendarEndDateCell.xib */,
+			);
+			path = CalendarEndDateCell;
 			sourceTree = "<group>";
 		};
 		18E661A329DB4C0700106A28 /* NanoLoanSuccessful */ = {
@@ -2015,6 +2054,7 @@
 				1878C5862994053700A478EC /* DebitCard.storyboard in Resources */,
 				189DD27029D9A4F800BBF940 /* NanoLoanHistoryPayAbleLoanAmountCell.xib in Resources */,
 				18AB25E129DF1B9100A45B5A /* AlertPopup.storyboard in Resources */,
+				18D8C3B429E7447B00E39184 /* CalendarEndDateCell.xib in Resources */,
 				A280C1C523D5721400F77122 /* bb-fmfb-pk.cer in Resources */,
 				3548C3A228CCEE0F006B7925 /* FirstPay Nano Loan Terms & Conditions Urdu with HBLMFB.html in Resources */,
 				18383A022949BA1D00CB7CCE /* Dash_Board.storyboard in Resources */,
@@ -2055,6 +2095,7 @@
 				189DD27529D9A4F800BBF940 /* ApplyAmountCell.xib in Resources */,
 				35B07C4828F3DC0B00114BD0 /* UrduTermsAndConditions.html in Resources */,
 				A26EE2F922818CCE00704BD3 /* faq.html in Resources */,
+				18D8C3B829E7449600E39184 /* CalendarStartDateCell.xib in Resources */,
 				18786FF029E16A4B00A497B8 /* AccountLevel.storyboard in Resources */,
 				18D130C72941C3CF000C396E /* NanoLoanTC.pdf in Resources */,
 			);
@@ -2254,10 +2295,13 @@
 				184C2A9E296818E200A0F812 /* cellTransation_Statement_HistoryVc.swift in Sources */,
 				183E85652965C31100A9E112 /* OpreatorSelectionVc.swift in Sources */,
 				A2848EFF21996AB500B36D56 /* PITouchIDManager.swift in Sources */,
+				18D8C3AD29E6B92100E39184 /* CalendarPickerVCModel.swift in Sources */,
 				A211FE5224CFEE2F00092E7E /* DiscountsModel.swift in Sources */,
+				18D8C3B729E7449600E39184 /* CalendarStartDateCell.swift in Sources */,
 				A28100992641298700121AED /* transactionhome.swift in Sources */,
 				A25DDD902362C8D900DFF283 /* GetBankNames.swift in Sources */,
 				A20616B12641BAAA00182C8A /* ResponselastTransactionModel.swift in Sources */,
+				18D8C3B329E7447B00E39184 /* CalendarEndDateCell.swift in Sources */,
 				1837C0F929A73E4E0064212A /* NoBankAccountFoundVc.swift in Sources */,
 				A279D98724BDCB860011C441 /* CommNotificationListModel.swift in Sources */,
 				A2BFD1EE25D66A5D00306EB9 /* FTApiResponse.swift in Sources */,

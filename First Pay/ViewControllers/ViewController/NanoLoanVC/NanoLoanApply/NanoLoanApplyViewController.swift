@@ -105,6 +105,9 @@ class NanoLoanApplyViewController: UIViewController {
     }
     func validationError() -> Bool {
         let text = textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: "")
+        if text == "" {
+            return true
+        }
         let minAmount = (modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0) - 1
         let maxAmount = (modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0) + 1
         if (Int(text)! > minAmount && Int(text)! < maxAmount) {
