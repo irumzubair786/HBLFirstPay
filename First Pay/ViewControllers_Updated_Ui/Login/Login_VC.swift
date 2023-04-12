@@ -49,9 +49,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.pinTextField.resignFirstResponder()
             
             if self.pinTextField.text?.count == 6 {
-//            UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
-//             let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
-//                                    print("Remover \(removePessi)")
+            UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
+           
                 self.pinTextField.resignFirstResponder()
                 self.loginAction()
             }
@@ -65,7 +64,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     @objc func changeTextInTextField() {
         
         if self.pinTextField.text?.count == 6 {
-//            UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
+            UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
 //             let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
 //             print("Remover \(removePessi)")
             
@@ -102,7 +101,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     
     
     @IBAction func loginActionviaTouchID(_ sender: UIButton) {
-        if KeychainWrapper.standard.bool(forKey: "enableTouchID") == true {
+        if KeychainWrapper.standard.bool(forKey: "enableTouchID") == true  {
             self.authenticateUserViaTouchID()
             viaBio = true
             print("true")
@@ -263,6 +262,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         //     LoginChnaged
         let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+        
         self.present(vc, animated: true)
     }
     func getOneSignalUUIDD(){
@@ -292,7 +292,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.showToast(title: "No Internet Available")
             return
         }
-        UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
+       
+        
         showActivityIndicator()
         var pessi : String?
         var userCnic : String?
@@ -301,10 +302,14 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/login"
         
         if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
-            pessi = KeychainWrapper.standard.string(forKey: "userKey")
+//            pessi = KeychainWrapper.standard.string(forKey: "userKey")
+            pessi = UserDefaults.standard.string(forKey: "userKey")
         }
+        
         else if let password = pinTextField.text {
+            
             pessi = password
+            UserDefaults.standard.set(pessi, forKey: "userKey")
         }
         else{
             self.showDefaultAlert(title: "", message: "Please Use Password for first time Login after Registration")
@@ -357,6 +362,10 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.hideActivityIndicator()
             self.loginObj = response.result.value
             if response.response?.statusCode == 200 {
+                if self.pinTextField.text != ""
+                {
+                    UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
+                }
                 self.loginObj = response.result.value
                 if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                     if self.loginObj?.data != nil{

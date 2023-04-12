@@ -101,7 +101,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     
     
     override func getWiFiAddress() -> [String] {
-        
+       
         var addresses = [String]()
         
         // Get list of all interfaces on the local machine:

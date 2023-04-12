@@ -17,7 +17,7 @@ class UnVerifiedAccountVC: UIViewController {
     var totalMonthlyLimitCr : Int?
     var totalYearlyLimitCr : Int?
     var balanceLimit : Int?
-    
+
     var totalDailyLimitDr1 : Int?
     var totalMonthlyLimitDr1 : Int?
     var totalYearlyLimitDr1 : Int?
@@ -112,12 +112,12 @@ class UnVerifiedAccountVC: UIViewController {
     
     func CommaSepration()
       {
-          var number = balanceLimit
+          var number = Double(self.balanceLimit!)
           var formatter = NumberFormatter()
           formatter.numberStyle = .decimal
   //        formatter.maximumFractionDigits = 2
           formatter.locale = Locale(identifier: "en_US")
-          comabalanceLimit = (formatter.string(from: NSNumber(value: number!)))!
+          comabalanceLimit = (formatter.string(from: NSNumber(value: number)))!
            
           
           let number1 = balanceLimit1

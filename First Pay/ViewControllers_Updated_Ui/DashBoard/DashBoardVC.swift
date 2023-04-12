@@ -127,6 +127,12 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 
             self.present(vc, animated: true)
         }
+        else if tag == 3
+        {
+            let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
+            self.present(vc, animated: true)
+//            self.navigationController?.pushViewController(vc, animated: true)
+        }
         
         else if tag == 4
         {

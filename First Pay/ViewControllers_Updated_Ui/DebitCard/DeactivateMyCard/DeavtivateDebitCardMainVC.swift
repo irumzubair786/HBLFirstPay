@@ -56,24 +56,24 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
     @IBOutlet weak var labelCardNumber: UILabel!
     func getValueFromAPI()
     {
-//        for anObject in self.getDebitDetailsObj?.newCarddata
-//        {
-//            if let name = anObject.debitCardTitle {
-//                self.labelName.text = name
-//            }
-//            if let pan =  anObject.pan {
-//                self.labelCardNumber.text = pan
-//            }
-//            if let month = anObject.cardExpiryMonth {
-//                if let year = anObject.cardExpiryYear{
-//                    self.labeldate.text = "\(month)" + "/\(year)"
-//                }
-//            }
-//          
-//            if let accountID = anObject.accountDebitCardId{
-//                GlobalData.accountDebitCardId = Int(accountID)
-////                self.accountDebitCardId = "\(accountID)"
-//            }
+       if let anObject =  self.getDebitDetailsObj?.newCarddata
+        {
+            if let name = anObject.debitCardTitle {
+                self.labelName.text = name
+            }
+            if let pan =  anObject.pan {
+                self.labelCardNumber.text = pan
+            }
+            if let month = anObject.cardExpiryMonth {
+                if let year = anObject.cardExpiryYear{
+                    self.labeldate.text = "\(month)" + "/\(year)"
+                }
+            }
+          
+            if let accountID = anObject.accountDebitCardId{
+                GlobalData.accountDebitCardId = Int(accountID)
+//                self.accountDebitCardId = "\(accountID)"
+            }
         }
 
     }
@@ -100,7 +100,7 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         let parameters = ["cnic":userCnic!,"channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!]
         
         print(parameters)
-
+         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
@@ -116,8 +116,6 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        
-        
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<GetDebitCardModel>) in
             
             self.hideActivityIndicator()
@@ -129,7 +127,7 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
                 
                 if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
                 
-                  
+                    getValueFromAPI()
 //                    self.updateUI()
                     
                 }

@@ -42,7 +42,13 @@ class MainPageVC: UIViewController {
         let vc = storyBoard.instantiateViewController(withIdentifier: "ToggleMenuVC") as! ToggleMenuVC
         
         self.navigationController?.pushViewController(vc, animated: true)
-        present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
+        if let presentedViewController = self.presentedViewController {
+            // yourViewController is currently presenting a view controller modally
+        } else {
+            // yourViewController is not presenting a view controller modally
+            present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
+        }
+       
         
         
         
