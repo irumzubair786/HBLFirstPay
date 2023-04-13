@@ -41,12 +41,12 @@ extension UIView {
         layer.addSublayer(borderLayer)
         return borderLayer
     }
-    func setShadow(){
+    func setShadow(radius: CGFloat? = 6){
         self.layer.masksToBounds = false
         self.layer.shadowOffset = CGSize(width: 0, height: 0)
         self.layer.shadowRadius = 5
         self.layer.shadowOpacity = 0.3
-        self.layer.cornerRadius = 6
+        self.layer.cornerRadius = radius!
     }
 }
 

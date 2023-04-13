@@ -1,14 +1,16 @@
 //
-//  CalendarDateCollectionViewCell.swift
-//  HBLFMB
+//  CalendarCurrentDateCell.swift
+//  First Pay
 //
-//  Created by Apple on 28/03/2023.
+//  Created by Apple on 13/04/2023.
+//  Copyright © 2023 FMFB Pakistan. All rights reserved.
 //
 
 import UIKit
 
-class CalendarDateCollectionViewCell: UICollectionViewCell {
-    static let reuseIdentifier = String(describing: CalendarDateCollectionViewCell.self)
+class CalendarCurrentDateCell: UICollectionViewCell {
+
+    static let reuseIdentifier = String(describing: CalendarCurrentDateCell.self)
     
     @IBOutlet weak var viewDateBackGround: UIView!
     @IBOutlet weak var viewMainBackGround: UIView!

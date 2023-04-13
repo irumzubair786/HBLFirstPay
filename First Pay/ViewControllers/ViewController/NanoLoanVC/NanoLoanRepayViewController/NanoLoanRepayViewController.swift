@@ -40,6 +40,7 @@ class NanoLoanRepayViewController: UIViewController {
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var stackViewRemainingDays: UIStackView!
     
+    @IBOutlet weak var viewMarkupCalendar: UIView!
     var callBackButtonApply: (()->())!
     
     var modelGetActiveLoanToPay: ModelGetActiveLoanToPay? {
@@ -64,20 +65,20 @@ class NanoLoanRepayViewController: UIViewController {
                     let remaningDays = currentLoan.daysTillDueDate ?? 0
                     labelDaysTillDueDate.text = "\(remaningDays) \(remaningDays == 0 ? "Last Day" : remaningDays == 1 ? "Day" : "Days") "
                     
-                    if remaningDays < 0 {
+                    if remaningDays < 0 || remaningDays < 0 {
                         stackViewRemainingDays.isHidden = true
                         viewOverDueLabel.isHidden = false
                         viewDescriptionIfDueDateBackground.isHidden = false
                         labelDueDateTitle.textColor = .clrLightRed
                         viewBackGroundAmount.backgroundColor = .clrLightRedWithOccupacy05
                         DispatchQueue.main.async {
-                            self.viewBackGroundAmount.radiusLineDashedStroke(radius: 12, color: .clrLightRed)
+                            self.viewBackGroundAmount.radiusLineDashedStroke(radius: 20, color: .clrLightRed)
                         }
                     }
                     else {
                         viewOverDueLabel.isHidden = true
                         viewDescriptionIfDueDate.isHidden = true
-                        self.viewBackGroundAmount.setShadow()
+                        self.viewBackGroundAmount.setShadow(radius: 20)
                     }
                 }
             }
@@ -104,6 +105,8 @@ class NanoLoanRepayViewController: UIViewController {
         viewDescriptionIfDueDateBackground.radius()
         viewOverDueLabel.circle()
         viewDescriptionIfDueDateBackground.backgroundColor = .clrLightRedWithOccupacy05
+        
+        viewMarkupCalendar.radius(radius: 18)
         DispatchQueue.main.async {
             self.viewBenifitRepaying.circle()
             self.viewBenifitRepaying.radiusLineDashedStroke(radius: self.viewBenifitRepaying.frame.height / 2, color: .clrGreen)
@@ -253,7 +256,7 @@ extension String {
     }
     
     
-    func compareDateDifferenceToDate2(toDate: Date, toFormat: String? = "yyyy-mm-dd", fromFormat: String? = "MM/dd/yyyy") -> Int {
+    func compareDateDifferenceToDate2(toDate: Date, toFormat: String? = "yyyy-MM-dd", fromFormat: String? = "MM/dd/yyyy") -> Int {
         
         let toDateString = self.components(separatedBy: " ")
         let toFormatter = DateFormatter()

@@ -180,6 +180,12 @@
 		18D92DFF294B468D009E7C75 /* Cell_Billpayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D92DFE294B468D009E7C75 /* Cell_Billpayment.swift */; };
 		18DFF3B82976A6EC00EB848F /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DFF3B72976A6EC00EB848F /* CustomCell.swift */; };
 		18DFF3BC2976EFDD00EB848F /* extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DFF3BB2976EFDD00EB848F /* extentions.swift */; };
+		18E0610F29E831D600EB8986 /* CalendarLoanDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E0610D29E831D600EB8986 /* CalendarLoanDateCell.swift */; };
+		18E0611029E831D600EB8986 /* CalendarLoanDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18E0610E29E831D600EB8986 /* CalendarLoanDateCell.xib */; };
+		18E0611329E831E400EB8986 /* CalendarCurrentDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E0611129E831E400EB8986 /* CalendarCurrentDateCell.swift */; };
+		18E0611429E831E400EB8986 /* CalendarCurrentDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18E0611229E831E400EB8986 /* CalendarCurrentDateCell.xib */; };
+		18E0611729E831F000EB8986 /* CalendarDefaultDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E0611529E831F000EB8986 /* CalendarDefaultDateCell.swift */; };
+		18E0611829E831F000EB8986 /* CalendarDefaultDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18E0611629E831F000EB8986 /* CalendarDefaultDateCell.xib */; };
 		18E4C36E296FE811009BF8FF /* WalletToWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E4C36D296FE811009BF8FF /* WalletToWalletVC.swift */; };
 		18E4C37029701FD4009BF8FF /* MoneyTransfer_ReasonVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E4C36F29701FD3009BF8FF /* MoneyTransfer_ReasonVC.swift */; };
 		18E4C3722970205B009BF8FF /* cellMoneyTransfer_ReasonVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E4C3712970205B009BF8FF /* cellMoneyTransfer_ReasonVC.swift */; };
@@ -596,6 +602,12 @@
 		18D92DFE294B468D009E7C75 /* Cell_Billpayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell_Billpayment.swift; sourceTree = "<group>"; };
 		18DFF3B72976A6EC00EB848F /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomCell.swift; path = "First Pay/ViewControllers/CustomCell.swift"; sourceTree = SOURCE_ROOT; };
 		18DFF3BB2976EFDD00EB848F /* extentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = extentions.swift; path = "First Pay/extentions.swift"; sourceTree = SOURCE_ROOT; };
+		18E0610D29E831D600EB8986 /* CalendarLoanDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarLoanDateCell.swift; sourceTree = "<group>"; };
+		18E0610E29E831D600EB8986 /* CalendarLoanDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarLoanDateCell.xib; sourceTree = "<group>"; };
+		18E0611129E831E400EB8986 /* CalendarCurrentDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCurrentDateCell.swift; sourceTree = "<group>"; };
+		18E0611229E831E400EB8986 /* CalendarCurrentDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarCurrentDateCell.xib; sourceTree = "<group>"; };
+		18E0611529E831F000EB8986 /* CalendarDefaultDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDefaultDateCell.swift; sourceTree = "<group>"; };
+		18E0611629E831F000EB8986 /* CalendarDefaultDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarDefaultDateCell.xib; sourceTree = "<group>"; };
 		18E4C36D296FE811009BF8FF /* WalletToWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToWalletVC.swift; sourceTree = "<group>"; };
 		18E4C36F29701FD3009BF8FF /* MoneyTransfer_ReasonVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyTransfer_ReasonVC.swift; sourceTree = "<group>"; };
 		18E4C3712970205B009BF8FF /* cellMoneyTransfer_ReasonVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellMoneyTransfer_ReasonVC.swift; sourceTree = "<group>"; };
@@ -1527,6 +1539,9 @@
 		18D8C3AE29E7442700E39184 /* CalendarPickerCell */ = {
 			isa = PBXGroup;
 			children = (
+				18E0610C29E831A100EB8986 /* CalendarLoanDateCell */,
+				18E0610B29E8318A00EB8986 /* CalendarCurrentDateCell */,
+				18E0610A29E8317600EB8986 /* CalendarDefaultDateCell */,
 				18D8C3B029E7444700E39184 /* CalendarEndDateCell */,
 				18D8C3AF29E7443900E39184 /* CalendarStartDateCell */,
 				189DD28329D9BA0800BBF940 /* CalendarDateCollectionViewCell.swift */,
@@ -1552,6 +1567,33 @@
 				18D8C3B229E7447B00E39184 /* CalendarEndDateCell.xib */,
 			);
 			path = CalendarEndDateCell;
+			sourceTree = "<group>";
+		};
+		18E0610A29E8317600EB8986 /* CalendarDefaultDateCell */ = {
+			isa = PBXGroup;
+			children = (
+				18E0611529E831F000EB8986 /* CalendarDefaultDateCell.swift */,
+				18E0611629E831F000EB8986 /* CalendarDefaultDateCell.xib */,
+			);
+			path = CalendarDefaultDateCell;
+			sourceTree = "<group>";
+		};
+		18E0610B29E8318A00EB8986 /* CalendarCurrentDateCell */ = {
+			isa = PBXGroup;
+			children = (
+				18E0611129E831E400EB8986 /* CalendarCurrentDateCell.swift */,
+				18E0611229E831E400EB8986 /* CalendarCurrentDateCell.xib */,
+			);
+			path = CalendarCurrentDateCell;
+			sourceTree = "<group>";
+		};
+		18E0610C29E831A100EB8986 /* CalendarLoanDateCell */ = {
+			isa = PBXGroup;
+			children = (
+				18E0610D29E831D600EB8986 /* CalendarLoanDateCell.swift */,
+				18E0610E29E831D600EB8986 /* CalendarLoanDateCell.xib */,
+			);
+			path = CalendarLoanDateCell;
 			sourceTree = "<group>";
 		};
 		18E661A329DB4C0700106A28 /* NanoLoanSuccessful */ = {
@@ -2085,6 +2127,7 @@
 				A26EE2F722818C9100704BD3 /* TouchID.htm in Resources */,
 				3530B74C2844D38E00786A34 /* UTCTC.pdf in Resources */,
 				3503AD69276500B1001168DE /* Localizable.strings in Resources */,
+				18E0611029E831D600EB8986 /* CalendarLoanDateCell.xib in Resources */,
 				187F832C29DBFC6A0062E500 /* MaintenanceCertificate.storyboard in Resources */,
 				186E42782963FA7000022BF5 /* TopUp.storyboard in Resources */,
 				184DC8AE29487BE700D89AF9 /* ForgotPassword.storyboard in Resources */,
@@ -2092,6 +2135,7 @@
 				A2A16C9324DC066800C92A86 /* Golootlo-TC.html in Resources */,
 				3530B74A2844D38400786A34 /* Debit Card Terms and Conditions.pdf in Resources */,
 				189DD28729D9BA0800BBF940 /* CalendarDateCollectionViewCell.xib in Resources */,
+				18E0611429E831E400EB8986 /* CalendarCurrentDateCell.xib in Resources */,
 				3530B7542844D3AC00786A34 /* BBFAQs.html in Resources */,
 				18A98B7E29545FE200932696 /* ContactUs.storyboard in Resources */,
 				1888B60929A4B1F80028619D /* AddCash.storyboard in Resources */,
@@ -2117,6 +2161,7 @@
 				18D130CB2941C45A000C396E /* FirstPay-Urdu-TC.pdf in Resources */,
 				189DD27529D9A4F800BBF940 /* ApplyAmountCell.xib in Resources */,
 				35B07C4828F3DC0B00114BD0 /* UrduTermsAndConditions.html in Resources */,
+				18E0611829E831F000EB8986 /* CalendarDefaultDateCell.xib in Resources */,
 				A26EE2F922818CCE00704BD3 /* faq.html in Resources */,
 				18D8C3B829E7449600E39184 /* CalendarStartDateCell.xib in Resources */,
 				18786FF029E16A4B00A497B8 /* AccountLevel.storyboard in Resources */,
@@ -2268,6 +2313,7 @@
 				1837C10929A73FE90064212A /* LowBalanceVc.swift in Sources */,
 				A265AEB9268464400035910C /* nanoloanproductModel.swift in Sources */,
 				A2097150228412FB00FD65B5 /* TimerApplication.swift in Sources */,
+				18E0610F29E831D600EB8986 /* CalendarLoanDateCell.swift in Sources */,
 				18A98B8629549CF200932696 /* cellCategory.swift in Sources */,
 				1869309D299D016F00D0E677 /* DeavtivateDebitCardMainVC.swift in Sources */,
 				A280C1C823D5736B00F77122 /* NetworkManagerSUA.swift in Sources */,
@@ -2450,6 +2496,7 @@
 				A273C2BC265E0594004324AA /* DiscountCollectionviewcell.swift in Sources */,
 				A2078315219A9EBA00F7014F /* ButtonRounded.swift in Sources */,
 				184DC8AC294845F700D89AF9 /* Cell_CitySelectedVC.swift in Sources */,
+				18E0611329E831E400EB8986 /* CalendarCurrentDateCell.swift in Sources */,
 				A265596324234CEA00A39B4B /* MoviesListTableViewCell.swift in Sources */,
 				A25DDD94236313AF00DFF283 /* GetBeneficiaryTitleModel.swift in Sources */,
 				A279D97D24BD94E10011C441 /* CommitteeListModel.swift in Sources */,
@@ -2480,6 +2527,7 @@
 				1848FDBE2971C70600906833 /* SelectWalletVC.swift in Sources */,
 				1862D103295B4AF50037EFD4 /* genericResponseModel.swift in Sources */,
 				A2848EAC21995A4C00B36D56 /* AppDelegate.swift in Sources */,
+				18E0611729E831F000EB8986 /* CalendarDefaultDateCell.swift in Sources */,
 				A22ABE9F26413F3300C759B0 /* last5transactionModel.swift in Sources */,
 				18F6EA9629880DB900B4FA1A /* BillPayment_ConfirmationVC.swift in Sources */,
 				1862D0FD295B13190037EFD4 /* cnicVerificationModel.swift in Sources */,

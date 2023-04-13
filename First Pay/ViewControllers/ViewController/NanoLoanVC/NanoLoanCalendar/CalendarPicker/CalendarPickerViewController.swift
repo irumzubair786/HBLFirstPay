@@ -148,13 +148,21 @@ class CalendarPickerViewController: UIViewController {
         let cellNib = UINib(nibName: "CalendarDateCollectionViewCell", bundle: nil)
         collectionView.register(cellNib, forCellWithReuseIdentifier: "CalendarDateCollectionViewCell")
         
-        
         let cellNibStart = UINib(nibName: "CalendarStartDateCell", bundle: nil)
         collectionView.register(cellNibStart, forCellWithReuseIdentifier: "CalendarStartDateCell")
         
-        
         let cellNibEnd = UINib(nibName: "CalendarEndDateCell", bundle: nil)
         collectionView.register(cellNibEnd, forCellWithReuseIdentifier: "CalendarEndDateCell")
+        
+        let cellNibDefault = UINib(nibName: "CalendarDefaultDateCell", bundle: nil)
+        collectionView.register(cellNibDefault, forCellWithReuseIdentifier: "CalendarDefaultDateCell")
+        
+        let cellNibLoan = UINib(nibName: "CalendarLoanDateCell", bundle: nil)
+        collectionView.register(cellNibLoan, forCellWithReuseIdentifier: "CalendarLoanDateCell")
+        
+        let cellNibCurrent = UINib(nibName: "CalendarCurrentDateCell", bundle: nil)
+        collectionView.register(cellNibCurrent, forCellWithReuseIdentifier: "CalendarCurrentDateCell")
+        
         
         
         let layout = UICollectionViewFlowLayout()
@@ -418,8 +426,37 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         let day = days[indexPath.row]
         
+        if modelGetSchCalendar == nil {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarDefaultDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarDefaultDateCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            
+            return cell
+        }
         let type = getCellType(day: day)
-        if type == "startDateRecord" {
+        
+        
+        if type.0 == "currentDateRecord" {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarCurrentDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarCurrentDateCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            
+            return cell
+        }
+        else if type.1 == 99 {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier,
+                for: indexPath) as! CalendarDateCollectionViewCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            
+            return cell
+        }
+        if type.0 == "startDateRecord" {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CalendarStartDateCell.reuseIdentifier,
                 for: indexPath) as! CalendarStartDateCell
@@ -428,7 +465,7 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
             
             return cell
         }
-        else if type == "endDateRecord" {
+        else if type.0 == "endDateRecord" {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CalendarEndDateCell.reuseIdentifier,
                 for: indexPath) as! CalendarEndDateCell
@@ -437,19 +474,29 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
             
             return cell
         }
-//        else if type == "recordFound" {
-//
-//        }
+        else if type.0 == "loanDateRecord" {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarLoanDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarLoanDateCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            return cell
+        }
         else {
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier,
-                for: indexPath) as! CalendarDateCollectionViewCell
-            // swiftlint:disable:previous force_cast
-            //        cell.labelDate.text = day.number
+                withReuseIdentifier: CalendarDefaultDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarDefaultDateCell
             cell.modelGetSchCalendar = modelGetSchCalendar
             cell.day = day
             
             return cell
+//            let cell = collectionView.dequeueReusableCell(
+//                withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier,
+//                for: indexPath) as! CalendarDateCollectionViewCell
+//            cell.modelGetSchCalendar = modelGetSchCalendar
+//            cell.day = day
+//
+//            return cell
         }
         
     
@@ -468,36 +515,83 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
 //        (cell as! CalendarDateCollectionViewCell).updateStatus()
     }
     
-    func getCellType(day: Day?) -> String {
+    func getCellType(day: Day?) -> (String, Int) {
         if let tempDate = day?.date.convertDateToStringForCalendar() {
-//            print(tempDate)
             if modelGetSchCalendar == nil {
-                return "default"
+                return ("default" , 99)
             }
             else {
-                if let modelDate = modelGetSchCalendar?.data.dates[tempDate] {
+                if let _ = modelGetSchCalendar?.data.dates[tempDate] {
+                    
                     if let startDate = modelGetSchCalendar?.data.startDate {
-                        let compare = startDate.compareDateDifferenceToDate2(toDate: day!.date)
-                        if compare == 0 {
-                            return "startDateRecord"
+                        let compareDays = fetchCompareDaysFromDatetoToDate(fromDate: startDate, todate: day!.date)
+                        if compareDays == 0 {
+                            return ("startDateRecord" , compareDays)
                         }
                     }
+                    
                     if let endDate = modelGetSchCalendar?.data.endDate {
-                        let compare = endDate.compareDateDifferenceToDate2(toDate: day!.date)
-                        if compare == 0 {
-                            return "endDateRecord"
+                        
+                        let compareDays = fetchCompareDaysFromDatetoToDate(fromDate: endDate, todate: day!.date)
+                        
+                        if compareDays == 0 {
+                            return ("endDateRecord" , compareDays)
                         }
                     }
-                    return "recordFound"
+                    
+                    let compareDays = fetchCompareDaysFromCurrentDate(date: day!.date)
+                    
+                    if compareDays == 0 {
+                        return ("currentDateRecord" , compareDays)
+                    }
+                    else if compareDays > 0 {
+                        return ("loanDateRecord" , compareDays)
+                    }
+                    return ("default" , compareDays)
                 }
                 else {
-                    return "default"
+                    return ("recordFound" , 0)
                 }
             }
         }
         else {
-            return "default"
+            return ("default", 99)
         }
+    }
+    
+    
+    func fetchCompareDaysFromDatetoToDate(fromDate: String, todate: Date) -> Int {
+        let dateCalendar = fetchFormatedDate(date: todate)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        let stringCurrentFromDate = dateFormatter.string(from: date)
+        let compareDays = fromDate.compareDateDifferenceToDate2(toDate: dateCalendar)
+        
+        print(compareDays)
+        return compareDays
+    }
+    
+    func fetchCompareDaysFromCurrentDate(date: Date) -> Int {
+        let dateCalendar = fetchFormatedDate(date: date)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let stringCurrentFromDate = dateFormatter.string(from: Date())
+        let compareDays = stringCurrentFromDate.compareDateDifferenceToDate2(toDate: dateCalendar)
+        
+        print(compareDays)
+        return compareDays
+    }
+
+    func fetchFormatedDate(date: Date) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let stringCurrentFromDate = dateFormatter.string(from: date)
+        let stringDate = dateFormatter.string(from: date)
+        let date = dateFormatter.date(from: stringDate)!
+        
+        return date
     }
 }
 

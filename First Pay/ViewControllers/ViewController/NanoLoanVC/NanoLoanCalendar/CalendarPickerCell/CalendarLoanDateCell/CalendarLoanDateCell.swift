@@ -1,5 +1,5 @@
 //
-//  CalendarEndDateCell.swift
+//  CalendarLoanDateCell.swift
 //  First Pay
 //
 //  Created by Apple on 13/04/2023.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class CalendarStartDateCell: UICollectionViewCell {
+class CalendarLoanDateCell: UICollectionViewCell {
 
-    static let reuseIdentifier = String(describing: CalendarStartDateCell.self)
+    static let reuseIdentifier = String(describing: CalendarLoanDateCell.self)
     
     @IBOutlet weak var viewDateBackGround: UIView!
     @IBOutlet weak var viewMainBackGround: UIView!
@@ -23,6 +23,7 @@ class CalendarStartDateCell: UICollectionViewCell {
             
         }
     }
+    var isDefaultDay = 0
     
     private lazy var accessibilityDateFormatter: DateFormatter = {
       let dateFormatter = DateFormatter()
@@ -36,11 +37,9 @@ class CalendarStartDateCell: UICollectionViewCell {
         // Initialization code
         labelDate.textColor = .clrLightGrayCalendar
         labelPrice.textColor = .clrLightGrayCalendar
-//        labelStatus.textColor = .clrLightRed
 
         labelPrice.text = ""
         labelStatus.text = ""
-        
     }
     var day: Day? {
       didSet {
@@ -55,14 +54,11 @@ class CalendarStartDateCell: UICollectionViewCell {
         
       }
     }
-    
-    
+
     func updateStatus() {
         if let tempDate = day?.date.convertDateToStringForCalendar() {
             if let modelDate = modelGetSchCalendar?.data.dates[tempDate] {
-                DispatchQueue.main.async {
-                    self.foundRecord(modelDate: modelDate)
-                }
+                foundRecord(modelDate: modelDate)
             }
         }
     }
@@ -72,15 +68,19 @@ class CalendarStartDateCell: UICollectionViewCell {
         accessibilityHint = nil
         
         labelPrice.text = "Rs. \(modelDate.markup)"
-        labelStatus.text = "START DATE"
         
+        labelStatus.isHidden = true
         labelPrice.isHidden = false
         self.viewDateBackGround.isHidden = false
-        labelStatus.isHidden = false
-        labelStatus.textColor = .clrGreen
-        self.labelStatus.radius(color: .clrGreen)
-        self.labelStatus.circle()
-        
+        DispatchQueue.main.async {
+            self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
+        }
+        labelDate.textColor = .clrTextNormal
+        labelStatus.textColor = .clrTextNormal        
+        ifCurrentDate()
+    }
+    
+    func ifCurrentDate() {
         //Check if Current Date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-mm-dd"
@@ -92,12 +92,6 @@ class CalendarStartDateCell: UICollectionViewCell {
             labelDate.textColor = .clrGreen
             self.viewDateBackGround.radiusLineDashedStroke(color: .clrGreen)
             self.viewDateBackGround.backgroundColor = .clrGreenWithOccupacy05
-        }
-        else {
-            labelDate.textColor = .clrTextNormal
-            labelPrice.textColor = .clrTextNormal
-            self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
-            self.viewDateBackGround.backgroundColor = .white
         }
     }
     func defaultCalendarDate() {
@@ -111,53 +105,6 @@ class CalendarStartDateCell: UICollectionViewCell {
         labelPrice.isHidden = true
         self.viewDateBackGround.isHidden = true
     }
-    func ifStartDate(modelDate: CalendarPickerViewController.ModelGetSchCalendarDateValue) {
-        if let startDate = modelGetSchCalendar?.data.startDate {
-            let compare = startDate.compareDateDifferenceToDate2(toDate: day!.date)
-            if compare == 0 {
-                print("Start-Date: \(startDate)")
-                print("Calendar-Date: \(day!.date)")
-                let calendarDate = "\(day!.date)".components(separatedBy: " ").first
-                let startDatee = startDate.components(separatedBy: " ").first
-                if calendarDate == startDatee {
-                    
-                }
-                print("Date Match \(calendarDate!)-\(startDatee!)")
-                labelStatus.isHidden = false
-                labelStatus.textColor = .clrGreen
-                labelStatus.text = "START DATE"
-                self.labelStatus.radius(color: .clrGreen)
-                self.labelStatus.circle()
-            }
-
-//            print(compare)
-        }
-    }
-    
-    func ifEndDate(modelDate: CalendarPickerViewController.ModelGetSchCalendarDateValue) {
-        if let endDate = modelGetSchCalendar?.data.endDate {
-            let compare = endDate.compareDateDifferenceToDate2(toDate: day!.date)
-            if compare == 0 {
-                self.viewDateBackGround.isHidden = true
-                labelStatus.isHidden = false
-                labelStatus.textColor = .clrLightRed
-                labelPrice.textColor = .clrLightRed
-                labelDate.textColor = .clrLightRed
-
-                labelPrice.text = "Rs. \(modelDate.markup)"
-                labelStatus.text = "End DATE"
-                self.labelStatus.radius(color: .clrLightRed)
-                self.labelDate.radius(color: .clrLightRed)
-                self.labelStatus.circle()
-                self.labelDate.circle()
-                DispatchQueue.main.async {
-                    
-                }
-            }
-//            print(compare)
-        }
-    }
-    
 }
 
 // MARK: - Appearance

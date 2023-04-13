@@ -56,6 +56,7 @@ class AddCashMainVc: BaseClassVC {
     
     @IBAction func buttonGetLoan(_ sender: UIButton) {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
+        vc.isPushViewController = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
