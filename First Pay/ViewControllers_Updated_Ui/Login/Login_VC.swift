@@ -31,9 +31,30 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var loginObj : login?
     var flag :Bool = false
     
+    
+    
+    @IBOutlet weak var viewCircleOne: UIView!
+    @IBOutlet weak var viewCircleTwo: UIView!
+    @IBOutlet weak var viewCircleThree: UIView!
+    @IBOutlet weak var viewCircleFour: UIView!
+    @IBOutlet weak var viewCircleFive: UIView!
+    @IBOutlet weak var viewCircleSix: UIView!
+    
+    @IBOutlet weak var viewLineOne: UIView!
+    @IBOutlet weak var viewLineTwo: UIView!
+    @IBOutlet weak var viewLineThree: UIView!
+    @IBOutlet weak var viewLineFour: UIView!
+    @IBOutlet weak var viewLineFive: UIView!
+    @IBOutlet weak var viewLineSix: UIView!
+
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        UITextField.appearance().tintColor = .systemBlue
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        UITextField.appearance().tintColor = .clear
+        textFieldSetting()
 //        self.showAlertCustomPopup(title: "", message: "",buttonName: ["OK","CANCEL"],viewController: self)
         lbl_InvalidPassword.isHidden = true
         pinTextField.delegate = self
@@ -62,6 +83,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     }
     
     @objc func changeTextInTextField() {
+        checkFields(filedNo: self.pinTextField.text?.count ?? 0)
         
         if self.pinTextField.text?.count == 6 {
             UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
@@ -72,6 +94,112 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.loginAction()
         }
         print(self.pinTextField.text)
+    }
+    
+    func textFieldSetting() {
+        viewCircleOne.circle()
+        viewCircleTwo.circle()
+        viewCircleThree.circle()
+        viewCircleFour.circle()
+        viewCircleFive.circle()
+        viewCircleSix.circle()
+        
+        viewLineOne.circle()
+        viewLineTwo.circle()
+        viewLineThree.circle()
+        viewLineFour.circle()
+        viewLineFive.circle()
+        viewLineSix.circle()
+        
+        viewCircleOne.backgroundColor = .clear
+        viewCircleTwo.backgroundColor = .clear
+        viewCircleThree.backgroundColor = .clear
+        viewCircleFour.backgroundColor = .clear
+        viewCircleFive.backgroundColor = .clear
+        viewCircleSix.backgroundColor = .clear
+        
+        viewLineOne.backgroundColor = .clrLightGrayCalendar
+        viewLineTwo.backgroundColor = .clrLightGrayCalendar
+        viewLineThree.backgroundColor = .clrLightGrayCalendar
+        viewLineFour.backgroundColor = .clrLightGrayCalendar
+        viewLineFive.backgroundColor = .clrLightGrayCalendar
+        viewLineSix.backgroundColor = .clrLightGrayCalendar
+    }
+    func checkFields(filedNo: Int) {
+        viewCircleOne.backgroundColor = .clear
+        viewCircleTwo.backgroundColor = .clear
+        viewCircleThree.backgroundColor = .clear
+        viewCircleFour.backgroundColor = .clear
+        viewCircleFive.backgroundColor = .clear
+        viewCircleSix.backgroundColor = .clear
+        
+        viewLineOne.backgroundColor = .clrLightGrayCalendar
+        viewLineTwo.backgroundColor = .clrLightGrayCalendar
+        viewLineThree.backgroundColor = .clrLightGrayCalendar
+        viewLineFour.backgroundColor = .clrLightGrayCalendar
+        viewLineFive.backgroundColor = .clrLightGrayCalendar
+        viewLineSix.backgroundColor = .clrLightGrayCalendar
+        
+        if filedNo == 0 {
+            return
+        }
+        for i in 1...filedNo {
+            print(i)
+            if i == 1 {
+                viewLineOne.backgroundColor = .white
+                viewCircleOne.backgroundColor = .white
+            }
+            if i == 2 {
+                viewLineOne.backgroundColor = .white
+                viewCircleOne.backgroundColor = .white
+                viewLineTwo.backgroundColor = .white
+                viewCircleTwo.backgroundColor = .white
+            }
+            else if i == 3 {
+                viewLineOne.backgroundColor = .white
+                viewCircleOne.backgroundColor = .white
+                viewLineTwo.backgroundColor = .white
+                viewCircleTwo.backgroundColor = .white
+                viewLineThree.backgroundColor = .white
+                viewCircleThree.backgroundColor = .white
+            }
+            else if i == 4 {
+                viewLineOne.backgroundColor = .white
+                viewCircleOne.backgroundColor = .white
+                viewLineTwo.backgroundColor = .white
+                viewCircleTwo.backgroundColor = .white
+                viewLineThree.backgroundColor = .white
+                viewCircleThree.backgroundColor = .white
+                viewLineFour.backgroundColor = .white
+                viewCircleFour.backgroundColor = .white
+            }
+            else if i == 5 {
+                viewLineOne.backgroundColor = .white
+                viewCircleOne.backgroundColor = .white
+                viewLineTwo.backgroundColor = .white
+                viewCircleTwo.backgroundColor = .white
+                viewLineThree.backgroundColor = .white
+                viewCircleThree.backgroundColor = .white
+                viewLineFour.backgroundColor = .white
+                viewCircleFour.backgroundColor = .white
+                viewLineFive.backgroundColor = .white
+                viewCircleFive.backgroundColor = .white
+            }
+            else if i == 6 {
+                viewLineOne.backgroundColor = .white
+                viewCircleOne.backgroundColor = .white
+                viewLineTwo.backgroundColor = .white
+                viewCircleTwo.backgroundColor = .white
+                viewLineThree.backgroundColor = .white
+                viewCircleThree.backgroundColor = .white
+                viewLineFour.backgroundColor = .white
+                viewCircleFour.backgroundColor = .white
+                viewLineFive.backgroundColor = .white
+                viewCircleFive.backgroundColor = .white
+                viewLineSix.backgroundColor = .white
+                viewCircleSix.backgroundColor = .white
+            }
+        }
     }
     
     
