@@ -38,10 +38,10 @@ var alamoFireManager: SessionManager? = {
 struct APIPath {
     
     //original ur
-    public static let  baseUrl = BASE_URLLive
+    public static let  baseUrl = baseurlUat
     
     public static let  BASE_URLLive = "http://bbuat.hblmfb.com/"
-    static let baseurlUat =  "https://bb.fmfb.pk/irisrest/"
+    static let baseurlUat =  "https://bb.hblmfb.com/"
     static let staggingurl = "http://bbuat.fmfb.pk/irisrest/"
     // static let baseurl =  "http://bbuat.fmfb.pk/nanoloan/"
     //  static var baseurl = "http://bbuat.fmfb.pk/irisrest/"

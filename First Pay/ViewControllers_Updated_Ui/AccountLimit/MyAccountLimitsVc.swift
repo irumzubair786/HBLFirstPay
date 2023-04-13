@@ -7,8 +7,10 @@
 //
 
 import UIKit
-
-class MyAccountLimitsVc: UIViewController {
+import SwiftKeychainWrapper
+import Alamofire
+import AlamofireObjectMapper
+class MyAccountLimitsVc: BaseClassVC {
     var levelCode :String?
     var totalDailyLimitDr : Int?
     var totalMonthlyLimitDr : Int?
@@ -26,12 +28,13 @@ class MyAccountLimitsVc: UIViewController {
     var totalYearlyLimitCr1 : Int?
     var balanceLimit1 : Int?
     var myCustomArray = [a]()
+    var availableLimitObj : GetAccLimits2?
     override func viewDidLoad() {
         super.viewDidLoad()
-        appendVlaluesToArray()
+//        getAvailableLimits()
+        apicall()
         buttonBack.setTitle("", for: .normal)
-        tableView.delegate = self
-        tableView.dataSource = self
+        
         buttonUpgrade.setTitle("UPGRADE", for: .normal)
         buttonUpgrade.setTitleColor(.white, for: .normal)
         tableView.rowHeight = 100
@@ -39,10 +42,10 @@ class MyAccountLimitsVc: UIViewController {
         // Do any additional setup after loading the view.
     }
     func appendVlaluesToArray(){
-       
-        myCustomArray.append(a(name: "Daily ", limit: "20,000", colour: UIColor(hexString: "#F8CC59", alpha: 1)))
-        myCustomArray.append(a(name: "Monthly ", limit: "30,000", colour: UIColor(hexString: "#1EC884", alpha: 1)))
-        myCustomArray.append(a(name: "Yearly ", limit: "40,000", colour: UIColor(hexString: "#F19434", alpha: 1)))
+        
+        myCustomArray.append(a(name: "Daily ", limit: "Consumed Rs. \(availableLimitObj?.data?.dailyConsumed)", colour: UIColor(hexString: "#F8CC59", alpha: 1)))
+        myCustomArray.append(a(name: "Monthly ", limit: "Consumed Rs.\(availableLimitObj?.data?.monthlyConsumed)", colour: UIColor(hexString: "#1EC884", alpha: 1)))
+        myCustomArray.append(a(name: "Yearly ", limit: "Consumed Rs.\(availableLimitObj?.data?.monthlyConsumed)", colour: UIColor(hexString: "#F19434", alpha: 1)))
     }
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
@@ -91,10 +94,10 @@ class MyAccountLimitsVc: UIViewController {
         
     }
     
-    func calculateValue(total:Double , userValue:Double)->Double{
-            return (userValue/total)
-        }
-   
+    func calculateValue(total:Int , userValue:Int)->Double{
+        return Double((userValue/total))
+    }
+    
     @objc func buttonpress(_ sender:UIButton)
     {
         let tag = sender.tag
@@ -102,16 +105,142 @@ class MyAccountLimitsVc: UIViewController {
         as! cellMyAccountVc
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "changeLimitVC") as!   changeLimitVC
         vc.daily =  (myCustomArray[tag].name)
-//        vc.monthly = myCustomArray[tag].name
-//        vc.yearly = myCustomArray[tag].name
-//        vc.dailyReceiving = myCustomArray[tag].name
-//        vc.monthlyReceiving = myCustomArray[tag].name
-//        vc.yearlyReceiving = myCustomArray[tag].name
+        //        vc.monthly = myCustomArray[tag].name
+        //        vc.yearly = myCustomArray[tag].name
+        //        vc.dailyReceiving = myCustomArray[tag].name
+        //        vc.monthlyReceiving = myCustomArray[tag].name
+        //        vc.yearlyReceiving = myCustomArray[tag].name
         self.present(vc, animated: true)
-//        self.navigationController?.pushViewController(vc, animated: true)
+        //        self.navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    ////    ----------getaccountlimits
+    
+    var modelGetAccount : GetAccLimits2?
+    {
+        didSet{
+            if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+                
+                self.tableView.reloadData()
+                self.tableView.delegate = self
+                self.tableView.dataSource = self
+                self.appendVlaluesToArray()
+            }
+            else {
+                if let message = self.availableLimitObj?.messages{
+                    self.showDefaultAlert(title: "", message: message)
+                }
+            }
+            
+            //        else {
+            //            if let message = self.availableLimitObj?.messages{
+            //                self.showDefaultAlert(title: "", message: message)
+            //            }
+            //            //                  print(response.result.value)
+            //            //                  print(response.response?.statusCode)
+            //        }
+            
+        }
+    }
+
+    
+    
+    func apicall()
+    {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imeiNo" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+            "accountType": "\(DataManager.instance.accountType ?? "0")"
+            ]
+            
+        APIs.postAPI(apiName: .getAccLimits, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+                
+                    let model : GetAccLimits2? = APIs.decodeDataToObject(data: responseData)
+                    print("response",model)
+                    self.modelGetAccount = model
+                }
         
     }
 }
+//        private func getAvailableLimits() {
+//      //
+//              if !NetworkConnectivity.isConnectedToInternet(){
+//                  self.showToast(title: "No Internet Available")
+//                  return
+//              }
+//
+//              showActivityIndicator()
+//              var userCnic : String?
+//              if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+//                  userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+//              }
+//              else{
+//                  userCnic = ""
+//              }
+//            userCnic = UserDefaults.standard.string(forKey: "userCnic")
+//
+//      //        let compelteUrl = GlobalConstants.BASE_URL + "getAccLimits"
+//              let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getLevelLimits"
+//
+//              let parameters : Parameters = ["cnic":userCnic!, "accountType" : DataManager.instance.accountType ?? "20", "imeiNo": DataManager.instance.imei!,"channelId": DataManager.instance.channelID ]
+//
+//              print(parameters)
+//
+//
+//              let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+//
+//              let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+//
+//
+//              let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+//
+//              print(params)
+//              print(compelteUrl)
+//
+//
+//              NetworkManager.sharedInstance.enableCertificatePinning()
+//
+//
+//              NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<AccLimitModel>) in
+//
+//                  self.hideActivityIndicator()
+//
+//                  self.availableLimitObj = response.result.value
+//
+//                  if response.response?.statusCode == 200 {
+//                      if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+//
+//                          self.tableView.reloadData()
+//                          self.tableView.delegate = self
+//                          self.tableView.dataSource = self
+//                          self.appendVlaluesToArray()
+//                      }
+//                      else {
+//                          if let message = self.availableLimitObj?.messages{
+//                              self.showDefaultAlert(title: "", message: message)
+//                          }
+//                      }
+//                  }
+//                  else {
+//                      if let message = self.availableLimitObj?.messages{
+//                          self.showDefaultAlert(title: "", message: message)
+//                      }
+//    //                  print(response.result.value)
+//    //                  print(response.response?.statusCode)
+//                  }
+//              }
+//          }
+//
+//
+//    func updateUI()
+//    {
+//
+//
+//    }
+
 extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -143,7 +272,9 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
               cell.progressbar.progressViewStyle = .bar
               cell.progressbar.trackTintColor = UIColor(hexString: "#F2F6F9", alpha: 1)
               cell.labelRemaining.text = "3000000"
-              let percent = calculateValue(total: 10000, userValue: 2000)
+              var totaldailyLimit = availableLimitObj?.data?.totalDailyLimit
+              var ConsumedDailyLimit = availableLimitObj?.data?.dailyConsumed
+              let percent = calculateValue(total: (totaldailyLimit!),userValue: ConsumedDailyLimit!)
                      print(percent)
               cell.progressbar.cornerRadius = 5
               cell.progressbar.progress = Float(percent)

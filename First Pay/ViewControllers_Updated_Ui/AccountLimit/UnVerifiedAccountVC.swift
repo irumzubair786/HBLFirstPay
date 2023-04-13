@@ -9,6 +9,7 @@
 import UIKit
 
 class UnVerifiedAccountVC: UIViewController {
+   
     var levelCode :String?
     var totalDailyLimitDr : Int?
     var totalMonthlyLimitDr : Int?
@@ -63,7 +64,23 @@ class UnVerifiedAccountVC: UIViewController {
         self.dismiss(animated: true)
     }
     @IBAction func buttonUpgrade(_ sender: UIButton) {
-        UtilManager.showAlertMessage(message: "Coming Soon", viewController: self)
+        let vc = storyboard?.instantiateViewController(withIdentifier: "UnverifeidAccountMainVc")
+        as! UnverifeidAccountMainVc
+        vc.balanceLimit = balanceLimit
+        vc.balanceLimit1 = balanceLimit1
+        vc.totalDailyLimitCr =  totalDailyLimitCr
+        vc.totalDailyLimitCr1 =  totalDailyLimitCr1
+        vc.totalMonthlyLimitCr = totalMonthlyLimitCr
+        vc.totalMonthlyLimitCr1 = totalMonthlyLimitCr1
+        vc.totalYearlyLimitCr =  totalYearlyLimitCr
+        vc.totalYearlyLimitCr1 =  totalYearlyLimitCr1
+        vc.totalDailyLimitDr = totalDailyLimitDr
+        vc.totalDailyLimitDr1 = totalDailyLimitDr1
+        vc.totalMonthlyLimitDr =  totalMonthlyLimitDr
+        vc.totalMonthlyLimitDr1 =  totalMonthlyLimitDr1
+        vc.totalYearlyLimitDr = totalYearlyLimitDr
+        vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
+        self.present(vc, animated: true)
     }
     
     @IBOutlet weak var labelBalnaceLimitLevel0: UILabel!

@@ -10,15 +10,14 @@ import UIKit
 
 class VerifiedAccountVC: UIViewController {
     var levelCode :String?
-    var totalDailyLimitDr : Int?
-    
+   
     var totalMonthlyLimitDr : Int?
     var totalYearlyLimitDr : Int?
     var totalDailyLimitCr : Int?
     var totalMonthlyLimitCr : Int?
     var totalYearlyLimitCr : Int?
     var balanceLimit : Int?
-    
+    var  totalDailyLimitDr: Int?
     var totalDailyLimitDr1 : Int?
     var totalMonthlyLimitDr1 : Int?
     var totalYearlyLimitDr1 : Int?

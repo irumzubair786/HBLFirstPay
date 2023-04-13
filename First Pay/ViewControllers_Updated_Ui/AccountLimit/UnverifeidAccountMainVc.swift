@@ -7,8 +7,10 @@
 //
 
 import UIKit
-
-class UnverifeidAccountMainVc: UIViewController {
+import SwiftKeychainWrapper
+import Alamofire
+import AlamofireObjectMapper
+class UnverifeidAccountMainVc: BaseClassVC {
     var levelCode :String?
     var totalDailyLimitDr : Int?
     var totalMonthlyLimitDr : Int?
@@ -24,6 +26,7 @@ class UnverifeidAccountMainVc: UIViewController {
     var totalMonthlyLimitCr1 : Int?
     var totalYearlyLimitCr1 : Int?
     var balanceLimit1 : Int?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
