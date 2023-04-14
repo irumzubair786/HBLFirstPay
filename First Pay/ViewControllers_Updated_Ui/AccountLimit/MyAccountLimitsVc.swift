@@ -28,10 +28,11 @@ class MyAccountLimitsVc: BaseClassVC {
     var totalYearlyLimitCr1 : Int?
     var balanceLimit1 : Int?
     var myCustomArray = [a]()
-    var availableLimitObj : GetAccLimits2?
+    var receivingArr = [receiving]()
+    //    var availableLimitObj : GetAccLimits2?
     override func viewDidLoad() {
         super.viewDidLoad()
-//        getAvailableLimits()
+        //        getAvailableLimits()
         apicall()
         buttonBack.setTitle("", for: .normal)
         
@@ -41,18 +42,64 @@ class MyAccountLimitsVc: BaseClassVC {
         
         // Do any additional setup after loading the view.
     }
+    func appenddata(){
+        var totaldailyLimit = modelGetAccount?.data?.totalDailyLimitCR
+        var ConsumedDailyLimit = modelGetAccount?.data?.dailyReceived
+        var percent = calculateValue(total: (totaldailyLimit ?? 0),userValue: ConsumedDailyLimit ?? 0)
+        
+        
+        
+        receivingArr.append(receiving(name: "Daily", limit: "Consumed Rs. \(modelGetAccount?.data?.dailyReceived ?? 0)", colour: UIColor(hexString: "#F8CC59", alpha: 1), remaining: "Remaining Rs. \(modelGetAccount?.data?.dailyCRRemaining ?? 0)",totalAmount: "Total Rs.\(modelGetAccount?.data?.totalDailyLimitCR ?? 0)", percentage:Float(percent),ReceivinglimitType: "D",amountType: "C"))
+        
+        
+       var totalyMonthlyLimit = modelGetAccount?.data?.totalMonthlyLimitCR
+       var  ConsumedMonthlyLimit = modelGetAccount?.data?.monthlyReceived
+        var per  = calculateValue(total: Int(totalyMonthlyLimit ?? 0),userValue: Int(ConsumedMonthlyLimit ?? 0))
+        
+        receivingArr.append(receiving(name: "Monthly",limit: "Consumed Rs. \(modelGetAccount?.data?.monthlyReceived ?? 0)", colour: UIColor(hexString: "#1EC884", alpha: 1), remaining: "Remaining Rs. \(modelGetAccount?.data?.monthlyCRRemaining ?? 0)",totalAmount: "Total Rs.\(modelGetAccount?.data?.totalMonthlyLimitCR ?? 0)", percentage: Float(per),ReceivinglimitType: "M",amountType: "C"))
+        
+        print("receiving month limit",receivingArr[0].ReceivinglimitType )
+        print("receiving month Amount",receivingArr[0].amountType )
+        var totalyYearlyLimit = modelGetAccount?.data?.totalYearlyLimitCR
+        var  ConsumedYearlyLimit = modelGetAccount?.data?.yearlyReceived
+         var pers  = calculateValue(total: Int(totalyYearlyLimit ?? 0),userValue: Int(ConsumedYearlyLimit ?? 0))
+        
+        receivingArr.append(receiving(name: "Yearly ", limit: "Consumed Rs.\(modelGetAccount?.data?.yearlyReceived ?? 0)", colour: UIColor(hexString: "#F19434", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.yearlyCRRemaining ?? 0)",totalAmount: "Total Rs.\(modelGetAccount?.data?.totalYearlyLimitCR ?? 0)", percentage: Float(pers),ReceivinglimitType: "Y",amountType: "C"))
+        
+}
+    
+    
+    
     func appendVlaluesToArray(){
         
-        myCustomArray.append(a(name: "Daily ", limit: "Consumed Rs. \(availableLimitObj?.data?.dailyConsumed)", colour: UIColor(hexString: "#F8CC59", alpha: 1)))
-        myCustomArray.append(a(name: "Monthly ", limit: "Consumed Rs.\(availableLimitObj?.data?.monthlyConsumed)", colour: UIColor(hexString: "#1EC884", alpha: 1)))
-        myCustomArray.append(a(name: "Yearly ", limit: "Consumed Rs.\(availableLimitObj?.data?.monthlyConsumed)", colour: UIColor(hexString: "#F19434", alpha: 1)))
+        var totaldailyLimit = modelGetAccount?.data?.totalDailyLimit
+        var ConsumedDailyLimit = modelGetAccount?.data?.dailyConsumed
+        var percent = calculateValue(total: (totaldailyLimit ?? 0),userValue: ConsumedDailyLimit ?? 0)
+        
+        myCustomArray.append(a(name: "Daily ", limit: "Consumed Rs. \(modelGetAccount?.data?.dailyConsumed ?? 0)", colour: UIColor(hexString: "#F8CC59", alpha: 1), remaining: "Remaining Rs. \(modelGetAccount?.data?.dailyDRRemaining ?? 0)",totalAmount: "Total Rs.\(modelGetAccount?.data?.totalDailyLimit ?? 0)", percentage: Float(percent),limitType: "D",amountType: "D"))
+        
+        var totalyMonthlyLimit = modelGetAccount?.data?.totalMonthlyLimit
+        var  ConsumedMonthlyLimit = modelGetAccount?.data?.monthlyConsumed
+         var per  = calculateValue(total: Int(totalyMonthlyLimit ?? 0),userValue: Int(ConsumedMonthlyLimit ?? 0))
+        
+        myCustomArray.append(a(name: "Monthly ", limit: "Consumed Rs.\(modelGetAccount?.data?.monthlyConsumed ?? 0)", colour: UIColor(hexString: "#1EC884", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.monthlyDRRemaining ?? 0)",totalAmount: "Total Rs.\(modelGetAccount?.data?.totalMonthlyLimit ?? 0 )", percentage: Float(per),limitType: "M",amountType: "D"))
+        
+        var totalyYearlyLimit = modelGetAccount?.data?.totalYearlyLimit
+        var  ConsumedYearlyLimit = modelGetAccount?.data?.yearlyConsumed
+         var pers  = calculateValue(total: Int(totalyYearlyLimit ?? 0),userValue: Int(ConsumedYearlyLimit ?? 0))
+        
+        myCustomArray.append(a(name: "Yearly ", limit: "Consumed Rs.\(modelGetAccount?.data?.yearlyConsumed! ?? 0)", colour: UIColor(hexString: "#F19434", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.yearlyDRRemaining ?? 0)",totalAmount: "Total Rs.\(modelGetAccount?.data?.totalYearlyLimit ?? 0)", percentage: Float(pers),limitType: "Y",amountType: "D"))
+        
+        
+        
+        
     }
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
     @IBAction func buttonUpgrade(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UnverifeidAccountMainVc") as! UnverifeidAccountMainVc
         vc.balanceLimit = balanceLimit
         vc.balanceLimit1 = balanceLimit1
         vc.totalDailyLimitCr =  totalDailyLimitCr
@@ -95,23 +142,24 @@ class MyAccountLimitsVc: BaseClassVC {
     }
     
     func calculateValue(total:Int , userValue:Int)->Double{
-        return Double((userValue/total))
+        return Double((userValue/total) * 100)
     }
     
     @objc func buttonpress(_ sender:UIButton)
     {
         let tag = sender.tag
-        let cell = tableView.cellForRow(at: IndexPath(row: sender.tag, section: 0))
-        as! cellMyAccountVc
+        let indexPath = IndexPath(row: tag, section: sender.superview?.tag ?? 0) // assuming you set the tag of the cell view to the index path
+        let cell = tableView.cellForRow(at: indexPath) as! cellMyAccountVc
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "changeLimitVC") as!   changeLimitVC
-        vc.daily =  (myCustomArray[tag].name)
-        //        vc.monthly = myCustomArray[tag].name
-        //        vc.yearly = myCustomArray[tag].name
-        //        vc.dailyReceiving = myCustomArray[tag].name
-        //        vc.monthlyReceiving = myCustomArray[tag].name
-        //        vc.yearlyReceiving = myCustomArray[tag].name
+        vc.daily = cell.labelDailyName.text
+        vc.dailyAmount = cell.labelTotalAmount.text
+        vc.dailyminValue = cell.labelConsumed.text
+        vc.dailymaxValue = cell.labelRemaining.text
+        vc.LimitType = cell.labelLimitType.text
+        vc.AmounttType = cell.labelAmountType.text
+        vc.ReceivingLimitType = cell.labelReceivingType.text
+        
         self.present(vc, animated: true)
-        //        self.navigationController?.pushViewController(vc, animated: true)
         
     }
     ////    ----------getaccountlimits
@@ -119,26 +167,19 @@ class MyAccountLimitsVc: BaseClassVC {
     var modelGetAccount : GetAccLimits2?
     {
         didSet{
-            if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+            if self.modelGetAccount?.responsecode == 1  {
                 
                 self.tableView.reloadData()
                 self.tableView.delegate = self
                 self.tableView.dataSource = self
                 self.appendVlaluesToArray()
+                self.appenddata()
             }
             else {
-                if let message = self.availableLimitObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
-                }
+                //MARK: - Loan Failed Successfully
+                self.showAlertCustomPopup(title: "Error!", message: modelGetAccount?.messages ?? "", iconName: .iconError)
             }
-            
-            //        else {
-            //            if let message = self.availableLimitObj?.messages{
-            //                self.showDefaultAlert(title: "", message: message)
-            //            }
-            //            //                  print(response.result.value)
-            //            //                  print(response.response?.statusCode)
-            //        }
+      
             
         }
     }
@@ -165,81 +206,7 @@ class MyAccountLimitsVc: BaseClassVC {
         
     }
 }
-//        private func getAvailableLimits() {
-//      //
-//              if !NetworkConnectivity.isConnectedToInternet(){
-//                  self.showToast(title: "No Internet Available")
-//                  return
-//              }
-//
-//              showActivityIndicator()
-//              var userCnic : String?
-//              if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-//                  userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-//              }
-//              else{
-//                  userCnic = ""
-//              }
-//            userCnic = UserDefaults.standard.string(forKey: "userCnic")
-//
-//      //        let compelteUrl = GlobalConstants.BASE_URL + "getAccLimits"
-//              let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getLevelLimits"
-//
-//              let parameters : Parameters = ["cnic":userCnic!, "accountType" : DataManager.instance.accountType ?? "20", "imeiNo": DataManager.instance.imei!,"channelId": DataManager.instance.channelID ]
-//
-//              print(parameters)
-//
-//
-//              let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-//
-//              let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//
-//
-//              let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-//
-//              print(params)
-//              print(compelteUrl)
-//
-//
-//              NetworkManager.sharedInstance.enableCertificatePinning()
-//
-//
-//              NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<AccLimitModel>) in
-//
-//                  self.hideActivityIndicator()
-//
-//                  self.availableLimitObj = response.result.value
-//
-//                  if response.response?.statusCode == 200 {
-//                      if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
-//
-//                          self.tableView.reloadData()
-//                          self.tableView.delegate = self
-//                          self.tableView.dataSource = self
-//                          self.appendVlaluesToArray()
-//                      }
-//                      else {
-//                          if let message = self.availableLimitObj?.messages{
-//                              self.showDefaultAlert(title: "", message: message)
-//                          }
-//                      }
-//                  }
-//                  else {
-//                      if let message = self.availableLimitObj?.messages{
-//                          self.showDefaultAlert(title: "", message: message)
-//                      }
-//    //                  print(response.result.value)
-//    //                  print(response.response?.statusCode)
-//                  }
-//              }
-//          }
-//
-//
-//    func updateUI()
-//    {
-//
-//
-//    }
+
 
 extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
     
@@ -253,7 +220,7 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
         case 0:
             return myCustomArray.count
         case 1:
-            return myCustomArray.count
+            return receivingArr.count
         default:
             return 0
         }
@@ -264,33 +231,36 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
         // Configure the cell
           switch indexPath.section {
           case 0:
-             // cell.textLabel?.text = "Sending Limits, Row \(indexPath.row)"
-//              cell.labelDailyName.text = "Daily"
+
               cell.labelDailyName.text = myCustomArray[indexPath.row].name
               cell.labelConsumed.text = myCustomArray[indexPath.row].limit
               cell.progressbar.progressTintColor = myCustomArray[indexPath.row].colour
               cell.progressbar.progressViewStyle = .bar
               cell.progressbar.trackTintColor = UIColor(hexString: "#F2F6F9", alpha: 1)
-              cell.labelRemaining.text = "3000000"
-              var totaldailyLimit = availableLimitObj?.data?.totalDailyLimit
-              var ConsumedDailyLimit = availableLimitObj?.data?.dailyConsumed
-              let percent = calculateValue(total: (totaldailyLimit!),userValue: ConsumedDailyLimit!)
-                     print(percent)
+              cell.labelRemaining.text = myCustomArray[indexPath.row].remaainig
+              cell.labelTotalAmount.text = myCustomArray[indexPath.row].totalAmount
               cell.progressbar.cornerRadius = 5
-              cell.progressbar.progress = Float(percent)
               cell.buttonEdit.tag = indexPath.row
+              cell.progressbar.progress = myCustomArray[indexPath.row].percentage!
+              cell.labelLimitType.text = myCustomArray[indexPath.row].limitType
+              cell.labelAmountType.text = myCustomArray[indexPath.row].amountType
               cell.buttonEdit.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
           case 1:
              // cell.textLabel?.text = "Receiving Limits, Row \(indexPath.row)"
-              cell.labelDailyName.text = myCustomArray[indexPath.row].name
-              
-              cell.labelConsumed.text = myCustomArray[indexPath.row].limit
-              cell.progressbar.progressTintColor = myCustomArray[indexPath.row].colour
+              cell.labelDailyName.text = receivingArr[indexPath.row].name
+              cell.labelTotalAmount.text = receivingArr[indexPath.row].totalAmount
+              cell.labelConsumed.text = receivingArr[indexPath.row].limit
+              cell.progressbar.progressTintColor = receivingArr[indexPath.row].colour
               cell.progressbar.progressViewStyle = .bar
               cell.progressbar.trackTintColor = UIColor(hexString: "#F2F6F9", alpha: 1)
               cell.progressbar.cornerRadius = 5
-              cell.labelRemaining.text = "3000000"
+              cell.labelRemaining.text = receivingArr[indexPath.row].remaainig
+              cell.progressbar.cornerRadius = 5
+              cell.progressbar.progress = receivingArr[indexPath.row].percentage!
+//              cell.labelLimitType.text = receivingArr[indexPath.row].ReceivinglimitType
+              cell.labelAmountType.text = receivingArr[indexPath.row].amountType
               cell.buttonEdit.tag = indexPath.row
+              cell.labelReceivingType.text = receivingArr[indexPath.row].ReceivinglimitType
               cell.buttonEdit.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
           default:
               break
@@ -318,9 +288,42 @@ class a
     var name : String?
     var limit : String?
     var colour : UIColor?
-    init(name : String , limit : String  ,colour :UIColor ){
+    var remaainig : String?
+    var totalAmount: String?
+    var percentage : Float?
+    var limitType :String?
+    var amountType : String?
+    init(name : String , limit : String  ,colour :UIColor, remaining: String, totalAmount: String  , percentage : Float, limitType : String, amountType:String){
         self.limit = limit
         self.name = name
         self.colour = colour
+        self.remaainig = remaining
+        self.totalAmount = totalAmount
+        self.percentage = percentage
+        self.amountType = amountType
+        self.limitType = limitType
+    }
+}
+
+
+class receiving
+{
+    var name : String?
+    var limit : String?
+    var colour : UIColor?
+    var remaainig : String?
+    var totalAmount: String?
+    var percentage : Float?
+    var ReceivinglimitType :String?
+    var amountType : String?
+    init(name : String , limit : String  ,colour :UIColor, remaining: String, totalAmount: String , percentage : Float , ReceivinglimitType : String, amountType:String){
+        self.limit = limit
+        self.name = name
+        self.colour = colour
+        self.remaainig = remaining
+        self.totalAmount = totalAmount
+        self.percentage = percentage
+        self.amountType = amountType
+        self.ReceivinglimitType = ReceivinglimitType
     }
 }

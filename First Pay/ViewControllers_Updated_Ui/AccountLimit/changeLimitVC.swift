@@ -14,56 +14,69 @@ import SwiftKeychainWrapper
 class changeLimitVC: BaseClassVC {
     var genResponseObj : GenericResponseModel?
     var daily :String?
-    var dailyAmount :Int?
-    var dailyminValue :Int?
-    var dailymaxValue :Int?
-    
-    var monthly :String?
-    var monthlyAmount :Int?
-    var monthlyminValue :Int?
-    var monthlymaxValue :Int?
-    
-    var yearly :String?
-    var yearlyAmount :Int?
-    var yearlyminValue :Int?
-    var yearlymaxValue :Int?
-    
-    var dailyReceiving :String?
-    var dailyReceivingAmount :Int?
-    var dailyReceivingminValue :Int?
-    var dailyReceivingmaxValue :Int?
-    
-    var monthlyReceiving :String?
-    var monthlyReceivingAmount :Int?
-    var monthlyReceivingminValue :Int?
-    var monthlyReceivingmaxValue :Int?
-    
-    var yearlyReceiving :String?
-    var yearlyReceivingAmount :Int?
-    var yearlyReceivingminValue :Int?
-    var yearlyReceivingmaxValue :Int?
-    
+    var dailyAmount :String?
+    var dailyminValue :String?
+    var dailymaxValue :String?
+    var convertdailyminValue : Int?
+    var convertdailymaxValue: Int?
+    var LimitType : String?
+    var AmounttType: String?
+    var ReceivingLimitType: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         blurView.alpha = 0.7
         updateUI()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+        blurView.isUserInteractionEnabled = true
+        blurView.addGestureRecognizer(tapGestureRecognizer)
+        print("limit Type",LimitType)
+        print("AmountType",AmounttType)
+        print("ReceivinglimitType",ReceivingLimitType)
+//        Slider()
         // Do any additional setup after loading the view.
     }
     
 
+   
     
-    @IBOutlet weak var slider: UISlider!
+    @IBOutlet weak var slider: CustomSlider!
     @IBOutlet weak var labelMaxamount: UILabel!
     @IBOutlet weak var labelminamount: UILabel!
     @IBOutlet weak var labelAmount: UILabel!
     @IBOutlet weak var labelname: UILabel!
     @IBOutlet weak var blurView: UIVisualEffectView!
+   
     func updateUI()
     {
-        labelname.text  = "Change\(daily!)Limit"
+        labelname.text  = "Change \(daily!)Limit"
+        labelAmount.text = "\(dailyAmount!)"
+        labelminamount.text = "\(dailyminValue?.replacingOccurrences(of: "Consumed Rs.", with: "") ?? "")"
+        labelMaxamount.text = "\(dailymaxValue?.replacingOccurrences(of: "Remaining Rs.", with: "") ?? "")"
+        convertdailyminValue = Int(labelminamount.text!)
+        convertdailymaxValue = Int(labelMaxamount.text!)
     }
-    
+//    func Slider() {
+//
+//   //        limitChangeSlider.minimumValue =  Float((self.availableLimitObj?.limitsData?.dailyReceived)!)
+//
+//        slider.minimumValue = Float(convertdailyminValue!)
+//        slider.maximumValue = Float(convertdailymaxValue!)
+//           if let value = convertdailymaxValue
+//           {
+//               slider.value = Float(Double(Int(value)))
+//               let numberAsInt = Int(value)
+//               self.labelAmount.text = "\(numberAsInt)"
+//           }
+//
+//        slider.isContinuous = true
+//           print("successfull")
+//       }
+
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
+
+        self.dismiss(animated: true)
+    }
     @IBAction func Action_Slider(_ sender: UISlider) {
     }
     
@@ -142,4 +155,18 @@ class changeLimitVC: BaseClassVC {
             }
         }
     }
+}
+extension UISlider
+{
+  ///EZSE: Slider moving to value with animation duration
+  public func setValue(value: Float, duration: Double) {
+      UIView.animate(withDuration: duration, animations: { () -> Void in
+      self.setValue(self.value, animated: true)
+
+      }) { (bol) -> Void in
+          UIView.animate(withDuration: duration, animations: { () -> Void in
+          self.setValue(value, animated: true)
+          }, completion: nil)
+    }
+  }
 }

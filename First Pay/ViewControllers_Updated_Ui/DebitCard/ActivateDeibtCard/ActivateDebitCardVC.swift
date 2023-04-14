@@ -115,7 +115,7 @@ class ActivateDebitCardVC: BaseClassVC {
                 
                 if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
                 
-                    for anObject in self.getDebitDetailsObj?.debitCardData! ?? []
+                    for anObject in self.getDebitDetailsObj?.debitCardData ?? []
                     {
                         if let name = anObject.debitCardTitle {
                             self.labelName.text = name

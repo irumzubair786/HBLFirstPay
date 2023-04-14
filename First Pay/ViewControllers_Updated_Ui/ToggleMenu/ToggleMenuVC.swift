@@ -308,11 +308,16 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
               }
           }
       }
+    var flagLevel0 :Bool = false
+    var flagLevel1 :Bool = false
+    
     private func updateUI(){
         
         if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
         {
-            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+            flagLevel0  = true
+            flagLevel1  = false
             if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                 vc.balanceLimit = Int(balnceLimit)
                 print("balnceLimit",balnceLimit)
@@ -365,7 +370,9 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
          
             else
             {
-                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+                flagLevel1  = true
+                flagLevel0  = false
                 if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                     vc.balanceLimit = Int(balnceLimit)
                     print("balnceLimit",balnceLimit)

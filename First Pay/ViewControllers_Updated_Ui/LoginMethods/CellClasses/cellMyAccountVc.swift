@@ -26,6 +26,9 @@ class cellMyAccountVc: UITableViewCell {
     @IBOutlet weak var progressbar: UIProgressView!
     @IBOutlet weak var labelDailyName: UILabel!
     
+    @IBOutlet weak var labelReceivingType: UILabel!
+    @IBOutlet weak var labelAmountType: UILabel!
+    @IBOutlet weak var labelLimitType: UILabel!
     @IBOutlet weak var labelRemaining: UILabel!
     @IBOutlet weak var labelTotalAmount: UILabel!
     @IBOutlet weak var buttonEdit: UIButton!

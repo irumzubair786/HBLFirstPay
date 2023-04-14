@@ -39,7 +39,7 @@ class UnverifeidAccountMainVc: BaseClassVC {
     }
     
     @IBAction func buttonViewDetail(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
         vc.balanceLimit = balanceLimit
         vc.balanceLimit1 = balanceLimit1
         vc.totalDailyLimitCr =  totalDailyLimitCr

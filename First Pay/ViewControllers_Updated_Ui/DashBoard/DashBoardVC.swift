@@ -32,12 +32,12 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         collectionView.delegate = self
         collectionView.dataSource = self
         btnPageControl.setTitle("", for: .normal)
-       
+        buttonLevelIcon.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoStatement(tapGestureRecognizer:)))
         lblAmount.isUserInteractionEnabled = true
         lblAmount.addGestureRecognizer(tapGestureRecognizerr)
         AddCash()
-        imgLevel.isHidden = true
+//        imgLevel.isHidden = true
         
         homeAction()
         let tapGestureRecognizerrs = UITapGestureRecognizer(target: self, action: #selector(MovetoAccountLevel(tapGestureRecognizer:)))
@@ -47,7 +47,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         
         let tapGestureRecognizr = UITapGestureRecognizer(target: self, action: #selector(moveToDebitCard(tapGestureRecognizer:)))
         viewDebitCard.isUserInteractionEnabled = true
-        viewDebitCard.addGestureRecognizer(tapGestureRecognizerrs)
+        viewDebitCard.addGestureRecognizer(tapGestureRecognizr)
 //       tapGestures()
 //        NotificationCenter.default.removeObserver(self)
 //        NotificationCenter.default.addObserver(self, selector: #selector(viewDidLoadCustom), name: Notification.Name("LanguageChangeThroughObserver"), object: nil)
@@ -57,9 +57,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     @IBOutlet weak var imageAddCash: UIImageView!
     
     
+    @IBOutlet weak var buttonLevelIcon: UIButton!
     @IBOutlet weak var viewDebitCard: UIImageView!
     
     
+    @IBAction func buttonLevelIcon(_ sender: UIButton) {
+        getAvailableLimits()
+    }
     func AddCash(){
         
         
@@ -281,8 +285,14 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         if self.homeObj?.userData?[index].levelDescr == "LEVEL 1"
         {
             imgLevel.isHidden = false
-            imgLevel.image = UIImage(named: "Group 427321140")
+            imgLevel.image = UIImage(named: "Verified 24x")
         }
+        else
+        {
+            imgLevel.isHidden = false
+            imgLevel.image = UIImage(named: "Un-Verified 24x")
+        }
+        
      
         //        NotificationCenter.default.addObserver(self, selector: #selector(updateProfilePhoto), name: Notification.Name("batteryLevelChanged"), object: nil)
     }
@@ -342,8 +352,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer)
     {
+        getAvailableLimits()
         
-        getDebitCard()
     }
     
     // MARK: - Api Call

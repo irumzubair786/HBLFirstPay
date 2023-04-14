@@ -1998,12 +1998,20 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1lz-fy-5DU">
-                                                                    <rect key="frame" x="11.5" y="2" width="20" height="20"/>
+                                                                    <rect key="frame" x="11.5" y="2" width="28" height="21"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="20" id="EAe-OL-oXe"/>
-                                                                        <constraint firstAttribute="height" constant="20" id="HJp-yE-V5K"/>
+                                                                        <constraint firstAttribute="width" constant="28" id="EAe-OL-oXe"/>
+                                                                        <constraint firstAttribute="height" constant="21" id="HJp-yE-V5K"/>
                                                                     </constraints>
                                                                 </imageView>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5i-2i-LFo">
+                                                                    <rect key="frame" x="12" y="2" width="28" height="28"/>
+                                                                    <state key="normal" title="Button"/>
+                                                                    <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                                    <connections>
+                                                                        <action selector="buttonLevelIcon:" destination="qQG-GK-gBe" eventType="touchUpInside" id="Xhe-hu-FO0"/>
+                                                                    </connections>
+                                                                </button>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4A-7s-cna">
                                                                     <rect key="frame" x="2" y="2" width="0.0" height="21"/>
                                                                     <constraints>
@@ -2026,13 +2034,17 @@
                                                             </subviews>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
+                                                                <constraint firstItem="x5i-2i-LFo" firstAttribute="top" secondItem="1lz-fy-5DU" secondAttribute="top" id="83G-tU-rgl"/>
+                                                                <constraint firstItem="x5i-2i-LFo" firstAttribute="leading" secondItem="45F-nf-0VO" secondAttribute="trailing" constant="10" id="E4X-LI-MJv"/>
                                                                 <constraint firstItem="W4A-7s-cna" firstAttribute="top" secondItem="YPr-v7-Q2B" secondAttribute="top" constant="2" id="IcA-ce-LIA"/>
                                                                 <constraint firstAttribute="height" constant="87" id="StV-Ot-SC7"/>
                                                                 <constraint firstItem="8kc-0o-wT5" firstAttribute="leading" secondItem="YPr-v7-Q2B" secondAttribute="leading" constant="2" id="bsc-hP-xdH"/>
                                                                 <constraint firstItem="45F-nf-0VO" firstAttribute="leading" secondItem="YPr-v7-Q2B" secondAttribute="leading" constant="2" id="eXH-fi-yfN"/>
                                                                 <constraint firstItem="45F-nf-0VO" firstAttribute="top" secondItem="W4A-7s-cna" secondAttribute="bottom" constant="-2" id="fVa-Dl-ax7"/>
+                                                                <constraint firstItem="x5i-2i-LFo" firstAttribute="height" secondItem="1lz-fy-5DU" secondAttribute="height" multiplier="1.66667" constant="-7" id="frO-4U-c2r"/>
                                                                 <constraint firstItem="W4A-7s-cna" firstAttribute="leading" secondItem="YPr-v7-Q2B" secondAttribute="leading" constant="2" id="mmd-VV-97e"/>
                                                                 <constraint firstItem="8kc-0o-wT5" firstAttribute="top" secondItem="45F-nf-0VO" secondAttribute="bottom" constant="2" id="uWI-4E-nDr"/>
+                                                                <constraint firstItem="x5i-2i-LFo" firstAttribute="width" secondItem="1lz-fy-5DU" secondAttribute="width" multiplier="2.85714" constant="-52" id="vae-bJ-QnJ"/>
                                                                 <constraint firstItem="1lz-fy-5DU" firstAttribute="top" secondItem="W4A-7s-cna" secondAttribute="top" id="wPg-n1-WRM"/>
                                                                 <constraint firstItem="1lz-fy-5DU" firstAttribute="leading" secondItem="W4A-7s-cna" secondAttribute="trailing" constant="9.5" id="yqc-Hl-Qzy"/>
                                                             </constraints>
@@ -2334,6 +2346,7 @@
                     <connections>
                         <outlet property="LblMobNo" destination="8kc-0o-wT5" id="BSR-6H-WEO"/>
                         <outlet property="btnPageControl" destination="3m0-Z7-Xt6" id="AAy-pR-dgH"/>
+                        <outlet property="buttonLevelIcon" destination="x5i-2i-LFo" id="4Y7-a3-yde"/>
                         <outlet property="collectionView" destination="0wc-f7-pie" id="7rS-Fb-hsC"/>
                         <outlet property="imageAddCash" destination="1yr-MK-Tvz" id="FiA-W7-6sg"/>
                         <outlet property="img" destination="ABm-Qw-BXQ" id="1Um-VB-8Uw"/>
