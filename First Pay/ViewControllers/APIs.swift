@@ -211,7 +211,7 @@ struct APIs {
 
     
     enum name: String {
-        //MARK:- Auth
+        //MARK:- NanoLoan
         case getActiveLoan = "NanoLoan/v1/getActiveLoan"
         case applyLoan = "NanoLoan/v1/applyLoan"
         case nanoLoanEligibilityCheck = "NanoLoan/v1/nanoLoanEligibilityCheck"
@@ -221,6 +221,19 @@ struct APIs {
         case getAccLimits = "FirstPayInfo/v1/getAccLimits"
         case getLevelLimits = ""
         case getSchCalendar = "NanoLoan/v1/getSchCalendar"
+        
+        //WalletCreation
+        case mobileRegistration = "WalletCreation/v1/mobileRegistration"
+        case mobileVerification = "WalletCreation/v1/mobileVerification"
+        case cnicVerification = "WalletCreation/v1/cnicVerification"
+        case customerKyc = "WalletCreation/v1/customerKyc"
+        case setLoginPin = "WalletCreation/v1/setLoginPin"
+        case getInvitorFriendsList = "WalletCreation/v1/getInvitorFriendsList"
+        case acceptFriendInvite = "WalletCreation/v1/acceptFriendInvite"
+
+        
+        
+        
     }
     
 }

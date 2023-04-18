@@ -62,3 +62,15 @@ extension UIViewController {
     }
     
 }
+
+final class TableViewContentSized: UITableView {
+    override var contentSize:CGSize {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+    override var intrinsicContentSize: CGSize {
+        layoutIfNeeded()
+        return CGSize(width: UIViewNoIntrinsicMetric, height: contentSize.height)
+    }
+}
