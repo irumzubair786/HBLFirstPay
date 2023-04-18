@@ -31,7 +31,6 @@ class InvitePendingCell: UITableViewCell {
         
         viewBackGround.radius(radius: 12, color: .lightGray)
         viewRemindBackGround.radius(radius: CGFloat(Int(viewRemindBackGround.frame.height)) / 2, color: .lightGray)
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
