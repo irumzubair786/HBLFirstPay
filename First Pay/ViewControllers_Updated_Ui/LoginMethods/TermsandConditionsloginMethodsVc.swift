@@ -53,7 +53,6 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
             
             let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-//            self.navigationController?.popToRootViewController(animated: true)
             self.present(vc, animated: true)
         }
     }

@@ -13,6 +13,7 @@ class NoBankAccountFoundVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonback.setTitle("", for: .normal)
+        
         // Do any additional setup after loading the view.
     }
     

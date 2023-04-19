@@ -12,7 +12,8 @@ class NobankExistsVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     buttonback.setTitle("", for: .normal)
-        buttonCreateAccount.setTitle("", for: .normal)
+    buttonCreateAccount.setTitle("CREATE ACCOUNT", for: .normal)
+       
     }
     @IBOutlet weak var buttonCreateAccount: UIButton!
     @IBOutlet weak var buttonback: UIButton!

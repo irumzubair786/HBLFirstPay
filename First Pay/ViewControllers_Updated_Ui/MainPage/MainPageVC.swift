@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import KYDrawerController
 import SideMenu
-class MainPageVC: UIViewController {
+class MainPageVC: BaseClassVC {
     var sideMenu:  UISideMenuNavigationController!
     var selectedTabIndex  = 0
     var messgcount = 0
@@ -56,7 +56,7 @@ class MainPageVC: UIViewController {
     }
     @IBOutlet weak var myContentView: UIView!
     @IBOutlet weak var lblHome: UILabel!
-    @IBOutlet weak var btnHome: UIButton!
+    @IBOutlet weak var btnHomes: UIButton!
     @IBOutlet weak var lblNotification: UILabel!
     @IBOutlet weak var btnNotification: UIButton!
     @IBOutlet weak var btnScanQR: UIButton!
@@ -66,16 +66,20 @@ class MainPageVC: UIViewController {
     @IBOutlet weak var btnLocator: UIButton!
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBAction func Action_Home(_ sender: UIButton) {
-//        btnHome.setImage(UIImage(named: "path0-6"), for: .normal)
-//        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
-//        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
-//        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
+        print("done")
+        btnHomes.setImage(UIImage(named: "path0-6"), for: .normal)
+        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
+        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
+        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
 //        let  myDict = [ "name": "Home_ScreenVC"]
 //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
         
     }
     
     @IBAction func Action_Notification(_ sender: UIButton) {
+        print("done")
+        showToast(title: "Coming Soon")
+        UtilManager.showToast(message: "Coming soon")
 //        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
 //        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
 //        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
@@ -86,7 +90,8 @@ class MainPageVC: UIViewController {
     
 
     @IBAction func Action_Main(_ sender: UIButton) {
-        
+        showToast(title: "Coming Soon")
+   
 //        let  myDict = [ "name": "Home_ScreenVC"]
 //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
         
@@ -100,6 +105,7 @@ class MainPageVC: UIViewController {
 
     
     @IBAction func Action_Locator(_ sender: UIButton) {
+        showToast(title: "Coming Soon")
 //        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
 //        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
 //        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
@@ -108,15 +114,16 @@ class MainPageVC: UIViewController {
     }
     
     @IBAction func Action_Profile(_ sender: UIButton) {
-        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
-        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
-        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
-        btnAccount.setImage(UIImage(named: "Invite Prangepng"), for: .normal)
-        print("Done notification work")
-
-        let  myDict = [ "name": "ContactUSVC"]
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
-
+        showToast(title: "Coming Soon")
+//        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
+//        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
+//        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
+//        btnAccount.setImage(UIImage(named: "Invite Prangepng"), for: .normal)
+//        print("Done notification work")
+//
+//        let  myDict = [ "name": "ContactUSVC"]
+//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
+        
         
     }
     var currentControllerName = "DashBoardVC"
@@ -139,7 +146,12 @@ class MainPageVC: UIViewController {
         self.addChildViewController(vc)
         return vc
     }()
-    
+//    lazy var ToggleMenuVC: ToggleMenuVC = {
+//        let storyBoard = UIStoryboard(name: Storyboard.TabBar.rawValue, bundle: Bundle.main)
+//        let vc = storyBoard.instantiateViewController(withIdentifier: "ToggleMenuVC") as! ToggleMenuVC
+//        self.addChildViewController(vc)
+//        return vc
+//    }()
     
     
     @objc func sideMenuSelectedOption(notification : NSNotification) {
@@ -163,7 +175,8 @@ class MainPageVC: UIViewController {
                 removeVC(VC:ContactUSVC)
             case "MobileTopUpVC":
                 removeVC(VC: MobileTopUpVC)
-            
+//            case "ToggleMenuVC":
+//               removeVC(VC: ToggleMenuVC)
 //            case "RegisterationVC":
 //                removeVC(VC: RegisterationVC)
                 // local variable
@@ -200,6 +213,10 @@ class MainPageVC: UIViewController {
         {
             addChildViewController(VC: MobileTopUpVC)
         }
+//        else if selectedController == "ToggleMenuVC"
+//        {
+//            addChildViewController(VC: ToggleMenuVC)
+//        }
 //        else  if selectedController == "NotificationVC"{ addChildViewController(VC:  NotificationVC) }
 //        else  if selectedController == "ProfileVc"{ addChildViewController(VC:  ProfileVc) }
 //        else  if selectedController == "OnceVC"{ addChildViewController(VC:  OnceVC) }

@@ -485,7 +485,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
         //
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<login>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<login>) in
             //            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
             self.hideActivityIndicator()
             self.loginObj = response.result.value
@@ -497,6 +497,13 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 self.loginObj = response.result.value
                 if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                     if self.loginObj?.data != nil{
+                        if self.loginObj?.data?.customerHomeScreens?[0].accountDormant == "Y"
+                        {
+//                            let vc = storyboard?.sto
+                        }
+                        
+                        
+                        
                         if let accessToken = self.loginObj?.data?.token{
                             DataManager.instance.accessToken = accessToken
                             DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType

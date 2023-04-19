@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import AlamofireObjectMapper
+import PDFKit
 class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource , UITextFieldDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let count = self.myStatementObj?.ministatement?.count{
@@ -70,10 +71,10 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
           let detailsVC = self.storyboard!.instantiateViewController(withIdentifier: "Statement_History_Detail_VC") as! Statement_History_Detail_VC
         detailsVC.strAmount = "PKR. \(aStatement?.txnAmt ?? 0)"
         if aStatement?.amountType == "C"{
-            detailsVC.strCreditDebit = "CREDIT"
+            detailsVC.strCreditDebit = ""
         }
         else if aStatement?.amountType == "D" {
-            detailsVC.strCreditDebit = "DEBIT"
+            detailsVC.strCreditDebit = ""
         }
         detailsVC.strReceiverWallet = ("\(aStatement?.toAccountTitle ?? "") \n\(aStatement?.toAccountNo ?? "")")
                 detailsVC.strSourceWallet = ("\(aStatement?.fromAccountTitle ?? "") \n\(aStatement?.fromAccountNo ?? "")")
@@ -108,10 +109,10 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         detailsVC.strAmount = "PKR. \(aStatement?.txnAmt ?? 0)"
 
         if aStatement?.amountType == "C"{
-            detailsVC.strCreditDebit = "CREDIT"
+            detailsVC.strCreditDebit = ""
         }
         else if aStatement?.amountType == "D" {
-            detailsVC.strCreditDebit = "DEBIT"
+            detailsVC.strCreditDebit = ""
         }
         detailsVC.strReceiverWallet = ("\(aStatement?.toAccountTitle ?? "") \n\(aStatement?.toAccountNo ?? "")")
                 detailsVC.strSourceWallet = ("\(aStatement?.fromAccountTitle ?? "") \n\(aStatement?.fromAccountNo ?? "")")
@@ -135,7 +136,9 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
                }
         self.navigationController!.pushViewController(detailsVC, animated: false)
     }
-  
+    let pdf = PDFDocument()
+    let pageBounds = CGRect(x: 0, y: 0, width: 612, height: 792) // standard US Letter size
+    
     var dateFrom = NSDate()
     var dateTo = NSDate()
     var isFrom:String?

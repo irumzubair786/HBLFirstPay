@@ -34,7 +34,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         amountTextField.delegate = self
         lblAlertAmount.textColor = .gray
         linebtn.setTitle("", for: .normal)
-        
+        buttonDropDown.setTitle("", for: .normal)
         updateUI()
         
 //        otpView.isHidden = true
@@ -56,6 +56,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var lblname: UILabel!
     @IBOutlet weak var lblReason: UILabel!
    
+    @IBOutlet weak var buttonDropDown: UIButton!
     
     @IBOutlet weak var linebtn: UIButton!
     @IBOutlet weak var otpTextField: UITextField!
@@ -79,7 +80,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
             amountTextField.text = "Rs \(amount!)"
             totalAmount.text = "Rs \(amount!)"
             if  isfromFirstPayWallet == true{
-                
+               
                 
                     lblMobno.text = number!
                     lblname.text = ToaccountTitle!
@@ -97,10 +98,11 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 lblMobno.text = number
                 lblname.text = ToaccountTitle!
                 sourceAccountno.text = DataManager.instance.accountNo!
-                lblAccName.text = "HBL MFB Account"
-                var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
-                let url = URL(string:concateString)
-                bankLogo.sd_setImage(with: url)
+                lblAccName.text = "HBL MfB Account"
+                bankLogo.image = UIImage(named: "HBL Logo")
+//                var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
+//                let url = URL(string:concateString)
+//                bankLogo.sd_setImage(with: url)
                
     //            otpView.isHidden = falseo
                 

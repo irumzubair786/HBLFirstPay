@@ -42,8 +42,8 @@ class TransferAmountConfirmationVc: BaseClassVC {
     @IBOutlet weak var nextBtn: UIButton!
     func updateUi()
     {
-        lblAmount.text = "\(amount!)"
-        lblTotalAmount.text = "\(amount!)"
+        lblAmount.text = "Rs. \(amount!)"
+        lblTotalAmount.text = "Rs. \(amount!)"
         lblFee.text = "Rs. 0.00"
         lblRecipientPhoneNumber.text = phoneNumber
         lblOperator.text = GlobalData.Selected_operator

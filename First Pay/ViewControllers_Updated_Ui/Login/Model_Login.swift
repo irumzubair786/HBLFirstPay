@@ -64,6 +64,8 @@ struct HomeScreen : Mappable {
     var accountType : String?
     var insured : String?
     var emailVerified : String?
+    var accountDormant : String?
+    var loginHistoryId: Int?
 
     init?(map: Map) {
 
@@ -94,6 +96,9 @@ struct HomeScreen : Mappable {
         accountType <- map["accountType"]
         insured <- map["insured"]
         emailVerified <- map["emailVerified"]
+        accountDormant <- map["accountDormant"]
+        loginHistoryId <- map["loginHistoryId"]
+        
     }
 
 }

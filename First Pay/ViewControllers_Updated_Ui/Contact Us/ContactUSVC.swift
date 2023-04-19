@@ -249,7 +249,8 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
         cell.btnCategory.setImage(.none, for: .normal)
                 self.collectionViewCategory.reloadData()
-        if (Tfname.text != nil) && selectedCategory != nil{
+        if (Tfname.text != "") && selectedCategory != ""{
+            
             buttonContinue.isUserInteractionEnabled = true
             let image = UIImage(named: "]greenarrow")
             img_next.image = image
@@ -257,6 +258,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
             messageTextView.isUserInteractionEnabled = false
             Tfname.isUserInteractionEnabled = false
         }
+        
     }
    
     

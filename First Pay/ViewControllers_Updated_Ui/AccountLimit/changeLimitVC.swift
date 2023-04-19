@@ -12,7 +12,7 @@ import AlamofireObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
 class changeLimitVC: BaseClassVC {
-    var genResponseObj : GenericResponseModel?
+    var genResponseObj : ChangeLimitModel?
     var daily :String?
     var dailyAmount :String?
     var dailyminValue :String?
@@ -21,7 +21,7 @@ class changeLimitVC: BaseClassVC {
     var convertdailymaxValue: Int?
     var LimitType : String?
     var AmounttType: String?
-    var ReceivingLimitType: String?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,13 +32,11 @@ class changeLimitVC: BaseClassVC {
         blurView.addGestureRecognizer(tapGestureRecognizer)
         print("limit Type",LimitType)
         print("AmountType",AmounttType)
-        print("ReceivinglimitType",ReceivingLimitType)
+       labelminamount.text
+//        print("ReceivinglimitType",ReceivingLimitType)
 //        Slider()
         // Do any additional setup after loading the view.
     }
-    
-
-   
     
     @IBOutlet weak var slider: CustomSlider!
     @IBOutlet weak var labelMaxamount: UILabel!
@@ -49,112 +47,153 @@ class changeLimitVC: BaseClassVC {
    
     func updateUI()
     {
-        labelname.text  = "Change \(daily!)Limit"
-        labelAmount.text = "\(dailyAmount!)"
+        labelname.text  = "Change \(daily!) Limit"
+        labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "") ?? "")"
+        
         labelminamount.text = "\(dailyminValue?.replacingOccurrences(of: "Consumed Rs.", with: "") ?? "")"
-        labelMaxamount.text = "\(dailymaxValue?.replacingOccurrences(of: "Remaining Rs.", with: "") ?? "")"
+        labelMaxamount.text = "\(dailymaxValue?.replacingOccurrences(of: "Total Rs.", with: "") ?? "")"
         convertdailyminValue = Int(labelminamount.text!)
         convertdailymaxValue = Int(labelMaxamount.text!)
+        print("convertdailyminValue",convertdailyminValue as Any)
+        print("convertdailymaxValue",convertdailymaxValue as Any)
+//        slider.minimumValue = Float((labelminamount.text! as NSString).intValue)
+//
+//        slider.maximumValue = Float((labelMaxamount.text! as NSString).intValue)
+        let a = labelminamount.text?.replacingOccurrences(of: ",", with: "")
+        let b =  labelMaxamount.text?.replacingOccurrences(of: ",", with: "")
+        slider.minimumValue =  (a! as NSString).floatValue
+        slider.maximumValue =     (b! as NSString).floatValue
+        print("slider minvalue",slider.minimumValue)
+        print("slider maximumValue",slider.maximumValue)
     }
-//    func Slider() {
-//
-//   //        limitChangeSlider.minimumValue =  Float((self.availableLimitObj?.limitsData?.dailyReceived)!)
-//
-//        slider.minimumValue = Float(convertdailyminValue!)
-//        slider.maximumValue = Float(convertdailymaxValue!)
-//           if let value = convertdailymaxValue
-//           {
-//               slider.value = Float(Double(Int(value)))
-//               let numberAsInt = Int(value)
-//               self.labelAmount.text = "\(numberAsInt)"
-//           }
-//
-//        slider.isContinuous = true
-//           print("successfull")
-//       }
 
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
 
         self.dismiss(animated: true)
     }
     @IBAction func Action_Slider(_ sender: UISlider) {
+        let value = sender.value
+        let val = Int(value)
+        
+        labelAmount.text = "\(value)"
+        
+        
+        
+        
     }
     
     
     @IBAction func buttonContinue(_ sender: UIButton) {
-        changeAcctLimits()
-        
+       
+        apicall()
         
     }
     
-    private func changeAcctLimits() {
-        
-        if !NetworkConnectivity.isConnectedToInternet(){
-            self.showToast(title: "No Internet Available")
-            return
-        }
-        showActivityIndicator()
-     
-
-        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/changeAcctLimitst"
-        
-        var userCnic : String?
-        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-        }
-        else{
-            userCnic = ""
-        }
-        userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"imei":DataManager.instance.imei!,"accountType": DataManager.instance.accountType!] as [String : Any]
-        
-        print(parameters)
-        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-        
-        print(result.apiAttribute1)
-        print(result.apiAttribute2)
-        
-        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
-        print(params)
-        print(compelteUrl)
-        NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
+    func apicall()
+    {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"imei":DataManager.instance.imei!,"amountType": AmounttType ?? "", "amount": labelAmount.text!, "limitType": LimitType ?? ""]
+        print("parametres",Parameters.self)
             
-     //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
             
-            self.hideActivityIndicator()
+        
+        APIs.postAPI(apiName: .changeAcctLimits, parameters: parameters, viewController: self) {
+            responseData, success, errorMsg in
+    
             
-            self.genResponseObj = response.result.value
+                let model : ChangeLimitModel? = APIs.decodeDataToObject(data: responseData)
+                print("response",model)
+                self.modelGetAccount = model
+            }
+        
+        
+        
+        
+    }
+    var modelGetAccount : ChangeLimitModel?
+    {
+        didSet{
             
-            if response.response?.statusCode == 200 {
-                if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
-//
-//                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-//                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-//                    self.present(vc, animated: true)
-                }
-                
-                else {
-                    if let message = self.genResponseObj?.messages {
-                        UtilManager.showAlertMessage(message: message, viewController: self)
-//                        self.showAlert(title: "", message: message, completion: nil)
-                    }
-//                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-//                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-//                    self.present(vc, animated: true)
-                }
+            if self.modelGetAccount?.responsecode == 1  {
+                self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSucess)
             }
             else {
-                if let message = self.genResponseObj?.messages {
-                    UtilManager.showAlertMessage(message: message, viewController: self)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
+                //MARK: - Loan Failed Successfully
+                self.showAlertCustomPopup(title: "Error!", message: modelGetAccount?.messages ?? "", iconName: .iconError)
             }
+            
         }
+        
     }
+//    private func changeAcctLimits() {
+//        
+//        if !NetworkConnectivity.isConnectedToInternet(){
+//            self.showToast(title: "No Internet Available")
+//            return
+//        }
+//        showActivityIndicator()
+//     
+//
+//        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/changeAcctLimitst"
+//        
+//        var userCnic : String?
+//        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+//            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+//        }
+//        else{
+//            userCnic = ""
+//        }
+//        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+//        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"imei":DataManager.instance.imei!,"amountType": AmounttType ?? "", "amount": labelAmount.text!, "limitType": LimitType ?? ""] as [String : Any]
+//        
+//        print(parameters)
+//        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+//        
+//        print(result.apiAttribute1)
+//        print(result.apiAttribute2)
+//        
+//        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+//        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+//        print(params)
+//        print(compelteUrl)
+//        NetworkManager.sharedInstance.enableCertificatePinning()
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<ChangeLimitModel>) in
+//            
+//     //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+//            
+//            self.hideActivityIndicator()
+//            
+//            self.genResponseObj = response.result.value
+//            
+//            if response.response?.statusCode == 200 {
+//                if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
+////
+////                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+////                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+////                    self.present(vc, animated: true)
+//                }
+//                
+//                else {
+//                    if let message = self.genResponseObj?.messages {
+//                        UtilManager.showAlertMessage(message: message, viewController: self)
+////                        self.showAlert(title: "", message: message, completion: nil)
+//                    }
+////                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+////                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+////                    self.present(vc, animated: true)
+//                }
+//            }
+//            else {
+//                if let message = self.genResponseObj?.messages {
+//                    UtilManager.showAlertMessage(message: message, viewController: self)
+//                }
+////                print(response.result.value)
+////                print(response.response?.statusCode)
+//                
+//            }
+//        }
+//    }
 }
 extension UISlider
 {
@@ -169,4 +208,9 @@ extension UISlider
           }, completion: nil)
     }
   }
+}
+extension String {
+    var floatValue: Float {
+        return (self as NSString).floatValue
+    }
 }

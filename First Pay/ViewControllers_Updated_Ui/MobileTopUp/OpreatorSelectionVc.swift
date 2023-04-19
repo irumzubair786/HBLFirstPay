@@ -27,15 +27,25 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
       
         tableView.rowHeight = 90
         getCompanies()
+        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoStatement(tapGestureRecognizer:)))
+        blurView.isUserInteractionEnabled = true
+        blurView.addGestureRecognizer(tapGestureRecognizerr)
+        
         // Do any additional setup after loading the view.
     }
+    @IBOutlet weak var blurView: UIImageView!
     
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func Action_hideoperatorView(_ sender: UIButton) {
        
     }
-   
+    @objc func MovetoStatement(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        
+        self.navigationController?.popViewController(animated: false)
+        
+    }
     
    
     

@@ -22,9 +22,12 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     var comapniesList = [SingleCompanyList]()
     var sourceCompany: String?
     var companyCode: Int?
+    var DueDate : String?
+    var status: String?
     override func viewDidLoad() {
         super.viewDidLoad()
         getBillPaymentCompanies()
+     
         imgPostpaid.isHidden = true
         Tf_mobileNumber.delegate = self
         btnContinue.isUserInteractionEnabled = false
@@ -35,12 +38,14 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         Tf_mobileNumber.delegate  = self
         selectOperator.delegate = self
         lblMainTitle.textColor = .black
+        btnPrepaid.setTitleColor(.black, for: .normal)
+        btnPostpaid.setTitleColor(.black, for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
 
         img_next_arrow.addGestureRecognizer(tapGestureRecognizerr)
         // Do any additional setup after loading the view.
     }
-    
+   
     @IBOutlet weak var btnPostpaid: UIButton!
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var btnPrepaid: UIButton!
@@ -54,27 +59,47 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var backbtn: UIButton!
     @IBOutlet weak var selectOperator: UITextField!
     @IBAction func Action_next(_ sender: Any) {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-        vc.phoneNumber = Tf_mobileNumber.text!
-        self.navigationController?.pushViewController(vc, animated: true)
         
-        
-      
-        
-
-        
+        if GlobalData.topup == "Prepaid"
+        {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+            vc.phoneNumber = Tf_mobileNumber.text!
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else
+        {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
+            vc.phoneNumber = Tf_mobileNumber.text!
+            vc.DueDate = DueDate ?? ""
+            vc.status = status ?? ""
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+       
     }
     
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-        vc.phoneNumber = Tf_mobileNumber.text!
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        if GlobalData.topup == "Prepaid"
+        {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+            vc.phoneNumber = Tf_mobileNumber.text!
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else
+        {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
+            vc.DueDate = DueDate ?? ""
+            vc.status = status ?? ""
+            vc.phoneNumber = Tf_mobileNumber.text!
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        
 //        self.present(vc, animated: true)
     }
    
     @IBAction func Action_Operator(_ sender: UIButton) {
-        
         
         let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
         vc.parentCompanyID = parentCompanyID
@@ -115,12 +140,14 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         self.present(contactPicker, animated: true, completion: nil)
     }
     @IBAction func ActionPrepaid(_ sender: UIButton) {
+        UIView.transition(with: self.view, duration: 0.3, options: .transitionFlipFromRight, animations: {
+           
+        }, completion: nil)
         selectOperator.text = ""
         Tf_mobileNumber.text = ""
         imgPostpaid.isHidden = true
         imgPrepaid.isHidden = false
         companyID = billCompanyObj?.companies?[1].code
-        parentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId
         print("u selected prepaid id", companyID)
         print("u selected prepaidcode ", parentCompanyID)
         if (self.billCompanyObj?.companies?[1].code)! != "MBP"
@@ -133,12 +160,17 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     }
     
     @IBAction func Action_postpaid(_ sender: UIButton) {
+        UIView.transition(with: self.view, duration: 0.3, options: .transitionFlipFromLeft, animations: {
+           
+        }, completion: nil)
         selectOperator.text = ""
         Tf_mobileNumber.text = ""
         imgPostpaid.isHidden = false
         imgPrepaid.isHidden = true
         companyID = billCompanyObj?.companies?[0].code
         parentCompanyID = billCompanyObj?.companies?[0].ubpCompaniesId
+        DueDate = billCompanyObj?.companies?[1].createdate
+        status = billCompanyObj?.companies?[1].status
         print("u selected postpaid id", companyID)
         print("u selected postpaid code ", parentCompanyID)
         if (self.billCompanyObj?.companies?[0].code)! == "MBP"
@@ -204,11 +236,11 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
                      
                 }
                 else {
-                     self.showAlert(title: "", message: (self.billCompanyObj?.messages)!, completion: nil)
+                    self.showAlertCustomPopup(title: "",message: self.billCompanyObj?.messages, iconName: .iconError)
                 }
             }
             else {
-                self.showAlert(title: "", message: (self.billCompanyObj?.messages ?? ""), completion: nil)
+                self.showAlertCustomPopup(title: "",message: self.billCompanyObj?.messages, iconName: .iconError)
 //                print(response.result.value)
 //                print(response.response?.statusCode)
                 

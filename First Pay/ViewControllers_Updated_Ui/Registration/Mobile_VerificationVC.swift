@@ -25,11 +25,11 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         getWiFiAddress()
         TF_Mobileno.delegate = self
         lblinvalid.isHidden = true
-        dismissKeyboard()
+//        dismissKeyboard()
         btnContinue.isUserInteractionEnabled = false
         btn_next_arrow.isUserInteractionEnabled = false
-        TF_Mobileno.mode = .localNumber
-        self.TF_Mobileno.addTarget(self, action: #selector(changeTextInTextField), for: .editingDidEnd)
+//        TF_Mobileno.mode = .localNumber
+        self.TF_Mobileno.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
 //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.NSNotification.Name.UIKeyboardWillShow, object: nil)
 
        
@@ -71,12 +71,9 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     
     @objc func changeTextInTextField() {
         print("end editing")
-        if self.TF_Mobileno.text?.count ?? 0 < 12
+        if self.TF_Mobileno.text!.count < 11
         {
-            TF_Mobileno.perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
             self.lblinvalid.isHidden = false
-            self.lblinvalid.text = "Invalid Phone Number."
-            self.TF_Mobileno.resignFirstResponder()
             self.lblinvalid.text = "Invalid Phone Number."
             let image = UIImage(named:"grayArrow")
             self.btn_next_arrow.setImage(image, for: .normal)
@@ -94,7 +91,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         self.btnContinue.isUserInteractionEnabled = true
         self.btn_next_arrow.isUserInteractionEnabled = true
     }
-        self.TF_Mobileno.resignFirstResponder()
+       
     }
     
     
@@ -161,7 +158,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
 //    --------------------------------
     @IBOutlet weak var btnContinue: UIButton!
     @IBOutlet weak var btn_Explore: UIButton!
-    @IBOutlet weak var TF_Mobileno: NumberTextField!
+    @IBOutlet weak var TF_Mobileno: UITextField!
     @IBOutlet weak var lblinvalid: UILabel!
     //    -------------------------------
     @IBOutlet weak var btn_next_arrow: UIButton!

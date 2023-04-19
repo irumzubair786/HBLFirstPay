@@ -41,14 +41,12 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     @IBOutlet weak var lblMobileNumber: UILabel!
     @IBOutlet weak var imgoperator: UIImageView!
     @IBOutlet weak var lblAmountLimit: UILabel!
-   
     @IBOutlet weak var img_next_arrow: UIImageView!
     @IBOutlet weak var backbtn: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBAction func Action_back(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-    
     @IBAction func Action_Continue(_ sender: UIButton) {
         initiateTopUp()
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
@@ -80,8 +78,9 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         
 //        imgoperator.image = GlobalData.selected_operator_logo
         lblMobileNumber.text =  phoneNumber
-        
+       
     }
+  
 
     @objc func buttontaped(_sender:UIButton)
     {
@@ -96,7 +95,8 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
              cell.btnAmount.setTitleColor(.white, for: .normal)
         ///set title color here to white
            let setimg = UIImage(named: "")
-        cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+        cell.btnAmount.backgroundColor = UIColor(hexString: "CC6801")
+//        cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
         cell.btnAmount.borderColor = UIColor.clear
 //        cell.btnAmount.borderColor = .clear
         let a = cell.btnAmount.currentTitle
@@ -143,9 +143,10 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let newLength:Int = (textField.text?.count)! + string.count - range.length
-        
+ 
         if textField == amountTextField{
             return newLength <= 5
+            
 //            lbl1.textColor = UIColor.green
         }
         if textField == amountTextField{

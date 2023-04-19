@@ -48,6 +48,12 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         let tapGestureRecognizr = UITapGestureRecognizer(target: self, action: #selector(moveToDebitCard(tapGestureRecognizer:)))
         viewDebitCard.isUserInteractionEnabled = true
         viewDebitCard.addGestureRecognizer(tapGestureRecognizr)
+        
+        let tapGestureRecognizrz = UITapGestureRecognizer(target: self, action: #selector(moveToInviteFriend(tapGestureRecognizer:)))
+        imgInviteFriend.isUserInteractionEnabled = true
+        imgInviteFriend.addGestureRecognizer(tapGestureRecognizrz)
+
+        
 //       tapGestures()
 //        NotificationCenter.default.removeObserver(self)
 //        NotificationCenter.default.addObserver(self, selector: #selector(viewDidLoadCustom), name: Notification.Name("LanguageChangeThroughObserver"), object: nil)
@@ -156,6 +162,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @IBOutlet weak var imgLevel: UIImageView!
     
+    @IBOutlet weak var imgInviteFriend: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
     
     @IBOutlet weak var lblName: UILabel!
@@ -299,9 +306,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     func banapi ()
     {
-        
-        // let token = "eWptR0NMbk43RlBINWJCM1JjbWtSc0g1TWFzNFZHVGMgOm1MSzM1WEd3bUtHUFpRclM="
-        
         ServerManager.GEt_typeWithoutParmsfetchApiData_PostAppJSON(APIMethodName: APIMethods.banner.rawValue, Token: DataManager.instance.accessToken ?? "" ) { [self] (Result : MYBanersModel?) in
             
             //== check if api is responding or not
@@ -345,10 +349,15 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
       
     @objc func moveToDebitCard(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        getDebitCardCheck()
+        getDebitCard()
     }
     
     
+    @objc func moveToInviteFriend(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        let vc = UIStoryboard.init(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteFriendsAddNumber") as! InviteFriendsAddNumber
+                self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer)
     {
@@ -616,7 +625,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             
             if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
             {
-                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
+                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
                 if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                     vc.balanceLimit = Int(balnceLimit)
                     print("balnceLimit",balnceLimit)
@@ -669,7 +678,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
              
                 else
                 {
-                    let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+                    let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
                     if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                         vc.balanceLimit = Int(balnceLimit)
                         print("balnceLimit",balnceLimit)

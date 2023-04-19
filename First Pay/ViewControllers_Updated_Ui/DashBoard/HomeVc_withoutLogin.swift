@@ -26,23 +26,23 @@ class HomeVc_withoutLogin: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    @IBOutlet weak var btnMove: UIButton!
+   
     
     @IBOutlet weak var imgView_Profile: UIImageView!
     @IBOutlet weak var LblLoginorsignup: UILabel!
    
     @IBOutlet weak var homeView: UIView!
     
-    @IBOutlet weak var btnNotification: UIButton!
+
     @IBOutlet weak var notificationView: UIView!
-    @IBOutlet weak var btnHome: UIButton!
+   
     
-    
-    @IBOutlet weak var viewQuestionmark: UIView!
-    @IBOutlet weak var btnmain: UIButton!
     @IBOutlet weak var MainView: UIView!
-    
-    
+    @IBOutlet weak var viewQuestionmark: UIView!
+    @IBOutlet weak var btnMove: UIButton!
+    @IBOutlet weak var btnHome: UIButton!
+    @IBOutlet weak var btnNotification: UIButton!
+    @IBOutlet weak var btnmain: UIButton!
     @IBOutlet weak var btnProfile: UIButton!
     @IBOutlet weak var viewprofile: UIView!
     @IBOutlet weak var btnQuestion: UIButton!
