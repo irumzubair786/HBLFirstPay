@@ -27,6 +27,9 @@ class InviteAFriends: UIViewController {
     @IBAction func buttonViewTerms(_ sender: Any) {
     }
     @IBAction func buttonInviteFriend(_ sender: Any) {
+        
+        let vc = UIStoryboard.init(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteFriendsAddNumber") as! InviteFriendsAddNumber
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @IBOutlet weak var buttonSendInvite: UIButton!
@@ -49,7 +52,7 @@ class InviteAFriends: UIViewController {
         viewInviteFriendBackButtonGround.circle()
         
         viewButtonSendInvite.circle()
-
+        invitedFriendsList()
     }
     @IBAction func segmentControl(_ sender: UISegmentedControl) {
         tableView.reloadData()
@@ -62,6 +65,21 @@ class InviteAFriends: UIViewController {
             viewPendingStatus.isHidden = true
             viewPendingStatus.backgroundColor = .clear
             viewPendingStatus.frame.size.height = 0
+        }
+    }
+    
+    func invitedFriendsList() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "“cnic”": userCnic,
+            "channelId": "\(DataManager.instance.channelID)",
+            "imei": DataManager.instance.imei!
+        ]
+        
+        APIs.postAPI(apiName: .invitedFriendsList, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
+            //            self.modelGetActiveLoan = model
+            
         }
     }
 }
@@ -114,107 +132,6 @@ extension InviteAFriends: UITableViewDelegate, UITableViewDataSource {
 
 extension InviteAFriends {
     
-    func mobileRegistration() {
-        let parameters: Parameters = [
-            "osVersion": systemVersion,
-            "appVersion": DataManager.instance.appversion,
-            "ipAddressP": "192.168.8.100",
-            "deviceModel": devicemodel,
-            "channelId": "\(DataManager.instance.channelID)",
-            "mobileNo": "03406401050",
-            "imeiNo": DataManager.instance.imei!,
-            "ipAddressA": "192.168.8.100"]
-        
-        APIs.postAPI(apiName: .mobileRegistration, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
-            //            self.modelGetActiveLoan = model
-            
-        }
-    }
-    func mobileVerification() {
-        let parameters: Parameters = [
-            "appVersion": DataManager.instance.appversion,
-            "ipAddressP": "192.168.8.100",
-            "osVersion": systemVersion,
-            "imeiNo": DataManager.instance.imei!,
-            "channelId": "\(DataManager.instance.channelID)",
-            "deviceModel": devicemodel,
-            "mobileNo": "03406401050",
-            "otpin": "3561",
-            "ipAddressA": "192.168.8.100"
-        ]
-        
-        APIs.postAPI(apiName: .mobileVerification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
-            //            self.modelGetActiveLoan = model
-            
-        }
-    }
-    func cnicVerification() {
-        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        
-        let parameters: Parameters = [
-            "ipAddressP": "192.168.8.100",
-            "channelId": "\(DataManager.instance.channelID)",
-            "mobileNo": "03406401050",
-            "issueDate": "2019-05-20",
-            "deviceModel": devicemodel,
-            "imeiNo": DataManager.instance.imei!,
-            "cnic": userCnic!,
-            "ipAddressA": "192.168.8.100",
-            "osVersion": systemVersion,
-            "appVersion": DataManager.instance.appversion
-        ]
-        
-        APIs.postAPI(apiName: .cnicVerification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
-            //            self.modelGetActiveLoan = model
-            
-        }
-    }
-    
-    func customerKyc() {
-        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters: Parameters = [
-            "channelId": "\(DataManager.instance.channelID)",
-            "deviceModel": devicemodel,
-            "ipAddressA": "192.168.8.102",
-            "ipAddressP": "192.168.8.102",
-            "mobileNo": "03406401050",
-            "motherName": "Lail wal Nihar",
-            "osVersion": systemVersion,
-            "imeiNo": DataManager.instance.imei!,
-            "cnic": userCnic!,
-            "appVersion": DataManager.instance.appversion
-        ]
-        
-        APIs.postAPI(apiName: .customerKyc, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
-            //            self.modelGetActiveLoan = model
-            
-        }
-    }
-    func setLoginPin() {
-        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters: Parameters = [
-            "channelId": "\(DataManager.instance.channelID)",
-            "deviceModel": devicemodel,
-            "ipAddressA": "192.168.8.102",
-            "ipAddressP": "192.168.8.102",
-            "mobileNo": "03406401050",
-            "osVersion": systemVersion,
-            "imeiNo": DataManager.instance.imei!,
-            "cnic": userCnic!,
-            "appVersion": DataManager.instance.appversion,
-            "loginPin":"1234"
-        ]
-        
-        APIs.postAPI(apiName: .setLoginPin, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
-            //            self.modelGetActiveLoan = model
-            
-        }
-    }
     func getInvitorFriendsList() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [

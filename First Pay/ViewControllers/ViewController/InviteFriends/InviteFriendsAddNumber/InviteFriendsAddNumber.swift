@@ -6,13 +6,19 @@
 //
 
 import UIKit
+import Alamofire
 
 class InviteFriendsAddNumber: UIViewController {
 
     @IBOutlet weak var buttonSendInvite: UIButton!
     @IBAction func buttonSendInvite(_ sender: Any) {
+        inviteFriends()
     }
     
+    @IBOutlet weak var buttonContact: UIButton!
+    @IBAction func buttonContact(_ sender: Any) {
+    }
+    @IBOutlet weak var textFieldNumber: UITextField!
     @IBOutlet weak var viewButtonSendInvite: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,15 +26,21 @@ class InviteFriendsAddNumber: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    func inviteFriends() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "“cnic”": userCnic,
+            "name": "Shakeel",
+            "channelId": "\(DataManager.instance.channelID)",
+            "mobNo": textFieldNumber.text!,
+            "imei": DataManager.instance.imei!
+        ]
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        APIs.postAPI(apiName: .inviteFriends, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
+            //            self.modelGetActiveLoan = model
+            
+        }
     }
-    */
 
 }

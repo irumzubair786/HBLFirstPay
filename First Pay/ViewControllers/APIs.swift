@@ -223,11 +223,10 @@ struct APIs {
         case getSchCalendar = "NanoLoan/v1/getSchCalendar"
         
         //WalletCreation
-        case mobileRegistration = "WalletCreation/v1/mobileRegistration"
-        case mobileVerification = "WalletCreation/v1/mobileVerification"
-        case cnicVerification = "WalletCreation/v1/cnicVerification"
-        case customerKyc = "WalletCreation/v1/customerKyc"
-        case setLoginPin = "WalletCreation/v1/setLoginPin"
+        case inviteFriends = "FirstPayInfo/v1/inviteFriends"
+        case invitedFriendsList = "FirstPayInfo/v1/invitedFriendsList"
+
+        
         case getInvitorFriendsList = "WalletCreation/v1/getInvitorFriendsList"
         case acceptFriendInvite = "WalletCreation/v1/acceptFriendInvite"
 

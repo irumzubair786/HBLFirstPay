@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -377,14 +377,13 @@
 		A2BFD21B25D6920300306EB9 /* BillAPiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFD21A25D6920300306EB9 /* BillAPiResponse.swift */; };
 		A2BFD22025D6981C00306EB9 /* FundsTransferApiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFD21F25D6981C00306EB9 /* FundsTransferApiResponse.swift */; };
 		A2C2003525D4E94400183587 /* BillTrasactionCEll.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C2003425D4E94400183587 /* BillTrasactionCEll.swift */; };
-		A2C2003725D4E9AE00183587 /* Pods_First_Pay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F209511FF4EB45213E8161 /* Pods_First_Pay.framework */; };
 		A2C2005625D51B1F00183587 /* PreTopUpCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C2005525D51B1F00183587 /* PreTopUpCell.swift */; };
 		A2C55309253DB0EB00F6101F /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C55308253DB0EB00F6101F /* CustomSlider.swift */; };
 		A2C7D45B265F8F1800516B76 /* AllDiscountListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C7D45A265F8F1800516B76 /* AllDiscountListModel.swift */; };
 		A2C7D480265FA6E300516B76 /* CompleteAllDiscountList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C7D47F265FA6E300516B76 /* CompleteAllDiscountList.swift */; };
 		A2C7D4A5265FAE3400516B76 /* BaneerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C7D4A4265FAE3400516B76 /* BaneerModel.swift */; };
 		A2C96AE424F37FD9002E6B2C /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C96AE324F37FD9002E6B2C /* NotificationService.swift */; };
-		A2C96AE824F37FD9002E6B2C /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A2C96AE124F37FD9002E6B2C /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A2C96AE824F37FD9002E6B2C /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A2C96AE124F37FD9002E6B2C /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A2CACEAE24FF72E0007FE785 /* GetReasonsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CACEAD24FF72E0007FE785 /* GetReasonsModel.swift */; };
 		A2CF9F542540382400E17C17 /* GetDebitCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CF9F532540382400E17C17 /* GetDebitCardModel.swift */; };
 		A2D506E224B636190046314F /* CommitteeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D506E124B636190046314F /* CommitteeTableViewCell.swift */; };
@@ -419,15 +418,15 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A2C96AE924F37FD9002E6B2C /* Embed App Extensions */ = {
+		A2C96AE924F37FD9002E6B2C /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A2C96AE824F37FD9002E6B2C /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
+				A2C96AE824F37FD9002E6B2C /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -866,7 +865,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A28F19302621F7F400EFB545 /* GolootloWebViewLibrary.xcframework in Frameworks */,
-				A2C2003725D4E9AE00183587 /* Pods_First_Pay.framework in Frameworks */,
 				A25C29D72280218300740BF0 /* CoreLocation.framework in Frameworks */,
 				18373E2B29912939005144D2 /* libopencv_imgproc.a in Frameworks */,
 				18373E2A29912939005144D2 /* libCardIO.a in Frameworks */,
@@ -2118,7 +2116,7 @@
 				69D5E5CF8E2AFE03F4A81686 /* [CP] Embed Pods Frameworks */,
 				A265597A2423970600A39B4B /* Embed Frameworks */,
 				A265597B2423975500A39B4B /* Remove Unused Arcitectures */,
-				A2C96AE924F37FD9002E6B2C /* Embed App Extensions */,
+				A2C96AE924F37FD9002E6B2C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -2158,8 +2156,9 @@
 		A2848EA021995A4C00B36D56 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1160;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "FMFB Pakistan";
 				TargetAttributes = {
 					A2848EA721995A4C00B36D56 = {
@@ -2778,7 +2777,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2836,7 +2835,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
