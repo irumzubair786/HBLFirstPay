@@ -9,7 +9,7 @@
 import UIKit
 
 class cell_BillPyement_MainVC: UITableViewCell {
- 
+  
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
