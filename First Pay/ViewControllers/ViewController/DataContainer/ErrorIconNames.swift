@@ -12,6 +12,7 @@ class IconNames {
     enum iconNameError: String {
         //MARK:- Auth
         case iconError = "errorIcon"
+        case iconErrorAuth = "]greenarrow"
         case iconSucess = "f"
        
     }

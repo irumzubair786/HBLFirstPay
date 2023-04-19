@@ -526,9 +526,19 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 }
                 else{
                     if let message = self.loginObj?.messages{
-                        self.lbl_InvalidPassword.isHidden = false
-                        self.lbl_InvalidPassword.text = "Invalid Password Entered"
-                        //                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconErrorAuth, buttonNames: [
+                            
+                            ["buttonName": "OK",
+                            "buttonBackGroundColor": UIColor.clrOrange,
+                            "buttonTextColor": UIColor.white],
+                        
+                            ["buttonName": "CANCEL",
+                            "buttonBackGroundColor": UIColor.clrOrange,
+                            "buttonTextColor": UIColor.white]
+                        
+                        
+                        ] as? [[String: AnyObject]])
+                      
                     }
                 }
             }
