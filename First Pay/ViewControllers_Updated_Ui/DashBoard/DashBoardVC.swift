@@ -70,6 +70,11 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     @IBAction func buttonLevelIcon(_ sender: UIButton) {
         getAvailableLimits()
     }
+    @IBAction func buttonInvite(_ sender: UIButton) {
+        let vc = UIStoryboard.init(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteAFriendsNAvigation")
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
+    }
     func AddCash(){
         
         
@@ -159,6 +164,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var timer = Timer()
     var banaryyString =  [String]()
     
+    @IBOutlet weak var buttonInvite: UIButton!
     
     @IBOutlet weak var imgLevel: UIImageView!
     

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dbg-C1-qrH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dbg-C1-qrH">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -1807,7 +1807,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qfs-pd-ywc">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="1304"/>
+                                <rect key="frame" x="0.0" y="20" width="414" height="1304"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="uog-1l-yeE">
                                         <rect key="frame" x="0.0" y="8" width="414" height="1341"/>
@@ -2142,13 +2142,24 @@
                                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn2" translatesAutoresizingMaskIntoConstraints="NO" id="fGx-kp-tj2">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="78" height="100"/>
                                                                                 </imageView>
+                                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acK-JR-QPu">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="78.5" height="100"/>
+                                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                                    <connections>
+                                                                                        <action selector="buttonInvite:" destination="qQG-GK-gBe" eventType="touchUpInside" id="aaD-qt-ouu"/>
+                                                                                    </connections>
+                                                                                </button>
                                                                             </subviews>
                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <constraints>
+                                                                                <constraint firstItem="acK-JR-QPu" firstAttribute="leading" secondItem="blK-IV-rFp" secondAttribute="leading" id="3Rr-x3-p4x"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="fGx-kp-tj2" secondAttribute="trailing" constant="0.3333333333333286" id="7Db-rl-G1v"/>
                                                                                 <constraint firstItem="fGx-kp-tj2" firstAttribute="leading" secondItem="blK-IV-rFp" secondAttribute="leading" id="EOn-uR-ftq"/>
                                                                                 <constraint firstAttribute="bottom" secondItem="fGx-kp-tj2" secondAttribute="bottom" id="OQ2-hM-rQQ"/>
                                                                                 <constraint firstItem="fGx-kp-tj2" firstAttribute="top" secondItem="blK-IV-rFp" secondAttribute="top" id="Q6g-9l-6M6"/>
+                                                                                <constraint firstAttribute="bottom" secondItem="acK-JR-QPu" secondAttribute="bottom" id="Weh-Mv-YTu"/>
+                                                                                <constraint firstItem="acK-JR-QPu" firstAttribute="top" secondItem="blK-IV-rFp" secondAttribute="top" id="XhX-uB-5Ff"/>
+                                                                                <constraint firstAttribute="trailing" secondItem="acK-JR-QPu" secondAttribute="trailing" id="b7T-mu-YNt"/>
                                                                             </constraints>
                                                                             <userDefinedRuntimeAttributes>
                                                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2346,6 +2357,7 @@
                     <connections>
                         <outlet property="LblMobNo" destination="8kc-0o-wT5" id="BSR-6H-WEO"/>
                         <outlet property="btnPageControl" destination="3m0-Z7-Xt6" id="AAy-pR-dgH"/>
+                        <outlet property="buttonInvite" destination="acK-JR-QPu" id="w1v-Em-ZBU"/>
                         <outlet property="buttonLevelIcon" destination="x5i-2i-LFo" id="4Y7-a3-yde"/>
                         <outlet property="collectionView" destination="0wc-f7-pie" id="7rS-Fb-hsC"/>
                         <outlet property="imageAddCash" destination="1yr-MK-Tvz" id="FiA-W7-6sg"/>

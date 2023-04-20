@@ -15,7 +15,7 @@ class InviteAFriends: UIViewController {
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var tableView: TableViewContentSized!
     
-    
+    @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var viewInviteFriendBackGround: UIView!
     @IBOutlet weak var viewInviteFriendBackButtonGround: UIView!
 
@@ -54,6 +54,9 @@ class InviteAFriends: UIViewController {
         viewButtonSendInvite.circle()
         invitedFriendsList()
     }
+    @IBAction func buttonBack(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
     @IBAction func segmentControl(_ sender: UISegmentedControl) {
         tableView.reloadData()
         if sender.selectedSegmentIndex == 1 {
@@ -71,7 +74,7 @@ class InviteAFriends: UIViewController {
     func invitedFriendsList() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
-            "“cnic”": userCnic,
+            "cnic": userCnic!,
             "channelId": "\(DataManager.instance.channelID)",
             "imei": DataManager.instance.imei!
         ]

@@ -36,11 +36,22 @@
                                                                     <constraint firstAttribute="height" constant="40" id="bZM-Hb-YYE"/>
                                                                 </constraints>
                                                             </imageView>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8b8-ns-5vh">
+                                                                <rect key="frame" x="0.0" y="0.0" width="131" height="50"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <connections>
+                                                                    <action selector="buttonBack:" destination="yPi-K0-WbK" eventType="touchUpInside" id="7lC-Ae-SYs"/>
+                                                                </connections>
+                                                            </button>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="8b8-ns-5vh" secondAttribute="bottom" id="1Kt-lD-wu8"/>
+                                                            <constraint firstAttribute="trailing" secondItem="8b8-ns-5vh" secondAttribute="trailing" id="6Eh-iv-mpJ"/>
                                                             <constraint firstItem="WY8-lZ-cPN" firstAttribute="leading" secondItem="Hj2-4A-fYB" secondAttribute="leading" constant="20" id="FMW-2a-WuU"/>
                                                             <constraint firstItem="WY8-lZ-cPN" firstAttribute="centerY" secondItem="Hj2-4A-fYB" secondAttribute="centerY" id="gs8-3w-rQY"/>
+                                                            <constraint firstItem="8b8-ns-5vh" firstAttribute="leading" secondItem="Hj2-4A-fYB" secondAttribute="leading" id="ueU-d8-CkR"/>
+                                                            <constraint firstItem="8b8-ns-5vh" firstAttribute="top" secondItem="Hj2-4A-fYB" secondAttribute="top" id="yEN-UH-0hP"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CMP-cJ-94g">
@@ -513,18 +524,20 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="rYR-mb-jaY"/>
+                        <viewLayoutGuide key="safeArea" id="UX5-RA-3ex"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="BfW-VH-7u4" firstAttribute="trailing" secondItem="rYR-mb-jaY" secondAttribute="trailing" id="FZV-NB-Smd"/>
-                            <constraint firstItem="BfW-VH-7u4" firstAttribute="leading" secondItem="rYR-mb-jaY" secondAttribute="leading" id="OgK-ce-ZY3"/>
-                            <constraint firstItem="BfW-VH-7u4" firstAttribute="top" secondItem="rYR-mb-jaY" secondAttribute="top" id="ZBm-k3-hVD"/>
-                            <constraint firstItem="rYR-mb-jaY" firstAttribute="trailing" secondItem="BfW-VH-7u4" secondAttribute="trailing" id="Zjm-jv-RB2"/>
-                            <constraint firstItem="BfW-VH-7u4" firstAttribute="leading" secondItem="rYR-mb-jaY" secondAttribute="leading" id="h7t-bn-Kry"/>
-                            <constraint firstItem="BfW-VH-7u4" firstAttribute="bottom" secondItem="rYR-mb-jaY" secondAttribute="bottom" id="q7F-qN-lkc"/>
+                            <constraint firstItem="BfW-VH-7u4" firstAttribute="trailing" secondItem="UX5-RA-3ex" secondAttribute="trailing" id="FZV-NB-Smd"/>
+                            <constraint firstItem="BfW-VH-7u4" firstAttribute="leading" secondItem="UX5-RA-3ex" secondAttribute="leading" id="OgK-ce-ZY3"/>
+                            <constraint firstItem="BfW-VH-7u4" firstAttribute="top" secondItem="UX5-RA-3ex" secondAttribute="top" id="ZBm-k3-hVD"/>
+                            <constraint firstItem="UX5-RA-3ex" firstAttribute="trailing" secondItem="BfW-VH-7u4" secondAttribute="trailing" id="Zjm-jv-RB2"/>
+                            <constraint firstItem="BfW-VH-7u4" firstAttribute="leading" secondItem="UX5-RA-3ex" secondAttribute="leading" id="h7t-bn-Kry"/>
+                            <constraint firstItem="BfW-VH-7u4" firstAttribute="bottom" secondItem="UX5-RA-3ex" secondAttribute="bottom" id="q7F-qN-lkc"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Ytc-qg-ZUk"/>
                     <connections>
+                        <outlet property="buttonBack" destination="8b8-ns-5vh" id="1LR-bq-LfJ"/>
                         <outlet property="buttonInviteFriend" destination="3F6-yD-O1p" id="63C-3f-pWQ"/>
                         <outlet property="buttonSendInvite" destination="xcC-TG-q4s" id="BoG-DS-A8E"/>
                         <outlet property="buttonViewTerms" destination="en8-wv-vtx" id="4c0-dt-QGH"/>
@@ -539,7 +552,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VAH-St-2yp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1676" y="1521.5892053973014"/>
+            <point key="canvasLocation" x="-750.38167938931292" y="1521.1267605633805"/>
         </scene>
         <!--Invite Friends Add Number-->
         <scene sceneID="9B1-Jl-UV1">
@@ -910,15 +923,15 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="V2F-ys-PqB"/>
+                        <viewLayoutGuide key="safeArea" id="GwI-uF-wve"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="V2F-ys-PqB" firstAttribute="trailing" secondItem="ElL-zp-Q0T" secondAttribute="trailing" id="2gF-Yc-0op"/>
-                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="top" secondItem="V2F-ys-PqB" secondAttribute="top" id="3Hv-S9-LVU"/>
-                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="trailing" secondItem="V2F-ys-PqB" secondAttribute="trailing" id="76a-VT-r0a"/>
-                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="leading" secondItem="V2F-ys-PqB" secondAttribute="leading" id="99W-XF-i7D"/>
-                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="bottom" secondItem="V2F-ys-PqB" secondAttribute="bottom" id="avG-Kx-rv1"/>
-                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="leading" secondItem="V2F-ys-PqB" secondAttribute="leading" id="tmC-Ui-Ia2"/>
+                            <constraint firstItem="GwI-uF-wve" firstAttribute="trailing" secondItem="ElL-zp-Q0T" secondAttribute="trailing" id="2gF-Yc-0op"/>
+                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="top" secondItem="GwI-uF-wve" secondAttribute="top" id="3Hv-S9-LVU"/>
+                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="trailing" secondItem="GwI-uF-wve" secondAttribute="trailing" id="76a-VT-r0a"/>
+                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="leading" secondItem="GwI-uF-wve" secondAttribute="leading" id="99W-XF-i7D"/>
+                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="bottom" secondItem="GwI-uF-wve" secondAttribute="bottom" id="avG-Kx-rv1"/>
+                            <constraint firstItem="ElL-zp-Q0T" firstAttribute="leading" secondItem="GwI-uF-wve" secondAttribute="leading" id="tmC-Ui-Ia2"/>
                         </constraints>
                     </view>
                     <connections>
@@ -930,7 +943,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fWi-Sl-lSZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1023.2" y="1521.5892053973014"/>
+            <point key="canvasLocation" x="-96.946564885496173" y="1521.1267605633805"/>
         </scene>
         <!--Invite Friend Search Number-->
         <scene sceneID="FQ0-za-a5N">
@@ -1103,15 +1116,15 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="mV6-92-i7X"/>
+                        <viewLayoutGuide key="safeArea" id="Asn-mb-VWO"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="leading" secondItem="mV6-92-i7X" secondAttribute="leading" id="0e5-Lf-U73"/>
-                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="bottom" secondItem="mV6-92-i7X" secondAttribute="bottom" id="329-On-1fh"/>
-                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="leading" secondItem="mV6-92-i7X" secondAttribute="leading" id="ZSS-gy-ov8"/>
-                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="trailing" secondItem="mV6-92-i7X" secondAttribute="trailing" id="d2V-n8-Ud0"/>
-                            <constraint firstItem="mV6-92-i7X" firstAttribute="trailing" secondItem="Dxo-Mp-J5C" secondAttribute="trailing" id="oXN-G9-4dn"/>
-                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="top" secondItem="mV6-92-i7X" secondAttribute="top" id="rbc-xJ-eZt"/>
+                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="leading" secondItem="Asn-mb-VWO" secondAttribute="leading" id="0e5-Lf-U73"/>
+                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="bottom" secondItem="Asn-mb-VWO" secondAttribute="bottom" id="329-On-1fh"/>
+                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="leading" secondItem="Asn-mb-VWO" secondAttribute="leading" id="ZSS-gy-ov8"/>
+                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="trailing" secondItem="Asn-mb-VWO" secondAttribute="trailing" id="d2V-n8-Ud0"/>
+                            <constraint firstItem="Asn-mb-VWO" firstAttribute="trailing" secondItem="Dxo-Mp-J5C" secondAttribute="trailing" id="oXN-G9-4dn"/>
+                            <constraint firstItem="Dxo-Mp-J5C" firstAttribute="top" secondItem="Asn-mb-VWO" secondAttribute="top" id="rbc-xJ-eZt"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1123,7 +1136,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2DD-jj-7eE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-228" y="1522"/>
+            <point key="canvasLocation" x="698.47328244274809" y="1521.8309859154931"/>
         </scene>
         <!--Invite Friend Invitation Sent-->
         <scene sceneID="x3n-Uz-4Yk">
@@ -1435,17 +1448,17 @@ to complete tasks </string>
                                 </constraints>
                             </view>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="FlD-6R-Uck"/>
+                        <viewLayoutGuide key="safeArea" id="7Jg-e0-yFP"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="p2U-1w-ntA" secondAttribute="bottom" id="1J8-Hh-ymV"/>
                             <constraint firstItem="MWv-dg-FYk" firstAttribute="width" secondItem="StD-ON-bLi" secondAttribute="width" id="1ev-Ck-rDa"/>
                             <constraint firstItem="p2U-1w-ntA" firstAttribute="top" secondItem="StD-ON-bLi" secondAttribute="bottom" id="83L-PE-dZm"/>
-                            <constraint firstItem="StD-ON-bLi" firstAttribute="trailing" secondItem="FlD-6R-Uck" secondAttribute="trailing" id="PgD-et-AEC"/>
-                            <constraint firstItem="StD-ON-bLi" firstAttribute="leading" secondItem="FlD-6R-Uck" secondAttribute="leading" id="Zv3-KV-fhm"/>
-                            <constraint firstItem="StD-ON-bLi" firstAttribute="top" secondItem="FlD-6R-Uck" secondAttribute="top" id="bNg-jf-PVK"/>
-                            <constraint firstItem="p2U-1w-ntA" firstAttribute="leading" secondItem="FlD-6R-Uck" secondAttribute="leading" id="cmB-M5-yQp"/>
-                            <constraint firstItem="FlD-6R-Uck" firstAttribute="trailing" secondItem="p2U-1w-ntA" secondAttribute="trailing" id="iqk-IO-PbC"/>
+                            <constraint firstItem="StD-ON-bLi" firstAttribute="trailing" secondItem="7Jg-e0-yFP" secondAttribute="trailing" id="PgD-et-AEC"/>
+                            <constraint firstItem="StD-ON-bLi" firstAttribute="leading" secondItem="7Jg-e0-yFP" secondAttribute="leading" id="Zv3-KV-fhm"/>
+                            <constraint firstItem="StD-ON-bLi" firstAttribute="top" secondItem="7Jg-e0-yFP" secondAttribute="top" id="bNg-jf-PVK"/>
+                            <constraint firstItem="p2U-1w-ntA" firstAttribute="leading" secondItem="7Jg-e0-yFP" secondAttribute="leading" id="cmB-M5-yQp"/>
+                            <constraint firstItem="7Jg-e0-yFP" firstAttribute="trailing" secondItem="p2U-1w-ntA" secondAttribute="trailing" id="iqk-IO-PbC"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1454,7 +1467,24 @@ to complete tasks </string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e4u-bs-8SK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="609" y="1522"/>
+            <point key="canvasLocation" x="1535.1145038167938" y="1521.8309859154931"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0c6-os-mbH">
+            <objects>
+                <navigationController storyboardIdentifier="InviteAFriendsNAvigation" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="K83-2R-NfX" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="40x-9F-Jvm">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="yPi-K0-WbK" kind="relationship" relationship="rootViewController" id="XqP-3E-sO1"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vTQ-TZ-Jol" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1677.0992366412213" y="1521.1267605633805"/>
         </scene>
     </scenes>
     <resources>
