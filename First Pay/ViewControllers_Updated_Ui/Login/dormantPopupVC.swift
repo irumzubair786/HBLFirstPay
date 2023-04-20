@@ -11,7 +11,9 @@ import SwiftKeychainWrapper
 import Alamofire
 import AlamofireObjectMapper
 class dormantPopupVC: BaseClassVC {
-
+    var consentStatus : String?
+    var loginHistoryId: Int?
+   
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,8 +24,10 @@ class dormantPopupVC: BaseClassVC {
     @IBOutlet weak var buttonNo: UIButton!
     @IBOutlet weak var buttonyes: UIButton!
     @IBAction func buttonyes(_ sender: UIButton) {
+        apicall()
     }
     @IBAction func buttonNo(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -41,30 +45,32 @@ class dormantPopupVC: BaseClassVC {
             "cnic" : userCnic!,
             "imeiNo" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            "accountType": "\(DataManager.instance.accountType ?? "0")"
+            "accountType": "\(DataManager.instance.accountType ?? "0")",
+            "consentStatus": consentStatus ?? "" ,"loginHistoryId": "\(loginHistoryId ?? 0)"
             ]
             
-        APIs.postAPI(apiName: .getAccLimits, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .updateAccountStatus, parameters: parameters, viewController: self) { responseData, success, errorMsg in
                 
-                    let model : GetAccLimits2? = APIs.decodeDataToObject(data: responseData)
+                    let model : GenericModel? = APIs.decodeDataToObject(data: responseData)
                     print("response",model)
-                    self.modelGetAccount = model
+                    self.modelGeneric = model
                 }
         
     }
     
-    var modelGetAccount : GetAccLimits2?
+    var modelGeneric : GenericModel?
     {
         didSet{
-            if self.modelGetAccount?.responsecode == 1  {
-                
+            if self.modelGeneric?.responsecode == 1  {
+                print("api calling")
+//                loginAction
                 
 //                self.appenddata()
                 
             }
             else {
                 //MARK: - Loan Failed Successfully
-                self.showAlertCustomPopup(title: "Error!", message: modelGetAccount?.messages ?? "", iconName: .iconError)
+                self.showAlertCustomPopup(title: "Error!", message: modelGeneric?.messages ?? "", iconName: .iconError)
             }
       
             

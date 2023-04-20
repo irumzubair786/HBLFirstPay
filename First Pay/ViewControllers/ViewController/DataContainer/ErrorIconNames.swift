@@ -14,6 +14,7 @@ class IconNames {
         case iconError = "errorIcon"
         case iconErrorAuth = "]greenarrow"
         case iconSucess = "f"
+        case iconDormant = "iconDormant"
        
     }
 }

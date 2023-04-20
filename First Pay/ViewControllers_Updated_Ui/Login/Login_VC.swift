@@ -497,51 +497,62 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 self.loginObj = response.result.value
                 if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                     if self.loginObj?.data != nil{
+                        
                         if self.loginObj?.data?.customerHomeScreens?[0].accountDormant == "Y"
                         {
-//                            let vc = storyboard?.sto
+                            
+//                            self.showAlertCustomPopup(title: "", message: "", iconName: .iconDormant, buttonNames:  ["buttonName": "OK",
+//                                                                                                                     "buttonBackGroundColor": UIColor.clrOrange,
+//                                                                                                                     "buttonTextColor": UIColor.white]
+                            
+                            
+                            let vc = storyboard?.instantiateViewController(withIdentifier: "dormantPopupVC") as! dormantPopupVC
+                            vc.consentStatus = loginObj?.data?.customerHomeScreens?[0].accountDormant
+                            vc.loginHistoryId = loginObj?.data?.customerHomeScreens?[0].loginHistoryId
+                            self.navigationController?.pushViewController(vc, animated: true)
+                            self.present(vc, animated: true)
                         }
-                        
-                        
-                        
-                        if let accessToken = self.loginObj?.data?.token{
-                            DataManager.instance.accessToken = accessToken
-                            DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType
-                            DataManager.instance.customerId = self.loginObj?.data?.customerHomeScreens?[0].customerId
-                            print("\(accessToken)")
-                            if let passKey = self.pinTextField.text{
-                                let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
-                                print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                        else
+                        {
+                            
+                            if let accessToken = self.loginObj?.data?.token{
+                                DataManager.instance.accessToken = accessToken
+                                DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType
+                                DataManager.instance.customerId = self.loginObj?.data?.customerHomeScreens?[0].customerId
+                                print("\(accessToken)")
+                                if let passKey = self.pinTextField.text{
+                                    let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                                    print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                                    
+                                }
+                                
+                                self.saveInDataManager()
                                 
                             }
-                            
-                            //                             DataManager.instance.accountTitle = self.loginObj?.data?.customerHomeScreens?[0].firstName
-                            //                            DataManager.instance.accountNo = self.loginObj?.data?.customerHomeScreens?[0].accountNo
-                            //                            DataManager.instance.currentBalance = Double((self.loginObj?.data?.customerHomeScreens?[0].currentBalance)!)
-                            //                            DataManager.instance.balanceDate = self.loginObj?.data?.customerHomeScreens?[0].balanceDate
-                            self.saveInDataManager()
-                            
                         }
                     }
+                   
                 }
                 else{
                     if let message = self.loginObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconErrorAuth, buttonNames: [
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
                             
                             ["buttonName": "OK",
                             "buttonBackGroundColor": UIColor.clrOrange,
-                            "buttonTextColor": UIColor.white],
-                        
-                            ["buttonName": "CANCEL",
-                            "buttonBackGroundColor": UIColor.clrOrange,
                             "buttonTextColor": UIColor.white]
+                        
+//                                ["buttonName": "CANCEL",
+//                                "buttonBackGroundColor": UIColor.clrOrange,
+//                                "buttonTextColor": UIColor.white]
                         
                         
                         ] as? [[String: AnyObject]])
                       
                     }
                 }
-            }
+        }
+                        
+                      
             else{
                 self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
                 //                if let message = self.loginObj?.messages{

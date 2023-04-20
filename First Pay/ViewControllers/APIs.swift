@@ -221,7 +221,7 @@ struct APIs {
         case getAccLimits = "FirstPayInfo/v1/getAccLimits"
         case changeAcctLimits = "FirstPayInfo/v1/changeAcctLimits"
         case getSchCalendar = "NanoLoan/v1/getSchCalendar"
-        
+        case updateAccountStatus = "FirstPayInfo/v1/updateAccountStatus"
         //WalletCreation
         case inviteFriends = "FirstPayInfo/v1/inviteFriends"
         case invitedFriendsList = "FirstPayInfo/v1/invitedFriendsList"
