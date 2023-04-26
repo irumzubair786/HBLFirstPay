@@ -14,6 +14,18 @@ class InviteSentCell: UITableViewCell {
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelPhoneNumber: UILabel!
+    
+    var sentInviteFriendList: InviteAFriends.SentInviteFriendList! {
+        didSet {
+            labelTitle.text = sentInviteFriendList.inviteeName
+            labelPhoneNumber.text = sentInviteFriendList.mobileNo
+            labelPhoneNumber.textColor = .clrOrange
+            
+            imageViewUser.setImage(string: sentInviteFriendList.inviteeName ?? "NA", color: .clrGreenWithOccupacy20, colorText: .clrBlack)
+            imageViewUser.circle()
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -28,3 +40,4 @@ class InviteSentCell: UITableViewCell {
     }
     
 }
+
