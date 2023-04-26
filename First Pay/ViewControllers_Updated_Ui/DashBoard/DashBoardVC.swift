@@ -362,7 +362,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     @objc func moveToInviteFriend(tapGestureRecognizer: UITapGestureRecognizer)
     {
         let vc = UIStoryboard.init(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteFriendsAddNumber") as! InviteFriendsAddNumber
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.present(vc, animated: true)
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer)

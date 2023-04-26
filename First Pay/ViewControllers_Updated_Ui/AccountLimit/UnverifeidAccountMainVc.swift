@@ -58,4 +58,13 @@ class UnverifeidAccountMainVc: BaseClassVC {
         
     }
     
+    @IBAction func buttonUpgrade(_ sender: UIButton) {
+        self.showAlertCustomPopup(title: "", message: "Please visit your nearest HBLMfB branch", iconName: .iconSucess, buttonNames: [
+            
+            ["buttonName": "OK",
+            "buttonBackGroundColor": UIColor.clrOrange,
+            "buttonTextColor": UIColor.white]
+        ] as? [[String: AnyObject]])
+    }
+    
 }

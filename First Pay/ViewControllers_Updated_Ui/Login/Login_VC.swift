@@ -498,23 +498,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                     if self.loginObj?.data != nil{
                         
-                        if self.loginObj?.data?.customerHomeScreens?[0].accountDormant == "Y"
-                        {
-                            
-//                            self.showAlertCustomPopup(title: "", message: "", iconName: .iconDormant, buttonNames:  ["buttonName": "OK",
-//                                                                                                                     "buttonBackGroundColor": UIColor.clrOrange,
-//                                                                                                                     "buttonTextColor": UIColor.white]
-                            
-                            
-                            let vc = storyboard?.instantiateViewController(withIdentifier: "dormantPopupVC") as! dormantPopupVC
-                            vc.consentStatus = loginObj?.data?.customerHomeScreens?[0].accountDormant
-                            vc.loginHistoryId = loginObj?.data?.customerHomeScreens?[0].loginHistoryId
-                            self.navigationController?.pushViewController(vc, animated: true)
-                            self.present(vc, animated: true)
-                        }
-                        else
-                        {
-                            
                             if let accessToken = self.loginObj?.data?.token{
                                 DataManager.instance.accessToken = accessToken
                                 DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType
@@ -523,12 +506,22 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                                 if let passKey = self.pinTextField.text{
                                     let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
                                     print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-                                    
                                 }
                                 
-                                self.saveInDataManager()
-                                
-                            }
+                   }
+                        if self.loginObj?.data?.customerHomeScreens?[0].accountDormant == "Y"
+                        {
+                            let vc = storyboard?.instantiateViewController(withIdentifier: "dormantPopupVC") as! dormantPopupVC
+                            vc.consentStatus = loginObj?.data?.customerHomeScreens?[0].accountDormant
+                            vc.loginHistoryId = loginObj?.data?.customerHomeScreens?[0].loginHistoryId
+                           
+//                            DataManager.instance.accessToken   = loginObj?.data?.customerHomeScreens?[0].token
+                            self.navigationController?.pushViewController(vc, animated: true)
+//                            self.present(vc, animated: true)
+                        }
+                        else
+                        {
+                            self.saveInDataManager()
                         }
                     }
                    
@@ -551,13 +544,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                     }
                 }
         }
-                        
-                      
             else{
                 self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
-                //                if let message = self.loginObj?.messages{
-                //                    self.showDefaultAlert(title: "", message: message)
-                //                }
             }
             print(response.result.value)
             print(response.response?.statusCode)

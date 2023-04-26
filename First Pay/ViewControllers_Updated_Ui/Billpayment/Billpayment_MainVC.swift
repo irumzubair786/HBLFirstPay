@@ -124,7 +124,7 @@ extension Billpayment_MainVC : UITableViewDelegate, UITableViewDataSource
                 cell.img.image = UIImage(named: "1bill")
             }
             if aCompany.code == "BBP"{
-                cell.img.image = UIImage(named: "1bill")
+                cell.img.image = UIImage(named: "internetbillpayment")
 
             }
             if aCompany.code == "CAREEM"{

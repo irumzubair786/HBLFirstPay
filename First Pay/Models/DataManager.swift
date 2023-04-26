@@ -154,7 +154,7 @@ class DataManager: NSObject {
     var monthluminimumvalue : Double?
     var monthlymaxvalue : Double?
     var provnicityid  = ""
-    
+    var loginResponseToken : String?
     
     
     // Book Me Movies

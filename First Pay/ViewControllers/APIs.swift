@@ -97,18 +97,23 @@ struct APIs {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         var tempHeader = ""
-        if headerWithToken != nil {
-            request.addValue(headerWithToken!, forHTTPHeaderField: "Authorization")
-            tempHeader = headerWithToken!
-        }
-        else {
-            request.addValue("\(DataManager.instance.accessToken!)", forHTTPHeaderField: "Authorization")
-            tempHeader = "\(DataManager.instance.accessToken!)"
-        }
+        var token  = ""
+                if apiName == .updateAccountStatus {
+//                    token = DataManager.instance.loginResponseToken ?? ""
+                    token = DataManager.instance.accessToken ?? ""
+                }
+                else if headerWithToken != nil {
+                    token = headerWithToken!
+                }
+                else {
+                    token = "\(DataManager.instance.accessToken!)"
+                }
+                request.addValue(token, forHTTPHeaderField: "Authorization")
+//
         
         print("Url: \(completeUrl)")
         print("Parameters: \(parameters)")
-        print("Headers: \(tempHeader)")
+        print("Headers: \(token)")
         
         request.httpBody = jsonData
         //print("\(APIs.json(from: parameters)))")
