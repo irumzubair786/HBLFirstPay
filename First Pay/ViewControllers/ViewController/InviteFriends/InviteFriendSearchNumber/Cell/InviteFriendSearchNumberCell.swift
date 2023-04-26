@@ -10,6 +10,7 @@ import UIKit
 class InviteFriendSearchNumberCell: UITableViewCell {
     @IBOutlet weak var viewBackGround: UIView!
     
+    @IBOutlet weak var buttonInvite: UIButton!
     @IBOutlet weak var viewUserImageBackGround: UIView!
     @IBOutlet weak var labelNumber: UILabel!
     @IBOutlet weak var labelName: UILabel!
@@ -18,6 +19,9 @@ class InviteFriendSearchNumberCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         viewUserImageBackGround.circle()
+        
+        buttonInvite.radius(color: .clrGreen)
+        buttonInvite.circle()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
