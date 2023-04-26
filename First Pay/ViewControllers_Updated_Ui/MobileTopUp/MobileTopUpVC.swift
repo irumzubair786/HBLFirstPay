@@ -59,7 +59,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var backbtn: UIButton!
     @IBOutlet weak var selectOperator: UITextField!
     @IBAction func Action_next(_ sender: Any) {
-        
+     
         if GlobalData.topup == "Prepaid"
         {
             let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
@@ -80,7 +80,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
-        if GlobalData.topup == "Prepaid"
+        if GlobalData.topup == "Prepaid"/0"
         {
             let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
             vc.phoneNumber = Tf_mobileNumber.text!
@@ -117,7 +117,6 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             img_next_arrow.image = image
             img_next_arrow.isUserInteractionEnabled = true
             btnContinue.isUserInteractionEnabled = true
-            
         }
         else
         {
@@ -206,7 +205,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL +          "Transactions/v1/getParentTopUpCompanies"
-
+//getcompanyfromparentid
+//biillinquiry
         let header = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
         
         print(header)
