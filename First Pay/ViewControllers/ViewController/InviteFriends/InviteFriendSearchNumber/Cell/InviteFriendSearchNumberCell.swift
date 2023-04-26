@@ -14,7 +14,7 @@ class InviteFriendSearchNumberCell: UITableViewCell {
     @IBOutlet weak var viewUserImageBackGround: UIView!
     @IBOutlet weak var labelNumber: UILabel!
     @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var imageViewUser: UIView!
+    @IBOutlet weak var imageViewUser: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

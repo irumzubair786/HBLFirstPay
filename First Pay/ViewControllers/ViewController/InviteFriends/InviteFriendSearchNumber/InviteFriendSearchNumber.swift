@@ -54,6 +54,7 @@ extension InviteFriendSearchNumber: UITableViewDelegate, UITableViewDataSource {
         // if change internet package is true then we dont need to show subscribed package
         cell.labelName.text = contacts[indexPath.row].givenName
         cell.labelNumber.text = "\(contacts[indexPath.row].phoneNumber.first ?? "")"
+        cell.imageViewUser.image = contacts[indexPath.row].image
         print("\(contacts[indexPath.row].phoneNumber.first ?? "")")
 
         return cell
