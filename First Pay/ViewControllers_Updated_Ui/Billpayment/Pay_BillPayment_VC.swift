@@ -123,14 +123,14 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.billtransactionOBj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
 //                        self.showAlert(title: "", message: message, completion: nil)
                     }
                 }
             }
             else {
                 if let message = self.billtransactionOBj?.messages{
-                    self.showDefaultAlert(title: "Alert", message: message)
+                    self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)

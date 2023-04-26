@@ -14,6 +14,7 @@ import ContactsUI
 import libPhoneNumber_iOS
 class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     private let contactPicker = CNContactPickerViewController()
+    var flag :Bool = false
     var parentCompanyID : Int?
     var companyID : String?
     var billCompanyObj : BillPaymentCompanies?
@@ -68,11 +69,9 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         }
         else
         {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
-            vc.phoneNumber = Tf_mobileNumber.text!
-            vc.DueDate = DueDate ?? ""
-            vc.status = status ?? ""
-            self.navigationController?.pushViewController(vc, animated: true)
+            
+            getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+            
         }
        
     }
@@ -80,7 +79,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
-        if GlobalData.topup == "Prepaid0"
+        if GlobalData.topup == "Prepaid"
         {
             let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
             vc.phoneNumber = Tf_mobileNumber.text!
@@ -88,11 +87,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         }
         else
         {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
-            vc.DueDate = DueDate ?? ""
-            vc.status = status ?? ""
-            vc.phoneNumber = Tf_mobileNumber.text!
-            self.navigationController?.pushViewController(vc, animated: true)
+            getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+           
         }
         
         
@@ -102,8 +98,16 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @IBAction func Action_Operator(_ sender: UIButton) {
         
         let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
-        vc.parentCompanyID = parentCompanyID
+        if parentCompanyID == nil
+        {
+            vc.parentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId
+        }
+        else
+        {
+            vc.parentCompanyID = parentCompanyID
+        }
         
+       
         self.navigationController?.pushViewController(vc, animated: false)
         
         
@@ -147,6 +151,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         imgPostpaid.isHidden = true
         imgPrepaid.isHidden = false
         companyID = billCompanyObj?.companies?[1].code
+        parentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId
         print("u selected prepaid id", companyID)
         print("u selected prepaidcode ", parentCompanyID)
         if (self.billCompanyObj?.companies?[1].code)! != "MBP"
@@ -155,6 +160,13 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         }
         
         print("Prepaid",  GlobalData.topup)
+        
+        
+    
+       ////                    self.companyID = self.billCompanyObj?.companies?[0].code
+       ////                    self.parentCompanyID = self.billCompanyObj?.companies?[0].ubpCompaniesId
+       ////                    print("u selected prepaid id", self.companyID)
+       ////                    print("u selected prepaidcode ", self.parentCompanyID)
       
     }
     
@@ -168,8 +180,9 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         imgPrepaid.isHidden = true
         companyID = billCompanyObj?.companies?[0].code
         parentCompanyID = billCompanyObj?.companies?[0].ubpCompaniesId
-        DueDate = billCompanyObj?.companies?[1].createdate
-        status = billCompanyObj?.companies?[1].status
+       
+//        DueDate = billCompanyObj?.companies?[1].createdate
+//        status = billCompanyObj?.companies?[1].status
         print("u selected postpaid id", companyID)
         print("u selected postpaid code ", parentCompanyID)
         if (self.billCompanyObj?.companies?[0].code)! == "MBP"
@@ -221,18 +234,14 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             if response.response?.statusCode == 200 {
         
                 if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
-                 
-                    GlobalData.topup = "Prepaid"
-                   
-                    self.companyID = self.billCompanyObj?.companies?[1].code
-                    self.parentCompanyID = self.billCompanyObj?.companies?[1].ubpCompaniesId
-                    print("u selected prepaid id", self.companyID)
-                    print("u selected prepaidcode ", self.parentCompanyID)
+                      
+//                    GlobalData.topup = "Prepaid"
+////                    self.companyID = self.billCompanyObj?.companies?[0].code
+////                    self.parentCompanyID = self.billCompanyObj?.companies?[0].ubpCompaniesId
+////                    print("u selected prepaid id", self.companyID)
+////                    print("u selected prepaidcode ", self.parentCompanyID)
                      
-//                    for aCompany in (self.billCompanyObj?.companies)!{
-//                        if aCompany.code == "MBP" || aCompany.code == "MTUP"{
-//                            self.filteredCompanies.append(aCompany)
-//                        }
+//
                      
                 }
                 else {
@@ -248,8 +257,74 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
-    
- 
+    var billtransactionOBj : BillAPiResponse?
+    private func getBillInquiry(utilityBillCompany:String?) {
+        
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        
+        var userCnic : String?
+               
+               if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                   userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+               }
+               else{
+                   userCnic = ""
+               }
+        
+        showActivityIndicator()
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billInquiry"
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany": GlobalData.Select_operator_code,"utilityConsumerNo":self.Tf_mobileNumber.text!,"accountType": DataManager.instance.accountType!]
+        
+        print(parameters)
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+//        print(result.apiAttribute1)
+//        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        
+        print(params)
+        print(compelteUrl)
+        print(header)
+
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<BillAPiResponse>) in
+            self.hideActivityIndicator()
+            self.billtransactionOBj = response.result.value
+            if response.response?.statusCode == 200 {
+                if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
+                    vc.phoneNumber = self.Tf_mobileNumber.text!
+                    vc.DueDate = self.billtransactionOBj?.data?.paymentDueDate!
+                    vc.status = self.billtransactionOBj?.data?.billStatus
+//                    vc.DueDate = DueDate ?? ""
+//                    vc.status = status ?? ""
+                    vc.amount = self.billtransactionOBj?.data?.actualDueAmount
+                    self.navigationController?.pushViewController(vc, animated: true)
+                   
+                }
+                else {
+                    if let message = self.billtransactionOBj?.messages{
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                    }
+                }
+            }
+            else {
+                if let message = self.billtransactionOBj?.messages{
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                }
+//                print(response.result.value)
+//                print(response.response?.statusCode)
+            }
+        }
+    }
     
     
     

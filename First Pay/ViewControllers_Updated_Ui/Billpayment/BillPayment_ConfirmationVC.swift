@@ -131,22 +131,23 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
                 }
                 else {
                     if let message = self.successmodelobj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
 //                        self.navigateToSuccessVC()
                     }
                 }
             }
             else {
                 if let message = self.successmodelobj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
-                    self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+//                        self.navigateToSuccessVC()
+                    }
+
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
             }
         }
-    }
+    
 
     func move_to_next()
     {

@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
+import SideMenu
 class loginMethodsVc: BaseClassVC {
 
     override func viewDidLoad() {
@@ -70,12 +71,14 @@ func checkIdEnable()
         self.showToast(title: "Successfully Deactivated")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            
-            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-            self.present(vc, animated: true)
+//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "sideMenu") as? sideMenu
+//            self.navigationController?.pushViewController(vc!, animated: true)
+                        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+                        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+                        self.present(vc, animated: true)
         }
-
+            
+        
     }
     
     @IBAction func buttonNotNow(_ sender: UIButton) {

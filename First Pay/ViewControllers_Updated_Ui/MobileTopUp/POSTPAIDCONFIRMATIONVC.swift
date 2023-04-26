@@ -14,10 +14,11 @@ import SwiftKeychainWrapper
 class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     var phoneNumber  : String?
     var DueDate : String?
-    var fundsTransSuccessObj: TopUpApiResponse?
+    var successmodelobj : FundsTransferApiResponse?
     var status: String?
     var minValue = 1
     var maxValue = 10000
+    var amount :String?
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonContinue.isUserInteractionEnabled = false
@@ -27,11 +28,13 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
 
         imageNext.addGestureRecognizer(tapGestureRecognizerr)
         updateui()
+        amounttextField.isUserInteractionEnabled = false
         // Do any additional setup after loading the view.
     }
     
     
     
+    @IBOutlet weak var otptextField: UITextField!
     @IBOutlet weak var labelStatus: UILabel!
     @IBOutlet weak var labelDate: UILabel!
     @IBOutlet weak var buttonBack: UIButton!
@@ -46,67 +49,50 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         )
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        if amounttextField?.text ?? "" < "\(minValue)" ||  amounttextField?.text  ?? "" > "\(maxValue)"
+        if otptextField.text?.count != 4
         {
             let image = UIImage(named:"grayArrow")
             imageNext.image = image
             imageNext.isUserInteractionEnabled = false
             buttonContinue.isUserInteractionEnabled = false
-            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
-            amounttextField.textColor = UIColor(hexValue: 0xFF3932)
-            
         }
         else{
             let image = UIImage(named:"]greenarrow")
             imageNext.image = image
             imageNext.isUserInteractionEnabled = true
-            labelAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 0/255, alpha: 1)
-            amounttextField.textColor = .gray
-            
             buttonContinue.isUserInteractionEnabled = true
         }
-
     }
-    @IBAction func amountTextField(_ sender: UITextField) {
-       
-            if amounttextField?.text ?? "" < "\(minValue)" ||  amounttextField?.text  ?? "" > "\(maxValue)"
-            {
-                let image = UIImage(named:"grayArrow")
-                imageNext.image = image
-                imageNext.isUserInteractionEnabled = false
-                buttonContinue.isUserInteractionEnabled = false
-                
-                labelAlert.textColor = UIColor(hexValue: 0xFF3932)
-                amounttextField.textColor = UIColor(hexValue: 0xFF3932)
-
-            }
-            else{
-                let image = UIImage(named:"]greenarrow")
-                imageNext.image = image
-                imageNext.isUserInteractionEnabled = true
-                labelAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 0/255, alpha: 1)
-                amounttextField.textColor = .gray
-                buttonContinue.isUserInteractionEnabled = true
-        
-            }
-        
-        
-    }
+    @IBAction func otptextfield(_ sender: UITextField) {
+        if otptextField.text?.count != 4
+        {
+            let image = UIImage(named:"grayArrow")
+            imageNext.image = image
+            imageNext.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+        }
+        else{
+            let image = UIImage(named:"]greenarrow")
+            imageNext.image = image
+            imageNext.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+        }
     
+        
+    }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let newLength:Int = (textField.text?.count)! + string.count - range.length
  
-        if textField == amounttextField{
-            return newLength <= 5
+        if textField == otptextField{
+            return newLength <= 4
             
 //            lbl1.textColor = UIColor.green
         }
-        if textField == amounttextField{
-            return newLength <= 5
+        if textField == otptextField{
+            return newLength <= 4
         }
-        return newLength <= 5
+        return newLength <= 4
         
     
 }
@@ -114,11 +100,19 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     @IBOutlet weak var imageNext: UIImageView!
     @IBOutlet weak var buttonContinue: UIButton!
     @IBAction func buttonContinue(_ sender: UIButton) {
-        initiateTopUp()
+        if ((status == "U") || (status == "u"))
+        {
+            billPyment()
+        }
+            
+        
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        initiateTopUp()
+        if ((status == "U") || (status == "u"))
+        {
+            billPyment()
+        }
 //        self.present(vc, animated: true)
     }
     func updateui()
@@ -128,85 +122,73 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         imglogo.sd_setImage(with: url)
         labelMobileNumber.text = phoneNumber
         labelDate.text = DueDate
-        let a = DueDate?.substring(to: 10)
-        labelDate.text = a
+//        let a = DueDate?.substring(to: 11)
+//        labelDate.text = a
         labelStatus.text = status
         labelAmount.text = amounttextField.text
+        amounttextField.text = amount
+        labelAmount.text = amount
     }
     
-    
-    private func initiateTopUp() {
-        
+    private func billPyment() {
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
         }
-        
         var userCnic : String?
-        
         if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
             userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
         }
         else{
             userCnic = ""
         }
-        
         showActivityIndicator()
-        
-        
-//        let compelteUrl = GlobalConstants.BASE_URL + "topUp"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/topUp"
-        
-       
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude)","lng":"\(DataManager.instance.Longitude)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany":   GlobalData.Select_operator_code,"utilityConsumerNo":self.phoneNumber!, "accountType": DataManager.instance.accountType!]
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany": GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":amount!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otptextField.text!,"addBeneficiary":"","utilityBillCompanyId": GlobalData.Select_operator_id!] as [String : Any]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-        
-        print(result.apiAttribute1)
-        print(result.apiAttribute2)
-        
+        print(parameters)
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        
         let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-        
         print(params)
         print(compelteUrl)
         print(header)
-                NetworkManager.sharedInstance.enableCertificatePinning()
-        
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<TopUpApiResponse>) in
-            
-            
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
             self.hideActivityIndicator()
-            
-            self.fundsTransSuccessObj = response.result.value
+             self.successmodelobj = response.result.value
             if response.response?.statusCode == 200 {
-                
-                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
+                if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
                     self.navigatezToConfirmationVC()
+//                    self.tablleview?.reloadData()
                 }
                 else {
-                    if let message = self.fundsTransSuccessObj?.messages{
-                        self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.messages ?? "") ")
+                    if let message = self.successmodelobj?.messages{
+                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+//                        self.navigateToSuccessVC()
                     }
                 }
             }
             else {
-                if let message = self.fundsTransSuccessObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                if let message = self.successmodelobj?.messages{
+                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+//                        self.navigateToSuccessVC()
+                    }
+
                 }
-                print(response.result.value)
-                print(response.response?.statusCode)
+//                print(response.result.value)
+//                print(response.response?.statusCode)
             }
         }
-    }
+    
+   
     func navigatezToConfirmationVC()
     {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountConfirmationVc") as! TransferAmountConfirmationVc
-        vc.amount =  amounttextField.text!
+        vc.amount = amount
         vc.phoneNumber = phoneNumber
-        
+    
         self.navigationController!.pushViewController(vc, animated: false)
     }
 }
