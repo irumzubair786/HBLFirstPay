@@ -80,7 +80,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
-        if GlobalData.topup == "Prepaid"/0"
+        if GlobalData.topup == "Prepaid0"
         {
             let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
             vc.phoneNumber = Tf_mobileNumber.text!

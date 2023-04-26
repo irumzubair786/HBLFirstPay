@@ -194,16 +194,13 @@ class dormantPopupVC: BaseClassVC {
             self.hideActivityIndicator()
             self.loginObj = response.result.value
             if response.response?.statusCode == 200 {
-                
                 self.loginObj = response.result.value
                 if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                     if self.loginObj?.data != nil{
-                        
+
                         fetchdataFromAPI()
                     }
-                    
                 }
-                
                 else{
                     if let message = self.loginObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
