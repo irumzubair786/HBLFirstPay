@@ -20,7 +20,7 @@ class InviteFriendsAddNumber: UIViewController {
     
     private let contactPicker = CNContactPickerViewController()
 
-    var stringName = "Shakeel"
+    var stringName = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         viewButtonSendInvite.circle()
@@ -42,6 +42,9 @@ class InviteFriendsAddNumber: UIViewController {
             if modelInviteFriendsAddNumber?.responsecode == 1 {
                 openSuccessScreen()
             }
+            else {
+                self.showAlertCustomPopup(title: "Error", message: modelInviteFriendsAddNumber?.messages, iconName: .iconError)
+            }
         }
     }
     
@@ -55,7 +58,7 @@ class InviteFriendsAddNumber: UIViewController {
             "cnic": userCnic!,
             "name": stringName,
             "channelId": "\(DataManager.instance.channelID)",
-            "mobNo": textFieldNumber.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0"),
+            "mobileNo": textFieldNumber.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0"),
             "imei": DataManager.instance.imei!
         ]
 
