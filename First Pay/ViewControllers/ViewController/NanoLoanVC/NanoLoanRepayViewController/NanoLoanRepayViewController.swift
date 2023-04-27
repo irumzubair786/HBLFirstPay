@@ -42,7 +42,8 @@ class NanoLoanRepayViewController: UIViewController {
     
     @IBOutlet weak var viewMarkupCalendar: UIView!
     var callBackButtonApply: (()->())!
-    
+    var callBackButtonRepay: (()->())!
+
     var modelGetActiveLoanToPay: ModelGetActiveLoanToPay? {
         didSet {
             if modelGetActiveLoanToPay?.responsecode == 0 {

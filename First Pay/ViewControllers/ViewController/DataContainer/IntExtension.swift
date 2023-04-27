@@ -8,15 +8,25 @@
 
 import Foundation
 
-
 extension Int {
     func twoDecimal() -> String {
         let value = Double(self)
         let valueString = String(format: "%.2f", value)
         let commaSeperateValue = Double(valueString)?.commaRepresentation
-        return "\(commaSeperateValue ?? "")".replace(string: "$", replacement: "")
+        
+        print("\(commaSeperateValue ?? "")".removeSpecialCharsFromString())
+        return "\(commaSeperateValue ?? "")".removeSpecialCharsFromString()
     }
-    
+}
+
+extension String {
+    func removeSpecialCharsFromString() -> String {
+        //let okayChars : Set<Character> =
+//            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_".characters)
+        let okayChars : Set<Character> =
+            Set("1234567890.,".characters)
+        return String(self.characters.filter {okayChars.contains($0) })
+    }
 }
 extension Double {
     func twoDecimal() -> String {

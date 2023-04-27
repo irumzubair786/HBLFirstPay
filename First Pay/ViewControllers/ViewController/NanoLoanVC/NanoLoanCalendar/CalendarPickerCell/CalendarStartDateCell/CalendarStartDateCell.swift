@@ -111,52 +111,7 @@ class CalendarStartDateCell: UICollectionViewCell {
         labelPrice.isHidden = true
         self.viewDateBackGround.isHidden = true
     }
-    func ifStartDate(modelDate: CalendarPickerViewController.ModelGetSchCalendarDateValue) {
-        if let startDate = modelGetSchCalendar?.data.startDate {
-            let compare = startDate.compareDateDifferenceToDate2(toDate: day!.date)
-            if compare == 0 {
-                print("Start-Date: \(startDate)")
-                print("Calendar-Date: \(day!.date)")
-                let calendarDate = "\(day!.date)".components(separatedBy: " ").first
-                let startDatee = startDate.components(separatedBy: " ").first
-                if calendarDate == startDatee {
-                    
-                }
-                print("Date Match \(calendarDate!)-\(startDatee!)")
-                labelStatus.isHidden = false
-                labelStatus.textColor = .clrGreen
-                labelStatus.text = "START DATE"
-                self.labelStatus.radius(color: .clrGreen)
-                self.labelStatus.circle()
-            }
-
-//            print(compare)
-        }
-    }
     
-    func ifEndDate(modelDate: CalendarPickerViewController.ModelGetSchCalendarDateValue) {
-        if let endDate = modelGetSchCalendar?.data.endDate {
-            let compare = endDate.compareDateDifferenceToDate2(toDate: day!.date)
-            if compare == 0 {
-                self.viewDateBackGround.isHidden = true
-                labelStatus.isHidden = false
-                labelStatus.textColor = .clrLightRed
-                labelPrice.textColor = .clrLightRed
-                labelDate.textColor = .clrLightRed
-
-                labelPrice.text = "Rs. \(modelDate.markup)"
-                labelStatus.text = "End DATE"
-                self.labelStatus.radius(color: .clrLightRed)
-                self.labelDate.radius(color: .clrLightRed)
-                self.labelStatus.circle()
-                self.labelDate.circle()
-                DispatchQueue.main.async {
-                    
-                }
-            }
-//            print(compare)
-        }
-    }
     
 }
 

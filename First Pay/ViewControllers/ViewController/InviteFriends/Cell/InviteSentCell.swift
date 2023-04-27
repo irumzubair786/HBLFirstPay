@@ -17,7 +17,13 @@ class InviteSentCell: UITableViewCell {
     
     var sentInviteFriendList: InviteAFriends.SentInviteFriendList! {
         didSet {
-            labelTitle.text = sentInviteFriendList.inviteeName
+            if let name = sentInviteFriendList.inviteeName {
+                labelTitle.text = name
+            }
+            else {
+                labelTitle.text = sentInviteFriendList.mobileNo
+            }
+            
             labelPhoneNumber.text = sentInviteFriendList.mobileNo
             labelPhoneNumber.textColor = .clrOrange
             

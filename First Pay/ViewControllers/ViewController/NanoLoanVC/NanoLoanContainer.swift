@@ -71,6 +71,9 @@ class NanoLoanContainer: UIViewController {
                 self.nanoLoanRepayViewController.callBackButtonApply = {
                     self.openApplyLoanViewController()
                 }
+                self.nanoLoanRepayViewController.callBackButtonRepay = {
+                    self.openRepayViewController()
+                }
             }
         }
         else {
@@ -84,6 +87,9 @@ class NanoLoanContainer: UIViewController {
                         self.nanoLoanRepayViewController.modelGetActiveLoan = self.modelGetActiveLoan
                         self.nanoLoanRepayViewController.callBackButtonApply = {
                             self.openApplyLoanViewController()
+                        }
+                        self.nanoLoanRepayViewController.callBackButtonRepay = {
+                            self.openRepayViewController()
                         }
                     }
                 }
@@ -100,6 +106,10 @@ class NanoLoanContainer: UIViewController {
                 self.nanoLoanHistoryViewController.callBackButtonApply = {
                     self.openApplyLoanViewController()
                 }
+                self.nanoLoanHistoryViewController.callBackButtonRepay = {
+                    self.openRepayViewController()
+                }
+                
             }
         }
         else {
@@ -111,8 +121,8 @@ class NanoLoanContainer: UIViewController {
                     self.nanoLoanHistoryViewController = vc as? NanoLoanHistoryViewController
                     DispatchQueue.main.async {
                         self.nanoLoanHistoryViewController.modelGetActiveLoan = self.modelGetActiveLoan
-                        self.nanoLoanHistoryViewController.callBackButtonApply = {
-                            self.openApplyLoanViewController()
+                        self.nanoLoanHistoryViewController.callBackButtonRepay = {
+                            self.openRepayViewController()
                         }
                     }
                 }

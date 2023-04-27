@@ -78,7 +78,7 @@ class InviteAFriends: UIViewController {
         didSet {
             print(modelinvitedFriendsList)
             labelCompaignText.text = modelinvitedFriendsList?.data?.campaignText ?? ""
-            labelTotalEarning.text = "\(Int(modelinvitedFriendsList?.data?.totalEarnings ?? "0")?.twoDecimal() ?? "0.00") Rs."
+            labelTotalEarning.text = "\(Int(modelinvitedFriendsList?.data?.totalEarnings ?? "0")?.twoDecimal() ?? "0.00")"
             tableView.reloadData()
         }
     }

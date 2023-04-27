@@ -12,6 +12,7 @@ class NanoLoanHistoryViewController: UIViewController {
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var tableView: UITableView!
     var callBackButtonApply: (()->())!
+    var callBackButtonRepay: (()->())!
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
             if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
@@ -44,7 +45,7 @@ class NanoLoanHistoryViewController: UIViewController {
     }
     
     @objc func tapOnRepay() {
-        callBackButtonApply?()
+        callBackButtonRepay?()
     }
 }
 
