@@ -11,6 +11,8 @@ import SwiftKeychainWrapper
 //import OneSignal
 import Siren
 import IQKeyboardManager
+import FirebaseCore
+
 //@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -91,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //         })
         //OneSignal Start
 
-
+        FirebaseApp.configure()
         return true
     }
     
