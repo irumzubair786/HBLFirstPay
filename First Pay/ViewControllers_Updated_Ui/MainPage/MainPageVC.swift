@@ -66,11 +66,11 @@ class MainPageVC: BaseClassVC {
     @IBOutlet weak var btnLocator: UIButton!
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBAction func Action_Home(_ sender: UIButton) {
-        print("done")
-        btnHomes.setImage(UIImage(named: "path0-6"), for: .normal)
-        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
-        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
-        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
+//        print("done")
+//        btnHomes.setImage(UIImage(named: "path0-6"), for: .normal)
+//        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
+//        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
+//        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
 //        let  myDict = [ "name": "Home_ScreenVC"]
 //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
         

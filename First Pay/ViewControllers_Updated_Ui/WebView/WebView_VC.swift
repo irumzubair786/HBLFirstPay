@@ -63,7 +63,7 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
         if forFaqs{
             
             self.lblMainTitle.text = "FAQs"
-            let localfilePath = Bundle.main.url(forResource: "BBFAQs", withExtension: "html")
+            let localfilePath = Bundle.main.url(forResource: "BBFAQs", withExtension: "pdf")
             let myRequest = URLRequest(url:localfilePath!)
             webViewOutlet.loadRequest(myRequest)
             print("FAQs")

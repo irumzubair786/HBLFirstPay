@@ -137,17 +137,17 @@ class dormantPopupVC: BaseClassVC {
             //            pessi = KeychainWrapper.standard.string(forKey: "userKey")
             pessi = UserDefaults.standard.string(forKey: "userKey")
         }
-        
+        pessi = UserDefaults.standard.string(forKey: "userKey")
         //        else if let password = pinTextField.text {
         //
         //            pessi = password
         //            UserDefaults.standard.set(pessi, forKey: "userKey")
         //        }
-        else{
-            self.showDefaultAlert(title: "", message: "Please Use Password for first time Login after Registration")
-            self.hideActivityIndicator()
-            return
-        }
+//        else{
+////            self.showDefaultAlert(title: "", message: "Please Use Password for first time Login after Registration")
+//            self.hideActivityIndicator()
+//            return
+//        }
         if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
             userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
         }

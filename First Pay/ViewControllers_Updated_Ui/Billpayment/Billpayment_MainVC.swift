@@ -85,8 +85,14 @@ class Billpayment_MainVC: BaseClassVC {
                 if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
                     
                     for aCompany in (self.billCompanyObj?.companies)!{
-                        if aCompany.code != "MBP" && aCompany.code != "MTUP"{
+                        if aCompany.ubpCompaniesId == 277 || aCompany.ubpCompaniesId == 276
+                        {
+                            
+                        }
+                        else if aCompany.code != "MBP" && aCompany.code != "MTUP"{
                             self.filteredCompanies.append(aCompany)
+//                            self.filteredCompanies.removeLast()
+//                            self.filteredCompanies.removeLast()
                         }
                     }
                     self.tableview.reloadData()

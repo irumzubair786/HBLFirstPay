@@ -35,7 +35,6 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         self.lblMainTitle.text = "Reset Password"
         ConvertLanguage()
         lbl1.text = "Password must contain atleast 1 Upper case,numeric and special character."
-        
         lbl1.textColor = UIColor.gray
         btnnext.isUserInteractionEnabled = true
         self.enterPinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
@@ -44,7 +43,6 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     }
     @IBOutlet weak var Alert_view: UIView!
     @IBOutlet weak var Main_View: UIView!
-    
     @IBOutlet weak var btn_next_arrow: UIButton!
     @IBOutlet weak var enterPinTextField: PasswordTextField!
     @IBOutlet weak var enterConfirmPinTextField: PasswordTextField!
@@ -313,10 +311,10 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         if (enterConfirmPinTextField.text?.isEmpty)!{
             enterConfirmPinTextField.text = ""
         }
-        
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/resetLoginPin"
 
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": MobNo! ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": DataManager.instance.userCnic!, "loginPin": enterConfirmPinTextField.text!]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": MobNo! ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": userCnic!, "loginPin": enterConfirmPinTextField.text!]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         

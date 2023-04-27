@@ -51,6 +51,13 @@ func checkIdEnable()
     
     
     @IBAction func buttonChangePassowrd(_ sender: UIButton) {
+        
+        let storyboard = UIStoryboard(name: "ForgotPassword", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "navigateToChangePassword")
+        self.present(vc, animated: true)
+       
+        
+       
     }
     
     @IBOutlet weak var buttonNotNow: UIButton!
