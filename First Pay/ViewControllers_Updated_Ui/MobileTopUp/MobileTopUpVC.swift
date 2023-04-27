@@ -180,11 +180,10 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         imgPrepaid.isHidden = true
         companyID = billCompanyObj?.companies?[0].code
         parentCompanyID = billCompanyObj?.companies?[0].ubpCompaniesId
-       
-//        DueDate = billCompanyObj?.companies?[1].createdate
-//        status = billCompanyObj?.companies?[1].status
         print("u selected postpaid id", companyID)
         print("u selected postpaid code ", parentCompanyID)
+       
+        
         if (self.billCompanyObj?.companies?[0].code)! == "MBP"
         {
             GlobalData.topup = "Postpaid"

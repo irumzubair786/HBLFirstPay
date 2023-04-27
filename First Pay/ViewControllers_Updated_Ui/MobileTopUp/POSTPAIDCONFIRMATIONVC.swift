@@ -25,7 +25,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         amounttextField.delegate = self
         buttonBack.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-
+        
         imageNext.addGestureRecognizer(tapGestureRecognizerr)
         updateui()
         amounttextField.isUserInteractionEnabled = false
@@ -77,34 +77,34 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             imageNext.isUserInteractionEnabled = true
             buttonContinue.isUserInteractionEnabled = true
         }
-    
+        
         
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let newLength:Int = (textField.text?.count)! + string.count - range.length
- 
+        
         if textField == otptextField{
             return newLength <= 4
             
-//            lbl1.textColor = UIColor.green
+            //            lbl1.textColor = UIColor.green
         }
         if textField == otptextField{
             return newLength <= 4
         }
         return newLength <= 4
         
+        
+    }
     
-}
-
     @IBOutlet weak var imageNext: UIImageView!
     @IBOutlet weak var buttonContinue: UIButton!
     @IBAction func buttonContinue(_ sender: UIButton) {
-        if ((status == "U") || (status == "u"))
+        if ((status == "U") || (status == "u") || ((status == "T") || (status == "t")))
         {
             billPyment()
         }
-            
+        
         
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
@@ -113,7 +113,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         {
             billPyment()
         }
-//        self.present(vc, animated: true)
+        //        self.present(vc, animated: true)
     }
     func updateui()
     {
@@ -122,9 +122,20 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         imglogo.sd_setImage(with: url)
         labelMobileNumber.text = phoneNumber
         labelDate.text = DueDate
-//        let a = DueDate?.substring(to: 11)
-//        labelDate.text = a
-        labelStatus.text = status
+        //        let a = DueDate?.substring(to: 11)
+        //        labelDate.text = a
+        
+        if status == "t" || status == "T" {
+            labelStatus.text = "Partial Payment"
+        }
+        else if status == "b" || status == "B"
+        {
+            labelStatus.text = "Your Customer is Blocked.Please contact your service provider."
+        }
+        else
+        {
+            labelStatus.text = status
+        }
         labelAmount.text = amounttextField.text
         amounttextField.text = amount
         labelAmount.text = amount
