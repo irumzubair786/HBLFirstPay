@@ -137,7 +137,7 @@ extension InviteAFriends: UITableViewDelegate, UITableViewDataSource {
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "InviteCompletedCell") as! InviteCompletedCell
             // if change internet package is true then we dont need to show subscribed package
-//            cell.sentInviteFriendList = modelinvitedFriendsList.data.completedInviteFriendList[indexPath.row]
+            cell.sentInviteFriendList = modelinvitedFriendsList?.data?.completedInviteFriendList?[indexPath.row]
             return cell
         }
     }
@@ -208,7 +208,7 @@ extension InviteAFriends {
         let transactionText: JSONNull?
         let pendingInviteFriendList: [JSONAny]?
         let totalEarnings: String
-        let completedInviteFriendList: [JSONAny]?
+        let completedInviteFriendList: [SentInviteFriendList]?
     }
 
     // MARK: - SentInviteFriendList
