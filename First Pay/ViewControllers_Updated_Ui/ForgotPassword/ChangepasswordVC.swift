@@ -90,7 +90,7 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
             movetonext()
 
         }
-        #imageLiteral(resourceName: "BBFAQs.pdf")
+        
     }
   func movetonext()
     {
@@ -230,7 +230,7 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         }
         
 //        let compelteUrl = GlobalConstants.BASE_URL + "changePassword"
-        let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/changePassword"
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/changePassword"
         
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["channelId":"\(DataManager.instance.channelID ?? "")","oldpass":self.oldPasswordTextfield.text! ?? "","newpass":self.confirmPasswordTextfield.text! ?? "","imei": DataManager.instance.imei! ?? "" ,"cnic" : userCnic!  ?? ""]
