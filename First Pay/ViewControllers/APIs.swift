@@ -235,9 +235,6 @@ struct APIs {
         case getInvitorFriendsList = "WalletCreation/v1/getInvitorFriendsList"
         case acceptFriendInvite = "WalletCreation/v1/acceptFriendInvite"
 
-        
-        
-        
     }
     
 }

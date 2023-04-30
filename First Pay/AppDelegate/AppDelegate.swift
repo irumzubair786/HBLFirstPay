@@ -94,6 +94,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //OneSignal Start
 
         FirebaseApp.configure()
+        
+        FBEvents.logEvent(title: .titleOne, description: "test description")
+
         return true
     }
     
