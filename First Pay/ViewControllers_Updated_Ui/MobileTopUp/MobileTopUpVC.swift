@@ -63,14 +63,22 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
      
         if GlobalData.topup == "Prepaid"
         {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-            vc.phoneNumber = Tf_mobileNumber.text!
-            self.navigationController?.pushViewController(vc, animated: true)
+            if  GlobalData.Select_operator_id == 43
+            {
+                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+            }
+           else
+            {
+               let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+               vc.phoneNumber = Tf_mobileNumber.text!
+               self.navigationController?.pushViewController(vc, animated: true)
+           }
         }
         else
         {
+                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
             
-            getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+          
             
         }
        
@@ -81,9 +89,16 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         
         if GlobalData.topup == "Prepaid"
         {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-            vc.phoneNumber = Tf_mobileNumber.text!
-            self.navigationController?.pushViewController(vc, animated: true)
+            if  GlobalData.Select_operator_id == 43
+            {
+                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+            }
+           else
+            {
+               let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+               vc.phoneNumber = Tf_mobileNumber.text!
+               self.navigationController?.pushViewController(vc, animated: true)
+           }
         }
         else
         {

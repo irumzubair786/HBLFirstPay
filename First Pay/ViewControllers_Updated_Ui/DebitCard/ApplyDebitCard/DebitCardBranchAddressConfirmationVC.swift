@@ -113,14 +113,14 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
                }
                else {
                    if let message = self.genericObj?.messages{
-                       UtilManager.showAlertMessage(message: message, viewController: self)
+                       self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                        
                    }
                }
            }
            else {
                if let message = self.genericObj?.messages{
-                   UtilManager.showAlertMessage(message: message, viewController: self)
+                   self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                }
 //
            }

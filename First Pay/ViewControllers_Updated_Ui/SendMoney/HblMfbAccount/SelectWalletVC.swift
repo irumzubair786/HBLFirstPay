@@ -149,14 +149,14 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
                 }
                 else  {
                     if let message = self.banksObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
                      
                 }
             }
             else {
                 if let message = self.banksObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 
                     print(response.result.value)

@@ -18,7 +18,12 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     var timer = Timer()
     var counter = 0
     var count = 0
-
+    var lastFourDigit : String?
+    var channel : String?
+    var cardId : String?
+    var accountDebitcardId : Int?
+    var status : String?
+    var UpdateStatusObj : OTPserviceModel?
     override func viewDidLoad() {
         super.viewDidLoad()
         checkStatus()
@@ -31,10 +36,13 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         butttonContinue.isUserInteractionEnabled = false
         imageNextArrow.isUserInteractionEnabled = false
         labelPhoneNumber.text = DataManager.instance.accountNo
-       
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imageNextArrow.addGestureRecognizer(tapGestureRecognizer)
+        self.textFieldOTP.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        
+        
     }
+    
     func checkStatus()
     {
         if isFromDeactivate == true{
@@ -48,6 +56,10 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         {
         labelMainTitle.text = "ACTIVATE MY CARD"
     }
+        else if isfromServics == true
+        {
+            labelMainTitle.text = "ATM & POS ACCESSBILITY"
+        }
         
     }
     @IBOutlet weak var butttonContinue: UIButton!
@@ -58,7 +70,24 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     @IBAction func buttonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-    
+    @objc func changeTextInTextField() {
+        
+        if textFieldOTP.text?.count == 4
+        {
+            let image = UIImage(named:"]greenarrow")
+            imageNextArrow.image = image
+            butttonContinue.isUserInteractionEnabled = true
+            imageNextArrow.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named:"grayArrow")
+            imageNextArrow.image = image
+            butttonContinue.isUserInteractionEnabled = false
+            imageNextArrow.isUserInteractionEnabled = false
+        }
+        
+    }
     
     @IBAction func textFieldOTp(_ sender: OTPTextField) {
         if textFieldOTP.text?.count == 4
@@ -152,9 +181,14 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     @IBAction func butttonContinue(_ sender: UIButton) {
         
         
-        
-        
-       debitCardVerificationCall()
+        if isfromServics == true{
+            UpdateChannelStatus()
+        }
+        else
+        {
+            debitCardVerificationCall()
+        }
+       
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
@@ -280,14 +314,14 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
                 else {
                     if let message = self.genResponse?.messages{
                       
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
                     }
                 }
             }
             else {
                 if let message = self.genResponse?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
@@ -355,21 +389,86 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
                 else {
                     if let message = self.genResponse?.messages{
                       
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
                     }
                 }
             }
             else {
                 if let message = self.genResponse?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
-                }
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
             }
         }
     }
     
-    
-    
+    private func UpdateChannelStatus() {
+        
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        
+        var userCnic : String?
+        
+        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+        }
+        else{
+            userCnic = ""
+        }
+        
+        
+        showActivityIndicator()
+        
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "DebitCard/v1/updateChannelStatus"
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["imei":"\(DataManager.instance.imei!)","cnic":userCnic!,"channelId":"\(DataManager.instance.channelID)","cardid": cardId!, "channel": channel ,"status": status,"otp": textFieldOTP.text!, "accountDebitCardId": "\(accountDebitcardId ?? 0)", "dcLastDigits": lastFourDigit!]
+        print(parameters)
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+       
+        print(result.apiAttribute1)
+        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        
+        print(params)
+        print(compelteUrl)
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<OTPserviceModel>) in
+
+            self.hideActivityIndicator()
+            
+            self.UpdateStatusObj = response.result.value
+            if response.response?.statusCode == 200 {
+                
+                if self.UpdateStatusObj?.responsecode == 2 || self.UpdateStatusObj?.responsecode == 1 {
+                    
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+                    isfromServiceOTpVerification = true
+                    isfromServics = false
+                   self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                
+                else {
+                    if let message = self.UpdateStatusObj?.messages{
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                    }
+                }
+            }
+            else {
+             if let message = self.UpdateStatusObj?.messages{
+                 self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                }
+//                print(response.result.value)
+//                print(response.response?.statusCode)
+            }
+        }
+    }
 }

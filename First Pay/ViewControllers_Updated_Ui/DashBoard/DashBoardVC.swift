@@ -19,6 +19,8 @@ var isfromReactivateCard :Bool?
 var isFromDeactivate : Bool?
 var isFromChangePin : Bool?
 var isfromActivate : Bool?
+var isfromServics : Bool?
+var isfromServiceOTpVerification : Bool?
 class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataSource{
     var homeObj : HomeModel?
     var banObj : GenericResponse?
@@ -544,7 +546,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                 }
                 else {
                     if let message = self.getDebitDetailsObj?.messages{
-                        UtilManager.showToast(message: message)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
 
                     }
@@ -552,7 +554,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
             else {
                 if let message = self.getDebitDetailsObj?.messages{
-                    UtilManager.showToast(message: message)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     
                 }
 //                print(response.result.value)
@@ -615,13 +617,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                       }
                       else {
                           if let message = self.availableLimitObj?.messages{
-                              self.showDefaultAlert(title: "", message: message)
+                              self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                           }
                       }
                   }
                   else {
                       if let message = self.availableLimitObj?.messages{
-                          self.showDefaultAlert(title: "", message: message)
+                          self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                       }
     //                  print(response.result.value)
     //                  print(response.response?.statusCode)

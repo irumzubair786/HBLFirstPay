@@ -349,7 +349,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
                 }
                 else {
                     if let message = self.mobileVerificationObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                     
                     // Html Parse

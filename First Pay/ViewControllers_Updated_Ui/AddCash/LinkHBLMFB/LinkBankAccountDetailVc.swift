@@ -133,17 +133,15 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let messsage = self.genericresponseObj?.messages{
-                        UtilManager.showToast(message: messsage)
-                        self.showToast(title: messsage)
-                        
+                        self.showAlertCustomPopup(title: "", message: messsage, iconName: .iconError)
+//                        self.showToast(title: messsage)
                     }
                     
                 }
             }
             else {
                 if let messsage = self.genericresponseObj?.messages{
-                    self.showToast(title: messsage)
-                    UtilManager.showToast(message: messsage)
+                    self.showAlertCustomPopup(title: "", message: messsage, iconName: .iconError)
                     
                 }
                 print(response.result.value)

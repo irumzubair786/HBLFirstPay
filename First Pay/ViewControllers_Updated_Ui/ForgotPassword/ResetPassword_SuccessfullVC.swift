@@ -362,8 +362,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                 else {
                     
                     if let message = self.setLoginPinObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
-                    }
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)                    }
                     
                     // Html Parse
                     
@@ -376,7 +375,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
             }
             else {
                 if let message = self.setLoginPinObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
                 else {
                     self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
@@ -490,7 +489,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                     else {
              
                 if let message = self.loginObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
                 // Html Parse
                 

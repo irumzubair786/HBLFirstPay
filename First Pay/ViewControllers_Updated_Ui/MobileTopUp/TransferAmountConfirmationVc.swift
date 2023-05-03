@@ -118,14 +118,14 @@ class TransferAmountConfirmationVc: BaseClassVC {
                 }
                 else {
                     if let message = self.successmodelobj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                         self.navigateToSuccessVC()
                     }
                 }
             }
             else {
                 if let message = self.successmodelobj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)

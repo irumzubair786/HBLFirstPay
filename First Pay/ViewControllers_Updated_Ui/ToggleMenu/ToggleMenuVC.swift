@@ -295,13 +295,13 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                   }
                   else {
                       if let message = self.availableLimitObj?.messages{
-                          self.showDefaultAlert(title: "", message: message)
+                          self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                       }
                   }
               }
               else {
                   if let message = self.availableLimitObj?.messages{
-                      self.showDefaultAlert(title: "", message: message)
+                      self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                   }
 //                  print(response.result.value)
 //                  print(response.response?.statusCode)

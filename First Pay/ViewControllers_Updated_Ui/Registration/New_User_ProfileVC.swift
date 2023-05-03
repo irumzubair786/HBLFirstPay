@@ -39,6 +39,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         TF_CityList.delegate = self
         TF_IssueDate.delegate = self
         View_mothername.isHidden = true
+        labelInvalidIssuedate.isHidden = true
         lbl_InvalidCnic.isHidden = true
         blurView.backgroundColor = UIColor.gray
         dismissKeyboard()
@@ -49,7 +50,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
         popviewView.isUserInteractionEnabled = true
         popviewView.addGestureRecognizer(tapGestureRecognizerr)
-       
+        
         let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizerrr)
@@ -86,7 +87,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     func showDatePicker(){
         //Formate Date
         datePicker.datePickerMode = .date
-
+        datePicker.minimumDate = Calendar.current.date(byAdding: .year, value: -100, to: Date())
        //ToolBar
        let toolbar = UIToolbar();
        toolbar.sizeToFit()
@@ -113,6 +114,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
        self.view.endEditing(true)
      }
    
+    @IBOutlet weak var labelInvalidIssuedate: UILabel!
     @IBOutlet weak var blurView: UIVisualEffectView!
     @IBOutlet var popviewView: UIView!
     @IBOutlet weak var View_mothername: UIView!
@@ -569,7 +571,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         
         
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/cnicVerification"
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": DataManager.instance.mobNo ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": cnicNumber , "issueDate": TF_IssueDate.text!]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": DataManager.instance.mobNo ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": cnicNumber , "idate": TF_IssueDate.text!]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -589,8 +591,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                 
                 if self.cnicVerificationObj?.responsecode == 2 || self.cnicVerificationObj?.responsecode == 1 {
                     if cnicVerificationObj?.data != nil{
-                       
+                
                         self.View_mothername.isHidden = false
+                        
                         self.blurView.isHidden = false
                         flagMother_nameselected = false
                        btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
@@ -602,8 +605,22 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                     }
                     else{
                         if let message = self.cnicVerificationObj?.messages{
-                            self.showDefaultAlert(title: "", message: message)
+                            lbl_InvalidCnic.isHidden = false
+                            lbl_InvalidCnic.text = message
+                            
+//                            self.showDefaultAlert(title: "", message: message)
                         }
+//                        lbl_InvalidCnic.text
+                       if lbl_InvalidCnic.text == ""
+                        {
+                           if let message = self.cnicVerificationObj?.messages{
+                               labelInvalidIssuedate.isHidden = false
+                               labelInvalidIssuedate.text = message
+                               
+   //                            self.showDefaultAlert(title: "", message: message)
+                           }
+                       }
+                         
                     }
 
 
@@ -611,7 +628,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                 else{
                     
                     if let message = self.cnicVerificationObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                 }
                     
@@ -691,7 +708,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                 }
                 else{
                     if let message = self.genericObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                    
                 }

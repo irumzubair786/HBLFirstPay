@@ -88,22 +88,21 @@ class DebitCardMainVC: BaseClassVC {
                 else {
                     
                     if let message = self.checkDebitCardObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
-
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
                     
                 }
             }
             else {
                 if let message = self.checkDebitCardObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                   
 //                    self.movetoback()
                 }
                 else{
                     if let message = self.checkDebitCardObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
-                    self.showDefaultAlert(title: "", message: "Failure")
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 //                    self.movetoback()
                 }
                 }

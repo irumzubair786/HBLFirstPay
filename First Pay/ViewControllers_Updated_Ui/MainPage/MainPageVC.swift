@@ -100,6 +100,8 @@ class MainPageVC: BaseClassVC {
 //        viewQuestionmark.backgroundColor = .clear
 //        viewprofile.backgroundColor = .clear
 //        homeView.backgroundColor = .clear
+        
+        
     }
     
 

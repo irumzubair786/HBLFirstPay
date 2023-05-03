@@ -369,7 +369,7 @@ NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post
         }
         else {
             if let message = self.genericResponseObj?.messages{
-                self.showDefaultAlert(title: "", message: message)
+                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
             }
             
             // Html Parse
@@ -383,7 +383,7 @@ NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post
     }
     else {
         if let message = self.genericResponseObj?.messages{
-            self.showDefaultAlert(title: "", message: message)
+            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
         }
 //                print(response.result.value)
 //                print(response.response?.statusCode)

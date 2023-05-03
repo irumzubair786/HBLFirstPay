@@ -216,8 +216,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             }
             else {
                 if let message = self.fundsTransSuccessObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
-                }
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)                }
                 print(response.result.value)
                 print(response.response?.statusCode)
             }

@@ -130,7 +130,7 @@ class Fetcing_OTP_VC: BaseClassVC {
                 }
                 else {
                     if let message = self.mobileRegistrationObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                     
                     // Html Parse
@@ -144,7 +144,7 @@ class Fetcing_OTP_VC: BaseClassVC {
             }
             else {
                 if let message = self.mobileRegistrationObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
                 else {
                     self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")

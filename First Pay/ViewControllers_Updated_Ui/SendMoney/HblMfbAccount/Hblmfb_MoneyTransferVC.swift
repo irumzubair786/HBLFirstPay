@@ -276,9 +276,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferLocal"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":number!,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"beneficiaryName":"","beneficiaryMobile":
-            "","beneficiaryEmail":"","addBeneficiary":"N","otp":otpTextField.text ?? "","requestMoneyId":GlobalData.moneyReasonid!,"accountType":DataManager.instance.accountType!] as [String : Any]
-        
-       
+            "","beneficiaryEmail":"","addBeneficiary":"N","otp":otpTextField.text ?? "","requestMoneyId":requestMoneyId!,"accountType":DataManager.instance.accountType!] as [String : Any]
         print(parameters)
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
@@ -308,15 +306,15 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 //                        self.showToast(title: message)
-                        self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.messages ?? "") ")
+                        
                     }
                 }
             }
             else {
                 if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlert(title: "", message: message, completion: nil)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
@@ -326,8 +324,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     
     func movetonext()
     {
-        if otpTextField?.text?.count != 0
-        {
+//        if otpTextField?.text?.count != 0
+//        {
             let vc = storyboard?.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransfer_SuccessfullVC") as! Hblmfb_MoneyTransfer_SuccessfullVC
             vc.amount = Double(amount!)
             vc.TransactionId = fundsTransSuccessObj?.data?.authIdResponse
@@ -335,7 +333,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
             vc.number = number!
             vc.Toaccounttitle = ToaccountTitle
             self.navigationController?.pushViewController(vc, animated: true)
-        }
+//        }
         
         
     }
@@ -395,16 +393,15 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 //                        self.showToast(title: message)
-                        self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.data?.responseCode ?? 90)  \(self.fundsTransSuccessObj?.data?.responseDescr ?? "") ")
+                        
                     }
                 }
             }
             else {
                 if let message = self.fundsTransSuccessObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
-                }
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
             }

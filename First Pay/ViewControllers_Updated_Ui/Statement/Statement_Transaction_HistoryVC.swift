@@ -383,13 +383,13 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
                       }
                       else {
                           if let message = self.myStatementObj?.messages{
-                              self.showDefaultAlert(title: "", message: message)
+                              self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                           }
                       }
                   }
                   else {
                       if let message = self.myStatementObj?.messages{
-                          self.showDefaultAlert(title: "", message: message)
+                          self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                       }
   //                    print(response.result.value)
   //                    print(response.response?.statusCode)
@@ -447,14 +447,14 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
                 else {
                   
                     if let message = self.myStatementObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                     self.tableView.reloadData()
                 }
             }
             else {
                 if let message = self.myStatementObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)

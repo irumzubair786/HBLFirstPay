@@ -91,14 +91,14 @@ class City_selectionVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate {
                 }
                 else{
                     if let message = self.cityListObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                        
                     }
                 }
             }
             else {
                 if let message = self.cityListObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                    
                 }
 //                print(response.result.value)

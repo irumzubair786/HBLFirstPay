@@ -148,7 +148,7 @@ contactPicker.delegate = self
                   else {
                       if let message = self.titleFetchObj?.messages{
 //                          self.showDefaultAlert(title: "", message: message)
-                          UtilManager.showAlertMessage(message: message, viewController: self)
+                          self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                         
                       }
                   }
@@ -156,7 +156,7 @@ contactPicker.delegate = self
               else {
                   if let message = self.titleFetchObj?.messages{
 //                      self.showDefaultAlert(title: "", message: message)
-                      UtilManager.showAlertMessage(message: message, viewController: self)
+                      self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
                   }
   //                print(response.result.value)

@@ -101,7 +101,6 @@ extension MoneyTransfer_ReasonVC: UITableViewDelegate, UITableViewDataSource
         aCell.lblname.text = reasonsList?[indexPath.row]
 //m        aCell.lblcityname.text =
         return aCell
-
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.layer.transform = CATransform3DMakeScale(0.1,0.1,1)

@@ -261,14 +261,13 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
                 
                 else {
                     if let message = self.genResponseObj?.messages {
-                        UtilManager.showAlertMessage(message: message, viewController: self)
-                        
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
                 }
             }
             else {
                 if let message = self.genResponseObj?.messages {
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                    
                 }
 //                print(response.result.value)

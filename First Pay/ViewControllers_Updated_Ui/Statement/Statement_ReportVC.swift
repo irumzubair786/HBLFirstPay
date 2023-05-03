@@ -418,15 +418,15 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
                 }
                 else {
                     if let message = self.disputeTypesObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
-                        self.showAlert(title: "", message: message, completion: nil)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+//                        self.showAlert(title: "", message: message, completion: nil)
                     }
                 }
             }
             else {
                 
                 if let message = self.disputeTypesObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
             }
                 
             }
@@ -478,7 +478,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
                 }
                 else {
                     if let message = self.genResObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 //                        self.showDefaultAlert(title: "", message: "\(message)")
 //                        self.navigationController?.popToRootViewController(animated: true)
                     }
@@ -486,7 +486,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
             }
             else {
                 if let message = self.genResObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)

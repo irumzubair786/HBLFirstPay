@@ -358,7 +358,7 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
                     else {
                         
                         if let message = self.setLoginPinObj?.messages{
-                            self.showDefaultAlert(title: "", message: message)
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                         }
                         
                         // Html Parse
@@ -372,7 +372,7 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
                 }
                 else {
                     if let message = self.setLoginPinObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                     else {
                         self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")

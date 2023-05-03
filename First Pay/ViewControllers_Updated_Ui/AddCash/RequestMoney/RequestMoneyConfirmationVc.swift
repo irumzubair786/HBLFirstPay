@@ -271,7 +271,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
                 else {
                     if let message = self.genResponseObj?.messages{
 //                        self.showDefaultAlert(title: "", message: message)
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
                     }
                 }
@@ -279,7 +279,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
             else {
                 if let message = self.genResponseObj?.messages{
 //                    self.showDefaultAlert(title: "", message: message)
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
                 }
 //                print(response.result.value)

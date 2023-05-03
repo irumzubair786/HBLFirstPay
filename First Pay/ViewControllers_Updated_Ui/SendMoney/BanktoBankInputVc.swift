@@ -284,14 +284,14 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 //                        self.showDefaultAlert(title: "", message: message)
                     }
                 }
             }
             else {
                 if let message = self.transactionApiResponseObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                    print(response.result.value)
 //                    print(response.response?.statusCode)

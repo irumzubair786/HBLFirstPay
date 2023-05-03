@@ -30,40 +30,10 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         btn_next_arrow.isUserInteractionEnabled = false
 //        TF_Mobileno.mode = .localNumber
         self.TF_Mobileno.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.NSNotification.Name.UIKeyboardWillShow, object: nil)
-
        
     }
         
-//        TF_Mobileno.addDoneButtonOnKeyboardWithAction { [self] in
-//            print("end editing")
-//            if self.TF_Mobileno.text?.count ?? 0 < 11
-//            {
-//                TF_Mobileno.perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
-//                self.lblinvalid.isHidden = false
-//                self.lblinvalid.text = "Invalid Phone Number."
-//                self.TF_Mobileno.resignFirstResponder()
-//                self.lblinvalid.text = "Invalid Phone Number."
-//                let image = UIImage(named:"grayArrow")
-//                self.btn_next_arrow.setImage(image, for: .normal)
-//                self.btnContinue.isUserInteractionEnabled = false
-//            }
 //
-//            else if self.TF_Mobileno.text == ""
-//        {
-//                self.lblinvalid.isHidden = true
-//        }
-//        else{
-//            self.lblinvalid.isHidden = true
-//            let image = UIImage(named:"]greenarrow")
-//            self.btn_next_arrow.setImage(image, for: .normal)
-//            self.btnContinue.isUserInteractionEnabled = true
-//            self.btn_next_arrow.isUserInteractionEnabled = true
-//        }
-//            self.TF_Mobileno.resignFirstResponder()
-//        }
-
-//    }
     @objc func keyboardWillShow(_ notification: Notification) {
         // Hide your button here
         btnContinue.isHidden = false
@@ -171,7 +141,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         mobileRegistration()
     }
    
-    private func textField(_ textField: NumberTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    private func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let newLength = (textField.text?.count)! + string.count - range.length
         
@@ -324,7 +294,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.mobileRegistrationObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
 
                     // Html Parse
@@ -338,7 +308,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
             }
             else {
                 if let message = self.mobileRegistrationObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
                 else {
                     self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
@@ -351,3 +321,4 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     
 
 }
+

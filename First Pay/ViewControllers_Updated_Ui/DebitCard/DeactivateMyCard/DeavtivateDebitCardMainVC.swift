@@ -18,6 +18,7 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         buttonChangePin.setTitle("", for: .normal)
         buttonBack.setTitle("", for: .normal)
         buttonDeactivate.setTitle("", for: .normal)
+        buttonDebitServices.setTitle("", for: .normal)
         getDebitCard()
         // Do any additional setup after loading the view.
     }
@@ -29,12 +30,12 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
 //        self.navigationController?.popViewController(animated: true)
     }
     @IBOutlet weak var buttonDeactivate: UIButton!
-    
     @IBAction func buttonChangePin(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
         isFromChangePin = true
         isFromDeactivate = false
         isfromReactivateCard = false
+        isfromServics = false
         self.navigationController?.pushViewController(vc, animated: true)
         
         
@@ -43,11 +44,23 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeactivateConfirmationVC") as! DeactivateConfirmationVC
         isFromDeactivate = true
         isFromChangePin = false
-       
+        isfromServics = false
         isfromReactivateCard = false
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
+    
+    @IBOutlet weak var buttonDebitServices: UIButton!
+    @IBAction func buttonDebitServices(_ sender: UIButton) {
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "debitCardServicesVc") as! debitCardServicesVc
+        isFromDeactivate = false
+        isFromChangePin = false
+        isfromServics = true
+        isfromReactivateCard = false
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     
     @IBOutlet weak var labeldate: UILabel!
     @IBOutlet weak var buttonChangePin: UIButton!

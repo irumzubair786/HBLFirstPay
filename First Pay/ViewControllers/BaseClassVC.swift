@@ -540,13 +540,13 @@ class BaseClassVC: UIViewController {
                 }
                 else {
                     if let message = self.miniStatementObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                 }
             }
             else {
                 if let message = self.miniStatementObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
