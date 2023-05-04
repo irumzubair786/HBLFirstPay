@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>-FIRAnalyticsDebugEnabled</key>
+	<true/>
+	<key>-FIRAnalyticsVerboseLoggingEnabled</key>
+	<true/>
 	<key>&lt;key&gt;NSCameraUsageDescription&lt;/key&gt;</key>
 	<string>Camera is required to use this application</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -30,6 +34,8 @@
 	<true/>
 	<key>LSRequiresIPhoneOS - 2</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -54,15 +60,14 @@
 			</dict>
 		</dict>
 	</dict>
-    
-    <key>-FIRAnalyticsDebugEnabled</key>
-    <true/>
-    <key>-FIRAnalyticsVerboseLoggingEnabled</key>
-    <true/>
 	<key>NSCameraUsageDescription</key>
 	<string>To Scan Credit Cards.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Need Access to Contacts</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>App wants to access your documents folder</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>App wants to access your downloads folder</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>App requires your permission for login</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -75,8 +80,11 @@
 	<string>App requires Photo Library Access for profile photo upload.</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -100,13 +108,5 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
-	<key>UIFileSharingEnabled</key>
-	<true/>
-    <key>NSDocumentsFolderUsageDescription</key>
-    <string>App wants to access your documents folder</string>
-    <key>NSDownloadsFolderUsageDescription</key>
-    <string>App wants to access your downloads folder</string>
 </dict>
 </plist>

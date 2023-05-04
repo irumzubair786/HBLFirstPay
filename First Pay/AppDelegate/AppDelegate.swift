@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
-//import OneSignal
+import OneSignal
 import Siren
 import IQKeyboardManager
 import FirebaseCore
@@ -75,9 +75,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                  }
 //              }
 //
-//        //Remove this method to stop OneSignal Debugging
-//         OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
-//
+        //Remove this method to stop OneSignal Debugging
+         OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+        // OneSignal initialization
+         OneSignal.initWithLaunchOptions(launchOptions)
+         OneSignal.setAppId("12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d")
+        // promptForPushNotifications will show the native iOS notification permission prompt.
+          // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
+          OneSignal.promptForPushNotifications(userResponse: { accepted in
+            print("User accepted notifications: \(accepted)")
+          })
+        
+        // Set your customer userId
+        // OneSignal.setExternalUserId("userId")
 //         //START OneSignal initialization code
 //         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false, kOSSettingsKeyInAppLaunchURL: false]
 //
@@ -91,7 +101,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //         OneSignal.promptForPushNotifications(userResponse: { accepted in
 ////           print("User accepted notifications: \(accepted)")
 //         })
-        //OneSignal Start
 
         FirebaseApp.configure()
         
