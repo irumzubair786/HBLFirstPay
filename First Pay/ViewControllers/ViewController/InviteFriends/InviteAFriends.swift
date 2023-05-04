@@ -130,8 +130,11 @@ extension InviteAFriends: UITableViewDelegate, UITableViewDataSource {
         else if segmentControl.selectedSegmentIndex == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "InvitePendingCell") as! InvitePendingCell
             // if change internet package is true then we dont need to show subscribed package
+            cell.sentInviteFriendList = modelinvitedFriendsList?.data?.pendingInviteFriendList?[indexPath.row]
+            cell.compaignText = modelinvitedFriendsList?.data?.campaignText ?? ""
+            cell.transactionText = modelinvitedFriendsList?.data?.transactionText ?? ""
             
-//            cell.sentInviteFriendList = modelinvitedFriendsList.data.pendingInviteFriendList[indexPath.row]
+
             return cell
         }
         else {
@@ -205,8 +208,8 @@ extension InviteAFriends {
     struct ModelinvitedFriendsListData: Codable {
         let campaignText: String?
         let sentInviteFriendList: [SentInviteFriendList]?
-        let transactionText: JSONNull?
-        let pendingInviteFriendList: [JSONAny]?
+        let transactionText: String?
+        let pendingInviteFriendList: [SentInviteFriendList]?
         let totalEarnings: String
         let completedInviteFriendList: [SentInviteFriendList]?
     }

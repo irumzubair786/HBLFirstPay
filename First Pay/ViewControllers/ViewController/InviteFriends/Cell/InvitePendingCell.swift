@@ -23,12 +23,51 @@ class InvitePendingCell: UITableViewCell {
     @IBOutlet weak var viewRemindBackGround: UIView!
     @IBOutlet weak var labelWarningTwo: UILabel!
     
+    @IBOutlet weak var viewLine: UIView!
     @IBOutlet weak var buttonRemind: UIButton!
+    
+    var sentInviteFriendList: InviteAFriends.SentInviteFriendList! {
+        didSet {
+            if let name = sentInviteFriendList.inviteeName {
+                labelTitle.text = name
+            }
+            else {
+                labelTitle.text = sentInviteFriendList.mobileNo
+            }
+            
+            labelPhoneNumber.text = sentInviteFriendList.mobileNo
+            labelPhoneNumber.textColor = .clrOrange
+            
+            imageViewUser.setImage(string: sentInviteFriendList.inviteeName ?? "NA", color: .clrGreenWithOccupacy20, colorText: .clrBlack)
+            imageViewUser.circle()
+        }
+    }
+    
+    var compaignText: String! {
+        didSet {
+            if compaignText != "" {
+                stackViewWarningTwo.isHidden = false
+                viewLine.isHidden = false
+            }
+            else {
+                stackViewWarningTwo.isHidden = true
+                viewLine.isHidden = true
+            }
+        }
+    }
+    var transactionText: String! {
+        didSet {
+            labelWarningTwo.text = transactionText
+        }
+    }
+    
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
+        stackViewWarningOne.isHidden = true
         viewBackGround.radius(radius: 12, color: .lightGray)
         viewRemindBackGround.radius(radius: CGFloat(Int(viewRemindBackGround.frame.height)) / 2, color: .lightGray)
     }

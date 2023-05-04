@@ -41,7 +41,7 @@ target 'First Pay' do
   pod 'IQDropDownTextField'
   #pod 'iOSDropDown'
    pod 'PasswordTextField', '~> 1.2'
-#   pod 'OneSignalXCFramework', '>= 3.0.0', '< 4.0'
+   pod 'OneSignalXCFramework', '>= 3.0.0', '< 4.0'
 #  pod 'PinCodeInputView'
   pod 'OTPTextField', '~> 1.1'
   #pod 'CryptoSwift', '~> 1.6.0'
@@ -66,5 +66,6 @@ target 'OneSignalNotificationServiceExtension' do
   use_frameworks!
 
   # Pods for OneSignalNotificationServiceExtension
+  pod 'OneSignalXCFramework', '>= 3.0.0', '< 4.0'
 
 end

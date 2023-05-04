@@ -11,7 +11,7 @@ class InviteSentCell: UITableViewCell {
 
     @IBOutlet weak var imageViewBackGround: UIView!
     @IBOutlet weak var imageViewUser: UIImageView!
-    @IBOutlet weak var viewBackGround: UIView!
+    @IBOutlet weak var stackViewBackGround: UIStackView!
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelPhoneNumber: UILabel!
     
@@ -36,7 +36,7 @@ class InviteSentCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        viewBackGround.radius(radius: 12, color: .lightGray)
+        stackViewBackGround.radius(radius: 12, color: .lightGray)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

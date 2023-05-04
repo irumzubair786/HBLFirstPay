@@ -20,9 +20,10 @@ struct FBEvents {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let titleName = title.rawValue
         Analytics.logEvent(titleName, parameters: [
-          AnalyticsParameterItemID: "id-\(userCnic!)",
-          AnalyticsParameterItemName: titleName,
-          AnalyticsParameterContentType: description,
+          "userId": "id-\(userCnic!)",
+          "eventName": titleName,
         ])
     }
 }
+
+
