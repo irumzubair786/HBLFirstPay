@@ -19,7 +19,12 @@ var isfromReactivateCard :Bool?
 var isFromDeactivate : Bool?
 var isFromChangePin : Bool?
 var isfromActivate : Bool?
-var isfromServics : Bool?
+//var isfromServics : Bool?
+var isfromATMON : Bool?
+var isfromATMOFF : Bool?
+var isfromPOSON : Bool?
+var isfromPOSOFF: Bool?
+var isfromDisableService : Bool?
 var isfromServiceOTpVerification : Bool?
 class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataSource{
     var homeObj : HomeModel?

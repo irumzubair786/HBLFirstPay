@@ -17,12 +17,22 @@ struct FBEvents {
     }
     
     static func logEvent(title: FBEvents.name, description: String) {
+<<<<<<< HEAD
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let titleName = title.rawValue
         Analytics.logEvent(titleName, parameters: [
           "userId": "id-\(userCnic!)",
           "eventName": titleName,
         ])
+=======
+//        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+//        let titleName = title.rawValue
+//        Analytics.logEvent(titleName, parameters: [
+//          AnalyticsParameterItemID: "id-\(userCnic!)",
+//          AnalyticsParameterItemName: titleName,
+//          AnalyticsParameterContentType: description,
+//        ])
+>>>>>>> cf0dbe8 (Atm locator Ui)
     }
 }
 

@@ -19,7 +19,7 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
     var userData : [Cardchannels] = []
     var otpserviceobj : OTPserviceModel?
     var accountDebitCardId: Int?
-    
+    var lastFourDigit : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         switchATM.isEnabled = false
@@ -28,7 +28,6 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
         buttonBack.setTitle("", for: .normal)
         buttonContinue.isUserInteractionEnabled = false
         self.txtfield.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-        
         getdebitcardservices()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
 //        btn_next_arrow.isUserInteractionEnabled = true
@@ -42,6 +41,9 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var txtfield: UITextField!
     @IBAction func buttonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
     @objc func changeTextInTextField() {
         print("end editing")
@@ -67,67 +69,42 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var buttonBack: UIButton!
     
     @IBAction func buttonContinue(_ sender: UIButton) {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
-        if serviceFlag == "ATM"
-        {
-            Title = "ATM"
-        }
-        else
-        {
-            Title = "POS"
-        }
-        vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
-        vc.channel = serviceFlag
-        vc.accountDebitcardId = self.accountDebitCardId
-        vc.lastFourDigit = txtfield.text!
-        vc.status = selectstatus
-        self.navigationController?.pushViewController(vc, animated: true)
+       
         
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
-        if serviceFlag == "ATM"
-        {
-            Title = "ATM"
-        }
-        else
-        {
-            Title = "POS"
-        }
-        vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
-        vc.channel = serviceFlag
-        vc.accountDebitcardId = self.accountDebitCardId
-        vc.lastFourDigit = txtfield.text!
-        vc.status = selectstatus
-        self.navigationController?.pushViewController(vc, animated: true)
-        
        
     }
     
     @IBOutlet weak var switchATM: UISwitch!
     
     @IBAction func switchATM(_ sender: UISwitch) {
+        serviceFlag = "ATM"
         let switchState = !sender.isOn
         if switchATM.isOn {
             selectstatus = "A"
             switchFlag = true
 //            move to new
-            serviceFlag = "ATM"
+         
             let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
-            isfromServics = true
+            isfromATMON = true
             vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
             vc.channel = serviceFlag
             vc.accountDebitcardId = self.accountDebitCardId
             vc.lastFourDigit = txtfield.text!
+            self.selectstatus = "A"
             vc.status = selectstatus
+            self.switchATM.isOn = switchState
             self.navigationController?.pushViewController(vc, animated: true)
         }
+        
         else {
             
             selectstatus = "I"
             switchFlag = false
             let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
-            isfromServics = true
+            isfromATMOFF = true
+            
             vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
             vc.channel = serviceFlag
             vc.accountDebitcardId = self.accountDebitCardId
@@ -143,17 +120,20 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var switchPOS: UISwitch!
     
     @IBAction func switchPOS(_ sender: UISwitch) {
+        serviceFlag = "POS"
         let switchState = !sender.isOn
         if switchPOS.isOn == true {
             selectstatus = "A"
-            serviceFlag = "POS"
+           
             switchFlag = true
             let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
-            isfromServics = true
+            isfromPOSON = true
             vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
             vc.channel = serviceFlag
             vc.accountDebitcardId = self.accountDebitCardId
             vc.lastFourDigit = txtfield.text!
+            self.switchATM.isOn = true
+            self.selectstatus = "A"
             vc.status = selectstatus
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -162,7 +142,8 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
             switchFlag = false
             selectstatus = "I"
             let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
-            isfromServics = true
+            isfromPOSOFF = true
+           
             vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
             vc.channel = serviceFlag
             vc.accountDebitcardId = self.accountDebitCardId
@@ -171,13 +152,7 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
 //            self.SendotpinterfaceenableForDisable()
         }
-        
-        
-        
-        
-        
     }
-    
     var switchFlag: Bool = false {
             didSet{               //This will fire everytime the value for switchFlag is set
                 print(switchFlag) //do something with the switchFlag variable
@@ -311,103 +286,6 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
         }
        
     }
-    
-//    //    sendotpfor disable
-//        private func updateChannelStatus() {
-//
-//            if !NetworkConnectivity.isConnectedToInternet(){
-//                self.showToast(title: "No Internet Available")
-//                return
-//            }
-//
-//            var userCnic : String?
-//
-//            if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-//                userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-//            }
-//            else{
-//                userCnic = ""
-//            }
-//
-////            "imei":"031B64E3CAC84DBA90E32A78A3B5A84D",
-////                "cnic":"1730116660375",
-////                "dcLastDigits":"0026",
-////                "accountDebitCardId":"1",
-////                "cardid":"830205",
-////                "channel":"ATM",   // ATM / POS
-////                "otp":"1758",
-////            "status":"I",   //possible status are 'A' for 'Active' and 'I' for 'Inactive'
-//////                "channelId":"3"
-//            showActivityIndicator()
-//
-//            let compelteUrl = GlobalConstants.BASE_URL + "DebitCard/v1/updateChannelStatus"
-//
-//            let parameters = ["imei":"\(String(describing: DataManager.instance.imei ?? ""))","cnic":userCnic!,"channelId":"\(DataManager.instance.channelID)","accountDebitCardId": "\(accountDebitCardId!)","status" : "\("I")",   "dcLastDigits": "", "otp":"","channel": ]
-//            print(parameters)
-//            let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-//
-//
-//            print(result.apiAttribute1)
-//            print(result.apiAttribute2)
-//
-//            let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//
-//            let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-//
-//            print(params)
-//            print(compelteUrl)
-//
-//            NetworkManager.sharedInstance.enableCertificatePinning()
-//            NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<OTPserviceModel>) in
-//
-//
-//                self.hideActivityIndicator()
-//
-//                self.otpserviceobj = response.result.value
-//                if response.response?.statusCode == 200 {
-//
-//                    if self.otpserviceobj?.responsecode == 2 || self.otpserviceobj?.responsecode == 1 {
-//
-////                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ServiceOTPVerificationVC") as! ServiceOTPVerificationVC
-////                        vc.cardid = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
-////                        vc.channel = selecedchannel
-////                        vc.status = selectstatus
-////                        print("selected status is:" ,selectstatus)
-////                        vc.DisableStatus = "I"
-////                        vc.accountDebitcardId = "\(String(describing: servicesOBj?.data?.accountDebitCard?.accountDebitCardId))"
-////                        self.navigationController?.pushViewController(vc, animated: true)
-//                        }
-//
-//                    else {
-//
-//                        if let message = self.otpserviceobj?.messages{
-//                            if message == "Invalid Information provided"
-//                            {
-//                                self.showToast(title: "Invalid Information provided")
-//                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4)  {
-////                                    self.movetoback()
-//                                }
-//
-//    //                            myswitch1.isOn = switchFlag
-//    //                            myswitch2.isOn = switchFlag
-//                            }
-//                            self.showToast(title: "Invalid Information provided")
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4)  {
-//                                self.movetoback()
-//                            }
-//
-//                        }
-//                    }
-//                }
-//                else {
-//    //                if let message = self.servicesOBj?.messages{
-//    //                    self.showDefaultAlert(title: "", message: message)
-//    //                }
-//    //                print(response.result.value)
-//    //                print(response.response?.statusCode)
-//                }
-//            }
-//        }
-    
+
     }
 

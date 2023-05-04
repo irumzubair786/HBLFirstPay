@@ -66,25 +66,23 @@ class MainPageVC: BaseClassVC {
     @IBOutlet weak var btnLocator: UIButton!
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBAction func Action_Home(_ sender: UIButton) {
-//        print("done")
-//        btnHomes.setImage(UIImage(named: "path0-6"), for: .normal)
-//        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
-//        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
-//        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
-//        let  myDict = [ "name": "Home_ScreenVC"]
-//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
-        
+        btnHomes.setImage(UIImage(named: "path0-6"), for: .normal)
+        btnNotification.setImage(UIImage(named: "BranchLocator"), for: .normal)
+        lblHome.textColor = UIColor.orange
+        lblNotification.textColor = UIColor.white
+        let  myDict = [ "name": "DashBoardVC"]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
     }
-    
     @IBAction func Action_Notification(_ sender: UIButton) {
         print("done")
-        showToast(title: "Coming Soon")
-        UtilManager.showToast(message: "Coming soon")
-//        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
-//        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
-//        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
-//        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
-
+        btnNotification.setImage(UIImage(named: "locatorOrange"), for: .normal)
+        btnHomes.setImage(UIImage(named: "grayHome"), for: .normal)
+        lblHome.textColor = UIColor.white
+        lblNotification.textColor = UIColor.orange
+        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
+        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
+        let  myDict = [ "name": "ATMLocatormainVc"]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
 
     }
     
@@ -103,9 +101,6 @@ class MainPageVC: BaseClassVC {
         
         
     }
-    
-
-    
     @IBAction func Action_Locator(_ sender: UIButton) {
         showToast(title: "Coming Soon")
 //        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
@@ -148,12 +143,12 @@ class MainPageVC: BaseClassVC {
         self.addChildViewController(vc)
         return vc
     }()
-//    lazy var ToggleMenuVC: ToggleMenuVC = {
-//        let storyBoard = UIStoryboard(name: Storyboard.TabBar.rawValue, bundle: Bundle.main)
-//        let vc = storyBoard.instantiateViewController(withIdentifier: "ToggleMenuVC") as! ToggleMenuVC
-//        self.addChildViewController(vc)
-//        return vc
-//    }()
+    lazy var ATMLocatormainVc: ATMLocatormainVc = {
+        let storyBoard = UIStoryboard(name: Storyboard.ATMLocator.rawValue, bundle: Bundle.main)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "ATMLocatormainVc") as! ATMLocatormainVc
+        self.addChildViewController(vc)
+        return vc
+    }()
     
     
     @objc func sideMenuSelectedOption(notification : NSNotification) {
@@ -177,6 +172,8 @@ class MainPageVC: BaseClassVC {
                 removeVC(VC:ContactUSVC)
             case "MobileTopUpVC":
                 removeVC(VC: MobileTopUpVC)
+            case "ATMLocatormainVc":
+                removeVC(VC: ATMLocatormainVc)
 //            case "ToggleMenuVC":
 //               removeVC(VC: ToggleMenuVC)
 //            case "RegisterationVC":
@@ -214,6 +211,10 @@ class MainPageVC: BaseClassVC {
         else if selectedController == "MobileTopUpVC"
         {
             addChildViewController(VC: MobileTopUpVC)
+        }
+        else if selectedController == "ATMLocatormainVc"
+        {
+            addChildViewController(VC: ATMLocatormainVc)
         }
 //        else if selectedController == "ToggleMenuVC"
 //        {

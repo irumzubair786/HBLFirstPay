@@ -24,16 +24,17 @@ class ApplyAtmServicesVC: BaseClassVC {
         buttonApply.setTitle("", for: .normal)
         buttonCancel.setTitle("", for: .normal)
         
-        if isfromServiceOTpVerification == true
-        {
-            popupView.isHidden = false
-            ServiceView.isHidden = true
-        }
-        else
+        if isfromATMON == true || isfromPOSON == true
         {
             popupView.isHidden = true
             ServiceView.isHidden = false
         }
+        if isfromATMOFF == true || isfromPOSOFF == true
+        {
+            popupView.isHidden = false
+            ServiceView.isHidden = true
+        }
+  
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imgPopup.isUserInteractionEnabled = true
         imgPopup.addGestureRecognizer(tapGestureRecognizer)
@@ -54,11 +55,6 @@ class ApplyAtmServicesVC: BaseClassVC {
     @IBOutlet weak var ServiceView: UIView!
     @IBOutlet weak var buttonApply: UIButton!
     @IBOutlet weak var labelTitle: UILabel!
-    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
-       
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeavtivateDebitCardMainVC") as! DeavtivateDebitCardMainVC
-        self.navigationController?.popViewController(animated: true)
-    }
     @IBAction func buttonApply(_ sender: UIButton) {
         Sendotpinterfaceenable()
     }
@@ -68,17 +64,44 @@ class ApplyAtmServicesVC: BaseClassVC {
     }
     func movetoNext()
     {
+
+        if isfromATMON == true || isfromPOSON == true
+        {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
+           
+            vc.lastFourDigit = lastFourDigit
+            vc.channel  = channel
+            vc.cardId = cardId
+            vc.accountDebitcardId = GlobalData.accountDebitCardId
+            vc.status = status
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else
+        {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeavtivateDebitCardMainVC") as! DeavtivateDebitCardMainVC
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+
+    }
+@objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
+    //
+      if isfromATMON == true || isfromPOSON == true
+    {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
-        isfromServics = true
         vc.lastFourDigit = lastFourDigit
         vc.channel  = channel
         vc.cardId = cardId
         vc.accountDebitcardId = GlobalData.accountDebitCardId
         vc.status = status
-        
-        
+
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    else
+    {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeavtivateDebitCardMainVC") as! DeavtivateDebitCardMainVC
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
     private func Sendotpinterfaceenable() {
    //
                if !NetworkConnectivity.isConnectedToInternet(){

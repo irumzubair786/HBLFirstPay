@@ -3015,6 +3015,15 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m4r-X6-5zx">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ufz-Wu-IYN">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </view>
+                                        <blurEffect style="regular"/>
+                                    </visualEffectView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -3230,14 +3239,6 @@
                                     </constraints>
                                 </view>
                             </tableView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m4r-X6-5zx">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ufz-Wu-IYN">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <blurEffect style="regular"/>
-                            </visualEffectView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7ar-y0-DoW">
                                 <rect key="frame" x="0.0" y="495" width="375" height="405"/>
                                 <subviews>
@@ -3362,16 +3363,12 @@
                         <viewLayoutGuide key="safeArea" id="kul-di-YgM"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="m4r-X6-5zx" firstAttribute="leading" secondItem="kul-di-YgM" secondAttribute="leading" id="4X9-fa-3zc"/>
                             <constraint firstItem="4VS-r1-HbZ" firstAttribute="bottom" secondItem="kul-di-YgM" secondAttribute="bottom" constant="-65" id="4Z8-nv-r1f"/>
                             <constraint firstItem="4VS-r1-HbZ" firstAttribute="leading" secondItem="kul-di-YgM" secondAttribute="leading" id="Et1-hC-oDj"/>
                             <constraint firstItem="4VS-r1-HbZ" firstAttribute="trailing" secondItem="kul-di-YgM" secondAttribute="trailing" id="F1Z-rN-iJY"/>
-                            <constraint firstItem="m4r-X6-5zx" firstAttribute="trailing" secondItem="kul-di-YgM" secondAttribute="trailing" id="GvI-zr-uIE"/>
-                            <constraint firstItem="kul-di-YgM" firstAttribute="bottom" secondItem="m4r-X6-5zx" secondAttribute="bottom" id="Kqw-lu-g47"/>
                             <constraint firstItem="eA2-bA-88a" firstAttribute="top" secondItem="kul-di-YgM" secondAttribute="top" id="LrL-yW-WKb"/>
                             <constraint firstItem="4VS-r1-HbZ" firstAttribute="top" secondItem="eA2-bA-88a" secondAttribute="bottom" constant="10" id="OsU-tg-OYd"/>
                             <constraint firstAttribute="trailing" secondItem="7ar-y0-DoW" secondAttribute="trailing" id="UeC-Ka-WYZ"/>
-                            <constraint firstItem="m4r-X6-5zx" firstAttribute="top" secondItem="kul-di-YgM" secondAttribute="top" id="cIb-GR-hLm"/>
                             <constraint firstItem="7ar-y0-DoW" firstAttribute="bottom" secondItem="kul-di-YgM" secondAttribute="bottom" id="cWO-vN-QEh"/>
                             <constraint firstItem="eA2-bA-88a" firstAttribute="trailing" secondItem="kul-di-YgM" secondAttribute="trailing" id="uXM-w5-b23"/>
                             <constraint firstItem="eA2-bA-88a" firstAttribute="leading" secondItem="kul-di-YgM" secondAttribute="leading" id="xEr-Rd-f7j"/>
@@ -3624,7 +3621,7 @@
                                                         </connections>
                                                     </switch>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="0.0" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="TfU-eq-Rky" firstAttribute="top" secondItem="sci-3c-RPi" secondAttribute="top" constant="30" id="0IG-Hl-1gy"/>
                                                     <constraint firstAttribute="trailing" secondItem="TfU-eq-Rky" secondAttribute="trailing" constant="10" id="3Zf-IY-7hI"/>
@@ -3745,7 +3742,7 @@
                                     <action selector="buttonContinue:" destination="46K-we-lA7" eventType="touchUpInside" id="eIx-aj-0g1"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grayArrow" translatesAutoresizingMaskIntoConstraints="NO" id="bVc-jU-jaL">
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grayArrow" translatesAutoresizingMaskIntoConstraints="NO" id="bVc-jU-jaL">
                                 <rect key="frame" x="263" y="459" width="44" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="9rp-71-o7p"/>
@@ -4144,7 +4141,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deactivate My Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOD-SE-JsR">
-                                                                    <rect key="frame" x="25" y="30" width="130" height="21"/>
+                                                                    <rect key="frame" x="25" y="26" width="130" height="21"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="21" id="6CB-uy-S7f"/>
                                                                     </constraints>
@@ -4153,10 +4150,10 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2D-Fl-fXd">
-                                                                    <rect key="frame" x="321" y="19" width="29" height="32"/>
+                                                                    <rect key="frame" x="313" y="20" width="37" height="32"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="32" id="mIa-NT-vBF"/>
-                                                                        <constraint firstAttribute="width" constant="29" id="yjP-Sf-6pe"/>
+                                                                        <constraint firstAttribute="width" constant="37" id="yjP-Sf-6pe"/>
                                                                     </constraints>
                                                                     <state key="normal" title="Button"/>
                                                                     <buttonConfiguration key="configuration" style="plain">
@@ -4169,10 +4166,10 @@
                                                             </subviews>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                             <constraints>
-                                                                <constraint firstItem="KOD-SE-JsR" firstAttribute="top" secondItem="TlA-pl-j1J" secondAttribute="top" constant="30" id="5PJ-T4-Eul"/>
+                                                                <constraint firstItem="KOD-SE-JsR" firstAttribute="top" secondItem="TlA-pl-j1J" secondAttribute="top" constant="26" id="5PJ-T4-Eul"/>
                                                                 <constraint firstItem="KOD-SE-JsR" firstAttribute="leading" secondItem="TlA-pl-j1J" secondAttribute="leading" constant="25" id="6DD-aA-dvq"/>
                                                                 <constraint firstAttribute="trailing" secondItem="v2D-Fl-fXd" secondAttribute="trailing" constant="25" id="KtE-ko-w6J"/>
-                                                                <constraint firstItem="v2D-Fl-fXd" firstAttribute="top" secondItem="TlA-pl-j1J" secondAttribute="top" constant="19" id="Ky3-dm-ndX"/>
+                                                                <constraint firstItem="v2D-Fl-fXd" firstAttribute="top" secondItem="TlA-pl-j1J" secondAttribute="top" constant="20" id="Ky3-dm-ndX"/>
                                                             </constraints>
                                                         </view>
                                                     </subviews>
@@ -4208,10 +4205,10 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z7V-hv-hwt">
-                                                                    <rect key="frame" x="323" y="19" width="27" height="32"/>
+                                                                    <rect key="frame" x="313" y="25" width="37" height="34"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="27" id="0vh-Vg-4rl"/>
-                                                                        <constraint firstAttribute="height" constant="32" id="a0x-pg-mjm"/>
+                                                                        <constraint firstAttribute="width" constant="37" id="0vh-Vg-4rl"/>
+                                                                        <constraint firstAttribute="height" constant="34" id="a0x-pg-mjm"/>
                                                                     </constraints>
                                                                     <state key="normal" title="Button"/>
                                                                     <buttonConfiguration key="configuration" style="plain">
@@ -4224,7 +4221,7 @@
                                                             </subviews>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                             <constraints>
-                                                                <constraint firstItem="Z7V-hv-hwt" firstAttribute="top" secondItem="6qD-lH-i7f" secondAttribute="top" constant="19" id="4Gk-Jh-IFP"/>
+                                                                <constraint firstItem="Z7V-hv-hwt" firstAttribute="top" secondItem="6qD-lH-i7f" secondAttribute="top" constant="25" id="4Gk-Jh-IFP"/>
                                                                 <constraint firstItem="mPs-P8-d2q" firstAttribute="leading" secondItem="6qD-lH-i7f" secondAttribute="leading" constant="25" id="aau-rO-MgI"/>
                                                                 <constraint firstItem="mPs-P8-d2q" firstAttribute="top" secondItem="6qD-lH-i7f" secondAttribute="top" constant="30" id="ijH-ps-BMe"/>
                                                                 <constraint firstAttribute="trailing" secondItem="Z7V-hv-hwt" secondAttribute="trailing" constant="25" id="zav-NK-bko"/>

@@ -16,6 +16,7 @@ enum Storyboard: String {
     case TabBar = "TabBar"
     case TopUp = "TopUp"
     case AddCash = "AddCash"
+    case ATMLocator = "ATMLocator"
 //    case ToggleMenuVC = "TabBar"
    
     

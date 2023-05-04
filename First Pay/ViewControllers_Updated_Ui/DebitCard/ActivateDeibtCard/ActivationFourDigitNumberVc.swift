@@ -28,7 +28,12 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imgNextArrow.isUserInteractionEnabled = true
         imgNextArrow.addGestureRecognizer(tapGestureRecognizer)
-        if isfromServics == true{
+        if (isfromATMON == true ) || (isfromPOSOFF == true)
+        {
+            labelTitle.text = "ATM & POS ACCESSBILITY"
+        }
+        if (isfromPOSON == true ) || (isfromATMOFF == true)
+        {
             labelTitle.text = "ATM & POS ACCESSBILITY"
         }
         self.textfieldLast4digit.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
@@ -43,11 +48,11 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
     {
         if isFromChangePin == true
         {
-           
+            
             isFromChangePin = true
             getDebitCardsCall()
         }
-       
+        
         if isfromReactivateCard == true{
             isFromDeactivate = false
             getDebitCardsCall()
@@ -57,15 +62,27 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
             isFromDeactivate = true
             getDebitCardsCall()
         }
-        if isfromServics == true{
+        if isfromATMON == true || isfromPOSON == true{
             let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
-            isfromServics = true
             vc.cardId = cardId
             vc.channel = serviceFlag
             vc.accountDebitcardId =  GlobalData.accountDebitCardId
             vc.lastFourDigit = textfieldLast4digit.text!
             vc.status = status
             self.navigationController?.pushViewController(vc, animated: true)
+        }
+      else  if  isfromATMOFF == true || isfromPOSOFF == true
+        {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
+            vc.cardId = cardId
+            vc.channel = serviceFlag
+            vc.accountDebitcardId =  GlobalData.accountDebitCardId
+            vc.status = status
+            vc.lastFourDigit = textfieldLast4digit.text!
+//          isfromDisableService = true
+            self.navigationController?.pushViewController(vc, animated: true)
+          
+            
         }
         else{
             getDebitCardsCall()

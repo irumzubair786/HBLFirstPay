@@ -893,7 +893,7 @@
                                                         <rect key="frame" x="8" y="48" width="14" height="25"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
-                                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="DD/MM/YYY" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="11g-ga-NS9">
+                                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="DD/MM/YYY" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="11g-ga-NS9">
                                                         <rect key="frame" x="30" y="42" width="97" height="36"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -906,6 +906,17 @@
                                                         <rect key="frame" x="4" y="70" width="130" height="13"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
+                                                    <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="R9q-Ut-b7Z">
+                                                        <rect key="frame" x="8" y="42" width="126" height="31"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <date key="minimumDate" timeIntervalSinceReferenceDate="-978181200">
+                                                            <!--1970-01-02 11:00:00 +0000-->
+                                                        </date>
+                                                        <connections>
+                                                            <action selector="fromdatePicker:" destination="tcb-kY-WyO" eventType="valueChanged" id="PxW-UM-tur"/>
+                                                        </connections>
+                                                    </datePicker>
                                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ha4-fk-kft">
                                                         <rect key="frame" x="46" y="8" width="68" height="16"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -927,11 +938,11 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="calendar 1" translatesAutoresizingMaskIntoConstraints="NO" id="Zp2-3Y-B1l">
-                                                        <rect key="frame" x="0.0" y="57" width="12" height="15"/>
+                                                        <rect key="frame" x="6" y="49" width="12" height="15"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
-                                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="DD/MM/YYY" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Hx-aa-sl0">
-                                                        <rect key="frame" x="20" y="45" width="109" height="34"/>
+                                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="DD/MM/YYY" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Hx-aa-sl0">
+                                                        <rect key="frame" x="20" y="38" width="109" height="34"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
@@ -939,6 +950,17 @@
                                                             <action selector="toDate:" destination="tcb-kY-WyO" eventType="editingDidEnd" id="hUI-QI-6HU"/>
                                                         </connections>
                                                     </textField>
+                                                    <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="jo8-aE-NP4">
+                                                        <rect key="frame" x="20" y="41" width="128" height="31"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <date key="minimumDate" timeIntervalSinceReferenceDate="-978192000">
+                                                            <!--1970-01-02 08:00:00 +0000-->
+                                                        </date>
+                                                        <connections>
+                                                            <action selector="todatePicker:" destination="tcb-kY-WyO" eventType="valueChanged" id="JXV-gu-NxZ"/>
+                                                        </connections>
+                                                    </datePicker>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Line" translatesAutoresizingMaskIntoConstraints="NO" id="ehQ-q3-9z3">
                                                         <rect key="frame" x="0.0" y="70" width="129" height="13"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1131,10 +1153,12 @@
                         <outlet property="btnDownLoad" destination="DOB-eu-moT" id="PsJ-Yy-QGA"/>
                         <outlet property="btnShow" destination="4b5-Sb-qLf" id="ktU-5d-Sau"/>
                         <outlet property="fromDateTextfield" destination="11g-ga-NS9" id="4Fu-UC-6Ri"/>
+                        <outlet property="fromdatePicker" destination="R9q-Ut-b7Z" id="eVn-VM-6Ds"/>
                         <outlet property="lblMainTitle" destination="vtB-Ao-YS0" id="lCP-Km-daD"/>
                         <outlet property="lblTodate" destination="CyK-fd-IEO" id="Skm-Xm-40A"/>
                         <outlet property="lblfromdate" destination="Ha4-fk-kft" id="JkN-Aj-Pce"/>
                         <outlet property="tableView" destination="hAp-4b-h4d" id="iOK-kY-vbi"/>
+                        <outlet property="todatePicker" destination="jo8-aE-NP4" id="sdM-mJ-Pd4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xIO-MQ-B0e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1593,7 +1617,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tvH-nU-lqg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="864" y="-1002.0989505247377"/>
+            <point key="canvasLocation" x="863.768115942029" y="-1002.7173913043479"/>
         </scene>
     </scenes>
     <resources>

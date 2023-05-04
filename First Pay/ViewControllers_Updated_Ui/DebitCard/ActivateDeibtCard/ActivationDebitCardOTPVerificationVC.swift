@@ -56,7 +56,7 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         {
         labelMainTitle.text = "ACTIVATE MY CARD"
     }
-        else if isfromServics == true
+        else if isfromATMON == true || isfromPOSOFF == true
         {
             labelMainTitle.text = "ATM & POS ACCESSBILITY"
         }
@@ -179,20 +179,14 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     }
     
     @IBAction func butttonContinue(_ sender: UIButton) {
-        
-        
-        if isfromServics == true{
-            UpdateChannelStatus()
-        }
-        else
-        {
-            debitCardVerificationCall()
-        }
-       
+//        movetoNext()
+        UpdateChannelStatus()
+//
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        debitCardVerificationCall()
+       
+        UpdateChannelStatus()
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -203,10 +197,6 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
             return newLength <= 4
 //
     }
-        
-        
-
-        
         return newLength <= 4
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -425,7 +415,7 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         
         let compelteUrl = GlobalConstants.BASE_URL + "DebitCard/v1/updateChannelStatus"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["imei":"\(DataManager.instance.imei!)","cnic":userCnic!,"channelId":"\(DataManager.instance.channelID)","cardid": cardId!, "channel": channel ,"status": status,"otp": textFieldOTP.text!, "accountDebitCardId": "\(accountDebitcardId ?? 0)", "dcLastDigits": lastFourDigit!]
+        let parameters = ["imei":"\(DataManager.instance.imei ?? "")","cnic":userCnic ?? "" ,"channelId":"\(DataManager.instance.channelID )","cardid": cardId  ?? "","channel": channel ?? "" ,"status": status ?? "","otp": textFieldOTP.text! , "accountDebitCardId": "\(accountDebitcardId ?? 0 )", "dcLastDigits": lastFourDigit ?? ""]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
        
@@ -449,12 +439,8 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
             if response.response?.statusCode == 200 {
                 
                 if self.UpdateStatusObj?.responsecode == 2 || self.UpdateStatusObj?.responsecode == 1 {
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
-                    isfromServiceOTpVerification = true
-                    isfromServics = false
-                   self.navigationController?.pushViewController(vc, animated: true)
-                    }
+                    movetoNext()
+                }
                 
                 else {
                     if let message = self.UpdateStatusObj?.messages{
@@ -471,4 +457,39 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
+    func movetoNext()
+        {
+            if isfromATMON == true  || isfromPOSON == true {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+                
+                self.navigationController?.pushViewController(vc, animated: true)
+                UpdateChannelStatus()
+            }
+            if isfromATMOFF == true || isfromPOSOFF == true
+            {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+                
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            
+        }
+//                            if isfromServiceOTpVerification == true
+//                            {
+//                                let vc = self.storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+//                                isfromServiceOTpVerification = true
+//                                isfromDisableService = false
+//                                isfromServics = false
+//                               self.navigationController?.pushViewController(vc, animated: true)
+//                            }
+//                            else
+//                            {
+//                                debitCardVerificationCall()
+//                            }
+//
+//                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+//                            isfromServiceOTpVerification = true
+//                            isfromServics = false
+//                           self.navigationController?.pushViewController(vc, animated: true)
+
+    
 }

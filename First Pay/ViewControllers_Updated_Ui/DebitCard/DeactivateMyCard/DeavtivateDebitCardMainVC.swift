@@ -35,7 +35,7 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         isFromChangePin = true
         isFromDeactivate = false
         isfromReactivateCard = false
-        isfromServics = false
+      
         self.navigationController?.pushViewController(vc, animated: true)
         
         
@@ -44,7 +44,7 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeactivateConfirmationVC") as! DeactivateConfirmationVC
         isFromDeactivate = true
         isFromChangePin = false
-        isfromServics = false
+       
         isfromReactivateCard = false
         self.navigationController?.pushViewController(vc, animated: true)
         
@@ -56,7 +56,7 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "debitCardServicesVc") as! debitCardServicesVc
         isFromDeactivate = false
         isFromChangePin = false
-        isfromServics = true
+//        isfromServics = true
         isfromReactivateCard = false
         self.navigationController?.pushViewController(vc, animated: true)
     }

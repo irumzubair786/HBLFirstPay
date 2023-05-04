@@ -165,8 +165,17 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
 //        datePicker.date = NSDate() as Date
 //        datePicker.datePickerMode = .date
 //       fromDateTextfield.inputView = datePicker
+        ToDateTextfiled.placeholder = ""
+        fromDateTextfield.placeholder = ""
+        todatePicker.backgroundColor = UIColor.clear
+        fromdatePicker.backgroundColor = UIColor.clear
+        fromdatePicker.minimumDate = Calendar.current.date(byAdding: .year, value: -100, to: Date())
+     
+        
     }
     
+    @IBOutlet weak var fromdatePicker: UIDatePicker!
+    @IBOutlet weak var todatePicker: UIDatePicker!
     @objc func methodOfReceivedNotification(notification: Notification) {
         
          let disputeVC = self.storyboard!.instantiateViewController(withIdentifier: "Statement_History_Detail_VC") as! Statement_History_Detail_VC
@@ -181,6 +190,8 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
     let datePicker = UIDatePicker()
    
     
+   
+   
     @IBOutlet weak var btnShow: UIButton!
     @IBOutlet weak var ToDateTextfiled: UITextField!
     @IBOutlet weak var fromDateTextfield: UITextField!
@@ -210,14 +221,40 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
                 dateTo = sender.date as NSDate
             }
         }
-        
+//    @IBAction func buttonFromdate(_ sender: UITextField) {
+//        fromDateTextfield.becomeFirstResponder()
+//
+//
+//    }
+//
     
+    
+    @IBAction func todatePicker(_ sender: UIDatePicker) {
+        let currentDate = self.fromNewDateVar
+        print("sender", sender)
+        let dateFormatter = DateFormatter()
+               dateFormatter.dateFormat = "MM/dd/yyyy"
+               let selectedDate = dateFormatter.string(from: sender.date)
+               print("Selected date: \(selectedDate)")
+        ToDateTextfiled.text =  selectedDate
+        ToDateTextfiled.textColor = UIColor.clear
+        todatePicker.maximumDate = currentDate
+    }
+    @IBAction func fromdatePicker(_ sender: UIDatePicker) {
+        print("sender", sender)
+        let dateFormatter = DateFormatter()
+               dateFormatter.dateFormat = "MM/dd/yyyy"
+               let selectedDate = dateFormatter.string(from: sender.date)
+               print("Selected date: \(selectedDate)")
+        fromDateTextfield.text =  selectedDate
+        fromDateTextfield.textColor = UIColor.clear
+    }
+    @IBOutlet weak var buttonFromdate: UIButton!
     @IBAction func fromDate(_ sender: UITextField) {
-        
         let datePickerObj: UIDatePicker = UIDatePicker()
         datePickerObj.datePickerMode = UIDatePickerMode.date
         fromDateTextfield.inputView = datePickerObj
-        sender.inputView = datePickerObj
+        sender.inputView = UIDatePicker()
         isFrom = "dateFrom"
         datePickerObj.maximumDate = datePickerObj.date
         datePickerObj.addTarget(self, action: #selector(datePickerValueChanged), for: UIControlEvents.valueChanged)
@@ -235,9 +272,6 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
             }
         }
         self.ToDateTextfiled.isUserInteractionEnabled = true
-        
-//
-
     }
     
 //    @objc func datePickerValueChanged(sender: UIDatePicker) {
@@ -259,8 +293,6 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
 //            dateTo = sender.date as NSDate
 //        }
 //    }
-   
-    
     func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
 
         let inputFormatter = DateFormatter()
@@ -278,6 +310,44 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
     }
     
   
+    @objc func toDate(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        let currentDate = self.fromNewDateVar
+        var dateComponents = DateComponents()
+        dateComponents.month = +1
+        let oneMonthAgo = Calendar.current.date(byAdding: dateComponents, to: currentDate!)
+
+        let datePickerObj: UIDatePicker = UIDatePicker()
+        datePickerObj.datePickerMode = UIDatePickerMode.date
+//        sender.inputView = datePickerObj
+        isFrom = "dateTo"
+
+//        datePickerObj.minimumDate = oneMonthAgo
+//        datePickerObj.maximumDate = currentDate
+
+        datePickerObj.minimumDate = currentDate
+        datePickerObj.maximumDate = oneMonthAgo
+
+        datePickerObj.addTarget(self, action: #selector(datePickerValueChanged), for: UIControlEvents.valueChanged)
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        let newDate = dateFormatter.string(from: datePickerObj.date)
+        self.ToDateTextfiled.text = newDate
+        btnShow.isHidden = false
+        if #available(ios 13.4, *)
+        {
+            if #available(iOS 13.4, *) {
+                datePickerObj.preferredDatePickerStyle = .wheels
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+
+    }
+    
+    
+    
     
     @IBAction func toDate(_ sender: UITextField) {
         let currentDate = self.fromNewDateVar

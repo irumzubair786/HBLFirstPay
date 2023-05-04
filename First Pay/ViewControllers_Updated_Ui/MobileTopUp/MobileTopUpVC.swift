@@ -76,10 +76,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         }
         else
         {
-                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
-            
-          
-            
+         getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+           
         }
        
     }
