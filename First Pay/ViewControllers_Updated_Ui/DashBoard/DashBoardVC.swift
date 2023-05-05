@@ -34,6 +34,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var topBtnarr =  ["SendMoney", "Mobile Topup", "PayBill","First Option","DebitCard","SeeAll"]
 
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .Homescreen_Landing)
         super.viewDidLoad()
         banapi()
         collectionView.delegate = self
@@ -354,7 +355,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @objc func MovetoStatement(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        
         let storyboard = UIStoryboard(name: "MiniStatement", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "MinistatemnetMainVc")
         self.present(vc, animated: true)

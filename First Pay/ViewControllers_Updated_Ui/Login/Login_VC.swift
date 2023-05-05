@@ -490,6 +490,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.hideActivityIndicator()
             self.loginObj = response.result.value
             if response.response?.statusCode == 200 {
+                FBEvents.logEvent(title: .Login_success)
                 if self.pinTextField.text != ""
                 {
                     UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")

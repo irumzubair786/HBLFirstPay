@@ -104,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         FirebaseApp.configure()
         
-        FBEvents.logEvent(title: .titleOne, description: "test description")
+        FBEvents.logEvent(title: .testOne)
 
         return true
     }
