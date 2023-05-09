@@ -9,9 +9,7 @@
 import Foundation
 import FirebaseAnalytics
 
-struct FBEvents {
-    //<<<<<<< HEAD
-    
+struct FBEvents {    
     static func logEvent(title: FBEvents.name, failureReason: String? = nil) {
         if let userAccountNo = DataManager.instance.accountNo {
             let titleName = title.rawValue
