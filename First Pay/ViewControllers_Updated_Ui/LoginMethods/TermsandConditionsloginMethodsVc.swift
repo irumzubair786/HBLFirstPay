@@ -49,12 +49,12 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
         let password = UserDefaults.standard.string(forKey: "userKey")
         print("Successfully Added to KeyChainWrapper \(saveAccountPreview)")
         self.showToast(title: "Successfully Activated")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            
-            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-            self.present(vc, animated: true)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//
+////            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+////            let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+////            self.present(vc, animated: true)
+//        }
     }
     
 }

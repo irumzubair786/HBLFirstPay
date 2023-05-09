@@ -244,10 +244,6 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         selectedCategory =  String(arrCategory[tag])
              self.myarr[tag].isSeleccted = true
 
-             cell.btnCategory.setTitleColor(.white, for: .normal)
-//        cell.btnCategory.borderColor = .clear
-        cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-        cell.btnCategory.setImage(.none, for: .normal)
                 self.collectionViewCategory.reloadData()
         if (Tfname.text != "") && selectedCategory != ""{
             
@@ -258,6 +254,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
             messageTextView.isUserInteractionEnabled = false
             Tfname.isUserInteractionEnabled = false
         }
+        
         
     }
    
@@ -273,20 +270,14 @@ extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
         let cell = collectionViewCategory .dequeueReusableCell(withReuseIdentifier: "cellCategory", for: indexPath) as! cellCategory
         if(myarr[indexPath.row].isSeleccted == true){
             cell.btnCategory.setTitleColor(.white, for: .normal)  ///set title color here to white
-            
-            cell.backView.backgroundColor =   UIColor(hexString: "CC6801")
-            cell.btnCategory.setImage(.none, for: .normal)
-//            cell.btnCategory.backgroundColor = .orange
-        }else{
-            //set title color here to black
+            cell.btnCategory.backgroundColor = UIColor(hexValue: 0xF19434)
+            cell.btnCategory.borderColor = UIColor(hexValue: 0xF19434)
+//        }else{
+//            //set title color here to black
             cell.btnCategory.setTitleColor(.black, for: .normal)
-//            buttonDisable.backgroundColor = UIColor(hexString: "CC6801")
+
             cell.btnCategory.backgroundColor = UIColor.clear
-            cell.backView.backgroundColor = UIColor.clear
-            let setimg = UIImage(named: "")
-            cell.btnCategory.setImage(setimg, for: .normal)
-            cell.btnCategory.backgroundColor = UIColor.clear
-            
+
         }
         cell.btnCategory.setTitle(myarr[indexPath.row].name, for: .normal)
         cell.btnCategory.tag = indexPath.row

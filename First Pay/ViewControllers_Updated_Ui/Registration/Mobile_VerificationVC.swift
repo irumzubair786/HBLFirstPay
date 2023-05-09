@@ -140,55 +140,67 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     {
         mobileRegistration()
     }
-   
-    private func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        let newLength = (textField.text?.count)! + string.count - range.length
-        
-        if textField == TF_Mobileno
-        {
-            TF_Mobileno.isUserInteractionEnabled = true
-            if TF_Mobileno.text?.count == 4
-
-            {
-                var flag: Bool = false
-                for i in phoneArr
-                {
-                    if(i == TF_Mobileno.text)
-                    {
-                        flag = true
-                    }
-
-                }
-                if flag == false{
-                    lblinvalid.isHidden = false
-                    lblinvalid.text = "Invalid Phone Number."
-                    btnContinue.isUserInteractionEnabled = false
-                    let image = UIImage(named: "grayArrow")
-                    btn_next_arrow.setImage(image, for: .normal)
-                        
-                    
-                }
-                else{
-                    lblinvalid.isHidden = true
-
-                }
-                
-                
-            }
-            return newLength <= 11
-            changeTextInTextField()
-            
-           
-    }
-        return newLength <= 11
-        
-    }
-//    private func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
-//    {
-//        TF_Mobileno.resignFirstResponder()
-//        return true;
+//    private func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//
+//        let newLength = (textField.text?.count)! + string.count - range.length
+//
+//        if textField == TF_Mobileno
+//        {
+//            return newLength <= 11
+//            TF_Mobileno.isUserInteractionEnabled = true
+//            if TF_Mobileno.text?.count == 4
+//
+//            {
+//                var flag: Bool = false
+//                for i in phoneArr
+//                {
+//                    if(i == TF_Mobileno.text)
+//                    {
+//                        flag = true
+//                    }
+//
+//                }
+//                if flag == false{
+//                    lblinvalid.isHidden = false
+//                    lblinvalid.text = "Invalid Phone Number."
+//                    btnContinue.isUserInteractionEnabled = false
+//                    let image = UIImage(named: "grayArrow")
+//                    btn_next_arrow.setImage(image, for: .normal)
+//
+//
+//                }
+//                else{
+//                    lblinvalid.isHidden = true
+//
+//                }
+//
+//
+//            }
+//            return newLength <= 11
+//            changeTextInTextField()
+//
+//
+//        }
+//        else {
+//
+//       return newLength <= 11
+//                }
+//        return newLength <= 11
+//
 //    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn  range: NSRange, replacementString string: String) -> Bool {
+
+        let newLength = (textField.text?.count)! + string.count - range.length
+
+        if textField == TF_Mobileno {
+
+            return newLength <= 11 // Bool
+        }
+        else {
+
+            return newLength <= 11
+        }
+    }
     
     private func textFieldDidEndEditing(_ textField: NumberTextField) {
 

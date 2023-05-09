@@ -211,6 +211,10 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
+        let aCell = tableview.dequeueReusableCell(withIdentifier: "cellSelectWalletvc") as! cellSelectWalletvc
+      
+        aCell.reloadInputViews()
+//
         Seclected_bank = filteredData[indexPath.row].name
         for i in getBankid
         {
@@ -225,15 +229,14 @@ extension SelectWalletVC: UITableViewDelegate, UITableViewDataSource
             
 
         }
-        
-        let aCell = tableview.dequeueReusableCell(withIdentifier: "cellSelectWalletvc") as! cellSelectWalletvc
         GlobalData.Selected_bank = Seclected_bank!
         GlobalData.Selected_bank_id  = bankId!
         GlobalData.Selected_bank_code  = bankcode!
-       
         GlobalData.selected_bank_logo = filteredData[indexPath.row].path
-
-        self.navigationController?.popViewController(animated: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.navigationController?.popViewController(animated: false)
+        }
+        
      
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)

@@ -166,9 +166,9 @@ extension City_selectionVC: UITableViewDelegate, UITableViewDataSource
          GlobalData.user_City = Seclected_City!
         GlobalData.User_CityId = cityID
         print("city id get",  GlobalData.User_CityId)
-    
-        self.navigationController?.popViewController(animated: false)
-  
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.navigationController?.popViewController(animated: false)
+        }
         
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)

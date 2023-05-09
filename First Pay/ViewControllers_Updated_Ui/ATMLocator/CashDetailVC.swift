@@ -25,17 +25,17 @@ class CashDetailVC: UIViewController {
         self.dismiss(animated: true)
         
     }
-    
-
     @IBOutlet weak var buttonCross: UIButton!
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var viewDetail: UIView!
     @IBOutlet weak var buttonShowcashPointDetail: UIButton!
     @IBAction func buttonShowcashPointDetail(_ sender: UIButton) {
+
     }
     @IBOutlet weak var buttonshowDetail: UIButton!
     @IBAction func buttonshowDetail(_ sender: UIButton) {
         viewDetail.isHidden = false
     }
 
+    
 }

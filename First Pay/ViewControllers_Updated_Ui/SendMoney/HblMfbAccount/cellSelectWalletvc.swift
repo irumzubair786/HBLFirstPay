@@ -18,4 +18,12 @@ class cellSelectWalletvc: UITableViewCell {
     @IBOutlet weak var lblBankNem: UILabel!
     @IBOutlet weak var img: UIImageView!
     
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        if (selected) {
+            lblBankNem.textColor = UIColor(hexValue: 0x00CC96)
+        } else {
+            lblBankNem.textColor = UIColor.black
+        }
+    }
+    
 }

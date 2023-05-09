@@ -9,8 +9,16 @@
 import UIKit
 
 class cellCategory: UICollectionViewCell {
+   
     @IBOutlet weak var btnCategory: UIButton!
     
     @IBOutlet weak var backView: UIView!
+   
+    override var isSelected: Bool {
+        didSet {
+            // set color according to state
+            self.backgroundColor = self.isSelected ? .blue : .clear
+        }
+    }
     
 }

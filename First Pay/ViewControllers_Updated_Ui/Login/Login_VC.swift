@@ -529,18 +529,21 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 }
                 else{
                     if let message = self.loginObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
-                            
-                            ["buttonName": "OK",
-                            "buttonBackGroundColor": UIColor.clrOrange,
-                            "buttonTextColor": UIColor.white]
+                        lbl_InvalidPassword.isHidden = false
+                        lbl_InvalidPassword.text = message
+                        lbl_InvalidPassword.textColor = .red
+//                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
+//
+//                            ["buttonName": "OK",
+//                            "buttonBackGroundColor": UIColor.clrOrange,
+//                            "buttonTextColor": UIColor.white]
                         
 //                                ["buttonName": "CANCEL",
 //                                "buttonBackGroundColor": UIColor.clrOrange,
 //                                "buttonTextColor": UIColor.white]
                         
                         
-                        ] as? [[String: AnyObject]])
+//                        ] as? [[String: AnyObject]])
                       
                     }
                 }

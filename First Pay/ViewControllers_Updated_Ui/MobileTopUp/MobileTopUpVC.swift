@@ -44,6 +44,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
 
         img_next_arrow.addGestureRecognizer(tapGestureRecognizerr)
+        Tf_mobileNumber.placeholder = "Enter Number of Recipient"
         // Do any additional setup after loading the view.
     }
    
@@ -156,6 +157,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         self.present(contactPicker, animated: true, completion: nil)
     }
     @IBAction func ActionPrepaid(_ sender: UIButton) {
+        Tf_mobileNumber.placeholder =  "Enter Number of Recipient"
         UIView.transition(with: self.view, duration: 0.3, options: .transitionFlipFromRight, animations: {
            
         }, completion: nil)
@@ -184,6 +186,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     }
     
     @IBAction func Action_postpaid(_ sender: UIButton) {
+        Tf_mobileNumber.placeholder = "Enter Number"
         UIView.transition(with: self.view, duration: 0.3, options: .transitionFlipFromLeft, animations: {
            
         }, completion: nil)

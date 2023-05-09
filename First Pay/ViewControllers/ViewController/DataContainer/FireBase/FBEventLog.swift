@@ -10,6 +10,7 @@ import Foundation
 import FirebaseAnalytics
 
 struct FBEvents {
+    //<<<<<<< HEAD
     
     static func logEvent(title: FBEvents.name, failureReason: String? = nil) {
         if let userAccountNo = DataManager.instance.accountNo {
@@ -25,11 +26,11 @@ struct FBEvents {
             Analytics.logEvent(titleName, parameters: parameter)
         }
     }
-
+    
     enum name: String {
         //MARK: - Test Event
         case testOne
-
+        
         
         //MARK: - Login
         case Login_success
@@ -222,6 +223,32 @@ struct FBEvents {
         
         case Transactions_active
         
+//        =======
+        enum name: String {
+            //MARK:- NanoLoan
+            case titleOne = "titleOne"
+            case titleTwo = "titleTwo"
+        }
+        
+        static func logEvent(title: FBEvents.name, description: String) {
+            //<<<<<<< HEAD
+            let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+            let titleName = title.rawValue
+            Analytics.logEvent(titleName, parameters: [
+                "userId": "id-\(userCnic!)",
+                "eventName": titleName,
+            ])
+            //=======
+            //        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+            //        let titleName = title.rawValue
+            //        Analytics.logEvent(titleName, parameters: [
+            //          AnalyticsParameterItemID: "id-\(userCnic!)",
+            //          AnalyticsParameterItemName: titleName,
+            //          AnalyticsParameterContentType: description,
+            //        ])
+            //>>>>>>> cf0dbe8 (Atm locator Ui)
+            //>>>>>>> 1ebba6f (QA Observation Fixation)
+        }
     }
 }
 
