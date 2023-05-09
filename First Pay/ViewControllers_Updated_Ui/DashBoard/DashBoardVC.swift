@@ -60,12 +60,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         let tapGestureRecognizrz = UITapGestureRecognizer(target: self, action: #selector(moveToInviteFriend(tapGestureRecognizer:)))
         imgInviteFriend.isUserInteractionEnabled = true
         imgInviteFriend.addGestureRecognizer(tapGestureRecognizrz)
-
-        
-//       tapGestures()
-//        NotificationCenter.default.removeObserver(self)
-//        NotificationCenter.default.addObserver(self, selector: #selector(viewDidLoadCustom), name: Notification.Name("LanguageChangeThroughObserver"), object: nil)
-//        
+    
     }
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBOutlet weak var imageAddCash: UIImageView!
@@ -128,14 +123,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         }
         else if tag == 1
         {
-//            movtToTopUp
-//            let  myDict = [ "name": "MobileTopUpVC"]
-//                   NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
-//            let storyboard = UIStoryboard(name: "TopUp", bundle: nil)
-//            let vc = storyboard.instantiateViewController(withIdentifier: "MobileTopUpVC")
-//            self.present(vc, animated: true)
-            
-            
+
             
             let storyboard = UIStoryboard(name: "TopUp", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "movtToTopUp")
@@ -164,6 +152,16 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             
         }
        
+    }
+    var comabalanceLimit : String?
+    func CommaSepration()
+    {
+        var number = Double(self.getCurrentBal!)
+        var formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        comabalanceLimit = (formatter.string(from: NSNumber(value: number)))!
     }
     
     let pageIndicator = UIPageControl()
@@ -261,7 +259,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     private func saveInDataManager(index : Int){
         getCurrentBal = homeObj?.userData?[0].currentBalance
         
-        lblAmount.text =   "Rs.\(getCurrentBal!)"
+        lblAmount.text =   "Rs.\(comabalanceLimit!)"
         
         lblName.text =  homeObj?.userData?[0].accountTitile
         LblMobNo.text =  homeObj?.userData?[0].accountNo

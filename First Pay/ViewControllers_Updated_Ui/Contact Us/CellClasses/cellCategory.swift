@@ -17,7 +17,7 @@ class cellCategory: UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             // set color according to state
-            self.backgroundColor = self.isSelected ? .blue : .clear
+//            self.backgroundColor = self.isSelected ? .blue : .clear
         }
     }
     

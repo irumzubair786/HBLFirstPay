@@ -272,12 +272,13 @@ extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
             cell.btnCategory.setTitleColor(.white, for: .normal)  ///set title color here to white
             cell.btnCategory.backgroundColor = UIColor(hexValue: 0xF19434)
             cell.btnCategory.borderColor = UIColor(hexValue: 0xF19434)
-//        }else{
-//            //set title color here to black
+        }else{
+            //set title color here to black
             cell.btnCategory.setTitleColor(.black, for: .normal)
-
+            cell.btnCategory.borderColor = UIColor.clear
+            cell.btnCategory.borderColor = UIColor.gray
             cell.btnCategory.backgroundColor = UIColor.clear
-
+        
         }
         cell.btnCategory.setTitle(myarr[indexPath.row].name, for: .normal)
         cell.btnCategory.tag = indexPath.row
@@ -286,17 +287,7 @@ extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
         return cell
 
     }
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        NSLog ("You selected row: %@ \(indexPath)")
-//        selectedCategory =  String(arrCategory[indexPath.row])
-//        let cell = collectionViewCategory .dequeueReusableCell(withReuseIdentifier: "cellCategory", for: indexPath) as! cellCategory
-////        cell.backView.
-////        cell.btnCategory.backgroundColor = UIColor.lightGray
-////        cell.btnCategory.setTitleColor(.black, for: .normal)
-////        myarr[indexPath.row].isSeleccted = false
-//
-//
-//    }
+
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         if let visibleIndexPath = self.visibleIndexPath {
