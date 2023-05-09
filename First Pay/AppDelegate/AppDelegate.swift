@@ -104,12 +104,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         FirebaseApp.configure()
         
+<<<<<<< HEAD
 //<<<<<<< HEAD
 //        FBEvents.logEvent(title: .testOne)
 //=======
 //        FBEvents.logEvent(title: .titleOne, description: "test description")
 //>>>>>>> 1ebba6f (QA Observation Fixation)
 
+=======
+        FBEvents.logEvent(title: .testOne, failureReason: "test fail")
+        
+>>>>>>> ac82f83 (event logg)
         return true
     }
     

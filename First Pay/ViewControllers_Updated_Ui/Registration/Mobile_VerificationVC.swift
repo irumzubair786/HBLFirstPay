@@ -19,6 +19,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     let encryptionkey = "65412399991212FF65412399991212FF65412399991212FF"
   
     override func viewDidLoad(){
+        FBEvents.logEvent(title: .Signup_login_landed)
         super.viewDidLoad()
         getIMEI()
         getIPAddressmac()
@@ -287,14 +288,15 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         print(params)
         print(compelteUrl)
 
+        FBEvents.logEvent(title: .Signup_login_attempt)
         NetworkManager.sharedInstance.enableCertificatePinning()
-//
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<mobileRegistrationModel>) in
 
             self.hideActivityIndicator()
 
             self.mobileRegistrationObj = response.result.value
             if response.response?.statusCode == 200 {
+                FBEvents.logEvent(title: .Signup_login_success)
 
                 if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
                     let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
@@ -319,7 +321,8 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
                 }
             }
             else {
-                if let message = self.mobileRegistrationObj?.messages{
+                if let message = self.mobileRegistrationObj?.messages {
+                    FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
                     self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
                 else {

@@ -17,6 +17,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     let devicemodel = UIDevice.current.localizedModel
     var genericResponseObj : GenericResponseModel?
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .Signup_forgotpass_landed)
         super.viewDidLoad()
         cnicTextField.delegate = self
         mobileNumberTextField.delegate = self
@@ -302,94 +303,95 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     
     
 
-private func verifyCustResetPass() {
-
-if !NetworkConnectivity.isConnectedToInternet(){
-    self.showToast(title: "No Internet Available")
-    return
-}
-
-showActivityIndicator()
-if (mobileNumberTextField.text?.isEmpty)!{
-    mobileNumberTextField.text = ""
-}
-if (cnicTextField.text?.isEmpty)!{
-    cnicTextField.text = ""
-}
-
-var otpType : String?
-
-let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/verifyCustResetPass"
-
-    
-//    "osVersion": "15.5", "appVersion": "3.1.2", "deviceModel": "iPhone", "channelId": "1", "mobileNo": "03406401050", "imeiNo": "B0749FED5A5D48A38C9DBFF01F4A5663", "cnic": "3740526510394"\
-    
-    
-    let a = mobileNumberTextField.text!
-   
-    var mobileNumber = a.replacingOccurrences(of: "-", with: "")
-    mobileNumber = mobileNumber.replacingOccurrences(of: "_", with: "")
-    
-    let b = cnicTextField.text!
-    var cnicNumber = b.replacingOccurrences(of: "-", with: "")
-    cnicNumber = cnicNumber.replacingOccurrences(of: "_", with: "")
-    let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":cnicNumber,"mobileNo":(mobileNumber),"imeiNo":DataManager.instance.imei!,"appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel] as [String : Any]
-//51
-
-print(parameters)
-
-let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-
-print(result.apiAttribute1)
-print(result.apiAttribute2)
-
-let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+    private func verifyCustResetPass() {
         
-let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
-
-print(params)
-print(header)
-print(compelteUrl)
-NetworkManager.sharedInstance.enableCertificatePinning()
-NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
-    
-    self.hideActivityIndicator()
-    
-    self.genericResponseObj = response.result.value
-    if response.response?.statusCode == 200 {
-        
-        if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
-            let vc = self.storyboard!.instantiateViewController(withIdentifier: "ForgotPassword_OTPVerificationVC") as! ForgotPassword_OTPVerificationVC
-            
-            
-            
-            vc.Fetch_MobNo = mobileNumber
-            DataManager.instance.userCnic = cnicNumber
-            self.navigationController!.pushViewController(vc, animated: true)
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
         }
-        else {
-            if let message = self.genericResponseObj?.messages{
-                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-            }
-            
-            // Html Parse
-            
-            if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                if title.contains("Request Rejected") {
-                    self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+        
+        showActivityIndicator()
+        if (mobileNumberTextField.text?.isEmpty)!{
+            mobileNumberTextField.text = ""
+        }
+        if (cnicTextField.text?.isEmpty)!{
+            cnicTextField.text = ""
+        }
+        
+        var otpType : String?
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/verifyCustResetPass"
+        
+        
+        //    "osVersion": "15.5", "appVersion": "3.1.2", "deviceModel": "iPhone", "channelId": "1", "mobileNo": "03406401050", "imeiNo": "B0749FED5A5D48A38C9DBFF01F4A5663", "cnic": "3740526510394"\
+        
+        
+        let a = mobileNumberTextField.text!
+        
+        var mobileNumber = a.replacingOccurrences(of: "-", with: "")
+        mobileNumber = mobileNumber.replacingOccurrences(of: "_", with: "")
+        
+        let b = cnicTextField.text!
+        var cnicNumber = b.replacingOccurrences(of: "-", with: "")
+        cnicNumber = cnicNumber.replacingOccurrences(of: "_", with: "")
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":cnicNumber,"mobileNo":(mobileNumber),"imeiNo":DataManager.instance.imei!,"appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel] as [String : Any]
+        //51
+        
+        print(parameters)
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+        print(result.apiAttribute1)
+        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+        
+        print(params)
+        print(header)
+        print(compelteUrl)
+        FBEvents.logEvent(title: .Signup_forgotpass_attempt)
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
+            self.hideActivityIndicator()
+            self.genericResponseObj = response.result.value
+            if response.response?.statusCode == 200 {
+                FBEvents.logEvent(title: .Signup_forgotpass_success)
+                if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
+                    let vc = self.storyboard!.instantiateViewController(withIdentifier: "ForgotPassword_OTPVerificationVC") as! ForgotPassword_OTPVerificationVC
+                    
+                    
+                    
+                    vc.Fetch_MobNo = mobileNumber
+                    DataManager.instance.userCnic = cnicNumber
+                    self.navigationController!.pushViewController(vc, animated: true)
+                }
+                else {
+                    if let message = self.genericResponseObj?.messages{
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                    }
+                    
+                    // Html Parse
+                    
+                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                        if title.contains("Request Rejected") {
+                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                        }
+                    }
                 }
             }
+            else {
+                if let message = self.genericResponseObj?.messages {
+                    FBEvents.logEvent(title: .Signup_forgotpass_success, failureReason: message)
+
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                }
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
+            }
         }
     }
-    else {
-        if let message = self.genericResponseObj?.messages{
-            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-        }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-    }
-}
-}
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
         verifyCustResetPass()

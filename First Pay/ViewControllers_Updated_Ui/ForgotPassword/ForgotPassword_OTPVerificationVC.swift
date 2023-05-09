@@ -26,6 +26,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
     var Fetch_MobNo : String?
     var genResponseObj : GenericResponseModel?
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .OTP_forgotpass_landed)
         super.viewDidLoad()
         print("fetch successfully mob no", Fetch_MobNo)
         lblMobNo.text = Fetch_MobNo
@@ -225,7 +226,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         print(params)
         print(compelteUrl)
         
-       
+        FBEvents.logEvent(title: .OTP_forgotpass_attempt)
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
@@ -237,6 +238,8 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
             self.genResponseObj = response.result.value
             
             if response.response?.statusCode == 200 {
+                FBEvents.logEvent(title: .OTP_forgotpass_success)
+
                 if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
                     
                     if self.genResponseObj?.messages == "OTP not verified"
@@ -267,6 +270,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
             }
             else {
                 if let message = self.genResponseObj?.messages {
+                    FBEvents.logEvent(title: .OTP_forgotpass_landed,failureReason: message)
                     self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                    
                 }
