@@ -236,8 +236,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             if response.response?.statusCode == 200 {
                 self.homeObj = response.result.value
                 if self.homeObj?.responsecode == 2 || self.homeObj?.responsecode == 1 {
-                    
+                 
                     self.saveInDataManager(index: 0)
+                 
                     self.hideActivityIndicator()
 //                    banapi()
 //
@@ -257,10 +258,11 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     }
     var getCurrentBal : Double?
     private func saveInDataManager(index : Int){
-        getCurrentBal = homeObj?.userData?[0].currentBalance
-        
+//
+        getCurrentBal =  homeObj?.userData?[0].currentBalance
+        CommaSepration()
         lblAmount.text =   "Rs.\(comabalanceLimit!)"
-        
+      
         lblName.text =  homeObj?.userData?[0].accountTitile
         LblMobNo.text =  homeObj?.userData?[0].accountNo
         DataManager.instance.mobile_number = homeObj?.userData?[0].accountNo

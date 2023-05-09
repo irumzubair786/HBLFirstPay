@@ -62,7 +62,7 @@ class ATMLocatormainVc: UIViewController {
     }
     @IBOutlet weak var buttonBranch: UIButton!
     @IBAction func buttonBranch(_ sender: UIButton) {
-        
+
         branchFlag = true
         cashFlag = false
         atmFlag = false

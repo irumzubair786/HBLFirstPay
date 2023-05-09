@@ -71,14 +71,27 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         self.dismiss(animated: true)
         
     }
+    
+    var comabalanceLimit : String?
+    func CommaSepration()
+    {
+        var number = Double(self.amount!)
+        var formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        comabalanceLimit = (formatter.string(from: NSNumber(value: number!)))!
+    }
+    
     func updateUI()
     {
+        CommaSepration()
         if OTPREQ == "N"
         {
             otpTextField.isHidden = true
         }
-            amountTextField.text = "Rs \(amount!)"
-            totalAmount.text = "Rs \(amount!)"
+            amountTextField.text = "Rs \(comabalanceLimit!)"
+            totalAmount.text = "Rs \(comabalanceLimit!)"
             if  isfromFirstPayWallet == true{
                
                 
@@ -115,7 +128,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 sourceAccountno.text = DataManager.instance.accountNo!
                 totalAmount.text = amount!
     //            PurposeTf.text = GlobalData.money_Reason
-
+        
                 lblAccName.text = bankname!
     //            otpView.isHidden = true
                 var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
@@ -317,7 +330,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                     self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
-//                print(response.response?.statusCode)
+//
+                print(response.response?.statusCode)
             }
         }
     }
@@ -326,11 +340,14 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     {
 //        if otpTextField?.text?.count != 0
 //        {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransfer_SuccessfullVC") as! Hblmfb_MoneyTransfer_SuccessfullVC
+            let vc = storyboard?.instantiateViewController(withIdentifier: "otherWalletTransationSuccessfullVC") as! otherWalletTransationSuccessfullVC
             vc.amount = Double(amount!)
             vc.TransactionId = fundsTransSuccessObj?.data?.authIdResponse
             vc.TransactionDate = fundsTransSuccessObj?.data?.transDate
-            vc.number = number!
+           
+        var merge = "\(ToaccountTitle!)\(number!)"
+        print("other wallet bank name", merge)
+         vc.number = merge
             vc.Toaccounttitle = ToaccountTitle
             self.navigationController?.pushViewController(vc, animated: true)
 //        }

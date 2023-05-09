@@ -30,23 +30,19 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
         btnCross.setTitle("", for: .normal)
         btnDownlload.setTitle("", for: .normal)
         btnShare.setTitle("", for: .normal)
-        lblWalletName.isHidden = true
-        lblwalletNameValue.isHidden = true
-        lblFee.isHidden = true
+       
 //        lblFeeCharged.isHidden = true
         UpdateUi()
         // Do any additional setup after loading the view.
     }
     
-    @IBOutlet weak var lblFeeCharged: UILabel!
-    @IBOutlet weak var lblFee: UILabel!
+   
     @IBOutlet weak var lblDateTime: UILabel!
     @IBOutlet weak var lblSourceAccount: UILabel!
     @IBOutlet weak var lblBeneficiaryAccount: UILabel!
     @IBOutlet weak var lblTransType: UILabel!
     @IBOutlet weak var lblTransactionId: UILabel!
-    @IBOutlet weak var lblwalletNameValue: UILabel!
-    @IBOutlet weak var lblWalletName: UILabel!
+   
     @IBOutlet weak var btnCross: UIButton!
     @IBOutlet weak var btnDownlload: UIButton!
     @IBOutlet weak var btnShare: UIButton!
@@ -95,53 +91,54 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
             lblTransType.text = "Wallet to Wallet"
             lblSourceAccount.text = "FirstPay Account \(DataManager.instance.accountNo!)"
             lblDateTime.text = TransactionDate!
-            lblFee.text = "Rs 0.00"
+          
             lblBeneficiaryAccount.text = number!
               
         }
         else if isfromHblMbfAccount == true
-        {            lblTransactionId.text  = TransactionId
+        {
+            lblTransactionId.text  = TransactionId
             lblTransType.text = "HBL MfB Transfer"
             lblSourceAccount.text = DataManager.instance.accountNo!
             lblDateTime.text = TransactionDate!
-            lblFee.text = "Rs 0.00"
+            
             lblBeneficiaryAccount.text = number!
              
         }
             
-        else if isfromOtherLocalBank == true{
-            
-            lblWalletName.isHidden = false
-            lblwalletNameValue.isHidden = false
-            lblWalletName.text = "HBL MfB Transfer"
-            lblTransactionId.text  = TransactionId
-            lblTransType.text = "Bank Name"
-            lblSourceAccount.text = DataManager.instance.accountNo!
-            lblDateTime.text = TransactionDate!
-            lblBeneficiaryAccount.text = number!
-            lblwalletNameValue.text = GlobalData.Selected_bank
-            lblFee.text = "Rs 0.00"
-            
-           
-            
-            
-            
-        }
-        else{
-            lblWalletName.isHidden = false
-            lblwalletNameValue.isHidden = false
-            lblTransactionId.text  = TransactionId
-            lblTransType.text = "Wallet Name"
-            lblBeneficiaryAccount.text = number!
-            lblWalletName.text = "Wallet Transfer"
-            lblwalletNameValue.text = GlobalData.Selected_bank
-            lblSourceAccount.text = DataManager.instance.accountTitle!
-            lblDateTime.text = TransactionDate!
-            lblFee.text = "Rs 0.00"
-            
-            
-            
-        }
+//        else if isfromOtherLocalBank == true{
+//
+//            lblWalletName.isHidden = false
+//            lblwalletNameValue.isHidden = false
+//            lblWalletName.text = "HBL MfB Transfer"
+//            lblTransactionId.text  = TransactionId
+//            lblTransType.text = "Bank Name"
+//            lblSourceAccount.text = DataManager.instance.accountNo!
+//            lblDateTime.text = TransactionDate!
+//            lblBeneficiaryAccount.text = number!
+//            lblwalletNameValue.text = GlobalData.Selected_bank
+//            lblFee.text = "Rs 0.00"
+//
+//
+//
+//
+//
+//        }
+//        else{
+//            lblWalletName.isHidden = false
+//            lblwalletNameValue.isHidden = false
+//            lblTransactionId.text  = TransactionId
+//            lblTransType.text = "Wallet Name"
+//            lblBeneficiaryAccount.text = number!
+//            lblWalletName.text = "Wallet Transfer"
+//            lblwalletNameValue.text = GlobalData.Selected_bank
+//            lblSourceAccount.text = DataManager.instance.accountTitle!
+//            lblDateTime.text = TransactionDate!
+//            lblFee.text = "Rs 0.00"
+//
+//
+//
+//        }
         
         
         
