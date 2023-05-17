@@ -7,16 +7,23 @@
 //
 
 import UIKit
+import XLPagerTabStrip
 
 
-class ContentVC: UIViewController {
-    
-    @IBOutlet weak var nameLabel: UILabel!
-    
+class InviteFriendUsers: UIViewController {
+        
     @IBOutlet weak var tableView: TableViewContentSized!
     var pageIndex: Int = 0
     var strTitle: String!
+    override func viewWillAppear(_ animated: Bool) {
+        print("view will appear: InviteFriendUsers")
+        
 
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        NotificationCenter.default.post(name: Notification.Name("setHeightOfInviteFriendUsersContainerView"), object: ["height":tableView.frame.size.height])
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
        // nameLabel.text = strTitle
@@ -30,7 +37,7 @@ class ContentVC: UIViewController {
 
 }
 // MARK: TableView Delegates
-extension ContentVC: UITableViewDelegate, UITableViewDataSource {
+extension InviteFriendUsers: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
@@ -72,5 +79,20 @@ extension ContentVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
-   
+}
+
+// MARK: - IndicatorInfoProvider for page controller like android
+extension InviteFriendUsers: IndicatorInfoProvider {
+    // MARK: - IndicatorInfoProvider
+
+    func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
+        let itemInfo = IndicatorInfo(title: "COMMUNITY")
+        return itemInfo
+    }
+    
+    
+//    func indicatorInfoForPagerTabStrip(pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
+//        let itemInfo = IndicatorInfo(title: "Community")
+//        return itemInfo
+//    }
 }

@@ -13,7 +13,6 @@ class CashDetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonCross.setTitle("", for: .normal)
-        buttonBack.setTitle("", for: .normal)
         viewDetail.isHidden = true
         buttonshowDetail.setTitle("", for: .normal)
         buttonShowcashPointDetail.setTitle("", for: .normal)
@@ -21,12 +20,12 @@ class CashDetailVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func buttonBack(_ sender: UIButton) {
+    @IBAction func buttonCross(_ sender: UIButton) {
         self.dismiss(animated: true)
         
     }
     @IBOutlet weak var buttonCross: UIButton!
-    @IBOutlet weak var buttonBack: UIButton!
+
     @IBOutlet weak var viewDetail: UIView!
     @IBOutlet weak var buttonShowcashPointDetail: UIButton!
     @IBAction func buttonShowcashPointDetail(_ sender: UIButton) {

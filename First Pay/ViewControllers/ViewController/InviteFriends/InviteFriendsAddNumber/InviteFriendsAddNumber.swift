@@ -9,6 +9,7 @@ import UIKit
 import Alamofire
 import ContactsUI
 import libPhoneNumber_iOS
+import XLPagerTabStrip
 
 class InviteFriendsAddNumber: UIViewController {
 
@@ -185,4 +186,17 @@ extension InviteFriendsAddNumber {
         }
     }
 
+}
+// MARK: - IndicatorInfoProvider for page controller like android
+extension InviteFriendsAddNumber: IndicatorInfoProvider {
+    func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
+        let itemInfo = IndicatorInfo(title: "InviteFriendsAddNumber")
+        return itemInfo
+    }
+    
+    
+    func indicatorInfoForPagerTabStrip(pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
+        let itemInfo = IndicatorInfo(title: "InviteFriendsAddNumber")
+        return itemInfo
+    }
 }

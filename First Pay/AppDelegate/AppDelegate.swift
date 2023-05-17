@@ -12,6 +12,13 @@ import OneSignal
 import Siren
 import IQKeyboardManager
 import FirebaseCore
+import GoogleMaps
+
+
+let googleApiKey = "AIzaSyBM0HKZjq1TyOBA1HjVW2Wdhx1YfPJpJ3I" //MyAccountKey
+
+//let googleApiKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs" //HeyCab
+let googleApiPlacesKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs"
 
 //@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -104,7 +111,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         FirebaseApp.configure()
         FBEvents.logEvent(title: .testOne, failureReason: "test fail")
-        
+        GMSServices.provideAPIKey(googleApiKey)
+
         return true
     }
     

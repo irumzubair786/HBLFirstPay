@@ -6,6 +6,7 @@ target 'First Pay' do
   use_frameworks!
 
   # Pods for First Pay
+  pod 'XLPagerTabStrip'
   pod 'IQKeyboardManager'
   pod 'KYDrawerController'
   pod 'Alamofire' , '~> 4.7.3'
@@ -33,6 +34,10 @@ target 'First Pay' do
    pod 'MBProgressHUD', '~> 1.2'
     pod 'SDWebImage', '~> 4.3'
   pod 'Kingfisher', '~> 4.0'
+  pod 'GoogleMaps'
+  pod 'GooglePlaces'
+
+  
   #pod 'GoogleMLKit/BarcodeScanning'
   #pod 'GoogleMLKit/TextRecognition'
   pod 'SCLAlertView', '~> 0.8'

@@ -106,7 +106,7 @@ struct APIs {
                     token = headerWithToken!
                 }
                 else {
-                    token = "\(DataManager.instance.accessToken!)"
+                    token = "\(DataManager.instance.accessToken ?? "")"
                 }
                 request.addValue(token, forHTTPHeaderField: "Authorization")
 //
@@ -167,6 +167,89 @@ struct APIs {
         }
     }
     
+    static func getAPI(apiName: APIs.name, parameters: [String: Any]? = nil, headerWithToken: String? = nil , headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+        
+        let baseClass = BaseClassVC()
+        
+        let completeUrl = APIPath.baseUrl + apiName.rawValue
+        
+        let url = URL(string: completeUrl)!
+
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.get.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        var tempHeader = ""
+        var token  = ""
+                if apiName == .updateAccountStatus {
+//                    token = DataManager.instance.loginResponseToken ?? ""
+                    token = DataManager.instance.accessToken ?? ""
+                }
+                else if headerWithToken != nil {
+                    token = headerWithToken!
+                }
+                else {
+                    token = "\(DataManager.instance.accessToken ?? "")"
+                }
+                request.addValue(token, forHTTPHeaderField: "Authorization")
+//
+        
+        print("Url: \(completeUrl)")
+        print("Parameters: \(parameters)")
+        print("Headers: \(token)")
+        
+//        request.httpBody = jsonData
+        //print("\(APIs.json(from: parameters)))")
+        if let vc = viewController {
+            vc.showActivityIndicator2()
+        }
+        
+        Alamofire.request(request).responseJSON { response in
+            print("Response: \(response)")
+            if let vc = viewController {
+                vc.hideActivityIndicator2()
+            }
+            switch response.result {
+            case .success(let json):
+                let modelGetActiveLoan = try? JSONDecoder().decode(NanoLoanApplyViewController.ModelGetLoanCharges.self, from: response.data!)
+                print(modelGetActiveLoan)
+                
+                let serverResponse = JSON(response.value!)
+                
+                print("Request Headers: \(String(describing: request.allHTTPHeaderFields))")
+                print("Request Url: \(String(describing: request.url))")
+                print("Request Parameters: \(parameters)")
+                print("JSON: \(serverResponse)")
+                print("JSON: \(json)")
+                switch response.response?.statusCode {
+                case 200 :
+                    if serverResponse["responsecode"] == 1 {
+                        completion(response.data, true, "")
+                    }
+                    else {
+                        completion(response.data, false, serverResponse["message"].string ?? "")
+                    }
+                    break
+                default :
+                    completion(response.data, false, serverResponse["message"].string ?? "")
+                    break
+                }
+            case .failure( _):
+                var errorMessage = ""
+                if let error = response.error?.localizedDescription {
+                    let errorArray = error.components(separatedBy: ":")
+                    errorMessage = errorArray.count > 1 ? errorArray[1] : error
+                    completion(nil, false, errorMessage)
+                }
+                else {
+                    errorMessage = response.error.debugDescription
+                    completion(nil, false, response.error.debugDescription)
+                }
+                break
+            }
+        }
+    }
     static func decodeDataToObject<T: Codable>(data : Data?)->T?{
         if let dt = data{
             do{
@@ -230,6 +313,9 @@ struct APIs {
         //WalletCreation
         case inviteFriends = "FirstPayInfo/v1/inviteFriends"
         case invitedFriendsList = "FirstPayInfo/v1/invitedFriendsList"
+        case getAtmBranchLocation = "FirstPayInfo/v1/getAtmBranchLocation"
+
+        
 
         
         case getInvitorFriendsList = "WalletCreation/v1/getInvitorFriendsList"

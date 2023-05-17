@@ -12,10 +12,11 @@ class ATMDetailVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        buttonBack.setTitle("", for: .normal)
         // Do any additional setup after loading the view.
     }
-    @IBAction func buttonBack(_ sender: UIButton) {
+    
+    @IBOutlet weak var buttonCross: UIButton!
+    @IBAction func buttonCross(_ sender: UIButton) {
         self.dismiss(animated: true)
         
     }

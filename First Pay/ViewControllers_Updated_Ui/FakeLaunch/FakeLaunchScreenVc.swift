@@ -9,10 +9,13 @@
 import UIKit
 
 class FakeLaunchScreenVc: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+//                testVC()
+//                return()
         print("login device",DataManager.FirstTimeLogin )
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             
             guard let  FirsTimeLogin = UserDefaults.standard.string(forKey:  "FirstTimeLogin")else
@@ -25,11 +28,21 @@ class FakeLaunchScreenVc: UIViewController {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "FakeLoginVc") as! FakeLoginVc
             self.navigationController?.pushViewController(vc, animated: true)
             
-            
-            
         }
     }
-        
+    
+    func testVC() {
+//        InviteFriends()
+        ATMLocatorVC()
+    }
+    func InviteFriends() {
+        let vc = UIStoryboard.init(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteAFriends") as! InviteAFriends
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func ATMLocatorVC() {
+        let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "ATMLocatormainVc") as! ATMLocatormainVc
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
        
 }
     

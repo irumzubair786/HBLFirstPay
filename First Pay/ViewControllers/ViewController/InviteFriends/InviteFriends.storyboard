@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="K83-2R-NfX">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -87,10 +87,10 @@
                                         </constraints>
                                     </view>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xj0-eX-6TI">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="609"/>
+                                        <rect key="frame" x="0.0" y="50" width="393" height="709"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dup-5t-3dk">
-                                                <rect key="frame" x="0.0" y="0.0" width="393" height="961"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="911"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ib1-R2-RLI">
                                                         <rect key="frame" x="0.0" y="0.0" width="393" height="105"/>
@@ -458,11 +458,30 @@
                                                             <constraint firstAttribute="trailing" secondItem="Nwi-OK-0Q5" secondAttribute="trailing" constant="20" id="Zp7-t5-UyC"/>
                                                         </constraints>
                                                     </view>
+                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jhx-aR-lhb">
+                                                        <rect key="frame" x="0.0" y="811" width="393" height="400"/>
+                                                        <subviews>
+                                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IaY-i7-6UY">
+                                                                <rect key="frame" x="0.0" y="0.0" width="393" height="400"/>
+                                                                <connections>
+                                                                    <segue destination="U6F-3X-0yP" kind="embed" id="aOZ-C2-O1t"/>
+                                                                </connections>
+                                                            </containerView>
+                                                        </subviews>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <constraints>
+                                                            <constraint firstItem="IaY-i7-6UY" firstAttribute="top" secondItem="Jhx-aR-lhb" secondAttribute="top" id="3fX-Yf-oio"/>
+                                                            <constraint firstItem="IaY-i7-6UY" firstAttribute="leading" secondItem="Jhx-aR-lhb" secondAttribute="leading" id="kv2-Ij-tkx"/>
+                                                            <constraint firstAttribute="trailing" secondItem="IaY-i7-6UY" secondAttribute="trailing" id="qoH-YC-tAo"/>
+                                                            <constraint firstAttribute="height" constant="400" id="wht-Eb-ynM"/>
+                                                            <constraint firstAttribute="bottom" secondItem="IaY-i7-6UY" secondAttribute="bottom" id="xPa-zE-WHW"/>
+                                                        </constraints>
+                                                    </view>
                                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5sE-g4-42D">
-                                                        <rect key="frame" x="0.0" y="811" width="393" height="100"/>
+                                                        <rect key="frame" x="0.0" y="811" width="393" height="50"/>
                                                         <subviews>
                                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="pSm-bI-0W4" customClass="TableViewContentSized" customModule="FirstPay" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="393" height="40"/>
                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                             </tableView>
                                                         </subviews>
@@ -476,7 +495,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T10-0x-v9A">
-                                                        <rect key="frame" x="0.0" y="911" width="393" height="50"/>
+                                                        <rect key="frame" x="0.0" y="861" width="393" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="ChF-lW-4du"/>
@@ -548,11 +567,16 @@
                         <outlet property="buttonInviteFriend" destination="3F6-yD-O1p" id="63C-3f-pWQ"/>
                         <outlet property="buttonSendInvite" destination="xcC-TG-q4s" id="BoG-DS-A8E"/>
                         <outlet property="buttonViewTerms" destination="en8-wv-vtx" id="4c0-dt-QGH"/>
+                        <outlet property="constantContainerHeight" destination="wht-Eb-ynM" id="LxI-2n-end"/>
+                        <outlet property="constatHeightBackGroundTableView" destination="0ZH-sl-d1w" id="ATw-5D-rzO"/>
+                        <outlet property="containerView" destination="IaY-i7-6UY" id="Q3b-oF-H5Q"/>
                         <outlet property="labelCompaignText" destination="XJJ-zt-cyF" id="ggz-VZ-aRv"/>
                         <outlet property="labelInviteFriendButton" destination="7hF-jk-1tb" id="NXR-p5-GYC"/>
                         <outlet property="labelTotalEarning" destination="5Ma-Me-uzA" id="ie0-cO-PXs"/>
                         <outlet property="segmentControl" destination="UBk-sd-6T5" id="hgy-IX-px9"/>
                         <outlet property="tableView" destination="pSm-bI-0W4" id="TQQ-qQ-Hrg"/>
+                        <outlet property="viewBackGroundContainerView" destination="Jhx-aR-lhb" id="KfX-6k-V5d"/>
+                        <outlet property="viewBackGroundTableView" destination="5sE-g4-42D" id="INe-GV-Njb"/>
                         <outlet property="viewButtonSendInvite" destination="ZwJ-uB-trG" id="5sR-yD-zD9"/>
                         <outlet property="viewInviteFriendBackButtonGround" destination="5em-lZ-7aB" id="XtX-FD-ac2"/>
                         <outlet property="viewInviteFriendBackGround" destination="bJq-zG-Zqa" id="Hbu-EK-Att"/>
@@ -1513,23 +1537,60 @@ to complete tasks </string>
             </objects>
             <point key="canvasLocation" x="-1677.0992366412213" y="1521.1267605633805"/>
         </scene>
-        <!--Page ControllerVC-->
-        <scene sceneID="0qB-GG-Bek">
+        <!--InviteA Friends Users Page Control-->
+        <scene sceneID="5pl-8Y-2qT">
             <objects>
-                <pageViewController storyboardIdentifier="PageControllerVC" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="tIK-EB-tnB" customClass="PageControllerVC" customModule="HBLFMB" customModuleProvider="target" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rkG-Lu-lRu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="InviteAFriendsUsersPageControl" id="3sR-qf-xQQ" customClass="InviteAFriendsUsersPageControl" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="shU-SF-mfu">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P1l-Ll-3dd">
+                                <rect key="frame" x="0.0" y="99" width="393" height="719"/>
+                            </scrollView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jJ5-Jj-ajU" customClass="ButtonBarView" customModule="XLPagerTabStrip">
+                                <rect key="frame" x="0.0" y="59" width="393" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="s2W-oH-8gN"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0o3-k6-nBV">
+                                    <size key="itemSize" width="40" height="40"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="9QH-wc-5IP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="9QH-wc-5IP" firstAttribute="bottom" secondItem="P1l-Ll-3dd" secondAttribute="bottom" id="UJF-yF-MRf"/>
+                            <constraint firstItem="P1l-Ll-3dd" firstAttribute="top" secondItem="jJ5-Jj-ajU" secondAttribute="bottom" id="VFl-9A-fn3"/>
+                            <constraint firstItem="9QH-wc-5IP" firstAttribute="trailing" secondItem="jJ5-Jj-ajU" secondAttribute="trailing" id="fXE-2b-5Yx"/>
+                            <constraint firstItem="P1l-Ll-3dd" firstAttribute="leading" secondItem="shU-SF-mfu" secondAttribute="leading" id="ol8-c5-77X"/>
+                            <constraint firstItem="9QH-wc-5IP" firstAttribute="trailing" secondItem="P1l-Ll-3dd" secondAttribute="trailing" id="sge-7B-4H5"/>
+                            <constraint firstItem="jJ5-Jj-ajU" firstAttribute="leading" secondItem="9QH-wc-5IP" secondAttribute="leading" id="wag-M2-Wek"/>
+                            <constraint firstItem="jJ5-Jj-ajU" firstAttribute="top" secondItem="9QH-wc-5IP" secondAttribute="top" id="xWu-XX-NQF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="customcolv" destination="jJ5-Jj-ajU" id="7Yo-cq-bU1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T1d-lz-Erk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2505" y="1522"/>
+            <point key="canvasLocation" x="-1677.0992366412213" y="2236.6197183098593"/>
         </scene>
-        <!--ContentVC-->
+        <!--Invite Friend Users-->
         <scene sceneID="yyS-cQ-dwa">
             <objects>
-                <viewController storyboardIdentifier="ContentVC" id="8NX-xS-Hdd" customClass="ContentVC" customModule="HBLFMB" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InviteFriendUsers" id="8NX-xS-Hdd" customClass="InviteFriendUsers" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Izj-pr-jzk">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" bounces="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="2Fa-yR-Hbs" customClass="TableViewContentSized" customModule="HBLFMB" customModuleProvider="target">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" bounces="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="2Fa-yR-Hbs" customClass="TableViewContentSized" customModule="FirstPay" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="20" width="393" height="647"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
@@ -1548,7 +1609,22 @@ to complete tasks </string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xx2-yt-qV5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1676" y="2216"/>
+            <point key="canvasLocation" x="-750" y="2237"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="K6s-gL-VSn">
+            <objects>
+                <viewController id="U6F-3X-0yP" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zIb-go-dja">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="400"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="MyQ-l9-BuR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OeV-cP-BqX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-916" y="1099"/>
         </scene>
     </scenes>
     <resources>

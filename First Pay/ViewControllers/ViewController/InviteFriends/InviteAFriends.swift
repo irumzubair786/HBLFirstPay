@@ -7,20 +7,24 @@
 
 import UIKit
 import Alamofire
+import XLPagerTabStrip
 
 class InviteAFriends: UIViewController {
 
+    @IBOutlet weak var viewBackGroundContainerView: UIView!
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var viewBackGroundTableView: UIView!
-    @IBOutlet weak var constantHeight: NSLayoutConstraint!
     @IBOutlet weak var viewPendingStatus: UIView!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var tableView: TableViewContentSized!
     
+    @IBOutlet weak var constatHeightBackGroundTableView: NSLayoutConstraint!
     @IBOutlet weak var labelTotalEarning: UILabel!
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var viewInviteFriendBackGround: UIView!
     @IBOutlet weak var viewInviteFriendBackButtonGround: UIView!
 
+    @IBOutlet weak var constantContainerHeight: NSLayoutConstraint!
     @IBOutlet weak var labelInviteFriendButton: UILabel!
     
     @IBOutlet weak var buttonInviteFriend: UIButton!
@@ -45,19 +49,19 @@ class InviteAFriends: UIViewController {
     
     
     var segmentConrtolFinishAnimating = false
-    var currentIndex: Int = 0
-    var pageController: UIPageViewController!
-    var tabs = ["Menu TAB 1","Menu TAB 2","Menu TAB 3"]
-    var viewControllers = [UIViewController]()
     
-    var contentVC : ContentVC!
-
-    
+    @objc func setHeightOfInviteFriendUsersContainerView(_ notification: Notification) {
+        print((notification.object as? NSDictionary)?.value(forKey: "height") ?? "")
+        let height = ((notification.object as? NSDictionary)?.value(forKey: "height") ?? 0)
+        var heightInt = 0.0
+        heightInt = height as! Double
+        self.constantContainerHeight.constant = heightInt
+        
+    }
     override func viewDidLoad() {
-        contentVC =  storyboard?.instantiateViewController(withIdentifier: "ContentVC") as? ContentVC
-        viewControllers = [contentVC]
-        presentPageVCOnView()
         super.viewDidLoad()
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(setHeightOfInviteFriendUsersContainerView(_:)), name: Notification.Name("setHeightOfInviteFriendUsersContainerView"),object: nil)
 
         // Do any additional setup after loading the view.
         tableView.dataSource = self
@@ -73,6 +77,23 @@ class InviteAFriends: UIViewController {
         viewButtonSendInvite.circle()
         invitedFriendsList()
     }
+    
+    func addInviteFriendPageControl() {
+//        var pageController = UIStoryboard(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteAFriendsUsersPageControl") as! InviteAFriendsUsersPageControl
+//
+//        pageController.view.frame = CGRect.init(x: 0, y: 0, width: viewBackGroundTableView.frame.width, height: 740)
+//
+////        viewBackGroundTableView.addSubview(pageController.view)
+//        self.present(pageController, animated: true)
+        
+        ViewEmbedder.embed(
+            withIdentifier: "InviteAFriendsUsersPageControl", // Storyboard ID
+            parent: self,
+            container: self.containerView){ vc in
+            // do things when embed complete
+        }
+    }
+    
     @IBAction func buttonBack(_ sender: Any) {
         self.dismiss(animated: true)
     }
@@ -85,40 +106,25 @@ class InviteAFriends: UIViewController {
     @IBAction func buttonSendInvite(_ sender: Any) {
     }
     @IBAction func segmentControl(_ sender: UISegmentedControl) {
-//        tableView.reloadData()
-//        viewPendingStatus.isHidden = true
-//        viewPendingStatus.backgroundColor = .clear
-//        viewPendingStatus.frame.size.height = 0
-//        viewPendingHint.isHidden = true
-//        if sender.selectedSegmentIndex == 1 {
-//            viewPendingStatus.isHidden = false
-//            viewPendingStatus.backgroundColor = .white
-//            viewPendingStatus.frame.size.height = 50
-//            viewPendingHint.isHidden = false
-//        }
-        
-        setView(index: sender.selectedSegmentIndex)
-        
-        let controller = viewControllers[sender.selectedSegmentIndex]
-        let indexOf = viewControllers.firstIndex(of: controller)!
-        
-        if indexOf > self.currentIndex {
-            self.pageController.setViewControllers([self.viewController(At: sender.selectedSegmentIndex)!], direction: .forward, animated: true, completion: { _ in
-                self.setTableViewHeight()
-            })
-        }else {
-            self.pageController.setViewControllers([self.viewController(At: sender.selectedSegmentIndex)!], direction: .reverse, animated: true, completion: { _ in
-                self.setTableViewHeight()
-            })
+        tableView.reloadData()
+        viewPendingStatus.isHidden = true
+        viewPendingStatus.backgroundColor = .clear
+        viewPendingStatus.frame.size.height = 0
+        viewPendingHint.isHidden = true
+        if sender.selectedSegmentIndex == 1 {
+            viewPendingStatus.isHidden = false
+            viewPendingStatus.backgroundColor = .white
+            viewPendingStatus.frame.size.height = 50
+            viewPendingHint.isHidden = false
         }
     }
     
     func invitedFriendsList() {
-        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic") ?? ""
         let parameters: Parameters = [
-            "cnic": userCnic!,
+            "cnic": userCnic,
             "channelId": "\(DataManager.instance.channelID)",
-            "imei": DataManager.instance.imei!
+            "imei": DataManager.instance.imei ?? ""
         ]
         
         APIs.postAPI(apiName: .invitedFriendsList, parameters: parameters, viewController: self) { responseData, success, errorMsg in
@@ -126,69 +132,6 @@ class InviteAFriends: UIViewController {
             self.modelinvitedFriendsList = model
             
         }
-    }
-    //Tab bar
-    func presentPageVCOnView() {
-        self.pageController = storyboard?.instantiateViewController(withIdentifier: "PageControllerVC") as! PageControllerVC
-        self.pageController = storyboard?.instantiateViewController(withIdentifier: "PageControllerVC") as! PageControllerVC
-
-        self.pageController.view.frame = CGRect.init(x: 0, y: 0, width: viewBackGroundTableView.frame.width, height: 40)
-        
-        viewBackGroundTableView.addSubview(self.pageController.view)
-        self.pageController.didMove(toParentViewController: self)
-        pageController.delegate = self
-        pageController.dataSource = self
-        pageController.setViewControllers([viewController(At: 0)!], direction: .forward, animated: true, completion: { _ in
-            self.setTableViewHeight()
-        })
-    }
-    
-    func setView(index: Int) {
-        if index == 1 {
-            viewPendingStatus.isHidden = false
-            viewPendingStatus.backgroundColor = .white
-            viewPendingStatus.frame.size.height = 50
-        }
-        else {
-            viewPendingStatus.isHidden = true
-            viewPendingStatus.backgroundColor = .clear
-            viewPendingStatus.frame.size.height = 0
-        }
-    }
-    func setTableViewHeight() {
-        let vc = (pageController.viewControllers?.first as! ContentVC)
-//        vc.pageIndex = currentIndex
-        vc.tableView.reloadData()
-        DispatchQueue.main.async {
-            self.constantHeight.constant = vc.tableView.frame.height
-        }
-        
-    }
-    
-    func viewController(At index: Int) -> UIViewController? {
-        
-        if index < 0 || index >= tabs.count {
-            return nil
-        }
-        if contentVC == nil {
-            return nil
-        }
-        //contentVC.strTitle = tabs[index]
-        currentIndex = index
-//        if index == 0 {
-//            contentVC.pageIndex = index
-//            return contentVC
-//        }
-//        else if index == 1 {
-//            contentVC2.pageIndex = index
-//            return contentVC2
-//        }
-//        else {
-//            contentVC3.pageIndex = index
-//            return contentVC3
-//        }
-        contentVC.pageIndex = index
-        return contentVC
     }
 }
 
@@ -214,6 +157,7 @@ extension InviteAFriends: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        addInviteFriendPageControl()
         if segmentControl.selectedSegmentIndex == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "InviteSentCell") as! InviteSentCell
             // if change internet package is true then we dont need to show subscribed package
@@ -557,57 +501,4 @@ extension InviteAFriends {
     }
 
 }
-extension InviteAFriends: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    
-    func pageIndex(viewController: UIViewController) -> Int {
-        return (viewController as! ContentVC).pageIndex
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        
-        var index = pageIndex(viewController: viewController)
-        if (index == tabs.count) || (index == NSNotFound) {
-            return nil
-        }
-        
-        index -= 1
-        if index < 0 {
-            return nil
-        }
-        let viewController = self.viewController(At: index)
-        return viewController
-    }
-    
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        
-        
-        
-        var index = pageIndex(viewController: viewController)
-        if (index == tabs.count) || (index == NSNotFound) {
-            return nil
-        }
-        
-        index += 1
 
-        if segmentConrtolFinishAnimating {
-            segmentConrtolFinishAnimating = false
-         //   return nil
-        }
-        segmentConrtolFinishAnimating = true
-
-        let viewController = self.viewController(At: index)
-        return viewController
-    }
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
-        if finished {
-            if completed {
-                let newIndex = pageIndex(viewController: pageViewController.viewControllers!.first!)
-                setView(index: newIndex)
-                self.setTableViewHeight()
-                self.segmentControl.selectedSegmentIndex = newIndex
-            }
-        }
-    }
-}
