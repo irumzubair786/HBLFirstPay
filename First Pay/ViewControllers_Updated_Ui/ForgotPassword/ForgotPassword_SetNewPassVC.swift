@@ -270,39 +270,8 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         }
         
         
-        
-        
-        
-//        if cnicTextField.text?.count ?? 0 < 15
-//        {
-//            lbl_InvalidCnic.isHidden = false
-//            lbl_InvalidCnic.text = "Invalid Cnic"
-//            btn_next.isUserInteractionEnabled = false
-//            let image = UIImage(named: "grayArrow")
-//            IMG_NEXT_ARROW.image = image
-//
-//        }
-//
-//        else if cnicTextField.text == ""
-//        {
-//            lbl_InvalidCnic.isHidden = true
-////        }
-////        else
-//        {
-//
-//            let image = UIImage(named: "]greenarrow")
-//            IMG_NEXT_ARROW.image = image
-////                btn_next.setImage(image, for: .normal)
-//            btn_next.isUserInteractionEnabled = true
-//            lbl_InvalidCnic.isHidden = true
-//            lblInvalidMobileNo.isHidden = true
-//
-//        }
-        
     }
-    
-    
-
+  
     private func verifyCustResetPass() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
