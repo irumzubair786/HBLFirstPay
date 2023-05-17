@@ -111,6 +111,7 @@ extension selectBranchVC: UITableViewDelegate, UITableViewDataSource
         let aCell = tableView.dequeueReusableCell(withIdentifier: "cellselectBranchVC") as! cellselectBranchVC
         let aRequest = filteredData?[indexPath.row]
         aCell.labelBranchName.text = aRequest
+        aCell.labelBranchName.textColor = UIColor(hexValue: 0x00CC96)
         return aCell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

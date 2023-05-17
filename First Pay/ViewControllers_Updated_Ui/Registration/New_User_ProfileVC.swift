@@ -316,7 +316,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         datePickerObj.addTarget(self, action: #selector(datePickerValueChanged), for: UIControlEvents.valueChanged)
 //        dd-MM-yyy
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "dd-MM-yyy"
         let newDate = dateFormatter.string(from: datePickerObj.date)
 
         cinc_issuedateFlag = "true"
@@ -338,16 +338,33 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     @objc func datePickerValueChanged(sender: UIDatePicker) {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        //        yyyy-MM-dd
+        dateFormatter.dateFormat = "dd-MM-yyy"
         TF_IssueDate.text = dateFormatter.string(from: sender.date)
         //   DataManager.instance.cnicIssueDate =  sender.date as NSDate
         DataManager.instance.cnicIssueDate =  TF_IssueDate.text
         cinc_issuedateFlag = "true"
+        
         getCnic_issueDateValue = self.TF_IssueDate.text!
         print("cnic issue date", self.getCnic_issueDateValue)
-        
+       
     }
-    
+    func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
+
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "dd-MM-yyyy"
+
+        if let date = inputFormatter.date(from: dateString) {
+
+            let outputFormatter = DateFormatter()
+          outputFormatter.dateFormat = format
+
+            return outputFormatter.string(from: date)
+        }
+
+        return nil
+    }
     
     @IBAction func Dropdown_CityList(_ sender: DropDown) {
        
@@ -568,10 +585,11 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         var cnicNumber = a.replacingOccurrences(of: "-", with: "")
         cnicNumber = cnicNumber.replacingOccurrences(of: "_", with: "")
         DataManager.instance.userCnic = cnicNumber
-        
-        
+        let b = TF_IssueDate.text?.replacingOccurrences(of: "/", with: "-")
+        let stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
+        print("date convert", stringTo)
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/cnicVerification"
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": DataManager.instance.mobNo ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": cnicNumber , "idate": TF_IssueDate.text!]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": DataManager.instance.mobNo ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": cnicNumber , "idate": stringTo ?? ""]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         

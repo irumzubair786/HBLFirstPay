@@ -364,6 +364,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
                     
                     
                     vc.Fetch_MobNo = mobileNumber
+                    vc.fetchCnic = self.cnicTextField.text!
                     DataManager.instance.userCnic = cnicNumber
                     self.navigationController!.pushViewController(vc, animated: true)
                 }

@@ -220,6 +220,7 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
     //            ToDateTextfiled.text = dateFormatter.string(from: sender.date)
                 dateTo = sender.date as NSDate
             }
+          
         }
 //    @IBAction func buttonFromdate(_ sender: UITextField) {
 //        fromDateTextfield.becomeFirstResponder()
@@ -471,9 +472,11 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
             self.showToast(title: "No Internet Available")
             return
         }
-        let stringFrom = self.formattedDateFromString(dateString: fromDateTextfield.text!, withFormat: "yyyy-MM-dd")
         
-        let stringTo = self.formattedDateFromString(dateString: ToDateTextfiled.text!, withFormat: "yyyy-MM-dd")
+        let a = fromDateTextfield.text?.replacingOccurrences(of: "/", with: "-")
+        let stringFrom = self.formattedDateFromString(dateString: a!, withFormat: "yyyy-MM-dd")
+        let b = ToDateTextfiled?.text?.replacingOccurrences(of: "/", with: "-")
+        let stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
         print("fromdate ", stringFrom)
         print("fromto ", stringTo)
         showActivityIndicator()
@@ -481,30 +484,23 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/miniStatement"
 //        2020-05-10 23:59:59
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","fromDate": stringFrom! + " 00:00:01","toDate": stringTo!  + " 23:59:59","accountType": DataManager.instance.accountType!,"cnic":userCnic!, "imeiNo":DataManager.instance.imei!]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","fromDate": stringFrom ?? "" + " 00:00:01","toDate": stringTo ?? ""  + " 23:59:59","accountType": DataManager.instance.accountType!,"cnic":userCnic!, "imeiNo":DataManager.instance.imei!]
 //        let parameters = ["" : ""]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(result.apiAttribute1)
         print(result.apiAttribute2)
+        
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        
         let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-        
         print(params)
         print(compelteUrl)
         print(header)
-        
-        
         NetworkManager.sharedInstance.enableCertificatePinning()
-        
-        
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<MiniStatementModel>) in
                         
             self.hideActivityIndicator()
-            
             self.myStatementObj = response.result.value
-            
             if response.response?.statusCode == 200 {
                 if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
                     GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
@@ -515,7 +511,7 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
                     self.tableView.reloadData()
                 }
                 else {
-                  
+        
                     if let message = self.myStatementObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }

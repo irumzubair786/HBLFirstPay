@@ -19,7 +19,9 @@ class MainPageVC: BaseClassVC {
         setupPageViewController()
         sideMenuSetup()
         addChildViewController(VC: DashBoardVC)
-       
+        imgPromtionsPopup.isHidden = true
+        imgQRPopup.isHidden = true
+        imgMyAccountPopup.isHidden = true
         tapGestures()
         NotificationCenter.default.addObserver(self, selector: #selector(sideMenuSelectedOption(notification:)), name: NSNotification.Name(rawValue: "post"), object: nil)
         
@@ -54,6 +56,12 @@ class MainPageVC: BaseClassVC {
         
         
     }
+    
+    
+    
+    @IBOutlet weak var imgPromtionsPopup: UIImageView!
+    @IBOutlet weak var imgMyAccountPopup: UIImageView!
+    @IBOutlet weak var imgQRPopup: UIImageView!
     @IBOutlet weak var myContentView: UIView!
     @IBOutlet weak var lblHome: UILabel!
     @IBOutlet weak var btnHomes: UIButton!
@@ -88,8 +96,11 @@ class MainPageVC: BaseClassVC {
     
 
     @IBAction func Action_Main(_ sender: UIButton) {
-        showToast(title: "Coming Soon")
-   
+//        showToast(title: "Coming Soon")
+        imgQRPopup.isHidden = false
+        
+        imgPromtionsPopup.isHidden = true
+        imgMyAccountPopup.isHidden = true
 //        let  myDict = [ "name": "Home_ScreenVC"]
 //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
         
@@ -102,7 +113,9 @@ class MainPageVC: BaseClassVC {
         
     }
     @IBAction func Action_Locator(_ sender: UIButton) {
-        showToast(title: "Coming Soon")
+        imgPromtionsPopup.isHidden = false
+        imgQRPopup.isHidden = true
+        imgMyAccountPopup.isHidden = true
 //        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
 //        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
 //        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
@@ -111,7 +124,9 @@ class MainPageVC: BaseClassVC {
     }
     
     @IBAction func Action_Profile(_ sender: UIButton) {
-        showToast(title: "Coming Soon")
+        imgMyAccountPopup.isHidden = false
+        imgPromtionsPopup.isHidden = true
+        imgQRPopup.isHidden = true
 //        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)
 //        btnNotification.setImage(UIImage(named: "path0-7"), for: .normal)
 //        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)

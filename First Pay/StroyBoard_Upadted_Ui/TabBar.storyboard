@@ -204,6 +204,27 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Coming Soon" translatesAutoresizingMaskIntoConstraints="NO" id="XX7-9N-1zg">
+                                        <rect key="frame" x="176" y="15" width="129" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="129" id="PXH-5e-wTS"/>
+                                            <constraint firstAttribute="height" constant="40" id="tH9-Yd-ChQ"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Coming Soon" translatesAutoresizingMaskIntoConstraints="NO" id="pyM-rB-Vuc">
+                                        <rect key="frame" x="241" y="15" width="129" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="tW0-ea-BTt"/>
+                                            <constraint firstAttribute="width" constant="129" id="zW1-oV-iwt"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Coming Soon" translatesAutoresizingMaskIntoConstraints="NO" id="Ol7-YJ-ss3">
+                                        <rect key="frame" x="121" y="15" width="129" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="129" id="7c3-N2-uhl"/>
+                                            <constraint firstAttribute="height" constant="40" id="lcM-zd-IRN"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -214,15 +235,21 @@
                                     <constraint firstItem="dSx-GD-dOf" firstAttribute="top" secondItem="SY2-BE-3xy" secondAttribute="bottom" constant="4" id="6L6-QY-VA2"/>
                                     <constraint firstItem="sLy-GH-JOm" firstAttribute="centerX" secondItem="Lvq-Hc-mwi" secondAttribute="centerX" id="7sU-a0-i3x"/>
                                     <constraint firstItem="yKa-uN-aXS" firstAttribute="top" secondItem="Lvq-Hc-mwi" secondAttribute="top" constant="1" id="83l-Lm-j0R"/>
+                                    <constraint firstAttribute="trailing" secondItem="XX7-9N-1zg" secondAttribute="trailing" constant="70" id="AyH-O7-E62"/>
+                                    <constraint firstAttribute="trailing" secondItem="pyM-rB-Vuc" secondAttribute="trailing" constant="5" id="B1x-eN-hsw"/>
                                     <constraint firstItem="sLy-GH-JOm" firstAttribute="centerY" secondItem="dQU-Kx-rWf" secondAttribute="centerY" id="Cvq-ZI-akn"/>
                                     <constraint firstItem="Lvq-Hc-mwi" firstAttribute="leading" secondItem="yKa-uN-aXS" secondAttribute="trailing" constant="43" id="EXx-bc-ivs"/>
                                     <constraint firstItem="q13-oC-lee" firstAttribute="top" secondItem="SY2-BE-3xy" secondAttribute="top" constant="-2" id="JE0-Oz-MuW"/>
+                                    <constraint firstItem="XX7-9N-1zg" firstAttribute="top" secondItem="f2t-Ll-vHM" secondAttribute="top" constant="15" id="PFg-3g-OHW"/>
                                     <constraint firstItem="LXg-cW-RkH" firstAttribute="top" secondItem="f2t-Ll-vHM" secondAttribute="top" constant="55" id="Rva-RM-MMq"/>
                                     <constraint firstItem="J7K-ba-4kC" firstAttribute="top" secondItem="f2t-Ll-vHM" secondAttribute="top" constant="52" id="Tgt-ee-xcM"/>
                                     <constraint firstItem="dQU-Kx-rWf" firstAttribute="centerX" secondItem="yKa-uN-aXS" secondAttribute="centerX" id="Va5-fl-0Ah"/>
+                                    <constraint firstItem="pyM-rB-Vuc" firstAttribute="top" secondItem="f2t-Ll-vHM" secondAttribute="top" constant="15" id="XR8-62-fub"/>
+                                    <constraint firstItem="Ol7-YJ-ss3" firstAttribute="top" secondItem="f2t-Ll-vHM" secondAttribute="top" constant="15" id="YS4-Od-eNv"/>
                                     <constraint firstItem="63s-kV-ypC" firstAttribute="centerY" secondItem="dSx-GD-dOf" secondAttribute="centerY" id="ZKr-wc-t9d"/>
                                     <constraint firstAttribute="bottom" secondItem="J7K-ba-4kC" secondAttribute="bottom" id="aal-wx-gkK"/>
                                     <constraint firstAttribute="height" constant="110" id="ejS-kJ-6bv"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ol7-YJ-ss3" secondAttribute="trailing" constant="125" id="hGM-pn-uDT"/>
                                     <constraint firstAttribute="trailing" secondItem="J7K-ba-4kC" secondAttribute="trailing" id="j7S-Jb-dy9"/>
                                     <constraint firstItem="q13-oC-lee" firstAttribute="leading" secondItem="SY2-BE-3xy" secondAttribute="trailing" constant="41" id="jxc-ur-ekL"/>
                                     <constraint firstItem="Lvq-Hc-mwi" firstAttribute="top" secondItem="q13-oC-lee" secondAttribute="top" id="lRb-MP-hMb"/>
@@ -254,6 +281,9 @@
                         <outlet property="btnLocator" destination="yKa-uN-aXS" id="OE5-rn-YSc"/>
                         <outlet property="btnNotification" destination="q13-oC-lee" id="gax-9Z-edP"/>
                         <outlet property="btnScanQR" destination="qrt-oI-4FN" id="4ic-Jc-xLp"/>
+                        <outlet property="imgMyAccountPopup" destination="pyM-rB-Vuc" id="dqp-Ga-Ry4"/>
+                        <outlet property="imgPromtionsPopup" destination="XX7-9N-1zg" id="jXt-tF-KGC"/>
+                        <outlet property="imgQRPopup" destination="Ol7-YJ-ss3" id="uot-uJ-VR3"/>
                         <outlet property="lblAccount" destination="sLy-GH-JOm" id="qnJ-ho-S6f"/>
                         <outlet property="lblHome" destination="dSx-GD-dOf" id="6gN-4t-XVe"/>
                         <outlet property="lblLocator" destination="dQU-Kx-rWf" id="x0D-RN-6ma"/>
@@ -510,6 +540,7 @@
     </scenes>
     <resources>
         <image name="BranchLocator" width="55" height="55"/>
+        <image name="Coming Soon" width="11801" height="2825"/>
         <image name="Group 871-1" width="80" height="19"/>
         <image name="Icon feather-search" width="28" height="28"/>
         <image name="Language Switch" width="170" height="102"/>

@@ -262,7 +262,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         getCurrentBal =  homeObj?.userData?[0].currentBalance
         CommaSepration()
         lblAmount.text =   "Rs.\(comabalanceLimit!)"
-      
         lblName.text =  homeObj?.userData?[0].accountTitile
         LblMobNo.text =  homeObj?.userData?[0].accountNo
         DataManager.instance.mobile_number = homeObj?.userData?[0].accountNo

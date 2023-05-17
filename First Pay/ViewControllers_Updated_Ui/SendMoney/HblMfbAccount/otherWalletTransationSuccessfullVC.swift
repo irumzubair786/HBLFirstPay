@@ -75,6 +75,7 @@ class otherWalletTransationSuccessfullVC: BaseClassVC {
     func UpdateUi()
     
     {
+        lblamount.text = "Rs \(amount!)"
        if isfromOtherLocalBank == true{
         
                    

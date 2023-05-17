@@ -87,74 +87,74 @@ class Fetcing_OTP_VC: BaseClassVC {
             print("No Address")
         }
     }
-    private func  mobileRegistration() {
-        
-        if !NetworkConnectivity.isConnectedToInternet(){
-            self.showToast(title: "No Internet Available")
-            return
-        }
-        showActivityIndicator()
-        
-        
-        
-
-        let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/mobileRegistration"
-
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo":(DataManager.instance.mobNo),"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)"]
-        
-        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-        
-        print(parameters)
-        
-        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
-        print(params)
-        print(compelteUrl)
-        
-        NetworkManager.sharedInstance.enableCertificatePinning()
+//    private func  mobileRegistration() {
 //
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<mobileRegistrationModel>) in
-  
-            self.hideActivityIndicator()
-            
-            self.mobileRegistrationObj = response.result.value
-            if response.response?.statusCode == 200 {
-                
-                if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
-                    let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
-                   
-                    if let accessToken = self.mobileRegistrationObj?.data?.token{
-                        DataManager.instance.AuthToken = accessToken
-                    }
-                    self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
-                }
-                else {
-                    if let message = self.mobileRegistrationObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                    }
-                    
-                    // Html Parse
-                    
-                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                        if title.contains("Request Rejected") {
-                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
-                        }
-                    }
-                }
-            }
-            else {
-                if let message = self.mobileRegistrationObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                else {
-                    self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-            }
-        }
-    }
-    
+//        if !NetworkConnectivity.isConnectedToInternet(){
+//            self.showToast(title: "No Internet Available")
+//            return
+//        }
+//        showActivityIndicator()
+//
+//
+//
+//
+//        let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/mobileRegistration"
+//
+//        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo":(DataManager.instance.mobNo),"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)"]
+//
+//        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+//
+//        print(parameters)
+//
+//        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+//        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+//        print(params)
+//        print(compelteUrl)
+//
+//        NetworkManager.sharedInstance.enableCertificatePinning()
+////
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<mobileRegistrationModel>) in
+//
+//            self.hideActivityIndicator()
+//
+//            self.mobileRegistrationObj = response.result.value
+//            if response.response?.statusCode == 200 {
+//
+//                if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
+//                    let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
+//
+//                    if let accessToken = self.mobileRegistrationObj?.data?.token{
+//                        DataManager.instance.AuthToken = accessToken
+//                    }
+//                    self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
+//                }
+//                else {
+//                    if let message = self.mobileRegistrationObj?.messages{
+//                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+//                    }
+//
+//                    // Html Parse
+//
+//                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+//                        if title.contains("Request Rejected") {
+//                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+//                        }
+//                    }
+//                }
+//            }
+//            else {
+//                if let message = self.mobileRegistrationObj?.messages{
+//                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+//                }
+//                else {
+//                    self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
+//                }
+////                print(response.result.value)
+////                print(response.response?.statusCode)
+//            }
+//        }
+//    }
+//
     
     
 }

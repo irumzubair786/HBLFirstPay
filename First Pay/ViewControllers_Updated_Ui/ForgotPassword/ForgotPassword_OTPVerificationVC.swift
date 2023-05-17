@@ -24,6 +24,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
     var verifyOtpObj : VerifyOTP?
     var mothrnameobj: GetVerifyOTp?
     var Fetch_MobNo : String?
+    var fetchCnic : String?
     var genResponseObj : GenericResponseModel?
     override func viewDidLoad() {
         FBEvents.logEvent(title: .OTP_forgotpass_landed)
@@ -41,6 +42,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         IMG_NEXT_ARROW.addGestureRecognizer(tapGestureRecognizerr)
         getIMEI()
         self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        labelMessage.isHidden = true
         // Do any additional setup after loading the view.
     }
     @IBOutlet weak var lblMobNo: UILabel!
@@ -55,15 +57,17 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
     @IBAction func Action_ResendOTP(_ sender: UIButton) {
 //    showToast(title: "OTP send")
     btnResendOtp.isUserInteractionEnabled = false
-        btnResendOtp.setTitleColor(.gray ,for: .normal)
+    btnResendOtp.setTitleColor(.gray ,for: .normal)
         
     startTimer()
+        ResendOTP()
     }
     
     @IBAction func Action_OTPcall(_ sender: UIButton) {
-//        showToast(title: "OTP send via Call")
+        btnResendotpCall.isUserInteractionEnabled = true
+        btnResendotpCall.setTitleColor(.gray ,for: .normal)
         startTimer()
-//        OTVCall()
+        ResendOTVCall()
     }
     
     @objc func timerAction() {
@@ -71,7 +75,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
              lbl_countResendotptime.text = "\(counter)"
          }
     func startTimer() {
-        totalSecond = 60
+        totalSecond = 30
        
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
@@ -91,13 +95,12 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         }
     }
     func timeFormatted(_ totalSeconds: Int) -> String {
-      
-
         let seconds: Int = totalSeconds % 60
         return String(format: "0:%02d", seconds)
     }
     
     
+    @IBOutlet weak var labelMessage: UILabel!
     
     @IBAction func Action_back(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)    }
@@ -105,8 +108,9 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
     func endTimer()
     {
         btnResendOtp.isUserInteractionEnabled = true
+        btnResendotpCall.isUserInteractionEnabled = true
         count +=  1
-        btnResendOtp.setTitleColor(.black, for: .normal)
+        btnResendOtp.setTitleColor(.orange, for: .normal)
         timer.invalidate()
         if count < 3
         {
@@ -280,159 +284,120 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
             }
         }
     }
-    
-    
-//    private func saveConsent() {
+    func ResendOTVCall() {
+
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
+        let removeDashes = fetchCnic?.replacingOccurrences(of: "-", with: "")
+        print("cnic is",removeDashes as Any)
+        
+        let parameters = ["mobileNo":"","otpType": "FP" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : removeDashes!, "otpSendType" : "OTV" ?? ""]
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+        //        print(result.apiAttribute1)
+        //        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        //
+                print(parameters)
+                print(compelteUrl)
+        
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            self.hideActivityIndicator()
+            self.genRespBaseObj = response.result.value
+            if response.response?.statusCode == 200 {
+                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+     
+                    
+                }
+                else {
+                    if let message = self.genRespBaseObj?.messages {
+                        self.showAlert(title: "", message: message, completion: nil)
+                    }
+                }
+            }
+            else {
+                if let message = self.genRespBaseObj?.messages {
+                    self.showAlert(title: "", message: message, completion: nil)
+                }
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
+                
+            }
+        }
+    }
+    func ResendOTP() {
+
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
+     let removeDashes = fetchCnic?.replacingOccurrences(of: "-", with: "")
+        print("cnic is",removeDashes)
+        
+        let parameters = ["mobileNo":"","otpType":"FP" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" :removeDashes! ?? "", "otpSendType" : "OTP" ?? ""]
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+        //        print(result.apiAttribute1)
+        //        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        //
+                print(parameters)
+                print(compelteUrl)
+        
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            self.hideActivityIndicator()
+            self.genRespBaseObj = response.result.value
+            if response.response?.statusCode == 200 {
+                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                    self.labelMessage.isHidden = false
+                    self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                        self.labelMessage.isHidden = true
+//                        self.blurView.isHidden = true
+//                        self.popupView.isHidden = true
+                    }
 //
-//        if !NetworkConnectivity.isConnectedToInternet(){
-//            self.showToast(title: "No Internet Available")
-//            return
-//        }
-//
-//        showActivityIndicator()
-//
-//        var userCnic : String?
-//        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-//            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-//        }
-//        else{
-//            userCnic = ""
-//        }
-//
-//
-//        let compelteUrl = GlobalConstants.BASE_URL + "saveTransConsents"
-//
-//         let parameters = ["transaction":"IBFT","channel":"MOBAPP","status":"Y","otp":self.TF_otp.text!,"cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)"]
-//
-//        print(parameters)
-//
-//        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-//
-//        print(result.apiAttribute1)
-//        print(result.apiAttribute2)
-//
-//        let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//
-//        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
-//
-//        print(params)
-//        print(compelteUrl)
-//        print(header)
-//
-//        NetworkManager.sharedInstance.enableCertificatePinning()
-//
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
-//
-//            self.hideActivityIndicator()
-//
-//            self.genResponseObj = response.result.value
-//            if response.response?.statusCode == 200 {
-//
-//                if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
-//                    self.navigationController?.popViewController(animated: true)
-//                }
-//                else {
-//                    if let message = self.genResponseObj?.messages{
-//                        self.showDefaultAlert(title: "", message: message)
-//                    }
-//                    // self.showAlert(title: "", message: (self.shopInfo?.resultDesc)!, completion: nil)
-//                }
-//            }
-//            else {
-//                if let message = self.genResponseObj?.messages{
-//                    self.showDefaultAlert(title: "", message: message)
-//                }
-////                print(response.result.value)
-////                print(response.response?.statusCode)
-//            }
-//        }
-//    }
-    
-//    private func verifyOTPCall() {
-//
-//        if !NetworkConnectivity.isConnectedToInternet(){
-//            self.showToast(title: "No Internet Available")
-//            return
-//        }
-//        showActivityIndicator()
-//
-//        if (TF_otp.text?.isEmpty)! {
-//            TF_otp.text = ""
-//        }
-//
-////
-//
-//
-//
-//        let compelteUrl = GlobalConstants.BASE_URL + "otpBioVerification"
-//
-//        let parameters = ["channelId":"\(DataManager.instance.channelID)","mobileNo":DataManager.instance.mobile_number!,"otpin":TF_otp.text!,"cnic":DataManager.instance.userCnic!,"issueDate": DataManager.instance.cnicIssueDate!,"imeiNo": DataManager.instance.imei!]
-//
-//        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-//        print(parameters)
-//        print(result.apiAttribute1)
-//        print(result.apiAttribute2)
-//
-//        let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//
-//        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-//
-//
-//         print(params)
-//        print(compelteUrl)
-//
-//            NetworkManager.sharedInstance.enableCertificatePinning()
-//
-//         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<GetVerifyOTp>) in
-//
-//
-//     //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
-//
-//             self.hideActivityIndicator()
-//
-//            self.mothrnameobj = response.result.value
-//            if response.response?.statusCode == 200 {
-//                if self.mothrnameobj?.responsecode == 2 || self.mothrnameobj?.responsecode == 1 {
-//
-//                    self.showToast(title: (self.mothrnameobj?.messages)!)
-//
-//                    if let cnic = DataManager.instance.userCnic {
-//                        let saveSuccessful : Bool = KeychainWrapper.standard.set(cnic, forKey: "userCnic")
-//                        print("Cnic SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-//                    }
-//                    if  mothrnameobj?.datalist != nil {
-//                        let temp = my_list()
-//                          temp.firstname = mothrnameobj?.datalist.firstName ?? ""
-//                        temp.mddlname = mothrnameobj?.datalist.middleName ?? ""
-//                      temp.lstname = mothrnameobj?.datalist.lastName ?? ""
-//                        if mothrnameobj?.datalist.motherNamesList?.count ?? 0 > 0 {
-//                            let motherNameList = mothrnameobj?.datalist.motherNamesList!
-//                            for tempName in motherNameList! {
-//                                temp.mothrname.append(tempName)
-//                            }
-//                        }
-//                        my_arry.append(temp)
-//                    }
-//
-//                    let personalDataVC = self.storyboard!.instantiateViewController(withIdentifier: "PersonalDataVC") as! PersonalDataVC
-//                    personalDataVC.my_arry2 = self.my_arry
-//                    self.navigationController?.pushViewController(personalDataVC, animated: true)
-//                }
-//                else {
-//                    if let message = self.mothrnameobj?.messages {
-//                        self.showAlert(title: "", message: message, completion: nil)
-//                    }
-//                }
-//            }
-//            else {
-//                if let message = self.mothrnameobj?.messages {
-//                    self.showAlert(title: "", message: message, completion: nil)
-//                }
-////                print(response.result.value)
-////                print(response.response?.statusCode)
-//
-//            }
-//        }
-//    }
-    
+                    
+                }
+                else {
+                    if let message = self.genRespBaseObj?.messages {
+                        self.showAlert(title: "", message: message, completion: nil)
+                    }
+                }
+            }
+            else {
+                if let message = self.genRespBaseObj?.messages {
+                    self.showAlert(title: "", message: message, completion: nil)
+                }
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
+                
+            }
+        }
+    }
 }
