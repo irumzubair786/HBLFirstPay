@@ -68,10 +68,10 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
          
      }
         
-        
-        return newLength <= 16
-      
-       
+        else {
+            return newLength <= 16
+            
+        }
      
         
     }

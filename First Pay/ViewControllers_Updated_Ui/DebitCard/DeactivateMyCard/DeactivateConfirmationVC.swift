@@ -52,26 +52,27 @@ class DeactivateConfirmationVC: BaseClassVC {
         {
             let image = UIImage(named: "Rectangle 6")
             imageYes.image = image
+            
             labelYes.textColor = UIColor(hexValue: 0xCC6801)
             flag  = "false"
         }
         
         else
         {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as!  ActivationFourDigitNumberVc
+            isFromDeactivate = true
+            self.navigationController?.pushViewController(vc, animated: true)
             let image = UIImage(named: "Rectangle Orange")
             imageYes.image = image
             labelYes.textColor = .white
-            imageYes.contentMode =  .scaleToFill
+//            imageYes.contentMode =  .scaleToFill
             
             let emptyimage = UIImage(named: "Rectangle 6")
             imageNo.image = emptyimage
             labelNo.textColor =  UIColor(hexValue: 0xCC6801)
             flag = "true"
-//            apicall
-            
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as!  ActivationFourDigitNumberVc
-            isFromDeactivate = true
-            self.navigationController?.pushViewController(vc, animated: true)
+
+           
            
             
             
@@ -96,19 +97,22 @@ class DeactivateConfirmationVC: BaseClassVC {
         
         else
         {
-            let image = UIImage(named: "Rectangle Orange")
-            imageNo.image = image
-            labelNo.textColor = .white
-            imageNo.contentMode =  .scaleToFill
-          
-            let emptyimage = UIImage(named: "Rectangle 6")
-            imageYes.image = emptyimage
-            labelYes.textColor =  UIColor(hexValue: 0xCC6801)
-            flag = "true"
-    
             let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
             self.present(vc, animated: true)
+//            let image = UIImage(named: "Rectangle Orange")
+//            imageNo.image = image
+//            labelNo.textColor = .white
+////            imageNo.contentMode =  .scaleToFill
+//
+//            let emptyimage = UIImage(named: "Rectangle 6")
+//            imageYes.image = emptyimage
+//            labelYes.textColor =  UIColor(hexValue: 0xCC6801)
+//            flag = "true"
+//
+//            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+//            let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+//            self.present(vc, animated: true)
             
         }
     }

@@ -35,6 +35,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         lblAlertAmount.textColor = .gray
         linebtn.setTitle("", for: .normal)
         buttonDropDown.setTitle("", for: .normal)
+        
         updateUI()
         
 //        otpView.isHidden = true
@@ -85,16 +86,23 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     
     func updateUI()
     {
+       
+        if GlobalData.moneyTransferReasocCode  == ""
+        {
+//            GlobalData.moneyTransferReasocCode = "0350"
+//            GlobalData.money_Reason = "Miscellaneous Payments"
+//            PurposeTf.text = "Miscellaneous Payments"
+        }
+
         CommaSepration()
         if OTPREQ == "N"
         {
             otpTextField.isHidden = true
         }
+        
             amountTextField.text = "Rs \(comabalanceLimit!)"
             totalAmount.text = "Rs \(comabalanceLimit!)"
             if  isfromFirstPayWallet == true{
-               
-                
                     lblMobno.text = number!
                     lblname.text = ToaccountTitle!
                 sourceAccountno.text = DataManager.instance.accountNo!
@@ -103,11 +111,9 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 lblAccName.text = "FirstPay Wallet"
                 bankLogo.image = UIImage(named: "First Pay")
     //            otpView.isHidden = false
-                
             }
             else  if isfromHblMbfAccount == true{
     //            PurposeTf.text = GlobalData.money_Reason
-              
                 lblMobno.text = number
                 lblname.text = ToaccountTitle!
                 sourceAccountno.text = DataManager.instance.accountNo!
@@ -118,11 +124,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
 //                bankLogo.sd_setImage(with: url)
                
     //            otpView.isHidden = falseo
-                
             }
             else if isfromBanktoBank == true{
-                
-                
                 lblMobno.text = number!
                 lblname.text = ToaccountTitle!
                 sourceAccountno.text = DataManager.instance.accountNo!
@@ -134,11 +137,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
                 let url = URL(string:concateString)
                 bankLogo.sd_setImage(with: url)
-                
-                
             }
             else{
-               
                 lblMobno.text = number
                 lblname.text = ToaccountTitle
                 sourceAccountno.text = DataManager.instance.accountNo!
@@ -151,12 +151,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 let url = URL(string:concateString)
                 bankLogo.sd_setImage(with: url)
             }
-     
-        
         }
-    
     override func viewWillAppear(_ animated: Bool) {
-
         if isFromReason == true{
             PurposeTf.text = GlobalData.money_Reason
             if OTPREQ == "N"
@@ -164,13 +160,18 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 img_next_arrow.image = UIImage(named: "]greenarrow")
              
                 btn_Next.isUserInteractionEnabled = true
+              
             }
         }
-        else {
-            PurposeTf.text = ""
+        else{
+            
+            GlobalData.moneyTransferReasocCode = "0350"
+            GlobalData.money_Reason = "Miscellaneous Payments"
+            PurposeTf.text = "Miscellaneous Payments"
         }
- 
-        
+//        else {
+//            PurposeTf.text = ""
+//        }
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -223,12 +224,9 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
 //        isfromFirstPayWallet = true
 //        isfromHblMbfAccount = false
        self.navigationController?.pushViewController(vc, animated: false)
-        
-        
     }
     
     @IBAction func Action_Next(_ sender: UIButton) {
-        
         if isfromBanktoBank == true || isfromOtherLocalBank == true
         {
            
@@ -238,9 +236,6 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         {
             fundsTransferLocal()
         }
-       
-        
-        
        
     }
     

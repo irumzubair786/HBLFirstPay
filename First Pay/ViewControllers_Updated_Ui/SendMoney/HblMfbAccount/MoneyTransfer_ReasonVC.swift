@@ -55,6 +55,7 @@ class MoneyTransfer_ReasonVC: BaseClassVC {
             if response.response?.statusCode == 200 {
                 self.reasonsObj = response.result.value
                 if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
+                    var aReq =  self.reasonsObj?.reasonsData!
                     for i in self.reasonsObj?.reasonsData! ?? []
                     {
                         var temp = myreason()

@@ -40,9 +40,7 @@ class FakeLoginVc: UIViewController {
     
     @IBOutlet weak var imageLogin: UIImageView!
     @IBAction func buttonLogin(_ sender: UIButton) {
-        
-            
-        
+       
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
             self.navigationController?.pushViewController(vc, animated: true)
             
@@ -50,9 +48,14 @@ class FakeLoginVc: UIViewController {
     }
     func loginAction()
     {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        labelLoginorSignUp.isUserInteractionEnabled = true
-        labelLoginorSignUp.addGestureRecognizer(tapGestureRecognizer)
+        if isfromHomwWithoutCreationAccount == true
+        {
+            
+           
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+            labelLoginorSignUp.isUserInteractionEnabled = true
+            labelLoginorSignUp.addGestureRecognizer(tapGestureRecognizer)
+        }
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Mobile_VerificationVC") as! Mobile_VerificationVC

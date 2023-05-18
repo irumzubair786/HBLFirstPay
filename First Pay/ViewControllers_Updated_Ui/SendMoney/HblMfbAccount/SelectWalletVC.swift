@@ -110,7 +110,7 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
                     temp.id = item.imdListId!
                     temp.code = item.imdNo!
                     temp.name  = item.bankName!
-                    temp.path = item.path!
+                    temp.path = item.walletPath!
                     self.getBankid.append(temp)
                 }
 //                if let banks = self.banksObj?.dataobj?.walletList{

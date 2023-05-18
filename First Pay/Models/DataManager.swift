@@ -209,7 +209,7 @@ class DataManager: NSObject {
     var nano_loanDisbursementId : String?
     var userUUID: String?
     var notificationMessage : String?
-    
+    var accountLevel : String?
   
     var clientSecret = "Bearer-eEW6Iumg6RIDzvzfgiN5YYUgKQRSkToF50Q8qpuETMnD5Q0DIojBk8/BLfmCayidwGlkVmlgC7xrzgNggLoHGv0uP2acId0iV9Bz9LX2BWOcsgstV92rF4NNL/BIUYEQdV573mL0PiAsDFBo0+zHzBbw7gTne6gF8fYYALGL2o10DuSWgCkr+y838JT1jN7gdGmMmKNu3JeNd8UMW2EjS7QpugbRNrTPpF6f/iux7/cAEhU54UWTqM5FUpdSrARW"
     

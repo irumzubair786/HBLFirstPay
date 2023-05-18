@@ -313,7 +313,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     
     private func updateUI(){
         
-        if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
+        if   DataManager.instance.accountLevel == "LEVEL 0"
         {
             let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
             flagLevel0  = true
@@ -326,7 +326,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                 vc.balanceLimit1 = Int(balnceLimit1)
                 print("balnceLimit",balnceLimit1)
             }
-          
+            
             if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
                 vc.totalDailyLimitCr = Int(dailyTotalCr)
             }
@@ -367,10 +367,13 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
             if var  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
                 vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
             }
+            self.present(vc, animated: true)
+            
+        }
          
-            else
+            else if DataManager.instance.accountLevel == "LEVEL 1"
             {
-                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
                 flagLevel1  = true
                 flagLevel0  = false
                 if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
@@ -425,12 +428,12 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                     vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
                 }
                 
-                
+                self.present(vc, animated: true)
             }
             
-            self.present(vc, animated: true)
+           
             
-        }
+        
         
         
     }

@@ -26,6 +26,7 @@ var isfromPOSON : Bool?
 var isfromPOSOFF: Bool?
 var isfromDisableService : Bool?
 var isfromServiceOTpVerification : Bool?
+var isfromOTPHblmfb : Bool?
 class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataSource{
     var homeObj : HomeModel?
     var banObj : GenericResponse?
@@ -305,11 +306,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         if self.homeObj?.userData?[index].levelDescr == "LEVEL 1"
         {
             imgLevel.isHidden = false
+            DataManager.instance.accountLevel = "LEVEL 1"
             imgLevel.image = UIImage(named: "Verified 24x")
         }
         else
         {
             imgLevel.isHidden = false
+            DataManager.instance.accountLevel = "LEVEL 0"
             imgLevel.image = UIImage(named: "Un-Verified 24x")
         }
         
@@ -636,7 +639,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
           }
         private func updateUI(){
             
-            if self.availableLimitObj?.limitsData?.levelLimits?[0].levelCode == "L0"
+            if   DataManager.instance.accountLevel == "LEVEL 0"
             {
                 let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
                 if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
@@ -647,7 +650,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                     vc.balanceLimit1 = Int(balnceLimit1)
                     print("balnceLimit",balnceLimit1)
                 }
-              
+                
                 if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
                     vc.totalDailyLimitCr = Int(dailyTotalCr)
                 }
@@ -688,10 +691,12 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                 if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
                     vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
                 }
+                self.present(vc, animated: true)
+            }
              
-                else
+                else if DataManager.instance.accountLevel == "LEVEL 1"
                 {
-                    let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+                    let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
                     if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                         vc.balanceLimit = Int(balnceLimit)
                         print("balnceLimit",balnceLimit)
@@ -743,14 +748,11 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                     if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
                         vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
                     }
-                    
+                    self.present(vc, animated: true)
                     
                 }
                 
-                self.present(vc, animated: true)
                 
-            }
-            
             
         }
     

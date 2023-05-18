@@ -1,9 +1,9 @@
 //
-//  ForgotPassword_OTPVerificationVC.swift
+//  OTPVerificationTransactionVC.swift
 //  First Pay
 //
-//  Created by Irum Butt on 14/12/2022.
-//  Copyright © 2022 FMFB Pakistan. All rights reserved.
+//  Created by Irum Butt on 18/05/2023.
+//  Copyright © 2023 FMFB Pakistan. All rights reserved.
 //
 
 import UIKit
@@ -15,22 +15,15 @@ import LocalAuthentication
 import SafariServices
 import Foundation
 import OTPTextField
-class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
+class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
+    
     var totalSecond = 60
     var ForTransactionConsent:Bool = false
     var timer = Timer()
     var counter = 0
     var count = 0
-    var verifyOtpObj : VerifyOTP?
-    var mothrnameobj: GetVerifyOTp?
-    var Fetch_MobNo : String?
-    var fetchCnic : String?
-    var genResponseObj : GenericResponseModel?
     override func viewDidLoad() {
-        FBEvents.logEvent(title: .OTP_forgotpass_landed)
         super.viewDidLoad()
-        print("fetch successfully mob no", Fetch_MobNo)
-        lblMobNo.text = Fetch_MobNo
         TF_otp.delegate = self
         btnVerify.isUserInteractionEnabled = false
         btnResendOtp.isUserInteractionEnabled = false
@@ -40,20 +33,15 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         IMG_NEXT_ARROW.isUserInteractionEnabled = true
         IMG_NEXT_ARROW.addGestureRecognizer(tapGestureRecognizerr)
-        getIMEI()
-        self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-        labelMessage.isHidden = true
         // Do any additional setup after loading the view.
     }
-    @IBOutlet weak var lblMobNo: UILabel!
-    @IBOutlet weak var IMG_NEXT_ARROW: UIImageView!
-    @IBOutlet weak var lbl_countResendotptime: UILabel!
-    @IBOutlet weak var Main_view: UIView!
     @IBOutlet weak var btnResendOtp: UIButton!
     @IBOutlet weak var TF_otp: OTPTextField!
     @IBOutlet weak var btnVerify: UIButton!
     @IBOutlet weak var btnResendotpCall: UIButton!
-    //    -------------------------------
+    @IBOutlet weak var IMG_NEXT_ARROW: UIImageView!
+    @IBOutlet weak var lbl_countResendotptime: UILabel!
+    
     @IBAction func Action_ResendOTP(_ sender: UIButton) {
 //    showToast(title: "OTP send")
     btnResendOtp.isUserInteractionEnabled = false
@@ -61,13 +49,16 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         
     startTimer()
         ResendOTP()
+      
     }
+    
     @IBAction func Action_OTPcall(_ sender: UIButton) {
         btnResendotpCall.isUserInteractionEnabled = true
         btnResendotpCall.setTitleColor(.gray ,for: .normal)
         startTimer()
         ResendOTVCall()
     }
+    
     @objc func timerAction() {
              counter += 1
              lbl_countResendotptime.text = "\(counter)"
@@ -96,6 +87,8 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         let seconds: Int = totalSeconds % 60
         return String(format: "0:%02d", seconds)
     }
+    
+    
     @IBOutlet weak var labelMessage: UILabel!
     
     @IBAction func Action_back(_ sender: UIButton) {
@@ -116,9 +109,12 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         else{
            btnResendOtp.isHidden = true
            btnResendotpCall.isHidden = false
+//
             
         }
-
+        
+       
+//
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -153,119 +149,21 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
             IMG_NEXT_ARROW.image = image
             btnVerify.isUserInteractionEnabled = false
         }
+
     }
     @IBAction func Action_Verify(_ sender: UIButton) {
-         if TF_otp.text?.count == 0
+        if TF_otp.text?.count == 0
         {
             showToast(title: "Please Enter OTP")
         }
 
         else{
-            verifyOtpResetPass()
+//            verifyOtpResetPass()
         }
     }
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        verifyOtpResetPass()
-    }
-    
-    private func verifyOtpResetPass() {
-        
-        if !NetworkConnectivity.isConnectedToInternet(){
-            self.showToast(title: "No Internet Available")
-            return
-        }
-        showActivityIndicator()
-        
-        var otpType : String?
-
-        
-        if (TF_otp.text?.isEmpty)! {
-            TF_otp.text = ""
-        }
-        
-        let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/verifyOtpResetPass"
-        
-        var userCnic : String?
-        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-        }
-        else{
-            userCnic = ""
-        }
-//        {"osVersion": "15.5", "appVersion": "3.1.2", "deviceModel": "iPhone", "channelId": "1", "mobileNo": "03406401050", "imeiNo": "B0749FED5A5D48A38C9DBFF01F4A5663", "cnic": "3740526510394", "otpin": "4231"}
-        
-        userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"mobileNo":(Fetch_MobNo!),"imeiNo":DataManager.instance.imei!,"appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel, "otpin": TF_otp.text!] as [String : Any]
-        
-        print(parameters)
-        
-        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-        
-        print(result.apiAttribute1)
-        print(result.apiAttribute2)
-        
-        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
-        
-        
-        print(params)
-        print(compelteUrl)
-        
-        FBEvents.logEvent(title: .OTP_forgotpass_attempt)
-        NetworkManager.sharedInstance.enableCertificatePinning()
-        
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
-            
-     //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
-            
-            self.hideActivityIndicator()
-            
-            self.genResponseObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                FBEvents.logEvent(title: .OTP_forgotpass_success)
-
-                if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
-                    
-                    if self.genResponseObj?.messages == "OTP not verified"
-                    {
-                        self.showToast(title: (self.genResponseObj?.messages)!)
-                    }
-                    
-                    else{
-                        let enterPinVC = self.storyboard!.instantiateViewController(withIdentifier: "ResetPassword_SuccessfullVC") as! ResetPassword_SuccessfullVC
-                        if let cnic = DataManager.instance.userCnic {
-                            let saveSuccessful : Bool = KeychainWrapper.standard.set(cnic, forKey: "userCnic")
-                            print("Cnic SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-//                        }
-                            enterPinVC.MobNo  = self.Fetch_MobNo!
-                        
-                        //custAllID
-                        self.navigationController!.pushViewController(enterPinVC, animated: true)
-                    }
-                        
-                    }
-                }
-                
-                else {
-                    if let message = self.genResponseObj?.messages {
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                    }
-                }
-            }
-            else {
-                if let message = self.genResponseObj?.messages {
-                    FBEvents.logEvent(title: .OTP_forgotpass_landed,failureReason: message)
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                   
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
-            }
-        }
+//        verifyOtpResetPass()
     }
     func ResendOTVCall() {
 
@@ -276,10 +174,16 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
-        let removeDashes = fetchCnic?.replacingOccurrences(of: "-", with: "")
-        print("cnic is",removeDashes as Any)
+        var userCnic : String?
+        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+        }
+        else{
+            userCnic = ""
+        }
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
         
-        let parameters = ["mobileNo":"","otpType": "FP" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : removeDashes!, "otpSendType" : "OTV" ?? ""]
+        let parameters = ["mobileNo":"","otpType": "IBFT" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : userCnic!, "otpSendType" : "OTV" ?? ""]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -321,6 +225,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
             }
         }
     }
+    
     func ResendOTP() {
 
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -330,10 +235,15 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
-     let removeDashes = fetchCnic?.replacingOccurrences(of: "-", with: "")
-        print("cnic is",removeDashes)
-        
-        let parameters = ["mobileNo":"","otpType":"FP" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" :removeDashes! ?? "", "otpSendType" : "OTP" ?? ""]
+        var userCnic : String?
+        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+        }
+        else{
+            userCnic = ""
+        }
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["mobileNo":"","otpType":"IBFT" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : userCnic!, "otpSendType" : "OTP" ?? ""]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         

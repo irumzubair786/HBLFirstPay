@@ -75,25 +75,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
  
         selectWallettf.text =  GlobalData.Selected_bank
-        
-        
-        
-//            purposeTf.text =  GlobalData.money_Reason
-//            selectWallettf.text =  GlobalData.Selected_bank
-//
-//                if purposeTf.text?.count != 0
-//                {
-////                    lblAlert.textColor = .orange
-//
-//                    let image = UIImage(named:"]greenarrow")
-//                    img_next.image = image
-//                    let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-//                    img_next.isUserInteractionEnabled = true
-//                    img_next.addGestureRecognizer(tapGestureRecognizerrr)
-//
-//                    img_next.isUserInteractionEnabled = true
-//                }
-//            }
+   
         
     }
     func clearAll()
@@ -350,7 +332,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         
        if textField == amountTextField
         {
-           if Int(amountTextField.text!) ?? 0  < (minvalu) || Int(amountTextField.text!) ?? 0 > (maxvalu)
+           if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0 > Int((maxvalu) ?? 0)
 
                     {
                         lblAlert.textColor = .gray
