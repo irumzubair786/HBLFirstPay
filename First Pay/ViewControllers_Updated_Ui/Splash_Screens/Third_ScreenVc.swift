@@ -22,7 +22,8 @@ class Third_ScreenVc: UIViewController {
     @IBAction func Next(_ sender: UIButton) {
         guard let alreadylogin =  UserDefaults.standard.string(forKey: "AlreadyRegistered")
         else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeVc_withoutLogin") as! HomeVc_withoutLogin
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "FakeLoginVc") as! FakeLoginVc
+            isfromHomwWithoutCreationAccount = true
             self.navigationController?.pushViewController(vc, animated: true)
             return
         }

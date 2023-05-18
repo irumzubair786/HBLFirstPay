@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+var isfromHomwWithoutLogin : Bool = false
+var isfromHomwWithoutCreationAccount : Bool = false
 class HomeVc_withoutLogin: UIViewController {
 
     override func viewDidLoad() {

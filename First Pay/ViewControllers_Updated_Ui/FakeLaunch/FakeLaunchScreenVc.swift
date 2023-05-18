@@ -26,6 +26,7 @@ class FakeLaunchScreenVc: UIViewController {
             }
             
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "FakeLoginVc") as! FakeLoginVc
+            isfromHomwWithoutLogin = true
             self.navigationController?.pushViewController(vc, animated: true)
             
         }

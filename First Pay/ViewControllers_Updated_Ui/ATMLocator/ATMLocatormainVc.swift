@@ -210,6 +210,7 @@ class ATMLocatormainVc: UIViewController {
 //        }
         
         getAtmBranchLocation()
+       
     }
     
     

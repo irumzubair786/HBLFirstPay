@@ -27,27 +27,64 @@ class FakeLoginVc: UIViewController {
         btnProfile.setTitle("", for: .normal)
         btnNotification.setTitle("", for: .normal)
         buttonLogin.setTitle("", for: .normal)
+        updateUI()
         banapi ()
+      
         // Do any additional setup after loading the view.
     }
     
+    
+    
+    
     @IBOutlet weak var buttonLogin: UIButton!
     
+    @IBOutlet weak var imageLogin: UIImageView!
     @IBAction func buttonLogin(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+            
+        
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
+            self.navigationController?.pushViewController(vc, animated: true)
+            
         
     }
-  
+    func loginAction()
+    {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+        labelLoginorSignUp.isUserInteractionEnabled = true
+        labelLoginorSignUp.addGestureRecognizer(tapGestureRecognizer)
+    }
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Mobile_VerificationVC") as! Mobile_VerificationVC
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+        
+    }
     @IBOutlet weak var btnHome: UIButton!
     @IBOutlet weak var btnNotification: UIButton!
     @IBOutlet weak var btnmain: UIButton!
     @IBOutlet weak var btnProfile: UIButton!
     @IBOutlet weak var btnQuestion: UIButton!
     
+    @IBOutlet weak var labelLoginorSignUp: UILabel!
     @IBOutlet weak var img: UIImageView!
+    func updateUI()
+    {
+       if  isfromHomwWithoutCreationAccount == true
+        {
+        imageLogin.image = UIImage(named: "Button copy")
+          
+           
+        }
+        else
+        {
+            imageLogin.image = UIImage(named: "btnLogin")
+          
+        }
+    }
     func banapi ()
     {
+        loginAction()
         ServerManager.GEt_typeWithoutParmsfetchApiData_PostAppJSON(APIMethodName: APIMethods.banner.rawValue, Token: DataManager.instance.accessToken ?? "" ) { [self] (Result : MYBanersModel?) in
             
             //== check if api is responding or not
