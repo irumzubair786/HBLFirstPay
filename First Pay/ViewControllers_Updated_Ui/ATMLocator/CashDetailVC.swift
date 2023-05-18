@@ -9,32 +9,37 @@
 import UIKit
 
 class CashDetailVC: UIViewController {
-
+    var flagFirstPreesed : Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonCross.setTitle("", for: .normal)
         viewDetail.isHidden = true
         buttonshowDetail.setTitle("", for: .normal)
-        buttonShowcashPointDetail.setTitle("", for: .normal)
-        buttonShowcashPointDetail.isUserInteractionEnabled = false
+        self.view.backgroundColor = .clear
+        buttonDepositByBranch.setTitle("", for: .normal)
         // Do any additional setup after loading the view.
     }
-    
     @IBAction func buttonCross(_ sender: UIButton) {
         self.dismiss(animated: true)
         
     }
     @IBOutlet weak var buttonCross: UIButton!
-
     @IBOutlet weak var viewDetail: UIView!
-    @IBOutlet weak var buttonShowcashPointDetail: UIButton!
-    @IBAction func buttonShowcashPointDetail(_ sender: UIButton) {
-
-    }
     @IBOutlet weak var buttonshowDetail: UIButton!
+    
+    @IBOutlet weak var buttonDepositByBranch: UIButton!
     @IBAction func buttonshowDetail(_ sender: UIButton) {
-        viewDetail.isHidden = false
+        if flagFirstPreesed == false{
+            viewDetail.isHidden = false
+            flagFirstPreesed = true
+        
+        }
+        else
+        {
+            viewDetail.isHidden = true
+            flagFirstPreesed = false
+        }
+        
     }
-
     
 }

@@ -315,9 +315,6 @@ struct APIs {
         case invitedFriendsList = "FirstPayInfo/v1/invitedFriendsList"
         case getAtmBranchLocation = "FirstPayInfo/v1/getAtmBranchLocation"
 
-        
-
-        
         case getInvitorFriendsList = "WalletCreation/v1/getInvitorFriendsList"
         case acceptFriendInvite = "WalletCreation/v1/acceptFriendInvite"
 

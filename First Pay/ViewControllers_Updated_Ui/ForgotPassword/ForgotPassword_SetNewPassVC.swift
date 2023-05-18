@@ -58,7 +58,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     
     @IBAction func Action_Next(_ sender: UIButton) {
         
-        DataManager.instance.userCnic = cnicTextField.text
+//        DataManager.instance.userCnic = cnicTextField.text
         if mobileNumberTextField.text?.count == 0{
             self.showToast(title: "Please Enter Mobile Number")
             return
@@ -329,10 +329,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
                 FBEvents.logEvent(title: .Signup_forgotpass_success)
                 if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
                     let vc = self.storyboard!.instantiateViewController(withIdentifier: "ForgotPassword_OTPVerificationVC") as! ForgotPassword_OTPVerificationVC
-                    
-                    
-                    
-                    vc.Fetch_MobNo = mobileNumber
+                                        vc.Fetch_MobNo = mobileNumber
                     vc.fetchCnic = self.cnicTextField.text!
                     DataManager.instance.userCnic = cnicNumber
                     self.navigationController!.pushViewController(vc, animated: true)

@@ -114,10 +114,11 @@ class ATMLocatormainVc: UIViewController {
     }
     @IBAction func buttonDetail(_ sender: UIButton) {
         if branchFlag == true{
-            let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "ATMBranchDetailViewController") as! ATMBranchDetailViewController
+            let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "test") as! test
             DispatchQueue.main.async {
                 self.present(vc, animated: true)
             }
+//            ATMBranchDetailViewController
         }
         else if cashFlag == true{
             let vc =  UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "CashDetailVC") as! CashDetailVC
