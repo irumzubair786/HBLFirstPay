@@ -173,7 +173,8 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         
         toDate.addTarget(self, action: #selector(self.tappedOnDate), for: .valueChanged)
         fromDate.addTarget(self, action: #selector(self.tappedOnDate), for: .valueChanged)
-        
+        fromDate.maximumDate = Date()
+        toDate.maximumDate = Date()
     }
     
     @objc func tappedOnDate(sender: UIDatePicker) {
