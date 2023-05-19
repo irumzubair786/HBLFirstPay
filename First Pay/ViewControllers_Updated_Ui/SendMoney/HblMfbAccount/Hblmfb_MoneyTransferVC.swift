@@ -35,8 +35,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         lblAlertAmount.textColor = .gray
         linebtn.setTitle("", for: .normal)
         buttonDropDown.setTitle("", for: .normal)
-        GlobalData.moneyTransferReasocCode = ""
-       GlobalData.money_Reason = ""
+//        GlobalData.moneyTransferReasocCode = ""
+//       GlobalData.money_Reason = ""
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         img_next_arrow.isUserInteractionEnabled = true

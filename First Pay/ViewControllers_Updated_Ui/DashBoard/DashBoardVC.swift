@@ -195,13 +195,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             let index = IndexPath.init(item: counter, section: 0)
             
             let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "HomeBanner"))
+            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
             counter += 1
         } else {
             counter = 0
             let index = IndexPath.init(item: counter, section: 0)
             let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "HomeBanner"))
+            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
             counter = 1
         }
         
