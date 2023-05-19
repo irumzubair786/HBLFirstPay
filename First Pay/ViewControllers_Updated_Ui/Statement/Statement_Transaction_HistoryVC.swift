@@ -154,11 +154,12 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
 //        datePicker.date = NSDate() as Date
 //        datePicker.datePickerMode = .date
 //       fromDateTextfield.inputView = datePicker
-        ToDateTextfiled.placeholder = ""
-        fromDateTextfield.placeholder = ""
+        ToDateTextfiled.placeholder = "  DD/MM/YYYY"
+        fromDateTextfield.placeholder = "  DD/MM/YYYY"
         todatePicker.backgroundColor = UIColor.clear
         fromdatePicker.backgroundColor = UIColor.clear
         fromdatePicker.minimumDate = Calendar.current.date(byAdding: .year, value: -100, to: Date())
+        
        
      
         

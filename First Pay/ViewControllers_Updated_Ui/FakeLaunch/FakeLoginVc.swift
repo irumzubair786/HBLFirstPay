@@ -40,10 +40,13 @@ class FakeLoginVc: UIViewController {
     
     @IBOutlet weak var imageLogin: UIImageView!
     @IBAction func buttonLogin(_ sender: UIButton) {
-       
+        if isfromHomwWithoutCreationAccount == false
+        {
+            
+            
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
             self.navigationController?.pushViewController(vc, animated: true)
-            
+        }
         
     }
     func loginAction()
@@ -76,6 +79,7 @@ class FakeLoginVc: UIViewController {
        if  isfromHomwWithoutCreationAccount == true
         {
         imageLogin.image = UIImage(named: "Button copy")
+           
           
            
         }
