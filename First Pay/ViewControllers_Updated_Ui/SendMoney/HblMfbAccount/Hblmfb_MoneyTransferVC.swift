@@ -76,7 +76,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var btn_Next: UIButton!
     @IBAction func Action_back(_ sender: UIButton) {
         self.dismiss(animated: true)
-        HblMfbAccountInput_VC
+        
     }
     
     var comabalanceLimit : String?
