@@ -23,7 +23,7 @@ class MaintenenceCertificate: BaseClassVC {
         
         pdfView.translatesAutoresizingMaskIntoConstraints = false
         pdfViewContainer.addSubview(pdfView)
-       
+        pdfView.scaleFactor = pdfView.scaleFactorForSizeToFit
         pdfView.leadingAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.leadingAnchor).isActive = true
         pdfView.trailingAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.trailingAnchor).isActive = true
         pdfView.topAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.topAnchor).isActive = true
@@ -38,6 +38,9 @@ class MaintenenceCertificate: BaseClassVC {
         }
         // Do any additional setup after loading the view.
     }
+    func setZoomLevel(scale: CGFloat) {
+           pdfView.scaleFactor = scale
+       }
     
     @IBOutlet weak var pdfViewContainer: UIView!
     @IBOutlet weak var buttonBack: UIButton!

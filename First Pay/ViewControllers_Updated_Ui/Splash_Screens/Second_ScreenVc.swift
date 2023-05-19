@@ -14,7 +14,7 @@ class Second_ScreenVc: UIViewController {
         super.viewDidLoad()
         btn_next.setTitle("", for: .normal)
         let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleLeftSwipe(_:)))
-        leftSwipeGesture.direction = .right
+        leftSwipeGesture.direction = .left
         img.isUserInteractionEnabled = true
         img.addGestureRecognizer(leftSwipeGesture)
         // Do any additional setup after loading the view.

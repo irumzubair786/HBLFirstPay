@@ -14,15 +14,13 @@ class Third_ScreenVc: UIViewController {
         super.viewDidLoad()
         btn_next.setTitle("", for: .normal)
         let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleLeftSwipe(_:)))
-        leftSwipeGesture.direction = .right
+        leftSwipeGesture.direction = .left
         img.isUserInteractionEnabled = true
         img.addGestureRecognizer(leftSwipeGesture)
         // Do any additional setup after loading the view.
     }
-    
     @IBOutlet weak var img: UIImageView!
     @IBOutlet weak var btn_next: UIButton!
-    
     @objc func handleLeftSwipe(_ gestureRecognizer: UISwipeGestureRecognizer) {
         guard let alreadylogin =  UserDefaults.standard.string(forKey: "AlreadyRegistered")
         else {
@@ -57,10 +55,6 @@ class Third_ScreenVc: UIViewController {
         
         print("login device",DataManager.FirstTimeLogin )
         self.navigationController!.pushViewController(New_User_ProfileVC, animated: true)
-        
-        
-        
-        
     }
 
 }

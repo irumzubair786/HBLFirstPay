@@ -617,7 +617,12 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         return """
         <html>
                <body>
-        
+         <style>
+            p {
+              font-family: Helvetica Neue;
+             font-size: 32px;
+              color: Light gray;
+            }
                <h3>
                <p style="text-align: center;"><b>ACCOUNT MAINTENANCE </b></p>
                         <p style="text-align, Inter: center;"><b>
@@ -626,9 +631,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                </h3>
               <style>
 
-                       p {
-                        font-size: 28px;
-                         }
+
                          </style>
                <p style="text-align: center;" style="font-size: 200px;">
                This is to certify that</p>
@@ -654,8 +657,8 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                <p style="text-align: center;">
                undersigned and part of the bank.
                </p>
-             
-
+             <br>
+              </br>
              <p style="text-align: center;" style="font-size: 150px;">
                HBL Microfinance Bank Ltd
                16th & 17th Floor
@@ -665,7 +668,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                Blue Area, Islamabad<br>
                </p>
                <p style="text-align: center;">
-               Toll Free 0800-42563 OR 0800-34778<br>
+               Toll Free 0800-34778 OR 0800-42563<br>
                </p>
                </body>
              
