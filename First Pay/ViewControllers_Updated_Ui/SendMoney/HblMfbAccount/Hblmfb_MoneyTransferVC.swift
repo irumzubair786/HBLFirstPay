@@ -16,8 +16,8 @@ import libPhoneNumber_iOS
 import SwiftKeychainWrapper
 import SDWebImage
 class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
+  
     var fundsTransSuccessObj: FundsTransferApiResponse?
-//    var fundsTransSuccessObj: FundsTransferApiResponse?
     var transactionApiResponseObj : FTApiResponse?
     var amount: String?
     var number: String?
@@ -28,16 +28,21 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         super.viewDidLoad()
         print("GlobalData.money_Reason",  number)
         back.setTitle("", for: .normal)
-        btn_Next.isUserInteractionEnabled = false
+//        btn_Next.isUserInteractionEnabled = false
         otpTextField.delegate = self
         btndropdown.setTitle("", for: .normal)
         amountTextField.delegate = self
         lblAlertAmount.textColor = .gray
         linebtn.setTitle("", for: .normal)
         buttonDropDown.setTitle("", for: .normal)
-        
+        GlobalData.moneyTransferReasocCode = ""
+       GlobalData.money_Reason = ""
         updateUI()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+        img_next_arrow.isUserInteractionEnabled = true
+        img_next_arrow.addGestureRecognizer(tapGestureRecognizer)
         
+        otpTextField.isHidden = true
 //        otpView.isHidden = true
         
     
@@ -83,7 +88,21 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         formatter.locale = Locale(identifier: "en_US")
         comabalanceLimit = (formatter.string(from: NSNumber(value: number!)))!
     }
-    
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
+
+        if isfromBanktoBank == true || isfromOtherLocalBank == true
+        {
+           
+            
+            VerifyOTPForTransaction()
+//            FundTransferIBFT()
+        }
+        else
+        {
+            fundsTransferLocal()
+        }
+        
+    }
     func updateUI()
     {
        
@@ -113,19 +132,32 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     //            otpView.isHidden = false
             }
             else  if isfromHblMbfAccount == true{
-    //            PurposeTf.text = GlobalData.money_Reason
+               
+                if   GlobalData.moneyTransferReasocCode == ""
+                {
+                    GlobalData.moneyTransferReasocCode = "0350"
+                    GlobalData.money_Reason = "Miscellaneous Payments"
+                    PurposeTf.text = "Miscellaneous Payments"
+
+                }
+                otpTextField.isHidden = true
                 lblMobno.text = number
                 lblname.text = ToaccountTitle!
                 sourceAccountno.text = DataManager.instance.accountNo!
                 lblAccName.text = "HBL MfB Account"
                 bankLogo.image = UIImage(named: "HBL Logo")
-//                var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
-//                let url = URL(string:concateString)
-//                bankLogo.sd_setImage(with: url)
-               
-    //            otpView.isHidden = falseo
+
             }
             else if isfromBanktoBank == true{
+                
+                
+                 if   GlobalData.moneyTransferReasocCode == ""
+                 {
+                     GlobalData.moneyTransferReasocCode = "0350"
+                     GlobalData.money_Reason = "Miscellaneous Payments"
+                     PurposeTf.text = "Miscellaneous Payments"
+
+                 }
                 lblMobno.text = number!
                 lblname.text = ToaccountTitle!
                 sourceAccountno.text = DataManager.instance.accountNo!
@@ -137,8 +169,19 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
                 let url = URL(string:concateString)
                 bankLogo.sd_setImage(with: url)
+                
+               
+              
             }
             else{
+                
+                 if  GlobalData.moneyTransferReasocCode == ""
+                 {
+                     GlobalData.moneyTransferReasocCode = "0350"
+                     GlobalData.money_Reason = "Miscellaneous Payments"
+                     PurposeTf.text = "Miscellaneous Payments"
+
+                 }
                 lblMobno.text = number
                 lblname.text = ToaccountTitle
                 sourceAccountno.text = DataManager.instance.accountNo!
@@ -150,6 +193,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
                 let url = URL(string:concateString)
                 bankLogo.sd_setImage(with: url)
+               
             }
         }
     override func viewWillAppear(_ animated: Bool) {
@@ -230,7 +274,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         if isfromBanktoBank == true || isfromOtherLocalBank == true
         {
            
-            FundTransferIBFT()
+            VerifyOTPForTransaction()
+//            FundTransferIBFT()
         }
         else
         {
@@ -302,8 +347,6 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
-            
-            
             self.hideActivityIndicator()
             
             self.fundsTransSuccessObj = response.result.value
@@ -331,6 +374,36 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         }
     }
     
+    
+    
+    func  VerifyOTPForTransaction()
+    {
+        if isfromBanktoBank == true
+        {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "OTPVerificationTransactionVC") as! OTPVerificationTransactionVC
+            vc.number = number!
+            vc.ToaccountTitle = ToaccountTitle!
+            isfromBanktoBank = true
+            isfromOtherLocalBank = false
+            vc.amount = amount!
+             self.navigationController?.pushViewController(vc, animated: false)
+        }
+        else
+        {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "OTPVerificationTransactionVC") as! OTPVerificationTransactionVC
+            isfromBanktoBank = false
+            isfromOtherLocalBank = true
+            vc.number = number!
+            vc.ToaccountTitle = ToaccountTitle!
+            vc.amount = amount!
+             self.navigationController?.pushViewController(vc, animated: false)
+        }
+    }
+    
+    
+    
+    
+    
     func movetonext()
     {
 //        if otpTextField?.text?.count != 0
@@ -339,93 +412,16 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
             vc.amount = Double(amount!)
             vc.TransactionId = fundsTransSuccessObj?.data?.authIdResponse
             vc.TransactionDate = fundsTransSuccessObj?.data?.transDate
-           
+
         var merge = "\(ToaccountTitle!)\(number!)"
         print("other wallet bank name", merge)
          vc.number = merge
             vc.Toaccounttitle = ToaccountTitle
             self.navigationController?.pushViewController(vc, animated: true)
-//        }
+        }
         
         
-    }
     
-    // MARK: - API CALL
-    
-    private func FundTransferIBFT() {
-
-        if !NetworkConnectivity.isConnectedToInternet(){
-            self.showToast(title: "No Internet Available")
-            return
-        }
-
-        var userCnic : String?
-
-        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-        }
-        else{
-            userCnic = ""
-        }
-
-        showActivityIndicator()
-
-
-//        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferIbft"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferIbft"
-
-        userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"accountNo":number!,"accountIMD":GlobalData.Selected_bank_code,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"benificiaryIBAN":DataManager.instance.accountNo!,"otp": otpTextField.text ?? "","accountType":DataManager.instance.accountType!]
-        print(parameters)
-        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-
-        print(result.apiAttribute1)
-        print(result.apiAttribute2)
-
-        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-
-        print(params)
-        print(compelteUrl)
-        print(header)
-
-        NetworkManager.sharedInstance.enableCertificatePinning()
-
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
-
-
-            self.hideActivityIndicator()
-
-            self.fundsTransSuccessObj = response.result.value
-            if response.response?.statusCode == 200 {
-
-                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
-                    self.movetonext()
-                }
-                else {
-                    if let message = self.fundsTransSuccessObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-//                        self.showToast(title: message)
-                        
-                    }
-                }
-            }
-            else {
-                if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-            }
-        }
-    }
-//
-//
-    
-    
-    
-    
-    
-    
+ 
     
 }

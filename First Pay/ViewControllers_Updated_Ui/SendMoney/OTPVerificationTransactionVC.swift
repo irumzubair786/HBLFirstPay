@@ -16,12 +16,17 @@ import SafariServices
 import Foundation
 import OTPTextField
 class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
-    
+    var fundsTransSuccessObj: FundsTransferApiResponse?
     var totalSecond = 60
     var ForTransactionConsent:Bool = false
     var timer = Timer()
     var counter = 0
     var count = 0
+    var amount: String?
+    var number: String?
+    var ToaccountTitle : String?
+    var bankname : String?
+    var OTPREQ : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         TF_otp.delegate = self
@@ -29,6 +34,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         btnResendOtp.isUserInteractionEnabled = false
         btnResendotpCall.isHidden = true
         startTimer()
+        labelMessage.isHidden = true
         back.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         IMG_NEXT_ARROW.isUserInteractionEnabled = true
@@ -158,12 +164,12 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         }
 
         else{
-//            verifyOtpResetPass()
+           FundTransferIBFT()
         }
     }
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-//        verifyOtpResetPass()
+        FundTransferIBFT()
     }
     func ResendOTVCall() {
 
@@ -211,13 +217,13 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
-                        self.showAlert(title: "", message: message, completion: nil)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                 }
             }
             else {
                 if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
                 //                print(response.result.value)
                 //                print(response.response?.statusCode)
@@ -279,13 +285,13 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
-                        self.showAlert(title: "", message: message, completion: nil)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                 }
             }
             else {
                 if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
                 //                print(response.result.value)
                 //                print(response.response?.statusCode)
@@ -293,4 +299,100 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
+    
+    // MARK: - API CALL
+    
+    private func FundTransferIBFT() {
+
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+
+        var userCnic : String?
+
+        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+        }
+        else{
+            userCnic = ""
+        }
+
+        showActivityIndicator()
+
+
+//        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferIbft"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferIbft"
+
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"accountNo":number!,"accountIMD":GlobalData.Selected_bank_code,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"benificiaryIBAN":DataManager.instance.accountNo!,"otp": TF_otp.text ?? "","accountType":DataManager.instance.accountType!]
+        print(parameters)
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+
+        print(result.apiAttribute1)
+        print(result.apiAttribute2)
+
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+
+        print(params)
+        print(compelteUrl)
+        print(header)
+
+        NetworkManager.sharedInstance.enableCertificatePinning()
+
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
+
+
+            self.hideActivityIndicator()
+
+            self.fundsTransSuccessObj = response.result.value
+            if response.response?.statusCode == 200 {
+
+                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
+                    self.movetonext()
+                }
+                else {
+                    if let message = self.fundsTransSuccessObj?.messages{
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+//                        self.showToast(title: message)
+                        
+                    }
+                }
+            }
+            else {
+                if let message = self.fundsTransSuccessObj?.messages{
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
+//                print(response.result.value)
+//                print(response.response?.statusCode)
+            }
+        }
+    }
+//
+//
+    
+    func movetonext()
+    {
+//        if otpTextField?.text?.count != 0
+//        {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "otherWalletTransationSuccessfullVC") as! otherWalletTransationSuccessfullVC
+            vc.amount = Double(amount!)
+            vc.TransactionId = fundsTransSuccessObj?.data?.authIdResponse
+            vc.TransactionDate = fundsTransSuccessObj?.data?.transDate
+           
+        var merge = "\(ToaccountTitle!)\(number!)"
+        print("other wallet bank name", merge)
+         vc.number = merge
+            vc.Toaccounttitle = ToaccountTitle
+            self.navigationController?.pushViewController(vc, animated: true)
+//        }
+        
+        
+    }
+ 
+    
+    
+    
+    
 }

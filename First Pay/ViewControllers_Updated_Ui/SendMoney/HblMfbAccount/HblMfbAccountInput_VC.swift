@@ -63,6 +63,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
                return newLength <= 6
             
         }
+        
         else if textField == tfAccountNo{
             return newLength <= 16
          
