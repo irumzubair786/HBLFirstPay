@@ -24,6 +24,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     var ToaccountTitle : String?
     var bankname : String?
     var OTPREQ : String?
+    var harcodePurpose :String?
+    var harcodePurposeCode :String?
     override func viewDidLoad() {
         super.viewDidLoad()
         print("GlobalData.money_Reason",  number)
@@ -35,8 +37,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         lblAlertAmount.textColor = .gray
         linebtn.setTitle("", for: .normal)
         buttonDropDown.setTitle("", for: .normal)
-//        GlobalData.moneyTransferReasocCode = ""
-//       GlobalData.money_Reason = ""
+        
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         img_next_arrow.isUserInteractionEnabled = true
@@ -75,7 +76,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var btn_Next: UIButton!
     @IBAction func Action_back(_ sender: UIButton) {
         self.dismiss(animated: true)
-        
+        HblMfbAccountInput_VC
     }
     
     var comabalanceLimit : String?

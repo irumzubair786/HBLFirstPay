@@ -272,6 +272,10 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
             vc.ToaccountTitle = transactionApiResponseObj?.data?.accountTitle!
               isfromFirstPayWallet = false
               isfromHblMbfAccount = true
+        GlobalData.money_Reason = "Miscellaneous Payments"
+        PurposeTf.text = "Miscellaneous Payments"
+        vc.harcodePurposeCode = "0350"
+        
         self.navigationController?.pushViewController(vc, animated: true)
 
     }
