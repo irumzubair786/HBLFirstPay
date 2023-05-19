@@ -164,7 +164,6 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         ToDateTextfiled.placeholder = "  DD/MM/YYYY"
         fromDateTextfield.placeholder = "  DD/MM/YYYY"
         
-        
         toDate = ToDateTextfiled.setPickerDate()
         fromDate = fromDateTextfield.setPickerDate()
         fromDate.maximumDate = Date()
@@ -172,7 +171,6 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         toDate.addTarget(self, action: #selector(self.tappedOnDate), for: .valueChanged)
         
         fromDate.addTarget(self, action: #selector(self.tappedOnDate), for: .valueChanged)
-        
     }
     
     @objc func tappedOnDate(sender: UIDatePicker) {
