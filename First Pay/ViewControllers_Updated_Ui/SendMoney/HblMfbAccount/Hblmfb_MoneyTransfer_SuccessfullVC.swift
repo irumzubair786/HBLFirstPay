@@ -88,7 +88,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
         {
            
             lblTransactionId.text  = TransactionId
-            lblTransType.text = "Wallet to Wallet"
+            lblTransType.text = "Firstpay Wallett"
             lblSourceAccount.text = "FirstPay Account \(DataManager.instance.accountNo!)"
             lblDateTime.text = TransactionDate!
           
@@ -99,9 +99,9 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
         {
             lblTransactionId.text  = TransactionId
             lblTransType.text = "HBL MfB Transfer"
-            lblSourceAccount.text = DataManager.instance.accountNo!
+            let a = "\(DataManager.instance.accountTitle!)\(DataManager.instance.accountNo!)"
+            lblSourceAccount.text = a
             lblDateTime.text = TransactionDate!
-            
             lblBeneficiaryAccount.text = number!
              
         }

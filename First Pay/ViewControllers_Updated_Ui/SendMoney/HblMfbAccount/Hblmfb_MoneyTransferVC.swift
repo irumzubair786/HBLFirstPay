@@ -37,13 +37,14 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         lblAlertAmount.textColor = .gray
         linebtn.setTitle("", for: .normal)
         buttonDropDown.setTitle("", for: .normal)
-        
+        PurposeTf.text = harcodePurpose
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         img_next_arrow.isUserInteractionEnabled = true
         img_next_arrow.addGestureRecognizer(tapGestureRecognizer)
         
         otpTextField.isHidden = true
+        
 //        otpView.isHidden = true
         
     
@@ -409,15 +410,22 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     {
 //        if otpTextField?.text?.count != 0
 //        {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "otherWalletTransationSuccessfullVC") as! otherWalletTransationSuccessfullVC
+            let vc = storyboard?.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransfer_SuccessfullVC") as! Hblmfb_MoneyTransfer_SuccessfullVC
             vc.amount = Double(amount!)
             vc.TransactionId = fundsTransSuccessObj?.data?.authIdResponse
             vc.TransactionDate = fundsTransSuccessObj?.data?.transDate
+       if  isfromFirstPayWallet == true
+        {
+           vc.number = self.number!
+        }
+        else
+        {
+            var merge = "\(ToaccountTitle!)\(number!)"
+            print("other wallet bank name", merge)
+            vc.number = merge
 
-        var merge = "\(ToaccountTitle!)\(number!)"
-        print("other wallet bank name", merge)
-         vc.number = merge
-            vc.Toaccounttitle = ToaccountTitle
+        }
+        vc.Toaccounttitle = ToaccountTitle
             self.navigationController?.pushViewController(vc, animated: true)
         }
         

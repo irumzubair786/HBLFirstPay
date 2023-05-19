@@ -312,6 +312,10 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
                isfromBanktoBank = true
         vc.bankname = selectWallettf.text!
         vc.OTPREQ = transactionApiResponseObj?.data?.oTPREQ!
+       
+        GlobalData.money_Reason = "Miscellaneous Payments"
+        vc.harcodePurpose = "Miscellaneous Payments"
+        GlobalData.moneyTransferReasocCode = "0350"
         self.navigationController?.pushViewController(vc, animated: true)
 
     }

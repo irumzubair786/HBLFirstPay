@@ -108,8 +108,15 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
                return newLength <= 11
             
         }
-        
-        return newLength <= 11
+        if textField == amountTextField{
+               return newLength <= 6
+            
+        }
+        else
+        {
+            return newLength <= 11
+          
+        }
       
        
      
@@ -261,6 +268,9 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         vc.OTPREQ = self.transactionApiResponseObj?.data?.oTPREQ!
               isfromFirstPayWallet = true
               isfromHblMbfAccount = false
+        GlobalData.money_Reason = "Miscellaneous Payments"
+        vc.harcodePurpose = "Miscellaneous Payments"
+        GlobalData.moneyTransferReasocCode = "0350"
         self.navigationController?.pushViewController(vc, animated: true)
 
     }

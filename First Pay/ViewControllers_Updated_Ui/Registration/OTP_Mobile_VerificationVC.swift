@@ -50,7 +50,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         self.labelMessage.isHidden = true
         self.mobileRegistration()
-        
+       
         
     }
     @IBOutlet weak var popupView: UIView!

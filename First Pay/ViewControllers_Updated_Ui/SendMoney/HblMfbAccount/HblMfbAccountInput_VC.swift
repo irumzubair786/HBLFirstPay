@@ -64,7 +64,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
             
         }
         
-        else if textField == tfAccountNo{
+       if textField == tfAccountNo{
             return newLength <= 16
          
      }
@@ -269,12 +269,15 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = tfAccountNo.text!
               vc.amount = amountTextfield.text!
-            vc.ToaccountTitle = transactionApiResponseObj?.data?.accountTitle!
+        
+           
+        let a = transactionApiResponseObj?.data?.accountTitle!
+        vc.ToaccountTitle = a?.replace(string: " ", replacement: "")
               isfromFirstPayWallet = false
               isfromHblMbfAccount = true
         GlobalData.money_Reason = "Miscellaneous Payments"
-        PurposeTf.text = "Miscellaneous Payments"
-        vc.harcodePurposeCode = "0350"
+        vc.harcodePurpose = "Miscellaneous Payments"
+        GlobalData.moneyTransferReasocCode = "0350"
         
         self.navigationController?.pushViewController(vc, animated: true)
 

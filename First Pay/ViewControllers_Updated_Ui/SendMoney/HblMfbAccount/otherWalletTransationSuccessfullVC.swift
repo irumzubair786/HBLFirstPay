@@ -39,7 +39,7 @@ class otherWalletTransationSuccessfullVC: BaseClassVC {
     @IBOutlet weak var btnDownlload: UIButton!
     @IBOutlet weak var btnShare: UIButton!
     @IBOutlet weak var lblamount: UILabel!
-   
+    @IBOutlet weak var lblWalletName: UILabel!
     @IBAction func Action_Cross(_ sender: UIButton) {
         
         let storyboard = UIStoryboard(name: "SendMoney", bundle: nil)
@@ -79,10 +79,10 @@ class otherWalletTransationSuccessfullVC: BaseClassVC {
        if isfromOtherLocalBank == true{
         
                    
-//                    lblWalletName.isHidden = false
-//                    lblWalletName.text = "HBL MfB Transfer"
+                    lblWalletName.isHidden = false
+                   lblWalletName.text = GlobalData.Selected_bank
                     lblTransactionId.text  = TransactionId
-                    lblTransType.text = "Bank Name"
+                    lblTransType.text =  "HBL MfB Transfer"
            var merge = "\(DataManager.instance.accountTitle!) \(DataManager.instance.accountNo!)"
                     lblSourceAccount.text = merge
                     lblDateTime.text = TransactionDate!
@@ -94,9 +94,9 @@ class otherWalletTransationSuccessfullVC: BaseClassVC {
                    
                   
                     lblTransactionId.text  = TransactionId
-                    lblTransType.text = "Wallet Name"
+                    lblTransType.text = "Wallet Transfer"
                     lblBeneficiaryAccount.text = number!
-//                    lblWalletName.text = "Wallet Transfer"
+                    lblWalletName.text = GlobalData.Selected_bank
 //                    lblWalletName.text = GlobalData.Selected_bank
                     var merge = "\(DataManager.instance.accountTitle!) \(DataManager.instance.accountNo!)"
                              lblSourceAccount.text = merge
