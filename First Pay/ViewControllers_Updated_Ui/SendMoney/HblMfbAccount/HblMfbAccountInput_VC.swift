@@ -80,42 +80,95 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
 
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-
-        if textField == amountTextfield
-        {
-                    if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  > Int((maxvalu) ?? 0)
-
-                    {
-                        lblAlertAmount.textColor = .gray
-                        imgnextarrow.image = UIImage(named: "grayArrow")
-                        imgnextarrow.isUserInteractionEnabled = false
-           lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-
-                    }
-
-        }
-        
-        
-        if amountTextfield?.text?.count ?? 0 < 0 || amountTextfield?.text?.count == 0
+        if amountTextfield?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
         {
             lblAlertAmount.textColor = .gray
             imgnextarrow.image = UIImage(named: "grayArrow")
-            //
+            lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
             imgnextarrow.isUserInteractionEnabled = false
         }
-        else if amountTextfield?.text?.count != 0
-        {
-            
-            let image = UIImage(named:"]greenarrow")
-            imgnextarrow.image = image
-            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-            imgnextarrow.isUserInteractionEnabled = true
-            imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
-            lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-            self.btn_next.isUserInteractionEnabled = true
-        }
+        if amountTextfield?.text?.count != 0
+                 {
+         
+            if Int(amountTextfield.text!) ?? 0  > Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  < Int((maxvalu) ?? 0)
+            {
+                let image = UIImage(named:"]greenarrow")
+                imgnextarrow.image = image
+                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+                imgnextarrow.isUserInteractionEnabled = true
+                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+                lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+                self.btn_next.isUserInteractionEnabled = true
+            }
+            else
+            {
+                lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
+                imgnextarrow.image = UIImage(named: "grayArrow")
+                lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+                imgnextarrow.isUserInteractionEnabled = false
+            }
+                    
+                 }
+        
+//        else  if textField == amountTextfield
+//        {
+//            if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  > Int((maxvalu) ?? 0)
+//
+//            {
+//                lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
+//                imgnextarrow.image = UIImage(named: "grayArrow")
+//                lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+//                imgnextarrow.isUserInteractionEnabled = false
+//
+//            }
+//        }
+        
+     
+       //
         
         
+        
+        
+        
+        
+        
+        
+//
+//        if textField == amountTextfield
+//        {
+//                    if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  > Int((maxvalu) ?? 0)
+//
+//                    {
+//                        lblAlertAmount.textColor = .gray
+//                        imgnextarrow.image = UIImage(named: "grayArrow")
+//                        imgnextarrow.isUserInteractionEnabled = false
+//           lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+//
+//                    }
+//
+//        }
+//
+//
+//        if amountTextfield?.text?.count ?? 0 < 0 || amountTextfield?.text?.count == 0
+//        {
+//            lblAlertAmount.textColor = .gray
+//            imgnextarrow.image = UIImage(named: "grayArrow")
+//            //
+//            imgnextarrow.isUserInteractionEnabled = false
+//        }
+//        else if amountTextfield?.text?.count != 0
+//        {
+//
+//            let image = UIImage(named:"]greenarrow")
+//            imgnextarrow.image = image
+//            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//            imgnextarrow.isUserInteractionEnabled = true
+//            imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+//            lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//            self.btn_next.isUserInteractionEnabled = true
+//        }
+//
+//
         
         
         
