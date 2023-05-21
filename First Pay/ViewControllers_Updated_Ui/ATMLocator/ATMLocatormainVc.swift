@@ -15,6 +15,7 @@ class ATMLocatormainVc: UIViewController {
     
     
     
+    @IBOutlet weak var buttondetail: UIButton!
     
     @IBOutlet weak var buttonDetail: UIButton!
     @IBOutlet weak var buttonATM: UIButton!
@@ -34,7 +35,7 @@ class ATMLocatormainVc: UIViewController {
         buttonCash.backgroundColor = UIColor.clear
         buttonCash.borderColor = UIColor.gray
         buttonCash.setTitleColor(UIColor.black, for: .normal)
-
+        buttondetail.setTitle("", for: .normal)
         buttonDetail.isUserInteractionEnabled = true
         
         if modelATMLocation?.data.atmLocation.count ?? 0 > 0 {

@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vGY-qf-y6r" userLabel="BackView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="539"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="izl-Cl-dXa" userLabel="TopView">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
@@ -208,7 +208,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="j9h-GU-4gN" firstAttribute="trailing" secondItem="O6F-FT-8Rs" secondAttribute="trailing" id="9RB-5W-4Ik"/>
-                                    <constraint firstAttribute="bottom" secondItem="HjJ-Qm-VdN" secondAttribute="bottom" constant="70" id="9lt-BP-sOC"/>
+                                    <constraint firstAttribute="bottom" secondItem="HjJ-Qm-VdN" secondAttribute="bottom" constant="-58" id="9lt-BP-sOC"/>
                                     <constraint firstItem="O6F-FT-8Rs" firstAttribute="leading" secondItem="vGY-qf-y6r" secondAttribute="leading" id="GVb-Mf-F27"/>
                                     <constraint firstItem="j9h-GU-4gN" firstAttribute="top" secondItem="izl-Cl-dXa" secondAttribute="bottom" constant="81" id="PsY-AO-Uqm"/>
                                     <constraint firstItem="HjJ-Qm-VdN" firstAttribute="leading" secondItem="vGY-qf-y6r" secondAttribute="leading" constant="25" id="Ulj-mP-Bzf"/>
@@ -222,6 +222,19 @@
                                     <constraint firstAttribute="trailing" secondItem="izl-Cl-dXa" secondAttribute="trailing" id="vb2-42-ycZ"/>
                                 </constraints>
                             </view>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vRG-M6-KCk">
+                                <rect key="frame" x="0.0" y="547" width="375" height="49"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="49" id="6LT-qA-zT7"/>
+                                    <constraint firstAttribute="height" constant="49" id="qhf-2o-qn8"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                                <connections>
+                                    <action selector="buttonDetail:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="9mI-cE-17k"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -229,7 +242,10 @@
                             <constraint firstItem="vGY-qf-y6r" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="63k-eg-bfr"/>
                             <constraint firstItem="vGY-qf-y6r" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="7Uf-C9-gej"/>
                             <constraint firstItem="vGY-qf-y6r" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="FfE-gF-3Tn"/>
-                            <constraint firstItem="vGY-qf-y6r" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="QPF-mC-QJR"/>
+                            <constraint firstItem="vGY-qf-y6r" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" constant="-128" id="QPF-mC-QJR"/>
+                            <constraint firstItem="vRG-M6-KCk" firstAttribute="top" secondItem="vGY-qf-y6r" secondAttribute="bottom" constant="8" symbolic="YES" id="cZU-Ef-qY3"/>
+                            <constraint firstItem="vRG-M6-KCk" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="kk3-z1-zRd"/>
+                            <constraint firstItem="vRG-M6-KCk" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="ljB-MY-yyR"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="nsf-Fv-t7E"/>
@@ -238,12 +254,13 @@
                         <outlet property="buttonBranch" destination="FLT-oq-ogc" id="iWl-oX-8ik"/>
                         <outlet property="buttonCash" destination="PG8-az-Xxx" id="vcw-U5-8G3"/>
                         <outlet property="buttonDetail" destination="HjJ-Qm-VdN" id="wqi-6i-D1A"/>
+                        <outlet property="buttondetail" destination="vRG-M6-KCk" id="QNE-iQ-cWo"/>
                         <outlet property="viewForMap" destination="j9h-GU-4gN" id="Yzw-bF-yNm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="399" y="1"/>
+            <point key="canvasLocation" x="397.60000000000002" y="0.44977511244377816"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jge-mV-2eF">

@@ -126,15 +126,13 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
     @IBAction func Action_AlertView(_ sender: UIButton) {
 //
 //        btnAlertView.isHidden = true
-        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-        self.present(vc, animated: true)
-        
-        
-        
-        
-        
+        self.dismiss(animated: true)
+//        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+//        self.present(vc, animated: true)
+//
     }
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if string.rangeOfCharacter(from: .letters) != nil || string == " " {
@@ -167,7 +165,6 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
 //                img_next.isUserInteractionEnabled = false
 //            }
 
-        
                return true
         
     }
@@ -254,11 +251,8 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
             messageTextView.isUserInteractionEnabled = false
             Tfname.isUserInteractionEnabled = false
         }
-        
-        
     }
    
-    
 }
 extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
 {

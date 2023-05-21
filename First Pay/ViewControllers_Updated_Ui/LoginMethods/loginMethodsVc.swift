@@ -9,8 +9,9 @@
 import UIKit
 import SwiftKeychainWrapper
 import SideMenu
+var flagisEnable : Bool?
 class loginMethodsVc: BaseClassVC {
-
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonback.setTitle("", for: .normal)
@@ -23,6 +24,7 @@ func checkIdEnable()
     {
         if KeychainWrapper.standard.bool(forKey: "enableTouchID") == true {
             butttonEnableFaceid.isOn
+            
         }
         else
         {
@@ -33,18 +35,29 @@ func checkIdEnable()
     
     @IBAction func butttonEnableFaceid(_ sender: UISwitch) {
         
-        
+         
         if butttonEnableFaceid.isOn  == false{
+            
             viewdisble.isHidden = false
         }
         else
         {
-            viewdisble.isHidden = true
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "BioMetricLoginVc") as! BioMetricLoginVc
-            self.present(vc, animated: true)
+            
+            guard let  FirsTimeLogin = UserDefaults.standard.string(forKey:  "enableTouchID")else
+            {
+                viewdisble.isHidden = true
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "BioMetricLoginVc") as! BioMetricLoginVc
+              
+                self.present(vc, animated: true)
+                return
+            }
             
             
         }
+           
+            
+            
+        
         
     }
     
@@ -71,6 +84,7 @@ func checkIdEnable()
     }
     
     @IBAction func buttonDisable(_ sender: UIButton) {
+        UserDefaults.standard.removeObject(forKey: "enableTouchID")
         buttonDisable.setTitleColor(.white, for: .normal)
         buttonDisable.backgroundColor = UIColor(hexString: "CC6801")
         let unSaveAccountPreview : Bool = KeychainWrapper.standard.set(false, forKey: "enableTouchID")

@@ -46,6 +46,8 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
     
     @IBAction func buttonContinue(_ sender: UIButton) {
         let saveAccountPreview : Bool = KeychainWrapper.standard.set(true, forKey: "enableTouchID")
+        flagisEnable = true
+
         let password = UserDefaults.standard.string(forKey: "userKey")
         print("Successfully Added to KeyChainWrapper \(saveAccountPreview)")
         self.showToast(title: "Successfully Activated")

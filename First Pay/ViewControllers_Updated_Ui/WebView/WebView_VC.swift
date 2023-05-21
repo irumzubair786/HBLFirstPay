@@ -24,8 +24,6 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         webViewOutlet.delegate = self
-//        webViewOutlet.scrollView.isScrollEnabled = true
-//        webViewOutlet.scrollView.bouncesZoom = true
         self.showActivityIndicator()
         if forHTML == false {
             self.webViewMethod()
@@ -42,7 +40,6 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
     }
     
     //MARK: - WebViewDelegate
-    
     func webViewMethod(){
         if forAwaaz {
             self.hideActivityIndicator()

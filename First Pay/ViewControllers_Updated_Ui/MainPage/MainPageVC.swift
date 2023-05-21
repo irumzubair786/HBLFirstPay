@@ -97,7 +97,11 @@ class MainPageVC: BaseClassVC {
 
     @IBAction func Action_Main(_ sender: UIButton) {
 //        showToast(title: "Coming Soon")
-        imgQRPopup.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3)
+        {
+            self.imgQRPopup.isHidden = false
+        }
+       
         
         imgPromtionsPopup.isHidden = true
         imgMyAccountPopup.isHidden = true
@@ -113,6 +117,10 @@ class MainPageVC: BaseClassVC {
         
     }
     @IBAction func Action_Locator(_ sender: UIButton) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3)
+        {
+            self.imgPromtionsPopup.isHidden = false
+        }
         imgPromtionsPopup.isHidden = false
         imgQRPopup.isHidden = true
         imgMyAccountPopup.isHidden = true
@@ -124,7 +132,11 @@ class MainPageVC: BaseClassVC {
     }
     
     @IBAction func Action_Profile(_ sender: UIButton) {
-        imgMyAccountPopup.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3)
+        {
+            self.imgMyAccountPopup.isHidden = false
+        }
+       
         imgPromtionsPopup.isHidden = true
         imgQRPopup.isHidden = true
 //        btnHome.setImage(UIImage(named: "grayHome"), for: .normal)

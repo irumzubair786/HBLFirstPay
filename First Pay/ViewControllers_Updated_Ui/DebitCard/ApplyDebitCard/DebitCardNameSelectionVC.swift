@@ -125,6 +125,8 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
         else
         {
             cell.buttonName.backgroundColor = UIColor(hexValue: 0xF19434)
+            cell.buttonName.borderColor = UIColor(hexValue: 0xF19434)
+            cell.buttonName.tintColor = .white
         }
         
         cell.buttonName.tag = indexPath.row
