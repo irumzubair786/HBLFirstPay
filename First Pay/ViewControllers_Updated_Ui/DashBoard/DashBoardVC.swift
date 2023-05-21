@@ -40,7 +40,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         banapi()
         collectionView.delegate = self
         collectionView.dataSource = self
-        btnPageControl.setTitle("", for: .normal)
+       
         buttonLevelIcon.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoStatement(tapGestureRecognizer:)))
         lblAmount.isUserInteractionEnabled = true
@@ -65,8 +65,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     }
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBOutlet weak var imageAddCash: UIImageView!
-    
-    
     @IBOutlet weak var buttonLevelIcon: UIButton!
     @IBOutlet weak var viewDebitCard: UIImageView!
     
@@ -182,12 +180,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @IBOutlet weak var LblMobNo: UILabel!
     @IBOutlet weak var img: UIImageView!
-    @IBOutlet weak var btnPageControl: UIButton!
-    override func viewWillAppear(_ animated: Bool) {
-       
-        
-//        homeAction()
-    }
+   
     @objc func changeImage() {
         
         if counter < self.banaryyString.count {
