@@ -52,11 +52,13 @@ class DebitCardAddressVC: UIViewController {
         buttonPostal.backgroundColor = UIColor.clear
         buttonPostal.setTitleColor(UIColor(hexValue: 0xF19434), for: .normal)
         buttonPostal.borderColor = UIColor(hexValue: 0xF19434)
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "selectBranchVC") as!  selectBranchVC
-                    vc.fullname = fullUserName
-                    self.navigationController?.pushViewController(vc, animated: true)
+        FBEvents.logEvent(title: .Debit_orderdeliverybranch_click)
+
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "selectBranchVC") as!  selectBranchVC
+        vc.fullname = fullUserName
+        self.navigationController?.pushViewController(vc, animated: true)
         
-                
+        
     }
     
     
@@ -64,7 +66,8 @@ class DebitCardAddressVC: UIViewController {
     
     @IBOutlet weak var buttonPostal: UIButton!
     @IBAction func buttonPostal(_ sender: UIButton) {
-        
+        FBEvents.logEvent(title: .Debit_orderdeliverypostal_click)
+
         buttonPostal.backgroundColor = UIColor(hexValue: 0xF19434)
         buttonPostal.setTitleColor(.white, for: .normal)
         buttonPostal.borderColor = UIColor(hexValue: 0xF19434)

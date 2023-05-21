@@ -37,15 +37,13 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
             labelTitle.text = "ATM & POS ACCESSBILITY"
         }
         self.textfieldLast4digit.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-        
-        
     }
     
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelMainTitle: UILabel!
     
-    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer) {
+
         if isFromChangePin == true
         {
             
@@ -73,21 +71,20 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
         }
       else  if  isfromATMOFF == true || isfromPOSOFF == true
         {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
-            vc.cardId = cardId
-            vc.channel = serviceFlag
-            vc.accountDebitcardId =  GlobalData.accountDebitCardId
-            vc.status = status
-            vc.lastFourDigit = textfieldLast4digit.text!
-//          isfromDisableService = true
-            self.navigationController?.pushViewController(vc, animated: true)
-          
-            
-        }
+          FBEvents.logEvent(title: .Debit_activateotp_attempt)
+
+          let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
+          vc.cardId = cardId
+          vc.channel = serviceFlag
+          vc.accountDebitcardId =  GlobalData.accountDebitCardId
+          vc.status = status
+          vc.lastFourDigit = textfieldLast4digit.text!
+          //          isfromDisableService = true
+          self.navigationController?.pushViewController(vc, animated: true)
+      }
         else{
             getDebitCardsCall()
         }
-      
     }
     
     @IBAction func buttonBack(_ sender: UIButton) {

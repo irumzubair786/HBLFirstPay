@@ -34,6 +34,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var availableLimitObj: AvailableLimitsModel?
     var topBtnarr =  ["SendMoney", "Mobile Topup", "PayBill","First Option","DebitCard","SeeAll"]
 
+    @IBOutlet weak var imgSeeAll: UIImageView!
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Homescreen_Landing)
         super.viewDidLoad()
@@ -61,7 +62,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         let tapGestureRecognizrz = UITapGestureRecognizer(target: self, action: #selector(moveToInviteFriend(tapGestureRecognizer:)))
         imgInviteFriend.isUserInteractionEnabled = true
         imgInviteFriend.addGestureRecognizer(tapGestureRecognizrz)
-    
+        
+        let tapGestureRecognizrz = UITapGestureRecognizer(target: self, action: #selector(moveToSeeAll(tapGestureRecognizer:)))
+        imgSeeAll.isUserInteractionEnabled = true
+        imgSeeAll.addGestureRecognizer(tapGestureRecognizrz)
     }
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBOutlet weak var imageAddCash: UIImageView!
@@ -78,15 +82,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         self.present(vc, animated: true)
     }
     func AddCash(){
-        
-        
         let tapGestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(btnAddCash(tapGestureRecognizer:)))
         imageAddCash.isUserInteractionEnabled = true
         imageAddCash.addGestureRecognizer(tapGestureRecognizer3)
     }
 
-    @objc func btnAddCash(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func btnAddCash(tapGestureRecognizer: UITapGestureRecognizer) {
+        FBEvents.logEvent(title: .Homescreen_addcash_click)
         let storyBoard = UIStoryboard(name: Storyboard.AddCash.rawValue, bundle: Bundle.main)
         let vc = storyBoard.instantiateViewController(withIdentifier: "navigateToAddCash")
         self.present(vc, animated: true)
@@ -106,48 +108,38 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         return cella
     }
     
-    @objc func buttontaped(_sender:UIButton)
-    {
-        
+    @objc func buttontaped(_sender:UIButton) {
         let tag = _sender.tag
         
         let cell = collectionView.cellForItem(at: IndexPath(row: tag, section: 0)) as! cellmainfourTransaction
-        if tag == 0
-        {
+        if tag == 0 {
+            FBEvents.logEvent(title: .Homescreen_sendmoney_click)
             let storyboard = UIStoryboard(name: "SendMoney", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "SendMoney_MainVc")
-          
             self.present(vc, animated: true)
         }
-        else if tag == 1
-        {
-
-            
+        else if tag == 1 {
+            FBEvents.logEvent(title: .Homescreen_topup_click)
             let storyboard = UIStoryboard(name: "TopUp", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "movtToTopUp")
             self.present(vc, animated: true)
             
         }
-        else if tag == 2
-        {
-            
+        else if tag == 2 {
+            FBEvents.logEvent(title: .Homescreen_paybills_click)
             let storyboard = UIStoryboard(name: "BillPayment", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "moveToBillpayment")
 
             self.present(vc, animated: true)
         }
-        else if tag == 3
-        {
+        else if tag == 3 {
+            FBEvents.logEvent(title: .Homescreen_getloan_click)
             let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
             self.present(vc, animated: true)
 //            self.navigationController?.pushViewController(vc, animated: true)
         }
-        
-        else if tag == 4
-        {
-            
+        else if tag == 4 {
             getDebitCard()
-            
         }
        
     }
@@ -360,17 +352,19 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     }
     
     
-    @objc func moveToInviteFriend(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func moveToInviteFriend(tapGestureRecognizer: UITapGestureRecognizer) {
         let vc = UIStoryboard.init(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteFriendsAddNumber") as! InviteFriendsAddNumber
         self.present(vc, animated: true)
         //        self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func moveToSeeAll(tapGestureRecognizer: UITapGestureRecognizer) {
+        FBEvents.logEvent(title: .Homescreen_seeall_click)
+
+    }
+    
+    @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer) {
         getAvailableLimits()
-        
     }
     
     // MARK: - Api Call
@@ -629,124 +623,116 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                   }
               }
           }
-        private func updateUI(){
-            
-            if   DataManager.instance.accountLevel == "LEVEL 0"
-            {
-                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
-                if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
-                    vc.balanceLimit = Int(balnceLimit)
-                    print("balnceLimit",balnceLimit)
-                }
-                if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
-                    vc.balanceLimit1 = Int(balnceLimit1)
-                    print("balnceLimit",balnceLimit1)
-                }
-                
-                if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
-                    vc.totalDailyLimitCr = Int(dailyTotalCr)
-                }
-                if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
-                    vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
-                }
-                
-                
-                if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
-                    vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
-                }
-                if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
-                    vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
-                }
-                
-                
-                if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
-                    vc.totalYearlyLimitCr = Int(yearlyTotalCr)
-                }
-                if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
-                    vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
-                }
-                if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
-                    vc.totalDailyLimitDr = Int(totalDailyLimitDr)
-                }
-                if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
-                    vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
-                }
-                if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
-                    vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
-                }
-                if let  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
-                    vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
-                }
-                if let  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
-                    vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
-                }
-                if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
-                    vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
-                }
-                self.present(vc, animated: true)
+    private func updateUI(){
+        
+        if DataManager.instance.accountLevel == "LEVEL 0" {
+            FBEvents.logEvent(title: .Homescreen_Myaccount_click)
+
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+            if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
+                vc.balanceLimit = Int(balnceLimit)
+                print("balnceLimit",balnceLimit)
             }
-             
-                else if DataManager.instance.accountLevel == "LEVEL 1"
-                {
-                    let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
-                    if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
-                        vc.balanceLimit = Int(balnceLimit)
-                        print("balnceLimit",balnceLimit)
-                    }
-                    if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
-                        vc.balanceLimit1 = Int(balnceLimit1)
-                        print("balnceLimit",balnceLimit1)
-                    }
-                    
-                    if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
-                        vc.totalDailyLimitCr = Int(dailyTotalCr)
-                    }
-                    if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
-                        vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
-                    }
-                    
-                    
-                    if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
-                        vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
-                    }
-                    if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
-                        vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
-                    }
-                    
-                    
-                    if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
-                        vc.totalYearlyLimitCr = Int(yearlyTotalCr)
-                    }
-                    if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
-                        vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
-                    }
-                    
-                    //        dr
-                    if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
-                        vc.totalDailyLimitDr = Int(totalDailyLimitDr)
-                    }
-                    if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
-                        vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
-                    }
-                    if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
-                        vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
-                    }
-                    if let  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
-                        vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
-                    }
-                    if let  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
-                        vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
-                    }
-                    if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
-                        vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
-                    }
-                    self.present(vc, animated: true)
-                    
-                }
-                
-                
+            if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
+                vc.balanceLimit1 = Int(balnceLimit1)
+                print("balnceLimit",balnceLimit1)
+            }
             
+            if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
+                vc.totalDailyLimitCr = Int(dailyTotalCr)
+            }
+            if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
+                vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
+            }
+            if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
+            }
+            if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
+            }
+            if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr = Int(yearlyTotalCr)
+            }
+            if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
+            }
+            if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
+                vc.totalDailyLimitDr = Int(totalDailyLimitDr)
+            }
+            if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
+                vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
+            }
+            if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
+            }
+            if let totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
+            }
+            if let totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
+            }
+            if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
+            }
+            self.present(vc, animated: true)
         }
+        else if DataManager.instance.accountLevel == "LEVEL 1" {
+            FBEvents.logEvent(title: .Homescreen_Myaccount_click)
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+            if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
+                vc.balanceLimit = Int(balnceLimit)
+                print("balnceLimit",balnceLimit)
+            }
+            if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
+                vc.balanceLimit1 = Int(balnceLimit1)
+                print("balnceLimit",balnceLimit1)
+            }
+            
+            if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
+                vc.totalDailyLimitCr = Int(dailyTotalCr)
+            }
+            if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
+                vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
+            }
+            
+            
+            if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
+            }
+            if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
+            }
+            
+            
+            if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr = Int(yearlyTotalCr)
+            }
+            if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
+            }
+            
+            //        dr
+            if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
+                vc.totalDailyLimitDr = Int(totalDailyLimitDr)
+            }
+            if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
+                vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
+            }
+            if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
+            }
+            if let  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
+            }
+            if let  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
+            }
+            if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
+            }
+            self.present(vc, animated: true)
+        }
+    }
     
 //class end
 }

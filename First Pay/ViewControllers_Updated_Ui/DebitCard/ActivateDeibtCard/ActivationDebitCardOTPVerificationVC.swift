@@ -110,7 +110,7 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var textFieldOTP: OTPTextField!
     
     @IBAction func butttonResendOTp(_ sender: UIButton) {
-        
+
         butttonResendOTp.isUserInteractionEnabled = false
         butttonResendOTp.setTitleColor(.gray ,for: .normal)
             
@@ -264,7 +264,8 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        
+        FBEvents.logEvent(title: .Debit_activateotp_attempt)
+
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
             
             self.hideActivityIndicator()
@@ -273,7 +274,8 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
             print(self.genResponse)
         
             if response.response?.statusCode == 200 {
-                
+                FBEvents.logEvent(title: .Debit_activateotp_success)
+
                 if self.genResponse?.responsecode == 2 || self.genResponse?.responsecode == 1 {
                   
                     if isFromDeactivate == true {
@@ -310,6 +312,8 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
                 }
             }
             else {
+                FBEvents.logEvent(title: .Debit_activateotp_failure)
+
                 if let message = self.genResponse?.messages{
                     self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }

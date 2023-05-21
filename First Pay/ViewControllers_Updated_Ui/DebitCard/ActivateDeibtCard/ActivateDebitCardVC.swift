@@ -17,6 +17,7 @@ class ActivateDebitCardVC: BaseClassVC {
     var getDebitDetailsObj : GetDebitCardModel?
    
     override func viewDidLoad() {
+
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
         button1.setTitle("", for: .normal)
@@ -48,12 +49,11 @@ class ActivateDebitCardVC: BaseClassVC {
     @IBAction func button2(_ sender: UIButton) {
     }
     @IBAction func button1(_ sender: UIButton) {
+        FBEvents.logEvent(title: .Debit_activatepincreate_landing)
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as!  ActivationFourDigitNumberVc
         isFromDeactivate = false
         self.navigationController?.pushViewController(vc, animated: true)
-        
-        
     }
     
    

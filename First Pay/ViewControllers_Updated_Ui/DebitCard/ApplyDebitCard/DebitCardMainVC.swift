@@ -18,17 +18,17 @@ class DebitCardMainVC: BaseClassVC {
 
     var checkDebitCardObj : GetDebitCardCheckModel?
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .Debit_ordername_landing)
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
-       
     }
    
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var buttonContinue: UIButton!
     @IBAction func buttonContinue(_ sender: UIButton) {
+        FBEvents.logEvent(title: .Debit_getonenow_click)
         getDebitCardCheck()
     }
-    
     @IBAction func buttonBack(_ sender: UIButton) {
         self.dismiss(animated: true)
 //        self.navigationController?.popViewController(animated: true)
@@ -67,12 +67,13 @@ class DebitCardMainVC: BaseClassVC {
         
         print(params)
         print(compelteUrl)
-        
+        FBEvents.logEvent(title: .Debit_ordername_attempt)
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardCheckModel>) in
             self.hideActivityIndicator()
             self.checkDebitCardObj = response.result.value
             if response.response?.statusCode == 200 {
+                FBEvents.logEvent(title: .Debit_ordername_success)
                 if self.checkDebitCardObj?.responsecode == 2 || self.checkDebitCardObj?.responsecode == 1 {
                     let fullName = self.checkDebitCardObj?.data?.customerName
                     print("phone no",DataManager.instance.mobile_number)
@@ -94,6 +95,7 @@ class DebitCardMainVC: BaseClassVC {
                 }
             }
             else {
+                FBEvents.logEvent(title: .Debit_ordername_failure)
                 if let message = self.checkDebitCardObj?.messages{
                     self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                    

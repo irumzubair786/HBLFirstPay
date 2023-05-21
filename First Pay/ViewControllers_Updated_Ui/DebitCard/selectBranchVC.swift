@@ -137,6 +137,9 @@ extension selectBranchVC: UITableViewDelegate, UITableViewDataSource
         GlobalData.selectedBranchCode = branchCode
         GlobalData.debitCardUserName = fullname!
         print("city id get",  GlobalData.selectedBranch)
+        
+        FBEvents.logEvent(title: .Debit_orderconfirm_screen)
+
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardBranchAddressConfirmationVC") as!  DebitCardBranchAddressConfirmationVC
 //        vc.fullUserName = fullName!
         

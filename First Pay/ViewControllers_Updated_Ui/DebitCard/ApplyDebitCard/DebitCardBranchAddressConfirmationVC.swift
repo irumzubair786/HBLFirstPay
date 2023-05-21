@@ -43,6 +43,8 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
     @IBOutlet weak var imagePopup: UIImageView!
     @IBOutlet weak var blurview: UIView!
     @IBAction func buttonContinue(_ sender: UIButton) {
+        FBEvents.logEvent(title: .Debit_orderconfirm_attempt)
+
         debitCardRequest()
        
     }
@@ -105,7 +107,8 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
            self.hideActivityIndicator()
            self.genericObj = response.result.value
            if response.response?.statusCode == 200 {
-               
+               FBEvents.logEvent(title: .Debit_orderconfirm_success)
+
                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
                    self.blurview.isHidden = false
                    self.imagePopup.isHidden = false
@@ -119,6 +122,8 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
                }
            }
            else {
+               FBEvents.logEvent(title: .Debit_orderconfirm_failure)
+
                if let message = self.genericObj?.messages{
                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                }

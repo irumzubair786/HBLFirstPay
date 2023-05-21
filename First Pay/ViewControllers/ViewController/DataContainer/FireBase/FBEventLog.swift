@@ -125,6 +125,7 @@ struct FBEvents {
         case Homescreen_sendmoney_click
         case Homescreen_topup_click
         case Homescreen_paybills_click
+        case Homescreen_nanoloan_click
         case Homescreen_getloan_click
         case Homescreen_addcash_click
         case Homescreen_bookme_click

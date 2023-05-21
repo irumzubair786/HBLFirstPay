@@ -21,6 +21,8 @@ class DebitCardNameSelectionVC: BaseClassVC {
     var arry = [abc]()
 //    var arrNameList = ["Muhammad", "Arshad", "Khawaj", "Bhatti", "Khan"]
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .Debit_ordername_landing)
+
         super.viewDidLoad()
         print("get userName", fullUserName)
         buttonContinue.isUserInteractionEnabled = false
@@ -87,8 +89,8 @@ class DebitCardNameSelectionVC: BaseClassVC {
     {
         self.navigationController?.popViewController(animated: false)
     }
-    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer) {
+        FBEvents.logEvent(title: .Debit_orderdeliverypostal_click)
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardAddressVC") as!  DebitCardAddressVC
         vc.fullUserName = fullUserName!
         self.navigationController?.pushViewController(vc, animated: true)
@@ -97,6 +99,7 @@ class DebitCardNameSelectionVC: BaseClassVC {
     @IBOutlet weak var collectionView: UICollectionView!
    
     @IBAction func buttonContinue(_ sender: UIButton) {
+        FBEvents.logEvent(title: .Debit_orderdeliverypostal_click)
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardAddressVC") as!  DebitCardAddressVC
         vc.fullUserName = fullUserName!
         self.navigationController?.pushViewController(vc, animated: true)
@@ -247,11 +250,8 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
         collectionView.deselectItem(at: indexPath, animated: true)
         let deselectedCell = collectionView.cellForItem(at: indexPath) as?
         cellDebitCardNameSelection
-        
     }
-
-    
-   }
+}
 
 
 class name
