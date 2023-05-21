@@ -63,9 +63,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         imgInviteFriend.isUserInteractionEnabled = true
         imgInviteFriend.addGestureRecognizer(tapGestureRecognizrz)
         
-        let tapGestureRecognizrz = UITapGestureRecognizer(target: self, action: #selector(moveToSeeAll(tapGestureRecognizer:)))
+        let tapGestureRecognizrzSeeAll = UITapGestureRecognizer(target: self, action: #selector(moveToSeeAll(tapGestureRecognizer:)))
         imgSeeAll.isUserInteractionEnabled = true
-        imgSeeAll.addGestureRecognizer(tapGestureRecognizrz)
+        imgSeeAll.addGestureRecognizer(tapGestureRecognizrzSeeAll)
     }
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBOutlet weak var imageAddCash: UIImageView!
