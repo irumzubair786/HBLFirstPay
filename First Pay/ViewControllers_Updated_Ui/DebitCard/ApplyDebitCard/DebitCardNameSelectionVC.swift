@@ -110,7 +110,7 @@ class DebitCardNameSelectionVC: BaseClassVC {
 }
 extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arry.count ?? 0
+        return arry.count 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
