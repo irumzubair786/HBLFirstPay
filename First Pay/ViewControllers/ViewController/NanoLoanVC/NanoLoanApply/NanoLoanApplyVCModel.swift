@@ -17,7 +17,7 @@ extension NanoLoanApplyViewController {
         let messages: String
         let responseblock: JSONNull?
         let responsecode: Int
-        let data: ModelActiveLoanData
+        let data: ModelActiveLoanData?
     }
     
     // MARK: - DataClass

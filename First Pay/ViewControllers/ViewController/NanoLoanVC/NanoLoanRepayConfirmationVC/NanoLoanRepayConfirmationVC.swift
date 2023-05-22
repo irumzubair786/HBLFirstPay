@@ -65,7 +65,7 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
-            if let currentLoan = modelGetActiveLoan?.data.currentLoan.first {
+            if let currentLoan = modelGetActiveLoan?.data?.currentLoan.first {
                 
             }
         }
@@ -85,7 +85,7 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     }
     func payActiveLoan() {
         
-        let currentLoan = modelGetActiveLoan?.data.currentLoan.first
+        let currentLoan = modelGetActiveLoan?.data?.currentLoan.first
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
             "cnic" : userCnic!,

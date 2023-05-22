@@ -15,10 +15,10 @@ class NanoLoanHistoryViewController: UIViewController {
     var callBackButtonRepay: (()->())!
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
-            if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
+            if modelGetActiveLoan?.data?.currentLoan.count ?? 0 > 0 {
                 viewBackGround.isHidden = false
             }
-            else if modelGetActiveLoan?.data.loanHistory.count ?? 0 > 0 {
+            else if modelGetActiveLoan?.data?.loanHistory.count ?? 0 > 0 {
                 viewBackGround.isHidden = false
             }
             else {
@@ -59,25 +59,25 @@ extension NanoLoanHistoryViewController: UITableViewDelegate, UITableViewDataSou
         return UITableViewAutomaticDimension
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modelGetActiveLoan?.data.loanHistory.count ?? 0
+        return modelGetActiveLoan?.data?.loanHistory.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var row = indexPath.row
-        if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 && row != 0 {
+        if modelGetActiveLoan?.data?.currentLoan.count ?? 0 > 0 && row != 0 {
             row -= 1
         }
         
-        if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 && row == 0 {
+        if modelGetActiveLoan?.data?.currentLoan.count ?? 0 > 0 && row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NanoLoanHistoryPayAbleLoanAmountCell") as! NanoLoanHistoryPayAbleLoanAmountCell
-            cell.modelCurrentLoan = modelGetActiveLoan?.data.loanHistory[row]
+            cell.modelCurrentLoan = modelGetActiveLoan?.data?.loanHistory[row]
             cell.buttonRepay.addTarget(self, action: #selector(tapOnRepay), for: .touchUpInside)
             return cell
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NanoLoanHistoryPastLoanCell") as! NanoLoanHistoryPastLoanCell
-            cell.modelCurrentLoan = modelGetActiveLoan?.data.loanHistory[row]
+            cell.modelCurrentLoan = modelGetActiveLoan?.data?.loanHistory[row]
             return cell
         }
     }

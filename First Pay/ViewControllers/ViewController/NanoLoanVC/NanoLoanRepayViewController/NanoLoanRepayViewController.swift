@@ -57,8 +57,8 @@ class NanoLoanRepayViewController: UIViewController {
     
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
-            if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
-                if let currentLoan = modelGetActiveLoan?.data.currentLoan.first {
+            if modelGetActiveLoan?.data?.currentLoan.count ?? 0 > 0 {
+                if let currentLoan = modelGetActiveLoan?.data?.currentLoan.first {
                     labelAmount.text = "Rs. \((currentLoan.principalAmountOS ?? 0).twoDecimal())"
                     labelLoanAvailedAmount.text = "Rs. \((currentLoan.loanAvailedAmount ?? 0).twoDecimal())"
                     labelDueDate.text = "\(currentLoan.dueDate ?? "")"
@@ -126,7 +126,7 @@ class NanoLoanRepayViewController: UIViewController {
     
     func getActiveLoanToPay() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let currentLoan = modelGetActiveLoan?.data.currentLoan.first
+        let currentLoan = modelGetActiveLoan?.data?.currentLoan.first
         let parameters: Parameters = [
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,

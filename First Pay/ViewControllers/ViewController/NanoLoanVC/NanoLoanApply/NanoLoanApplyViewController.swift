@@ -39,7 +39,7 @@ class NanoLoanApplyViewController: UIViewController {
     }
     var modelGetActiveLoan: ModelGetActiveLoan? {
         didSet {
-            if modelGetActiveLoan?.data.currentLoan.count ?? 0 > 0 {
+            if modelGetActiveLoan?.data?.currentLoan.count ?? 0 > 0 {
                 
             }
             else {

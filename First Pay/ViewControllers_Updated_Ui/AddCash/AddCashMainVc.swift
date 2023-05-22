@@ -55,12 +55,13 @@ class AddCashMainVc: BaseClassVC {
     @IBOutlet weak var buttonGetLoan: UIButton!
     
     @IBAction func buttonGetLoan(_ sender: UIButton) {
-        
+        nanoLoanEligibilityCheck()
     }
-    var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
-        didSet {
-            if modelGetActiveLoan?.responsecode ?? 0 == 0 {
-                showAlertCustomPopup(title: "Alert", message: modelGetActiveLoan?.messages ?? "", iconName: .iconError)
+    
+    var modelNanoLoanEligibilityCheck: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? {
+      didSet {
+            if modelNanoLoanEligibilityCheck?.responsecode ?? 0 == 0 {
+                showAlertCustomPopup(title: "Alert", message: modelNanoLoanEligibilityCheck?.messages ?? "", iconName: .iconError)
             }
             else {
                 let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
@@ -70,17 +71,16 @@ class AddCashMainVc: BaseClassVC {
         }
     }
     
-    func getActiveLoan() {
+    func nanoLoanEligibilityCheck() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        
         let parameters: Parameters = [
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)"
         ]
-        APIs.postAPI(apiName: .getActiveLoan, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetActiveLoan = model
+        APIs.postAPI(apiName: .nanoLoanEligibilityCheck, parameters: parameters) { responseData, success, errorMsg in
+            let model: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? = APIs.decodeDataToObject(data: responseData)
+            self.modelNanoLoanEligibilityCheck = model
         }
     }
     

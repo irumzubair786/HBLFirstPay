@@ -276,7 +276,7 @@ class CalendarPickerViewController: UIViewController {
     
     
     func loadCalendarData() {
-        let currentLoan = modelGetActiveLoan?.data.currentLoan.first
+        let currentLoan = modelGetActiveLoan?.data?.currentLoan.first
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
             "cnic" : userCnic!,
