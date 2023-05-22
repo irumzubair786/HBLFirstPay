@@ -27,7 +27,6 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
                                         animated: true,
                                         completion: nil)
         pagecontrol.currentPage = currentIndex!
-        
         imgPostpaid.isHidden = true
         imgPrepaid.isHidden = false
     }
