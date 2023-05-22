@@ -36,8 +36,10 @@ class ATMLocatormainVc: UIViewController {
         buttonCash.borderColor = UIColor.gray
         buttonCash.setTitleColor(UIColor.black, for: .normal)
         buttondetail.setTitle("", for: .normal)
-        buttonDetail.isUserInteractionEnabled = true
         
+        buttonDetail.isUserInteractionEnabled = true
+        buttondetail.isUserInteractionEnabled = true
+        buttondetail.backgroundColor = UIColor.clear
         if modelATMLocation?.data.atmLocation.count ?? 0 > 0 {
             let atmLocations = modelATMLocation?.data.atmLocation
             viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)

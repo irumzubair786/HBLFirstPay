@@ -26,7 +26,6 @@ class GlobalConstants {
         public static let OTP_LINK_ACCOUNT = "LA"                                          //LINK ACCOUNT
         public static let OTP_BALANCE_PULL = "PUSH"                                          //BENEFICARY
         public static let OTP_BALANCE_PUSH  = "PULL"                                        //BENEFICARY
-        
         // LOAD BALANCE
         public static let LOAD_BALANCE_PUSH  = "PUSH"
         public static let LOAD_BALANCE_PULL  = "PULL"

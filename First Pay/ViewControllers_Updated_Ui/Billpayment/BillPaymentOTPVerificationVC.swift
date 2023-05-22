@@ -1,81 +1,106 @@
 //
-//  OTPVerificationTransactionVC.swift
+//  BillPaymentOTPVerificationVC.swift
 //  First Pay
 //
-//  Created by Irum Butt on 18/05/2023.
+//  Created by Irum Butt on 22/05/2023.
 //  Copyright © 2023 FMFB Pakistan. All rights reserved.
 //
 
 import UIKit
+import OTPTextField
+import KYDrawerController
+import Toaster
 import Alamofire
 import AlamofireObjectMapper
-import PinCodeTextField
 import SwiftKeychainWrapper
-import LocalAuthentication
-import SafariServices
-import Foundation
-import OTPTextField
-class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
-    var fundsTransSuccessObj: FundsTransferApiResponse?
+
+class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     var totalSecond = 60
-    var ForTransactionConsent:Bool = false
     var timer = Timer()
     var counter = 0
     var count = 0
+    var consumerNumber : String?
     var amount: String?
-    var number: String?
-    var ToaccountTitle : String?
-    var bankname : String?
-    var OTPREQ : String?
+    var refferenceNumber:String?
+    var company : String?
+    var billingMonth : String?
+    var amountDue : String?
+    var status:String?
+    var totalAmount:String?
+    var dueDate :String?
+    var successmodelobj : FundsTransferApiResponse?
     override func viewDidLoad() {
         super.viewDidLoad()
         TF_otp.delegate = self
-        btnVerify.isUserInteractionEnabled = false
-        btnResendOtp.isUserInteractionEnabled = false
-        btnResendotpCall.isHidden = true
+        buttonback.setTitle("", for: .normal)
+        buttonVerify.isUserInteractionEnabled = false
+        labelMobNo.text = DataManager.instance.mobNo
+        buttonResendOTP.isUserInteractionEnabled = false
+        buttonResendOTVCall.isHidden = true
         startTimer()
-        labelMessage.isHidden = true
-        back.setTitle("", for: .normal)
+        labelmessage.isHidden = true
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-        IMG_NEXT_ARROW.isUserInteractionEnabled = true
-        IMG_NEXT_ARROW.addGestureRecognizer(tapGestureRecognizerr)
-        // Do any additional setup after loading the view.
-    }
-    @IBOutlet weak var btnResendOtp: UIButton!
-    @IBOutlet weak var TF_otp: OTPTextField!
-    @IBOutlet weak var btnVerify: UIButton!
-    @IBOutlet weak var btnResendotpCall: UIButton!
-    @IBOutlet weak var IMG_NEXT_ARROW: UIImageView!
-    @IBOutlet weak var lbl_countResendotptime: UILabel!
-    
-    @IBAction func Action_ResendOTP(_ sender: UIButton) {
-//    showToast(title: "OTP send")
-    btnResendOtp.isUserInteractionEnabled = false
-    btnResendOtp.setTitleColor(.gray ,for: .normal)
-        
-    startTimer()
-        ResendOTP()
-      
+        imgNextArrow.isUserInteractionEnabled = true
+        imgNextArrow.addGestureRecognizer(tapGestureRecognizerr)
     }
     
-    @IBAction func Action_OTPcall(_ sender: UIButton) {
-        btnResendotpCall.isUserInteractionEnabled = true
-        btnResendotpCall.setTitleColor(.gray ,for: .normal)
+    
+    
+    @IBOutlet weak var labelCount: UILabel!
+    @IBOutlet weak var buttonResendOTP: UIButton!
+    
+    @IBOutlet weak var labelmessage: UILabel!
+    @IBOutlet weak var buttonResendOTVCall: UIButton!
+    @IBAction func buttonResendOTVCall(_ sender: UIButton) {
+        buttonResendOTVCall.isUserInteractionEnabled = true
+        buttonResendOTVCall.setTitleColor(.gray ,for: .normal)
         startTimer()
         ResendOTVCall()
+        
     }
     
-    @objc func timerAction() {
-             counter += 1
-             lbl_countResendotptime.text = "\(counter)"
-         }
+    @IBAction func buttonResendOTP(_ sender: UIButton) {
+        
+        buttonResendOTP.isUserInteractionEnabled = false
+        buttonResendOTP.setTitleColor(.gray ,for: .normal)
+            
+              startTimer()
+            ResendOTP()
+        
+    }
+    @IBOutlet weak var TF_otp: OTPTextField!
+    @IBOutlet weak var labelMobNo: UILabel!
+    @IBOutlet weak var buttonback: UIButton!
+    @IBAction func buttonback(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    @IBOutlet weak var imgNextArrow: UIImageView!
+    @IBOutlet weak var buttonVerify: UIButton!
+    @IBAction func buttonVerify(_ sender: UIButton) {
+        if TF_otp.text?.count == 0
+        {
+            showToast(title: "Please Enter OTP")
+        }
+
+        else{
+            billPyment()
+        }
+    }
+    
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        billPyment()
+    }
+    
     func startTimer() {
-        totalSecond = 30
+        totalSecond = 10
        
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {
-        self.lbl_countResendotptime.text = "\(self.timeFormatted(self.totalSecond))s"
+        self.labelCount.text = "\(self.timeFormatted(self.totalSecond))s"
         print(timeFormatted(totalSecond))
         
         if totalSecond < 1  {
@@ -94,35 +119,24 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         return String(format: "0:%02d", seconds)
     }
     
-    
-    @IBOutlet weak var labelMessage: UILabel!
-    
-    @IBAction func Action_back(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)    }
-    @IBOutlet weak var back: UIButton!
     func endTimer()
     {
-        btnResendOtp.isUserInteractionEnabled = true
-        btnResendotpCall.isUserInteractionEnabled = true
+        buttonResendOTP.isUserInteractionEnabled = true
+        buttonResendOTVCall.isUserInteractionEnabled = true
         count +=  1
-        btnResendOtp.setTitleColor(.orange, for: .normal)
+        buttonResendOTP.setTitleColor(.orange, for: .normal)
         timer.invalidate()
         if count < 3
         {
-//            btnResendOtp.isHidden = true
-//            resendopt
+            //            btnResendOtp.isHidden = true
+            //            resendopt
         }
         else{
-           btnResendOtp.isHidden = true
-           btnResendotpCall.isHidden = false
-//
+            buttonResendOTP.isHidden = true
+            buttonResendOTVCall.isHidden = false
             
         }
-        
-       
-//
     }
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let newLength = (textField.text?.count)! + string.count - range.length
@@ -135,41 +149,27 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
     }
         return newLength <= 4
     }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        let image  = UIImage(named: "]greenarrow")
-        IMG_NEXT_ARROW.image = image
-        btnVerify.isUserInteractionEnabled = true
-        
-    }
     @objc func changeTextInTextField() {
         
         if TF_otp.text?.count == 4
         {
             let image  = UIImage(named: "]greenarrow")
-            IMG_NEXT_ARROW.image = image
-            btnVerify.isUserInteractionEnabled = true
+            imgNextArrow.image = image
+            buttonVerify.isUserInteractionEnabled = true
         }
         else
         {
             let image = UIImage(named:"grayArrow")
-            IMG_NEXT_ARROW.image = image
-            btnVerify.isUserInteractionEnabled = false
+            imgNextArrow.image = image
+            buttonVerify.isUserInteractionEnabled = false
         }
 
     }
-    @IBAction func Action_Verify(_ sender: UIButton) {
-        if TF_otp.text?.count == 0
-        {
-            showToast(title: "Please Enter OTP")
-        }
-
-        else{
-           FundTransferIBFT()
-        }
-    }
-    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
-    {
-        FundTransferIBFT()
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        let image  = UIImage(named: "]greenarrow")
+        imgNextArrow.image = image
+        buttonVerify.isUserInteractionEnabled = true
+        
     }
     func ResendOTVCall() {
 
@@ -189,7 +189,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         }
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         
-        let parameters = ["mobileNo":"","otpType": GlobalOTPTypes.OTP_IBFT ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : userCnic!, "otpSendType" : "OTV" ?? ""]
+        let parameters = ["mobileNo":"","otpType":  GlobalOTPTypes.OTP_BILL_PAYMENT ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : userCnic!, "otpSendType" : "OTV" ?? ""]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -231,7 +231,6 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
-    
     func ResendOTP() {
 
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -249,7 +248,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             userCnic = ""
         }
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["mobileNo":"","otpType":GlobalOTPTypes.OTP_IBFT ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : userCnic!, "otpSendType" : "OTP" ?? ""]
+        let parameters = ["mobileNo":"","otpType":GlobalOTPTypes.OTP_BILL_PAYMENT  ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : userCnic!, "otpSendType" : "OTP" ?? ""]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -272,11 +271,11 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             self.genRespBaseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-                    self.labelMessage.isHidden = false
-                    self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+                    self.labelmessage.isHidden = false
+                    self.labelmessage.text = "OTP will be Resend after 30 Seconds"
 //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-                        self.labelMessage.isHidden = true
+                        self.labelmessage.isHidden = true
 //                        self.blurView.isHidden = true
 //                        self.popupView.isHidden = true
                     }
@@ -300,99 +299,70 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         }
     }
     
-    // MARK: - API CALL
     
-    private func FundTransferIBFT() {
-
+    private func billPyment() {
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
         }
-
         var userCnic : String?
-
         if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
             userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
         }
         else{
             userCnic = ""
         }
-
         showActivityIndicator()
-
-
-//        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferIbft"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferIbft"
-
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"accountNo":number!,"accountIMD":GlobalData.Selected_bank_code,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"benificiaryIBAN":DataManager.instance.accountNo!,"otp": TF_otp.text ?? "","accountType":DataManager.instance.accountType!]
-        print(parameters)
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany":GlobalData.Selected_Company_code!,"beneficiaryAccountTitle":"","utilityConsumerNo":consumerNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":amount ?? "","beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":TF_otp.text!,"addBeneficiary":"","utilityBillCompanyId":GlobalData.Selected_Company_id!] as [String : Any]
+        
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-
-        print(result.apiAttribute1)
-        print(result.apiAttribute2)
-
+        print(parameters)
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-
         let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-
         print(params)
         print(compelteUrl)
         print(header)
-
         NetworkManager.sharedInstance.enableCertificatePinning()
-
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
-
-
             self.hideActivityIndicator()
-
-            self.fundsTransSuccessObj = response.result.value
+             self.successmodelobj = response.result.value
             if response.response?.statusCode == 200 {
-
-                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
-                    self.movetonext()
+                if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
+                    self.move_to_next()
+//                    self.tablleview?.reloadData()
                 }
                 else {
-                    if let message = self.fundsTransSuccessObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-//                        self.showToast(title: message)
-                        
+                    if let message = self.successmodelobj?.messages{
+                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+//                        self.navigateToSuccessVC()
                     }
                 }
             }
             else {
-                if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
+                if let message = self.successmodelobj?.messages{
+                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+//                        self.navigateToSuccessVC()
+                    }
+
+                }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
             }
         }
-    }
-//
-//
-    
-    func movetonext()
+    func move_to_next()
     {
-//        if otpTextField?.text?.count != 0
-//        {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "otherWalletTransationSuccessfullVC") as! otherWalletTransationSuccessfullVC
-            vc.amount = Double(amount!)
-            vc.TransactionId = fundsTransSuccessObj?.data?.authIdResponse
-            vc.TransactionDate = fundsTransSuccessObj?.data?.transDate
-           
-        var merge = "\(ToaccountTitle!)\(number!)"
-        print("other wallet bank name", merge)
-         vc.number = merge
-            vc.Toaccounttitle = ToaccountTitle
-            self.navigationController?.pushViewController(vc, animated: true)
-//        }
-        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPayment_SuccessfullVC") as! BillPayment_SuccessfullVC
+        vc.refferenceNumber = refferenceNumber
+        vc.totalAmount = amount
+        vc.company = company
+        vc.billingMonth = billingMonth
+        vc.amountDue = amountDue
+        vc.dueDate = dueDate
+        self.navigationController!.pushViewController(vc, animated: true)
         
     }
- 
-    
-    
     
     
 }

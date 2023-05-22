@@ -31,7 +31,7 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
-        tableview.rowHeight = 100
+        tableview.rowHeight = 90
         getBankNames()
         MainTitle.text = ""
         updateUI()

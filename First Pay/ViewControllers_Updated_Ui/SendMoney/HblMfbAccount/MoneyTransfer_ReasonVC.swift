@@ -26,7 +26,7 @@ class MoneyTransfer_ReasonVC: BaseClassVC {
         tableView.delegate = self
         tableView.dataSource = self
 //        getReasonsForTrans()
-        tableView.rowHeight = 70
+        tableView.rowHeight = 60
         getReasonsForTrans()
 
     }

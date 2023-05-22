@@ -264,6 +264,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
 //
         else{
             
+            
                 cnicVerification()
             
           
