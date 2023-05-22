@@ -11,7 +11,8 @@ import UIKit
 class cellDebitCardNameSelection: UICollectionViewCell {
     @IBOutlet weak var buttonName: UIButton!
 //    override var isSelected: Bool  {
-//           didSet {
+    @IBOutlet weak var labelName: UILabel!
+    //           didSet {
     @IBOutlet weak var backView: UIView!
     //
 //               if isSelected  == true{
