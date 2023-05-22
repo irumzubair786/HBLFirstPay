@@ -482,10 +482,11 @@
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="9qa-VB-gft">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" systemColor="systemBackgroundColor"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="FgJ-9y-NgZ"/>
+                        <segue destination="UYU-8f-tUp" kind="relationship" relationship="rootViewController" id="y46-96-U1K"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bIo-B0-4C9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2470,6 +2471,173 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fih-PG-WSM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1240" y="862.66866566716647"/>
+        </scene>
+        <!--Mobile Top Up Page Control-->
+        <scene sceneID="Dh0-W0-e86">
+            <objects>
+                <viewController storyboardIdentifier="MobileTopUpPageControl" id="UYU-8f-tUp" customClass="MobileTopUpPageControl" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="G9C-FZ-m1Q">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="She-W5-jG3" userLabel="TOPVIEW">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ckE-GW-Neg">
+                                        <rect key="frame" x="10" y="33" width="50" height="50"/>
+                                        <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.96078431369999995" alpha="0.73796514040000005" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="0fk-o6-xzT"/>
+                                            <constraint firstAttribute="width" constant="50" id="rGt-Yr-QLp"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" backgroundImage="Left Button"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" systemColor="systemGreenColor"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="backButton:" destination="UYU-8f-tUp" eventType="touchUpInside" id="WhZ-2m-n35"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Load" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7W-OY-Ima">
+                                        <rect key="frame" x="95" y="47" width="221.5" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="PBJ-B3-JmX"/>
+                                            <constraint firstAttribute="width" constant="221.5" id="cSK-gh-1ny"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" systemColor="systemGray6Color"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="7yl-Sp-0wR"/>
+                                    <constraint firstItem="C7W-OY-Ima" firstAttribute="top" secondItem="She-W5-jG3" secondAttribute="top" constant="47" id="IOd-QV-IUw"/>
+                                    <constraint firstItem="ckE-GW-Neg" firstAttribute="top" secondItem="She-W5-jG3" secondAttribute="top" constant="33" id="RH8-jB-Aq0"/>
+                                    <constraint firstItem="C7W-OY-Ima" firstAttribute="leading" secondItem="ckE-GW-Neg" secondAttribute="trailing" constant="35" id="fYx-Wn-Ghb"/>
+                                    <constraint firstItem="ckE-GW-Neg" firstAttribute="leading" secondItem="She-W5-jG3" secondAttribute="leading" constant="10" id="mHd-Kz-SxG"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="UtF-6p-thg">
+                                <rect key="frame" x="0.0" y="100" width="375" height="58"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r46-Op-sRh" userLabel="Prepaid">
+                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="58"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sra-Zx-b2g">
+                                                <rect key="frame" x="44" y="14" width="129" height="36"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Prepaid">
+                                                    <backgroundConfiguration key="background"/>
+                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="14"/>
+                                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="16"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" systemColor="systemGreenColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="buttonPrepaid:" destination="UYU-8f-tUp" eventType="touchUpInside" id="zQY-4c-Yta"/>
+                                                </connections>
+                                            </button>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Vector 2-1" translatesAutoresizingMaskIntoConstraints="NO" id="RRu-03-0ob">
+                                                <rect key="frame" x="58" y="52" width="105" height="6"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ieu-mb-SvU" userLabel="postpaid">
+                                        <rect key="frame" x="187.5" y="0.0" width="187.5" height="58"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aAz-TD-4bB">
+                                                <rect key="frame" x="44" y="14" width="129" height="36"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Postpaid">
+                                                    <backgroundConfiguration key="background"/>
+                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="14"/>
+                                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="16"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" systemColor="systemGreenColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="buttonPostpaid:" destination="UYU-8f-tUp" eventType="touchUpInside" id="C3P-Ny-H7S"/>
+                                                </connections>
+                                            </button>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Vector 2-1" translatesAutoresizingMaskIntoConstraints="NO" id="mLe-SI-wsb">
+                                                <rect key="frame" x="57" y="52" width="105" height="6"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="58" id="kbO-mp-C2K"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sK3-vW-nZ7">
+                                <rect key="frame" x="0.0" y="174" width="375" height="493"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="3FN-86-QrL">
+                                <rect key="frame" x="117" y="624" width="136" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <color key="pageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="currentPageIndicatorTintColor" red="0.32643818860000001" green="0.71371430160000005" blue="0.90590906140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </pageControl>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="zFK-08-UMe"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="She-W5-jG3" firstAttribute="leading" secondItem="zFK-08-UMe" secondAttribute="leading" id="0o0-Vl-A5D"/>
+                            <constraint firstAttribute="trailing" secondItem="She-W5-jG3" secondAttribute="trailing" id="Hg3-oE-8q8"/>
+                            <constraint firstItem="sK3-vW-nZ7" firstAttribute="trailing" secondItem="zFK-08-UMe" secondAttribute="trailing" id="Ndt-yt-pVQ"/>
+                            <constraint firstItem="UtF-6p-thg" firstAttribute="leading" secondItem="zFK-08-UMe" secondAttribute="leading" id="P75-1C-cqN"/>
+                            <constraint firstItem="sK3-vW-nZ7" firstAttribute="bottom" secondItem="zFK-08-UMe" secondAttribute="bottom" id="RJJ-0V-dmf"/>
+                            <constraint firstItem="UtF-6p-thg" firstAttribute="top" secondItem="She-W5-jG3" secondAttribute="bottom" id="Uou-io-xgq"/>
+                            <constraint firstItem="UtF-6p-thg" firstAttribute="trailing" secondItem="zFK-08-UMe" secondAttribute="trailing" id="Xad-rd-P4I"/>
+                            <constraint firstItem="sK3-vW-nZ7" firstAttribute="leading" secondItem="zFK-08-UMe" secondAttribute="leading" id="hFc-mJ-2rY"/>
+                            <constraint firstItem="sK3-vW-nZ7" firstAttribute="top" secondItem="UtF-6p-thg" secondAttribute="bottom" constant="16" id="l0k-Zg-W7J"/>
+                            <constraint firstItem="She-W5-jG3" firstAttribute="top" secondItem="G9C-FZ-m1Q" secondAttribute="top" id="qF6-yG-XzA"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="hQy-4S-8Jo"/>
+                    <connections>
+                        <outlet property="backButton" destination="ckE-GW-Neg" id="bpY-kW-E1v"/>
+                        <outlet property="buttonPostpaid" destination="aAz-TD-4bB" id="rfG-kh-A51"/>
+                        <outlet property="buttonPrepaid" destination="Sra-Zx-b2g" id="3L6-0s-vQI"/>
+                        <outlet property="imgPostpaid" destination="mLe-SI-wsb" id="eKc-r4-WfY"/>
+                        <outlet property="imgPrepaid" destination="RRu-03-0ob" id="weZ-Ik-C1X"/>
+                        <outlet property="pagecontrol" destination="3FN-86-QrL" id="TWe-vd-Muo"/>
+                        <outlet property="vcontainer" destination="sK3-vW-nZ7" id="H2g-Gv-g7q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gf8-oF-UR3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-996" y="862.21889055472275"/>
         </scene>
     </scenes>
     <resources>
