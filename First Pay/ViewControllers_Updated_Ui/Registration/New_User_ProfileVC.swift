@@ -644,7 +644,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         let stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
         print("date convert", stringTo)
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/cnicVerification"
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": DataManager.instance.mobNo ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": cnicNumber , "idate": stringTo ?? ""]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": DataManager.instance.mobNo ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": cnicNumber , "issueDate": stringTo ?? ""]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -677,34 +677,44 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
 
                         btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
                     }
-                    else{
-                        if let message = self.cnicVerificationObj?.messages{
-                            lbl_InvalidCnic.isHidden = false
-                            lbl_InvalidCnic.text = message
-                            
-//                            self.showDefaultAlert(title: "", message: message)
-                        }
-//                        lbl_InvalidCnic.text
-                       if lbl_InvalidCnic.text == ""
-                        {
-                           if let message = self.cnicVerificationObj?.messages{
-                               labelInvalidIssuedate.isHidden = false
-                               labelInvalidIssuedate.text = message
-                               
-   //                            self.showDefaultAlert(title: "", message: message)
-                           }
-                       }
-                         
-                    }
+                  
 
 
                 }
                 else{
                     
                     if let message = self.cnicVerificationObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        
+                        if let message = self.cnicVerificationObj?.messages{
+                            lbl_InvalidCnic.isHidden = false
+                            lbl_InvalidCnic.text = "Invalid Cnic"
+                            
+                            //                            self.showDefaultAlert(title: "", message: message)
+                        }
+                        //                        lbl_InvalidCnic.text
+                        if lbl_InvalidCnic.text == ""
+                        {
+                            if let message = self.cnicVerificationObj?.messages{
+                                labelInvalidIssuedate.isHidden = false
+                                labelInvalidIssuedate.text = "Invalid Issue Date"
+                                
+                                //                            self.showDefaultAlert(title: "", message: message)
+                            }
+                        }
+                        else
+                        {
+                            
+                            if let message = self.cnicVerificationObj?.messages{
+                                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                                
+                            }
+                        }
+                        
+                        
+//                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                 }
+                
                     
                    
         }
@@ -782,7 +792,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                 }
                 else{
                     if let message = self.genericObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSucess)
                     }
                    
                 }
