@@ -21,6 +21,8 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     var operatorcode : String?
     var logo : String?
     var dummyarr : [String]?
+    
+    var returnData: (() -> ())!
     override func viewDidLoad() {
         super.viewDidLoad()
         print("get parentCompanyID", parentCompanyID!)
@@ -170,9 +172,22 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
         GlobalData.Select_operator_code = operatorcode!
         GlobalData.selected_operator_logo = getOperator[indexPath.row].path
 //        GlobalData.selected_operator_logo = img(tag: indexPath.row)
-        self.dismiss(animated: false)
-       
-//        self.navigationController?.popViewController(animated: false)
+        //returnData!()
+        
+        DispatchQueue.main.async {
+            self.navigationController?.popViewController(animated: false)
+//            self.dismiss(animated: false)
+            DispatchQueue.main.async {
+                if  GlobalData.topup == "Prepaid" {
+                    NotificationCenter.default.post(name: Notification.Name("showSelectedDataPrePaid"), object: nil)
+                }
+                else {
+                    NotificationCenter.default.post(name: Notification.Name("showSelectedDataPostpaid"), object: nil)
+                }
+            }
+        }
+        
+        
     }
 }
 class myOperator

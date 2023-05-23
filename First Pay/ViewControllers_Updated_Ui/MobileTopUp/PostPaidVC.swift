@@ -33,6 +33,15 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         imgnextarrow.addGestureRecognizer(tapGestureRecognizerr)
         TfmobileNumber.placeholder = "Enter Number "
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(showSelectedDataPostpaid), name: Notification.Name("showSelectedDataPostpaid"),object: nil)
+    }
+    @objc func showSelectedDataPostpaid() {
+        textFieldOperator.text = GlobalData.Selected_operator
+        let image = UIImage(named:"]greenarrow")
+        imgnextarrow.image = image
+        imgnextarrow.isUserInteractionEnabled = true
+        buttonContinue.isUserInteractionEnabled = true
     }
     func updateUi() {
         companyID = billCompanyObj?.companies?[0].code
@@ -82,6 +91,19 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     }
     
     @IBAction func TfmobileNumber(_ sender: UITextField) {
+        if TfmobileNumber.text! == "" {
+            return()
+        }
+        if parentCompanyID == nil
+        {
+            topUpParentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId ?? 0
+        }
+        else
+        {
+            topUpParentCompanyID = parentCompanyID ?? 0
+        }
+        GlobalData.topup = "Postpaid"
+        NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
     }
     
     @IBOutlet weak var TfmobileNumber: UITextField!
@@ -92,6 +114,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     
     @IBOutlet weak var buttonDropDown: UIButton!
     @IBAction func buttonDropDown(_ sender: UIButton) {
+        
     }
     @IBAction func buttonContactList(_ sender: UIButton) {
         contactPicker.delegate = self
@@ -103,6 +126,9 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
                 let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
                 vc.phoneNumber = TfmobileNumber.text!
                 self.navigationController?.pushViewController(vc, animated: true)
+        GlobalData.topup = "Postpaid"
+        NotificationCenter.default.post(name: Notification.Name("operationSelectionPostpaid"), object: nil)
+
     }
     
     

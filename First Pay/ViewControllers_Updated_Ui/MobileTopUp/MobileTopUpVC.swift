@@ -46,7 +46,20 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         img_next_arrow.addGestureRecognizer(tapGestureRecognizerr)
         Tf_mobileNumber.placeholder = "Enter Number of Recipient"
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(showSelectedDataPrePaid), name: Notification.Name("showSelectedDataPrePaid"),object: nil)
     }
+    
+    @objc func showSelectedDataPrePaid() {
+        selectOperator.text = GlobalData.Selected_operator
+        
+        let image = UIImage(named:"]greenarrow")
+        img_next_arrow.image = image
+        img_next_arrow.isUserInteractionEnabled = true
+        btnContinue.isUserInteractionEnabled = true
+    }
+    
+
    
     @IBOutlet weak var btnPostpaid: UIButton!
     @IBOutlet weak var lblMainTitle: UILabel!
@@ -110,18 +123,35 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     }
    
     @IBAction func Action_Operator(_ sender: UIButton) {
-        
-        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
+        if Tf_mobileNumber.text! == "" {
+            return()
+        }
         if parentCompanyID == nil
         {
-            vc.parentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId
+            topUpParentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId ?? 0
         }
         else
         {
-            vc.parentCompanyID = parentCompanyID
+            topUpParentCompanyID = parentCompanyID ?? 0
         }
+        GlobalData.topup = "Prepaid"
+        NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
+
+
         
-        self.present(vc, animated: false)
+//        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
+//        if parentCompanyID == nil
+//        {
+//            vc.parentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId
+//        }
+//        else
+//        {
+//            vc.parentCompanyID = parentCompanyID
+//        }
+//        vc.returnData? = {
+//            
+//        }
+//        self.present(vc, animated: false)
 //        self.navigationController?.pushViewController(vc, animated: false)
    
     }

@@ -8,6 +8,9 @@
 
 import UIKit
 
+var topUpParentCompanyID = Int()
+var topUpPhoneNo = Int()
+
 class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     @IBOutlet weak var imgPostpaid: UIImageView!
     @IBOutlet weak var imgPrepaid: UIImageView!
@@ -61,9 +64,32 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
 
         // Do any additional setup after loading the view.
         pagecontrlfunc()
-        
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(operationSelectionPrepaid), name: Notification.Name("operationSelectionPrepaid"),object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(operationSelectionPostpaid), name: Notification.Name("operationSelectionPostpaid"),object: nil)
+
     }
-    
+
+    @objc func operationSelectionPrepaid() {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
+        vc.parentCompanyID = topUpParentCompanyID
+       
+        vc.returnData? = {
+            NotificationCenter.default.post(name: Notification.Name("showSelectedDataPrePaid"), object: nil)
+        }
+        self.navigationController?.pushViewController(vc, animated: false)
+
+//        self.present(vc, animated: false)
+    }
+    @objc func operationSelectionPostpaid() {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
+        vc.parentCompanyID = topUpParentCompanyID
+       
+        vc.returnData? = {
+            NotificationCenter.default.post(name: Notification.Name("showSelectedDataPrePaid"), object: nil)
+        }
+        self.present(vc, animated: false)
+    }
 
     /*
     // MARK: - Navigation
