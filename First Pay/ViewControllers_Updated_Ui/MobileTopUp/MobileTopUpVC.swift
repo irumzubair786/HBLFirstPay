@@ -75,25 +75,25 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var selectOperator: UITextField!
     @IBAction func Action_next(_ sender: Any) {
      
-        if GlobalData.topup == "Prepaid"
-        {
-            if  GlobalData.Select_operator_id == 43
-            {
+//        if GlobalData.topup == "Prepaid"
+//        {
+//            if  GlobalData.Select_operator_id == 40
+//            {
                 getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
-            }
-           else
-            {
-               let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-               vc.phoneNumber = Tf_mobileNumber.text!
-               self.present(vc, animated: true)
-//               self.navigationController?.pushViewController(vc, animated: true)
-           }
-        }
-        else
-        {
-         getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
-
-        }
+//            }
+//           else
+//            {
+//               let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+//               vc.phoneNumber = Tf_mobileNumber.text!
+//               self.present(vc, animated: true)
+////               self.navigationController?.pushViewController(vc, animated: true)
+//           }
+//        }
+//        else
+//        {
+//         getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+//
+//        }
        
     }
     

@@ -186,11 +186,11 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
                 if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
                       
-//                    GlobalData.topup = "Prepaid"
-////                    self.companyID = self.billCompanyObj?.companies?[0].code
-////                    self.parentCompanyID = self.billCompanyObj?.companies?[0].ubpCompaniesId
-////                    print("u selected prepaid id", self.companyID)
-////                    print("u selected prepaidcode ", self.parentCompanyID)
+                    GlobalData.topup = "Postpaid"
+                    self.companyID = self.billCompanyObj?.companies?[0].code
+                    self.parentCompanyID = self.billCompanyObj?.companies?[0].ubpCompaniesId
+                    print("u selected prepaid id", self.companyID)
+                    print("u selected prepaidcode ", self.parentCompanyID)
                      
 //
                      

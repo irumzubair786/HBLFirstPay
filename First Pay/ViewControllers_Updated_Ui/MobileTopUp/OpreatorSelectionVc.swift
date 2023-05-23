@@ -29,6 +29,14 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
       
         tableView.rowHeight = 90
         getCompanies()
+//       if  GlobalData.topup == "Prepaid"
+//        {
+//           getCompanies()
+//       }
+//        else
+//        {
+//            getCompaniesPostPaid(id: parentCompanyID)
+//        }
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoStatement(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizerr)
@@ -111,6 +119,69 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
+    
+    private func getCompaniesPostPaid(id: Int?) {
+        
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+       
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
+       
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        
+        print(header)
+        print(compelteUrl)
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<UtilityBillCompaniesModel>) in
+            
+            
+            self.hideActivityIndicator()
+            
+            self.billCompanyListObj = response.result.value
+            
+            if response.response?.statusCode == 200 {
+                if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
+                    if let companies = self.billCompanyListObj?.companies {
+                        self.comapniesList = companies
+                        self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+                    }
+                    
+                    for i in self.billCompanyListObj?.companies! ?? []
+                    {
+                        let temp = myOperator()
+                        temp.code = i.code!
+                        temp.id = i.ubpCompaniesId!
+                        temp.name = i.name!
+                        temp.path = i.path ?? ""
+                        self.getOperator.append(temp)
+                    }
+                    
+                    self.tableView.delegate = self
+                    self.tableView.dataSource = self
+                    self.tableView.reloadData()
+                }
+                else {
+                    if let message = self.billCompanyListObj?.messages{
+                        self.showAlert(title: "", message: message, completion: nil)
+                    }
+                }
+            }
+            else {
+                
+//                print(response.result.value)
+//                print(response.response?.statusCode)
+                
+            }
+        }
+    }
+    
+    
 //    func img(tag : Int) -> UIImage{
 //        guard let img = UIImage(named: dummyarr![tag])else {
 //            return UIImage(named: "11")!
