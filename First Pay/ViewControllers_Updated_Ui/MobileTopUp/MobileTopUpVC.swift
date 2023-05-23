@@ -77,7 +77,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
      
         if GlobalData.topup == "Prepaid"
         {
-            if  GlobalData.Select_operator_id == 40
+            if  GlobalData.Select_operator_id == 43
             {
                 getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
             }
