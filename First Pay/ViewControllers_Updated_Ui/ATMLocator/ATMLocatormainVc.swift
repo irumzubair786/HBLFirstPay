@@ -15,8 +15,8 @@ class ATMLocatormainVc: UIViewController {
     
     
     
+    @IBOutlet weak var viewDetail: UIView!
     @IBOutlet weak var buttondetail: UIButton!
-    
     @IBOutlet weak var buttonDetail: UIButton!
     @IBOutlet weak var buttonATM: UIButton!
     @IBAction func buttonATM(_ sender: UIButton) {
@@ -35,9 +35,11 @@ class ATMLocatormainVc: UIViewController {
         buttonCash.backgroundColor = UIColor.clear
         buttonCash.borderColor = UIColor.gray
         buttonCash.setTitleColor(UIColor.black, for: .normal)
-        buttondetail.setTitle("", for: .normal)
-        
-        buttonDetail.isUserInteractionEnabled = true
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+        viewDetail.isUserInteractionEnabled = true
+        viewDetail.addGestureRecognizer(tapGestureRecognizer)
+
+       
         buttondetail.isUserInteractionEnabled = true
         buttondetail.backgroundColor = UIColor.clear
         if modelATMLocation?.data.atmLocation.count ?? 0 > 0 {
@@ -48,6 +50,29 @@ class ATMLocatormainVc: UIViewController {
                 let markerColor = "markerAtm"
                 let marker = drawMarker(labelText: item.branchName, imageName: markerColor, coordinate2D: coordinate2D)
                 marker.map = self.viewForMap
+            }
+        }
+    }
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
+
+        if branchFlag == true{
+            let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "test") as! test
+            DispatchQueue.main.async {
+                self.present(vc, animated: true)
+            }
+//            ATMBranchDetailViewController
+        }
+        else if cashFlag == true{
+            let vc =  UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "CashDetailVC") as! CashDetailVC
+            DispatchQueue.main.async {
+                self.present(vc, animated: true)
+            }
+        }
+        else
+        {
+            let vc =  UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "ATMDetailVC") as! ATMDetailVC
+            DispatchQueue.main.async {
+                self.present(vc, animated: true)
             }
         }
     }

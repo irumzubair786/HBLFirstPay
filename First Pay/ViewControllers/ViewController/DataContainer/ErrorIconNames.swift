@@ -16,6 +16,8 @@ class IconNames {
         case iconSucess = "f"
         case iconDormant = "iconDormant"
         case comingSoon = "Coming Soon"
+        case FailedTransaction = "ErrorTransactionFailed"
+        case MismatchNumber = "ErrorOperator"
        
     }
 }

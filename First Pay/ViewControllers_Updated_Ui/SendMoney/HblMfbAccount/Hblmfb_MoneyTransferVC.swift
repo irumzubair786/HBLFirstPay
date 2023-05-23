@@ -359,7 +359,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)
 //                        self.showToast(title: message)
                         
                     }
@@ -367,7 +367,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
             }
             else {
                 if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)
                 }
 //                print(response.result.value)
 //

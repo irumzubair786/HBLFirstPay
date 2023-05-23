@@ -334,6 +334,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     func banapi ()
     {
+//<<<<<<< HEAD
+//=======
+////        getActiveLoan()
+//>>>>>>> f3b7f8f (ui fixex)
         ServerManager.GEt_typeWithoutParmsfetchApiData_PostAppJSON(APIMethodName: APIMethods.banner.rawValue, Token: DataManager.instance.accessToken ?? "" ) { [self] (Result : MYBanersModel?) in
             
             //== check if api is responding or not

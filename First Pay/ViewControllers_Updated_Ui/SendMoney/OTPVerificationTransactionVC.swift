@@ -355,7 +355,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)
 //                        self.showToast(title: message)
                         
                     }
@@ -363,7 +363,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             }
             else {
                 if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)                }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
             }

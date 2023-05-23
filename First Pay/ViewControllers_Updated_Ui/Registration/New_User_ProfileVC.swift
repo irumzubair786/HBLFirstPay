@@ -774,9 +774,6 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                         DataManager.instance.userCnic = DataManager.instance.userCnic!
                         print("get cnic",DataManager.instance.userCnic)
                         
-                        
-                        
-                        
                             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
                             UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
                             self.navigationController?.pushViewController(vc, animated: true)
@@ -784,8 +781,6 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                         
                            
 //                        }
-                        
-                  
                })
                     
                 }
