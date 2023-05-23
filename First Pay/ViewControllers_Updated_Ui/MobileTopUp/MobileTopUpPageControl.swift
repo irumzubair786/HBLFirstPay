@@ -62,8 +62,6 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
         // Do any additional setup after loading the view.
         pagecontrlfunc()
         
-        imgPostpaid.isHidden = true
-        imgPrepaid.isHidden = false
     }
     
 
@@ -116,7 +114,7 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
         //Title
        
         let page: UIViewController! = UIStoryboard.init(name: "TopUp", bundle: nil).instantiateViewController(withIdentifier: "MobileTopUpVC")
-        let page1: UIViewController! = UIStoryboard.init(name: "TopUp", bundle: nil).instantiateViewController(withIdentifier: "MobileTopUpVC")
+        let page1: UIViewController! = UIStoryboard.init(name: "TopUp", bundle: nil).instantiateViewController(withIdentifier: "PostPaidVC")
         
         
         arrvc.append(page)
@@ -139,7 +137,8 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
 
         pagecontrol.numberOfPages = arrvc.count
         pagecontrol.currentPage = 0
-        
+        imgPostpaid.isHidden = true
+        imgPrepaid.isHidden = false
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController?

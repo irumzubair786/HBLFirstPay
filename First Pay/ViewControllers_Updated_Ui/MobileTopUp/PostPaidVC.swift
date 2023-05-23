@@ -34,16 +34,14 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         TfmobileNumber.placeholder = "Enter Number "
         // Do any additional setup after loading the view.
     }
-    func updateUi()
-    {
+    func updateUi() {
         companyID = billCompanyObj?.companies?[0].code
         parentCompanyID = billCompanyObj?.companies?[0].ubpCompaniesId
         print("u selected postpaid id", companyID)
         print("u selected postpaid code ", parentCompanyID)
        
         
-        if (self.billCompanyObj?.companies?[0].code)! == "MBP"
-        {
+        if self.billCompanyObj?.companies?[0].code ?? "" == "MBP" {
             GlobalData.topup = "Postpaid"
             
         }
