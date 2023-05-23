@@ -56,7 +56,8 @@ class TransferAmountConfirmationVc: BaseClassVC {
     
     @IBOutlet weak var back: UIButton!
     @IBAction func Action_back(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
+//        self.navigationController?.popViewController(animated: true)
         
     }
     
@@ -144,8 +145,8 @@ class TransferAmountConfirmationVc: BaseClassVC {
         vc.TransactionDate = successmodelobj?.data?.transDate
         
         
-        
-        self.navigationController!.pushViewController(vc, animated: true)
+        self.present(vc, animated: true)
+//        self.navigationController!.pushViewController(vc, animated: true)
      
     
     }

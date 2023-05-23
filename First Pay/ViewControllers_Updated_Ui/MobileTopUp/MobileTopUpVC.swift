@@ -77,7 +77,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
      
         if GlobalData.topup == "Prepaid"
         {
-            if  GlobalData.Select_operator_id == 43
+            if  GlobalData.Select_operator_id == 40
             {
                 getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
             }
@@ -85,13 +85,14 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             {
                let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
                vc.phoneNumber = Tf_mobileNumber.text!
-               self.navigationController?.pushViewController(vc, animated: true)
+               self.present(vc, animated: true)
+//               self.navigationController?.pushViewController(vc, animated: true)
            }
         }
         else
         {
          getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
-           
+
         }
        
     }
@@ -109,7 +110,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             {
                let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
                vc.phoneNumber = Tf_mobileNumber.text!
-               self.navigationController?.pushViewController(vc, animated: true)
+               self.present(vc, animated: true)
+//               self.navigationController?.pushViewController(vc, animated: true)
            }
         }
         else
@@ -139,19 +141,24 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
 
 
         
-//        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
-//        if parentCompanyID == nil
-//        {
-//            vc.parentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId
-//        }
-//        else
-//        {
-//            vc.parentCompanyID = parentCompanyID
-//        }
-//        vc.returnData? = {
-//            
-//        }
+//<<<<<<< HEAD
+////        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
+////        if parentCompanyID == nil
+////        {
+////            vc.parentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId
+////        }
+////        else
+////        {
+////            vc.parentCompanyID = parentCompanyID
+////        }
+////        vc.returnData? = {
+////
+////        }
+////        self.present(vc, animated: false)
+//=======
+//
 //        self.present(vc, animated: false)
+//>>>>>>> d80d484 (postpaid)
 //        self.navigationController?.pushViewController(vc, animated: false)
    
     }

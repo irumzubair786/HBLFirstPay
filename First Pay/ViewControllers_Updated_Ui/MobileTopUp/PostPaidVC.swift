@@ -114,7 +114,20 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     
     @IBOutlet weak var buttonDropDown: UIButton!
     @IBAction func buttonDropDown(_ sender: UIButton) {
-        
+        if TfmobileNumber.text! == "" {
+            return()
+        }
+        if parentCompanyID == nil
+        {
+            topUpParentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId ?? 0
+        }
+        else
+        {
+            topUpParentCompanyID = parentCompanyID ?? 0
+        }
+        GlobalData.topup = "Postoaid"
+        NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
+
     }
     @IBAction func buttonContactList(_ sender: UIButton) {
         contactPicker.delegate = self
@@ -122,12 +135,14 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
     }
     @IBAction func buttonContinue(_ sender: UIButton) {
-        
-                let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-                vc.phoneNumber = TfmobileNumber.text!
-                self.navigationController?.pushViewController(vc, animated: true)
         GlobalData.topup = "Postpaid"
-        NotificationCenter.default.post(name: Notification.Name("operationSelectionPostpaid"), object: nil)
+
+        getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+//                let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+//                vc.phoneNumber = TfmobileNumber.text!
+//                self.navigationController?.pushViewController(vc, animated: true)
+//        GlobalData.topup = "Postpaid"
+//        NotificationCenter.default.post(name: Notification.Name("operationSelectionPostpaid"), object: nil)
 
     }
     
@@ -137,7 +152,8 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
        
                let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
                vc.phoneNumber = TfmobileNumber.text!
-               self.navigationController?.pushViewController(vc, animated: true)
+        self.present(vc, animated: true)
+//               self.navigationController?.pushViewController(vc, animated: true)
            }
   
     // MARK: - API CALL
@@ -241,7 +257,8 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
 //                    vc.DueDate = DueDate ?? ""
 //                    vc.status = status ?? ""
                     vc.amount = self.billtransactionOBj?.data?.actualDueAmount
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    self.present(vc, animated: true)
+//                    self.navigationController?.pushViewController(vc, animated: true)
                    
                 }
                 else {

@@ -45,7 +45,8 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     @IBOutlet weak var backbtn: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBAction func Action_back(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
+//        self.navigationController?.popViewController(animated: true)
     }
     @IBAction func Action_Continue(_ sender: UIButton) {
         initiateTopUp()
@@ -228,8 +229,8 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountConfirmationVc") as! TransferAmountConfirmationVc
         vc.amount =  (amountTextField.text!)
         vc.phoneNumber = phoneNumber
-        
-        self.navigationController!.pushViewController(vc, animated: false)
+        self.present(vc, animated: true)
+//        self.navigationController!.pushViewController(vc, animated: false)
     }
     
     
