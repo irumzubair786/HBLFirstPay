@@ -152,10 +152,10 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
         pagecontaner = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pagecontaner.delegate = self
         pagecontaner.dataSource = self
+        
+        pagecontaner.setViewControllers([arrvc[currentIndex!]], direction: UIPageViewController.NavigationDirection.forward, animated: true, completion: nil)
         pagecontaner.view.frame = vcontainer.frame
 
-        pagecontaner.setViewControllers([arrvc[currentIndex!]], direction: UIPageViewController.NavigationDirection.forward, animated: true, completion: nil)
-       
         // Add it to the view
         vcontainer.addSubview(pagecontaner.view)
         pagecontaner.view.frame.origin.x = 0

@@ -54,8 +54,6 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         img_next_arrow.isUserInteractionEnabled = true
         img_next_arrow.addGestureRecognizer(tapGestureRecognizerr)
-        
-        
     }
     @IBOutlet weak var btn: UIButton!
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
@@ -134,6 +132,9 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             let image = UIImage(named:"]greenarrow")
             img_next_arrow.image = image
             img_next_arrow.isUserInteractionEnabled = true
+            btnContinue.isUserInteractionEnabled = true
+            btn.isUserInteractionEnabled = true
+
             lblAmountLimit.textColor =  UIColor(red: 241/255, green: 147/255, blue: 0/255, alpha: 1)
             amountTextField.textColor = .gray
             self.collectionView.reloadData()

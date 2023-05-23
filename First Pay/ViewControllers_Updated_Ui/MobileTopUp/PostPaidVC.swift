@@ -68,7 +68,6 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
             vc.parentCompanyID = parentCompanyID
         }
         
-        
         self.navigationController?.pushViewController(vc, animated: false)
     }
     
@@ -108,7 +107,6 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         NotificationCenter.default.post(name: Notification.Name("showSelectedDataPostpaid"), object: nil)
     }
     
-    @IBOutlet weak var TfmobileNumber: UITextField!
     @IBOutlet weak var textFieldOperator: UITextField!
     @IBOutlet weak var imgnextarrow: UIImageView!
     @IBOutlet weak var buttonContinue: UIButton!
@@ -285,7 +283,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
         let newLength = (textField.text?.count)! + string.count - range.length
         
-        if textField == TfmobileNumber
+        if textField == tfMobileNo
         {
             return newLength <= 11
         }

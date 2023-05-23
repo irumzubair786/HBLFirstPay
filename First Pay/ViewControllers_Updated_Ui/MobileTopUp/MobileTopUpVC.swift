@@ -27,7 +27,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     var status: String?
     override func viewDidLoad() {
         
-        Tf_mobileNumber.text = "03404601050"
+//        Tf_mobileNumber.text = "03404601050"
         super.viewDidLoad()
         getBillPaymentCompanies()
      
