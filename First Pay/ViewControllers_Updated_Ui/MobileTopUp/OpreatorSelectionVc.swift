@@ -170,9 +170,9 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
         GlobalData.Select_operator_code = operatorcode!
         GlobalData.selected_operator_logo = getOperator[indexPath.row].path
 //        GlobalData.selected_operator_logo = img(tag: indexPath.row)
-    
-        
-        self.navigationController?.popViewController(animated: false)
+        self.dismiss(animated: false)
+       
+//        self.navigationController?.popViewController(animated: false)
     }
 }
 class myOperator

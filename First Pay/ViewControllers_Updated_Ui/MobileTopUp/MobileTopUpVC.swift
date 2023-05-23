@@ -121,14 +121,12 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             vc.parentCompanyID = parentCompanyID
         }
         
-       
-        self.navigationController?.pushViewController(vc, animated: false)
-        
-        
+        self.present(vc, animated: false)
+//        self.navigationController?.pushViewController(vc, animated: false)
+   
     }
-    
     override func viewWillAppear(_ animated: Bool) {
-        if Tf_mobileNumber.text?.count != 0
+        if Tf_mobileNumber.text?.count != 0 && selectOperator.text?.count !=  0
         {
             selectOperator.text = GlobalData.Selected_operator
             let image = UIImage(named:"]greenarrow")
