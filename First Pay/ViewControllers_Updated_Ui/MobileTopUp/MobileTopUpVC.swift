@@ -26,19 +26,19 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     var DueDate : String?
     var status: String?
     override func viewDidLoad() {
+        
+        Tf_mobileNumber.text = "03404601050"
         super.viewDidLoad()
         getBillPaymentCompanies()
      
         imgPostpaid.isHidden = true
         Tf_mobileNumber.delegate = self
         btnContinue.isUserInteractionEnabled = false
-        backbtn.setTitle("", for: .normal)
         btnContactList.setTitle("", for: .normal)
         btndropdown.setTitle("", for: .normal)
         img_next_arrow.isUserInteractionEnabled = false
         Tf_mobileNumber.delegate  = self
         selectOperator.delegate = self
-        lblMainTitle.textColor = .black
         btnPrepaid.setTitleColor(.black, for: .normal)
         btnPostpaid.setTitleColor(.black, for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
@@ -62,7 +62,6 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
 
    
     @IBOutlet weak var btnPostpaid: UIButton!
-    @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var btnPrepaid: UIButton!
     @IBOutlet weak var imgPostpaid: UIImageView!
     @IBOutlet weak var imgPrepaid: UIImageView!
@@ -71,7 +70,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var btndropdown: UIButton!
     @IBOutlet weak var btnContinue: UIButton!
     @IBOutlet weak var img_next_arrow: UIImageView!
-    @IBOutlet weak var backbtn: UIButton!
+
     @IBOutlet weak var selectOperator: UITextField!
     @IBAction func Action_next(_ sender: Any) {
      
@@ -108,9 +107,12 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             }
            else
             {
-               let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+               
+               let vc = UIStoryboard.init(name: "TopUp", bundle: nil).instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
                vc.phoneNumber = Tf_mobileNumber.text!
-               self.present(vc, animated: true)
+               vc.modalPresentationStyle = .overFullScreen
+               present(vc, animated: true)
+               
 //               self.navigationController?.pushViewController(vc, animated: true)
            }
         }
@@ -163,21 +165,21 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
    
     }
     override func viewWillAppear(_ animated: Bool) {
-        if Tf_mobileNumber.text?.count != 0 && selectOperator.text?.count !=  0
-        {
-            selectOperator.text = GlobalData.Selected_operator
-            let image = UIImage(named:"]greenarrow")
-            img_next_arrow.image = image
-            img_next_arrow.isUserInteractionEnabled = true
-            btnContinue.isUserInteractionEnabled = true
-        }
-        else
-        {
-            let image = UIImage(named:"grayArrow")
-            img_next_arrow.image = image
-            img_next_arrow.isUserInteractionEnabled = false
-            btnContinue.isUserInteractionEnabled = false
-        }
+//        if Tf_mobileNumber.text?.count != 0 && selectOperator.text?.count !=  0
+//        {
+//            selectOperator.text = GlobalData.Selected_operator
+//            let image = UIImage(named:"]greenarrow")
+//            img_next_arrow.image = image
+//            img_next_arrow.isUserInteractionEnabled = true
+//            btnContinue.isUserInteractionEnabled = true
+//        }
+//        else
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            img_next_arrow.image = image
+//            img_next_arrow.isUserInteractionEnabled = false
+//            btnContinue.isUserInteractionEnabled = false
+//        }
        
     }
     

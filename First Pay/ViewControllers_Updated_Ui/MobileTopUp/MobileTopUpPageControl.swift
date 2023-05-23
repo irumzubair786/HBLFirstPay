@@ -106,8 +106,8 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
     var currentIndex: Int?
     private var pendingIndex: Int?
     
-    func pagecontrlfunc()
-    {
+    func pagecontrlfunc() {
+        
         
         
         
@@ -152,9 +152,9 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
         pagecontaner = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pagecontaner.delegate = self
         pagecontaner.dataSource = self
-        pagecontaner.setViewControllers([arrvc[currentIndex!]], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
-        
         pagecontaner.view.frame = vcontainer.frame
+
+        pagecontaner.setViewControllers([arrvc[currentIndex!]], direction: UIPageViewController.NavigationDirection.forward, animated: true, completion: nil)
        
         // Add it to the view
         vcontainer.addSubview(pagecontaner.view)

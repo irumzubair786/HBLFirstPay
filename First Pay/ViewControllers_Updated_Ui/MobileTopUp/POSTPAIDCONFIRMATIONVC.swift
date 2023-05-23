@@ -117,28 +117,30 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     }
     func updateui()
     {
+        if let templog = GlobalData.selected_operator_logo {
+            let url = URL(string:"\(GlobalConstants.BASE_URL)\(GlobalData.selected_operator_logo!)")
+            imglogo.sd_setImage(with: url)
+            labelMobileNumber.text = phoneNumber
+            labelDate.text = DueDate
+            //        let a = DueDate?.substring(to: 11)
+            //        labelDate.text = a
+            
+            if status == "t" || status == "T" {
+                labelStatus.text = "Partial Payment"
+            }
+            else if status == "b" || status == "B"
+            {
+                labelStatus.text = "Your Customer is Blocked.Please contact your service provider."
+            }
+            else
+            {
+                labelStatus.text = status
+            }
+            labelAmount.text = amounttextField.text
+            amounttextField.text = amount
+            labelAmount.text = amount
+        }
         
-        let url = URL(string:"\(GlobalConstants.BASE_URL)\(GlobalData.selected_operator_logo!)")
-        imglogo.sd_setImage(with: url)
-        labelMobileNumber.text = phoneNumber
-        labelDate.text = DueDate
-        //        let a = DueDate?.substring(to: 11)
-        //        labelDate.text = a
-        
-        if status == "t" || status == "T" {
-            labelStatus.text = "Partial Payment"
-        }
-        else if status == "b" || status == "B"
-        {
-            labelStatus.text = "Your Customer is Blocked.Please contact your service provider."
-        }
-        else
-        {
-            labelStatus.text = status
-        }
-        labelAmount.text = amounttextField.text
-        amounttextField.text = amount
-        labelAmount.text = amount
     }
     
     private func billPyment() {

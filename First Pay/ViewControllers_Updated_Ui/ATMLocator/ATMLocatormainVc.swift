@@ -16,7 +16,6 @@ class ATMLocatormainVc: UIViewController {
     
     
     @IBOutlet weak var viewDetail: UIView!
-    @IBOutlet weak var buttondetail: UIButton!
     @IBOutlet weak var buttonDetail: UIButton!
     @IBOutlet weak var buttonATM: UIButton!
     @IBAction func buttonATM(_ sender: UIButton) {
@@ -40,8 +39,8 @@ class ATMLocatormainVc: UIViewController {
         viewDetail.addGestureRecognizer(tapGestureRecognizer)
 
        
-        buttondetail.isUserInteractionEnabled = true
-        buttondetail.backgroundColor = UIColor.clear
+        buttonDetail.isUserInteractionEnabled = true
+        buttonDetail.backgroundColor = UIColor.clear
         if modelATMLocation?.data.atmLocation.count ?? 0 > 0 {
             let atmLocations = modelATMLocation?.data.atmLocation
             viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
