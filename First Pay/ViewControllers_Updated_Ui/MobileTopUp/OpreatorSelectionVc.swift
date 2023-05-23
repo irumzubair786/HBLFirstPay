@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
-
+import SDWebImage
 class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     var parentCompanyID : Int?
     var billCompanyListObj : UtilityBillCompaniesModel?
@@ -19,23 +19,45 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     var getOperator = [myOperator]()
     var operatorid : Int?
     var operatorcode : String?
+    var logo : String?
     var dummyarr : [String]?
+    
+    var returnData: (() -> ())!
     override func viewDidLoad() {
         super.viewDidLoad()
         print("get parentCompanyID", parentCompanyID!)
       
         tableView.rowHeight = 90
         getCompanies()
+//       if  GlobalData.topup == "Prepaid"
+//        {
+//           getCompanies()
+//       }
+//        else
+//        {
+//            getCompaniesPostPaid(id: parentCompanyID)
+//        }
+        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoStatement(tapGestureRecognizer:)))
+        blurView.isUserInteractionEnabled = true
+        blurView.addGestureRecognizer(tapGestureRecognizerr)
+        
         // Do any additional setup after loading the view.
     }
+    @IBOutlet weak var blurView: UIImageView!
     
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func Action_hideoperatorView(_ sender: UIButton) {
+       
     }
+    @objc func MovetoStatement(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        
+        self.navigationController?.popViewController(animated: false)
+        
+    }
+    
    
-    
-    
     
     private func getCompanies() {
         
@@ -43,7 +65,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
             self.showToast(title: "No Internet Available")
             return
         }
-        
+       
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
@@ -75,6 +97,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
                         temp.code = i.code!
                         temp.id = i.ubpCompaniesId!
                         temp.name = i.name!
+                        temp.path = i.path ?? ""
                         self.getOperator.append(temp)
                     }
                     
@@ -96,14 +119,77 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
-    func img(tag : Int) -> UIImage{
-        guard let img = UIImage(named: dummyarr![tag])else {
-            return UIImage(named: "11")!
-            
-        }
-        return img
+    
+    private func getCompaniesPostPaid(id: Int?) {
         
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+       
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
+       
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        
+        print(header)
+        print(compelteUrl)
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<UtilityBillCompaniesModel>) in
+            
+            
+            self.hideActivityIndicator()
+            
+            self.billCompanyListObj = response.result.value
+            
+            if response.response?.statusCode == 200 {
+                if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
+                    if let companies = self.billCompanyListObj?.companies {
+                        self.comapniesList = companies
+                        self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+                    }
+                    
+                    for i in self.billCompanyListObj?.companies! ?? []
+                    {
+                        let temp = myOperator()
+                        temp.code = i.code!
+                        temp.id = i.ubpCompaniesId!
+                        temp.name = i.name!
+                        temp.path = i.path ?? ""
+                        self.getOperator.append(temp)
+                    }
+                    
+                    self.tableView.delegate = self
+                    self.tableView.dataSource = self
+                    self.tableView.reloadData()
+                }
+                else {
+                    if let message = self.billCompanyListObj?.messages{
+                        self.showAlert(title: "", message: message, completion: nil)
+                    }
+                }
+            }
+            else {
+                
+//                print(response.result.value)
+//                print(response.response?.statusCode)
+                
+            }
+        }
     }
+    
+    
+//    func img(tag : Int) -> UIImage{
+//        guard let img = UIImage(named: dummyarr![tag])else {
+//            return UIImage(named: "11")!
+//
+//        }
+//        return img
+//
+//    }
 
 
 
@@ -112,7 +198,7 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return  dummyarr?.count ?? 0
+        return  getOperator.count ?? 0
    
     }
 //    func numberOfSections(in tableView: UITableView) -> Int {
@@ -121,34 +207,29 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let aCell = tableView.dequeueReusableCell(withIdentifier: "cellOperator") as! cellOperator
        
-        let aRequest = dummyarr?[indexPath.row]
+        let aRequest = getOperator[indexPath.row]
 //        aCell.backview.dropShadow1()
-        aCell.lblOperator.text  = aRequest
-//        aCell.imageView?.image = img(tag: indexPath.row)
+        aCell.lblOperator.text  = aRequest.name
+        let url = URL(string:"\(GlobalConstants.BASE_URL)\(getOperator[indexPath.row].path)")
+    print("url",url!)
+        aCell.imgoperatoe.sd_setImage(with: url!)
+    
 //m        aCell.lblcityname.text =
         return aCell
 
     }
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.layer.transform = CATransform3DMakeScale(0.1,0.1,1)
-        UIView.animate(withDuration: 0.3, animations: {
-                cell.layer.transform = CATransform3DMakeScale(1.05,1.05,1)
-                },completion: { finished in
-                    UIView.animate(withDuration: 0.1, animations: {
-                        cell.layer.transform = CATransform3DMakeScale(1,1,1)
-                    })
-            })
-        }
+    
    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
-        seclectedOperator = (dummyarr?[indexPath.row])!
+        seclectedOperator = (getOperator[indexPath.row].name)
         for i in getOperator
         {
             if i.name == seclectedOperator
             {
                 operatorid = i.id
                 operatorcode = i.code
+                logo = i.path
             }
 
         }
@@ -160,10 +241,24 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
         GlobalData.Selected_operator = seclectedOperator
         GlobalData.Select_operator_id = operatorid
         GlobalData.Select_operator_code = operatorcode!
-        GlobalData.selected_operator_logo = img(tag: indexPath.row)
-    
+        GlobalData.selected_operator_logo = getOperator[indexPath.row].path
+//        GlobalData.selected_operator_logo = img(tag: indexPath.row)
+        //returnData!()
         
-        self.navigationController?.popViewController(animated: false)
+        DispatchQueue.main.async {
+            self.navigationController?.popViewController(animated: false)
+//            self.dismiss(animated: false)
+            DispatchQueue.main.async {
+                if  GlobalData.topup == "Prepaid" {
+                    NotificationCenter.default.post(name: Notification.Name("showSelectedDataPrePaid"), object: nil)
+                }
+                else {
+                    NotificationCenter.default.post(name: Notification.Name("showSelectedDataPostpaid"), object: nil)
+                }
+            }
+        }
+        
+        
     }
 }
 class myOperator
@@ -171,4 +266,5 @@ class myOperator
     var code = ""
     var id = 0
     var name = ""
+    var path = ""
 }

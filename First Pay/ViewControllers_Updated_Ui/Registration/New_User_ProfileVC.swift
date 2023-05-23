@@ -31,14 +31,19 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     var cnicVerificationObj : cnicVerficationModel?
     let datePicker = UIDatePicker()
     var genericObj : GenericResponseModel?
+    var didload = UIDatePicker()
+    var toDate = UIDatePicker()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        TF_IssueDate.placeholder = "  DD/MM/YYYY"
         print("fetch city", get_Seclected_City)
         TF_CnicNo.delegate = self
         TF_CityList.delegate = self
         TF_IssueDate.delegate = self
         View_mothername.isHidden = true
+        labelInvalidIssuedate.isHidden = true
         lbl_InvalidCnic.isHidden = true
         blurView.backgroundColor = UIColor.gray
         dismissKeyboard()
@@ -49,7 +54,10 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
         popviewView.isUserInteractionEnabled = true
         popviewView.addGestureRecognizer(tapGestureRecognizerr)
+        toDate = TF_IssueDate.setPickerDate()
        
+        toDate.maximumDate = Date()
+        toDate.addTarget(self, action: #selector(self.tappedOnDate), for: .valueChanged)
         let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizerrr)
@@ -86,7 +94,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     func showDatePicker(){
         //Formate Date
         datePicker.datePickerMode = .date
-
+        datePicker.minimumDate = Calendar.current.date(byAdding: .year, value: -100, to: Date())
        //ToolBar
        let toolbar = UIToolbar();
        toolbar.sizeToFit()
@@ -104,7 +112,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     @objc func donedatePicker(){
 
       let formatter = DateFormatter()
-      formatter.dateFormat = "yyyy-MM-dd"
+      formatter.dateFormat = "DD/MM/YYY"
       TF_IssueDate.text = formatter.string(from: datePicker.date)
       self.view.endEditing(true)
     }
@@ -113,6 +121,40 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
        self.view.endEditing(true)
      }
    
+    
+    var dateFrom = NSDate()
+    var fromNewDateVar : Date?
+    @objc func datePickerValueChanged(sender: UIDatePicker) {
+        
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "DD/MM/YYY"
+        TF_IssueDate.text = dateFormatter.string(from: sender.date)
+        dateFrom =  sender.date as NSDate
+        self.fromNewDateVar = sender.date
+    }
+    
+    
+    @objc func tappedOnDate(sender: UIDatePicker) {
+        print(sender)
+        let stringDate = sender.date.dateString()
+        
+        if sender == toDate {
+            TF_IssueDate.text = stringDate
+        }
+       
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @IBOutlet weak var labelInvalidIssuedate: UILabel!
     @IBOutlet weak var blurView: UIVisualEffectView!
     @IBOutlet var popviewView: UIView!
     @IBOutlet weak var View_mothername: UIView!
@@ -121,7 +163,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     @IBOutlet weak var lbl_CniccardNumber: UILabel!
     @IBOutlet weak var TF_CnicNo: NumberTextField!
     @IBOutlet weak var lbl_InvalidCnic: UILabel!
-    @IBOutlet weak var TF_IssueDate: DisableEditingTextfield!
+    @IBOutlet weak var TF_IssueDate: UITextField!
     @IBOutlet weak var TF_CityList: UITextField!
     @IBOutlet weak var btnMore_info: UIButton!
     @IBOutlet weak var lbl_ClickingContinue: UILabel!
@@ -222,6 +264,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
 //
         else{
             
+            
                 cnicVerification()
             
           
@@ -307,46 +350,63 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     
     @IBAction func Action_issuedate(_ sender: UITextField) {
 //           showDatePicker()
-        let datePickerObj: UIDatePicker = UIDatePicker()
-        datePickerObj.datePickerMode = UIDatePickerMode.date
-        sender.inputView = datePickerObj
-        datePickerObj.maximumDate = datePickerObj.date
-        datePickerObj.addTarget(self, action: #selector(datePickerValueChanged), for: UIControlEvents.valueChanged)
-//        dd-MM-yyy
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let newDate = dateFormatter.string(from: datePickerObj.date)
-
-        cinc_issuedateFlag = "true"
-        getCnic_issueDateValue = self.TF_IssueDate.text!
-        print("cnic issue date", self.getCnic_issueDateValue)
-//        Animout(Popview: popviewView)
+//        let datePickerObj: UIDatePicker = UIDatePicker()
+//        datePickerObj.datePickerMode = UIDatePickerMode.date
+//        sender.inputView = datePickerObj
+//        datePickerObj.maximumDate = datePickerObj.date
+//        datePickerObj.addTarget(self, action: #selector(datePickerValueChanged), for: UIControlEvents.valueChanged)
+////        dd-MM-yyy
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "DD/MM/YYYY"
+//        let newDate = dateFormatter.string(from: datePickerObj.date)
 //
-//
-        if #available(ios 13.4, *)
-        {
-            if #available(iOS 13.4, *) {
-                datePickerObj.preferredDatePickerStyle = .wheels
-            } else {
-                // Fallback on earlier versions
-            }
-        }
+//        cinc_issuedateFlag = "true"
+//        getCnic_issueDateValue = self.TF_IssueDate.text!
+//        print("cnic issue date", self.getCnic_issueDateValue)
+////        Animout(Popview: popviewView)
+////
+////
+//        if #available(ios 13.4, *)
+//        {
+//            if #available(iOS 13.4, *) {
+//                datePickerObj.preferredDatePickerStyle = .wheels
+//            } else {
+//                // Fallback on earlier versions
+//            }
+//        }
         
     }
-    @objc func datePickerValueChanged(sender: UIDatePicker) {
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        TF_IssueDate.text = dateFormatter.string(from: sender.date)
-        //   DataManager.instance.cnicIssueDate =  sender.date as NSDate
-        DataManager.instance.cnicIssueDate =  TF_IssueDate.text
-        cinc_issuedateFlag = "true"
-        getCnic_issueDateValue = self.TF_IssueDate.text!
-        print("cnic issue date", self.getCnic_issueDateValue)
-        
-    }
-    
-    
+//    @objc func datePickerValueChanged(sender: UIDatePicker) {
+//
+//        let dateFormatter = DateFormatter()
+//
+//        //        yyyy-MM-dd
+//        dateFormatter.dateFormat = "DD/MM/YYYY"
+//        TF_IssueDate.text = dateFormatter.string(from: sender.date)
+//        //   DataManager.instance.cnicIssueDate =  sender.date as NSDate
+//        DataManager.instance.cnicIssueDate =  TF_IssueDate.text
+//        cinc_issuedateFlag = "true"
+//
+//        getCnic_issueDateValue = self.TF_IssueDate.text!
+//        print("cnic issue date", self.getCnic_issueDateValue)
+//
+//    }
+//    func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
+//
+//        let inputFormatter = DateFormatter()
+//        inputFormatter.dateFormat = "DD/MM/YYYY"
+//
+//        if let date = inputFormatter.date(from: dateString) {
+//
+//            let outputFormatter = DateFormatter()
+//          outputFormatter.dateFormat = format
+//
+//            return outputFormatter.string(from: date)
+//        }
+//
+//        return nil
+//    }
+//
     @IBAction func Dropdown_CityList(_ sender: DropDown) {
        
         
@@ -412,6 +472,23 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         return true
     }
    
+    func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
+        
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "dd/MM/yyyy"
+        
+        if let date = inputFormatter.date(from: dateString) {
+            
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = format
+            
+            return outputFormatter.string(from: date)
+        }
+        
+        return nil
+    }
+    
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == TF_CnicNo
         {
@@ -563,13 +640,15 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         var cnicNumber = a.replacingOccurrences(of: "-", with: "")
         cnicNumber = cnicNumber.replacingOccurrences(of: "_", with: "")
         DataManager.instance.userCnic = cnicNumber
-        
-        
+        let b = TF_IssueDate.text?.replacingOccurrences(of: "/", with: "-")
+        let stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
+        print("date convert", stringTo)
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/cnicVerification"
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": DataManager.instance.mobNo ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": cnicNumber , "issueDate": TF_IssueDate.text!]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": DataManager.instance.mobNo ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": cnicNumber , "issueDate": stringTo ?? ""]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
+    
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
@@ -586,8 +665,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                 
                 if self.cnicVerificationObj?.responsecode == 2 || self.cnicVerificationObj?.responsecode == 1 {
                     if cnicVerificationObj?.data != nil{
-                       
+                
                         self.View_mothername.isHidden = false
+                        
                         self.blurView.isHidden = false
                         flagMother_nameselected = false
                        btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
@@ -597,20 +677,44 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
 
                         btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
                     }
-                    else{
-                        if let message = self.cnicVerificationObj?.messages{
-                            self.showDefaultAlert(title: "", message: message)
-                        }
-                    }
+                  
 
 
                 }
                 else{
                     
                     if let message = self.cnicVerificationObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        
+                        if let message = self.cnicVerificationObj?.messages{
+                            lbl_InvalidCnic.isHidden = false
+                            lbl_InvalidCnic.text = "Invalid Cnic"
+                            
+                            //                            self.showDefaultAlert(title: "", message: message)
+                        }
+                        //                        lbl_InvalidCnic.text
+                        if lbl_InvalidCnic.text == ""
+                        {
+                            if let message = self.cnicVerificationObj?.messages{
+                                labelInvalidIssuedate.isHidden = false
+                                labelInvalidIssuedate.text = "Invalid Issue Date"
+                                
+                                //                            self.showDefaultAlert(title: "", message: message)
+                            }
+                        }
+                        else
+                        {
+                            
+                            if let message = self.cnicVerificationObj?.messages{
+                                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                                
+                            }
+                        }
+                        
+                        
+//                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                 }
+                
                     
                    
         }
@@ -670,9 +774,6 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                         DataManager.instance.userCnic = DataManager.instance.userCnic!
                         print("get cnic",DataManager.instance.userCnic)
                         
-                        
-                        
-                        
                             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
                             UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
                             self.navigationController?.pushViewController(vc, animated: true)
@@ -680,15 +781,13 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                         
                            
 //                        }
-                        
-                  
                })
                     
                 }
                 }
                 else{
                     if let message = self.genericObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSucess)
                     }
                    
                 }

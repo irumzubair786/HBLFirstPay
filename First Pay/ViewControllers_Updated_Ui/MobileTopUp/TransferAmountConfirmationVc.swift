@@ -42,8 +42,8 @@ class TransferAmountConfirmationVc: BaseClassVC {
     @IBOutlet weak var nextBtn: UIButton!
     func updateUi()
     {
-        lblAmount.text = "\(amount!)"
-        lblTotalAmount.text = "\(amount!)"
+        lblAmount.text = "Rs. \(amount!)"
+        lblTotalAmount.text = "Rs. \(amount!)"
         lblFee.text = "Rs. 0.00"
         lblRecipientPhoneNumber.text = phoneNumber
         lblOperator.text = GlobalData.Selected_operator
@@ -56,7 +56,8 @@ class TransferAmountConfirmationVc: BaseClassVC {
     
     @IBOutlet weak var back: UIButton!
     @IBAction func Action_back(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
+//        self.navigationController?.popViewController(animated: true)
         
     }
     
@@ -97,7 +98,7 @@ class TransferAmountConfirmationVc: BaseClassVC {
         showActivityIndicator()
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany":GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":self.amount!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":"","addBeneficiary":"","utilityBillCompanyId":GlobalData.Select_operator_id] as [String : Any]
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany":GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":self.amount!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":"","addBeneficiary":"","utilityBillCompanyId":GlobalData.Select_operator_id ?? ""] as [String : Any]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(result.apiAttribute1)
@@ -118,14 +119,14 @@ class TransferAmountConfirmationVc: BaseClassVC {
                 }
                 else {
                     if let message = self.successmodelobj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                         self.navigateToSuccessVC()
                     }
                 }
             }
             else {
                 if let message = self.successmodelobj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
@@ -144,8 +145,8 @@ class TransferAmountConfirmationVc: BaseClassVC {
         vc.TransactionDate = successmodelobj?.data?.transDate
         
         
-        
-        self.navigationController!.pushViewController(vc, animated: true)
+        self.present(vc, animated: true)
+//        self.navigationController!.pushViewController(vc, animated: true)
      
     
     }

@@ -14,6 +14,7 @@ import ContactsUI
 import libPhoneNumber_iOS
 class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     private let contactPicker = CNContactPickerViewController()
+    var flag :Bool = false
     var parentCompanyID : Int?
     var companyID : String?
     var billCompanyObj : BillPaymentCompanies?
@@ -22,24 +23,45 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     var comapniesList = [SingleCompanyList]()
     var sourceCompany: String?
     var companyCode: Int?
+    var DueDate : String?
+    var status: String?
     override func viewDidLoad() {
+        
+//        Tf_mobileNumber.text = "03404601050"
         super.viewDidLoad()
         getBillPaymentCompanies()
+     
         imgPostpaid.isHidden = true
         Tf_mobileNumber.delegate = self
         btnContinue.isUserInteractionEnabled = false
-        backbtn.setTitle("", for: .normal)
         btnContactList.setTitle("", for: .normal)
         btndropdown.setTitle("", for: .normal)
         img_next_arrow.isUserInteractionEnabled = false
         Tf_mobileNumber.delegate  = self
         selectOperator.delegate = self
-        lblMainTitle.textColor = .black
+        btnPrepaid.setTitleColor(.black, for: .normal)
+        btnPostpaid.setTitleColor(.black, for: .normal)
+        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+
+        img_next_arrow.addGestureRecognizer(tapGestureRecognizerr)
+        Tf_mobileNumber.placeholder = "Enter Number of Recipient"
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(showSelectedDataPrePaid), name: Notification.Name("showSelectedDataPrePaid"),object: nil)
     }
     
+    @objc func showSelectedDataPrePaid() {
+        selectOperator.text = GlobalData.Selected_operator
+        
+        let image = UIImage(named:"]greenarrow")
+        img_next_arrow.image = image
+        img_next_arrow.isUserInteractionEnabled = true
+        btnContinue.isUserInteractionEnabled = true
+    }
+    
+
+   
     @IBOutlet weak var btnPostpaid: UIButton!
-    @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var btnPrepaid: UIButton!
     @IBOutlet weak var imgPostpaid: UIImageView!
     @IBOutlet weak var imgPrepaid: UIImageView!
@@ -48,57 +70,116 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var btndropdown: UIButton!
     @IBOutlet weak var btnContinue: UIButton!
     @IBOutlet weak var img_next_arrow: UIImageView!
-    @IBOutlet weak var backbtn: UIButton!
+
     @IBOutlet weak var selectOperator: UITextField!
     @IBAction func Action_next(_ sender: Any) {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-        vc.phoneNumber = Tf_mobileNumber.text!
-        self.navigationController?.pushViewController(vc, animated: true)
-        
-        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        img_next_arrow.isUserInteractionEnabled = true
-        img_next_arrow.addGestureRecognizer(tapGestureRecognizerr)
-      
-        
-
-        
+     
+//        if GlobalData.topup == "Prepaid"
+//        {
+//            if  GlobalData.Select_operator_id == 40
+//            {
+                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+//            }
+//           else
+//            {
+//               let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+//               vc.phoneNumber = Tf_mobileNumber.text!
+//               self.present(vc, animated: true)
+////               self.navigationController?.pushViewController(vc, animated: true)
+//           }
+//        }
+//        else
+//        {
+//         getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+//
+//        }
+       
     }
     
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-        vc.phoneNumber = Tf_mobileNumber.text!
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        if GlobalData.topup == "Prepaid"
+        {
+            if  GlobalData.Select_operator_id == 43
+            {
+                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+            }
+           else
+            {
+               
+               let vc = UIStoryboard.init(name: "TopUp", bundle: nil).instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+               vc.phoneNumber = Tf_mobileNumber.text!
+               vc.modalPresentationStyle = .overFullScreen
+               present(vc, animated: true)
+               
+//               self.navigationController?.pushViewController(vc, animated: true)
+           }
+        }
+        else
+        {
+            getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+           
+        }
+        
+        
 //        self.present(vc, animated: true)
     }
    
     @IBAction func Action_Operator(_ sender: UIButton) {
-        
-        
-        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
-        vc.parentCompanyID = parentCompanyID
-        
-        self.navigationController?.pushViewController(vc, animated: false)
-        
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        if Tf_mobileNumber.text?.count != 0
+        if Tf_mobileNumber.text! == "" {
+            return()
+        }
+        if parentCompanyID == nil
         {
-            selectOperator.text = GlobalData.Selected_operator
-            let image = UIImage(named:"]greenarrow")
-            img_next_arrow.image = image
-            img_next_arrow.isUserInteractionEnabled = true
-            btnContinue.isUserInteractionEnabled = true
-            
+            topUpParentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId ?? 0
         }
         else
         {
-            let image = UIImage(named:"grayArrow")
-            img_next_arrow.image = image
-            img_next_arrow.isUserInteractionEnabled = false
+            topUpParentCompanyID = parentCompanyID ?? 0
         }
+        GlobalData.topup = "Prepaid"
+        NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
+
+
+        
+//<<<<<<< HEAD
+////        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
+////        if parentCompanyID == nil
+////        {
+////            vc.parentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId
+////        }
+////        else
+////        {
+////            vc.parentCompanyID = parentCompanyID
+////        }
+////        vc.returnData? = {
+////
+////        }
+////        self.present(vc, animated: false)
+//=======
+//
+//        self.present(vc, animated: false)
+//>>>>>>> d80d484 (postpaid)
+//        self.navigationController?.pushViewController(vc, animated: false)
+   
+    }
+    override func viewWillAppear(_ animated: Bool) {
+//        if Tf_mobileNumber.text?.count != 0 && selectOperator.text?.count !=  0
+//        {
+//            selectOperator.text = GlobalData.Selected_operator
+//            let image = UIImage(named:"]greenarrow")
+//            img_next_arrow.image = image
+//            img_next_arrow.isUserInteractionEnabled = true
+//            btnContinue.isUserInteractionEnabled = true
+//        }
+//        else
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            img_next_arrow.image = image
+//            img_next_arrow.isUserInteractionEnabled = false
+//            btnContinue.isUserInteractionEnabled = false
+//        }
        
     }
     
@@ -114,6 +195,10 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         self.present(contactPicker, animated: true, completion: nil)
     }
     @IBAction func ActionPrepaid(_ sender: UIButton) {
+        Tf_mobileNumber.placeholder =  "Enter Number of Recipient"
+        UIView.transition(with: self.view, duration: 0.3, options: .transitionFlipFromRight, animations: {
+           
+        }, completion: nil)
         selectOperator.text = ""
         Tf_mobileNumber.text = ""
         imgPostpaid.isHidden = true
@@ -128,10 +213,21 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         }
         
         print("Prepaid",  GlobalData.topup)
+        
+        
+    
+       ////                    self.companyID = self.billCompanyObj?.companies?[0].code
+       ////                    self.parentCompanyID = self.billCompanyObj?.companies?[0].ubpCompaniesId
+       ////                    print("u selected prepaid id", self.companyID)
+       ////                    print("u selected prepaidcode ", self.parentCompanyID)
       
     }
     
     @IBAction func Action_postpaid(_ sender: UIButton) {
+        Tf_mobileNumber.placeholder = "Enter Number"
+        UIView.transition(with: self.view, duration: 0.3, options: .transitionFlipFromLeft, animations: {
+           
+        }, completion: nil)
         selectOperator.text = ""
         Tf_mobileNumber.text = ""
         imgPostpaid.isHidden = false
@@ -140,6 +236,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         parentCompanyID = billCompanyObj?.companies?[0].ubpCompaniesId
         print("u selected postpaid id", companyID)
         print("u selected postpaid code ", parentCompanyID)
+       
+        
         if (self.billCompanyObj?.companies?[0].code)! == "MBP"
         {
             GlobalData.topup = "Postpaid"
@@ -173,7 +271,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL +          "Transactions/v1/getParentTopUpCompanies"
-
+//getcompanyfromparentid
+//biillinquiry
         let header = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
         
         print(header)
@@ -188,26 +287,22 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             if response.response?.statusCode == 200 {
         
                 if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
-                 
-                    GlobalData.topup = "Prepaid"
-                   
-                    self.companyID = self.billCompanyObj?.companies?[1].code
-                    self.parentCompanyID = self.billCompanyObj?.companies?[1].ubpCompaniesId
-                    print("u selected prepaid id", self.companyID)
-                    print("u selected prepaidcode ", self.parentCompanyID)
+                      
+//                    GlobalData.topup = "Prepaid"
+////                    self.companyID = self.billCompanyObj?.companies?[0].code
+////                    self.parentCompanyID = self.billCompanyObj?.companies?[0].ubpCompaniesId
+////                    print("u selected prepaid id", self.companyID)
+////                    print("u selected prepaidcode ", self.parentCompanyID)
                      
-//                    for aCompany in (self.billCompanyObj?.companies)!{
-//                        if aCompany.code == "MBP" || aCompany.code == "MTUP"{
-//                            self.filteredCompanies.append(aCompany)
-//                        }
+//
                      
                 }
                 else {
-                     self.showAlert(title: "", message: (self.billCompanyObj?.messages)!, completion: nil)
+                    self.showAlertCustomPopup(title: "",message: self.billCompanyObj?.messages, iconName: .iconError)
                 }
             }
             else {
-                self.showAlert(title: "", message: (self.billCompanyObj?.messages ?? ""), completion: nil)
+                self.showAlertCustomPopup(title: "",message: self.billCompanyObj?.messages, iconName: .iconError)
 //                print(response.result.value)
 //                print(response.response?.statusCode)
                 
@@ -215,8 +310,74 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
-    
- 
+    var billtransactionOBj : BillAPiResponse?
+    private func getBillInquiry(utilityBillCompany:String?) {
+        
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        
+        var userCnic : String?
+               
+               if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                   userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+               }
+               else{
+                   userCnic = ""
+               }
+        
+        showActivityIndicator()
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billInquiry"
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany": GlobalData.Select_operator_code,"utilityConsumerNo":self.Tf_mobileNumber.text!,"accountType": DataManager.instance.accountType!]
+        
+        print(parameters)
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+//        print(result.apiAttribute1)
+//        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        
+        print(params)
+        print(compelteUrl)
+        print(header)
+
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<BillAPiResponse>) in
+            self.hideActivityIndicator()
+            self.billtransactionOBj = response.result.value
+            if response.response?.statusCode == 200 {
+                if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
+                    vc.phoneNumber = self.Tf_mobileNumber.text!
+                    vc.DueDate = self.billtransactionOBj?.data?.paymentDueDate!
+                    vc.status = self.billtransactionOBj?.data?.billStatus
+//                    vc.DueDate = DueDate ?? ""
+//                    vc.status = status ?? ""
+                    vc.amount = self.billtransactionOBj?.data?.actualDueAmount
+                    self.navigationController?.pushViewController(vc, animated: true)
+                   
+                }
+                else {
+                    if let message = self.billtransactionOBj?.messages{
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                    }
+                }
+            }
+            else {
+                if let message = self.billtransactionOBj?.messages{
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                }
+//                print(response.result.value)
+//                print(response.response?.statusCode)
+            }
+        }
+    }
     
     
     

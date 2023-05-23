@@ -26,7 +26,7 @@ class MoneyTransfer_ReasonVC: BaseClassVC {
         tableView.delegate = self
         tableView.dataSource = self
 //        getReasonsForTrans()
-        tableView.rowHeight = 70
+        tableView.rowHeight = 60
         getReasonsForTrans()
 
     }
@@ -55,6 +55,7 @@ class MoneyTransfer_ReasonVC: BaseClassVC {
             if response.response?.statusCode == 200 {
                 self.reasonsObj = response.result.value
                 if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
+                    var aReq =  self.reasonsObj?.reasonsData!
                     for i in self.reasonsObj?.reasonsData! ?? []
                     {
                         var temp = myreason()
@@ -101,18 +102,8 @@ extension MoneyTransfer_ReasonVC: UITableViewDelegate, UITableViewDataSource
         aCell.lblname.text = reasonsList?[indexPath.row]
 //m        aCell.lblcityname.text =
         return aCell
-
     }
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.layer.transform = CATransform3DMakeScale(0.1,0.1,1)
-        UIView.animate(withDuration: 0.3, animations: {
-                cell.layer.transform = CATransform3DMakeScale(1.05,1.05,1)
-                },completion: { finished in
-                    UIView.animate(withDuration: 0.1, animations: {
-                        cell.layer.transform = CATransform3DMakeScale(1,1,1)
-                    })
-            })
-        }
+   
    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")

@@ -36,16 +36,18 @@ var alamoFireManager: SessionManager? = {
 }()
 
 struct APIPath {
-
+    
     //original ur
- public static let  BASE_URL = "http://bbuat.hblmfb.com/"
- static let baseurl =  "https://bb.fmfb.pk/irisrest/"
- static let staggingurl = "http://bbuat.fmfb.pk/irisrest/"
-// static let baseurl =  "http://bbuat.fmfb.pk/nanoloan/"
-//  static var baseurl = "http://bbuat.fmfb.pk/irisrest/"
+    public static let  baseUrl = GlobalConstants.BASE_URL
+    
+    public static let  BASE_URLLive = "http://bbuat.hblmfb.com/"
+    static let baseurlUat =  "https://bb.hblmfb.com/"
+    static let staggingurl = "http://bbuat.fmfb.pk/irisrest/"
+    // static let baseurl =  "http://bbuat.fmfb.pk/nanoloan/"
+    //  static var baseurl = "http://bbuat.fmfb.pk/irisrest/"
     //testing url
-// static let BaseURL = "https://webdoctesting.webddocsystems.com/iOSApp.svc/"
-   // static let ImageUploadURL = "http://e-compare.com.pk/carpictures/upload.php"
+    // static let BaseURL = "https://webdoctesting.webddocsystems.com/iOSApp.svc/"
+    // static let ImageUploadURL = "http://e-compare.com.pk/carpictures/upload.php"
     
     
     
@@ -55,8 +57,8 @@ struct APIPath {
     
     //ya balance inquery ki ha
     //  static let BaseURL = "https://sandbox.jsbl.com/balance/v0/"
-
-   
+    
+    
 }
 
 //Mark: - API Methods
@@ -476,7 +478,7 @@ class ServerManager  : BaseClassVC{
     static func WithoutParafetchNanoloanProduct<T: Decodable>(APIMethodName : String, completion: @escaping (T?) -> ()) {
         UtilManager.showProgress()
         
-        let url = "\(APIPath.baseurl)\(APIMethodName)"
+        let url = "\(APIPath.baseUrl)\(APIMethodName)"
         
         print(url)
         
@@ -534,7 +536,7 @@ class ServerManager  : BaseClassVC{
     static func LimitManagmentwithParameter<T: Decodable>(APIMethodName : String, Token : String, completion: @escaping (T?) -> ()) {
             UtilManager.showProgress()
             
-        let url  = "\(APIPath.baseurl)\(APIMethodName)"
+        let url  = "\(APIPath.baseUrl)\(APIMethodName)"
         print(url)
         let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
        

@@ -190,11 +190,12 @@ class Statement_History_Detail_VC: BaseClassVC {
 
 
     @IBAction func Action_Download(_ sender: UIButton) {
-        imgview.snapshotView(afterScreenUpdates: true)
-        image = imgview.convertToImage()
-        print(image)
-        showToast(title: "Photo Saved Successfully!")
-       UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
+        let image =  imgview.convertToImage()
+
+        let imageShare = [ image ]
+            let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            self.present(activityViewController, animated:true, completion: nil)
       
 
 
@@ -206,12 +207,12 @@ class Statement_History_Detail_VC: BaseClassVC {
 
 
     @IBAction func Action_Share(_ sender: UIButton) {
-        let image =  imgview.convertToImage()
-
-        let imageShare = [ image ]
-            let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view
-            self.present(activityViewController, animated: true, completion: nil)
+                
+            imgview.snapshotView(afterScreenUpdates: true)
+            image = imgview.convertToImage()
+            print(image)
+            showToast(title: "Photo Saved Successfully!")
+           UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
 
     }
     @objc func imageTappedDownload(tapGestureRecognizer: UITapGestureRecognizer)

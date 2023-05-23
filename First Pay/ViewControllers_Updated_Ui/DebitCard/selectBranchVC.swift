@@ -111,6 +111,7 @@ extension selectBranchVC: UITableViewDelegate, UITableViewDataSource
         let aCell = tableView.dequeueReusableCell(withIdentifier: "cellselectBranchVC") as! cellselectBranchVC
         let aRequest = filteredData?[indexPath.row]
         aCell.labelBranchName.text = aRequest
+        aCell.labelBranchName.textColor = UIColor(hexValue: 0x00CC96)
         return aCell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -136,6 +137,9 @@ extension selectBranchVC: UITableViewDelegate, UITableViewDataSource
         GlobalData.selectedBranchCode = branchCode
         GlobalData.debitCardUserName = fullname!
         print("city id get",  GlobalData.selectedBranch)
+        
+        FBEvents.logEvent(title: .Debit_orderconfirm_screen)
+
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardBranchAddressConfirmationVC") as!  DebitCardBranchAddressConfirmationVC
 //        vc.fullUserName = fullName!
         
@@ -202,15 +206,5 @@ extension selectBranchVC: UITableViewDelegate, UITableViewDataSource
            
         }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.layer.transform = CATransform3DMakeScale(0.1,0.1,1)
-        UIView.animate(withDuration: 0.3, animations: {
-                cell.layer.transform = CATransform3DMakeScale(1.05,1.05,1)
-                },completion: { finished in
-                    UIView.animate(withDuration: 0.1, animations: {
-                        cell.layer.transform = CATransform3DMakeScale(1,1,1)
-                    })
-            })
-        }
     
 }

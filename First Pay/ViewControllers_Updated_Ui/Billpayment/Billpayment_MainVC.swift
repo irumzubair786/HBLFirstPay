@@ -28,10 +28,10 @@ class Billpayment_MainVC: BaseClassVC {
     @IBOutlet weak var back: UIButton!
     @IBOutlet weak var lblmainTitle: UILabel!
     
-    let ItemsArr   :[String] =  ["internet Bill Payment","Land Line","Electricity Bill Payment","Gass Bill Payment","Water / Sanitaion Bill","Investment", "Insurance", "Goverment","1 Bill"]
+    let ItemsArr   :[String] =  ["Broadband Bill Payment","Land Line","Education","Electricity Bill Payment","Gass Bill Payment","Water / Sanitaion Bill","Investment", "Insurance", "Goverment","1 Bill"]
     
     
-    var ImgsArr: [String] =   ["internetbillpayment","landline","electricitybillpayment","gassbillpayment","watersanitaionbill", "investment","insurance","goverment","1bill"]
+    var ImgsArr: [String] =   ["internetbillpayment","landline","education","electricitybillpayment","gassbillpayment","watersanitaionbill", "investment","insurance","goverment","1bill"]
     
     @objc func buttontaped(_sender:UIButton)
     {
@@ -85,8 +85,14 @@ class Billpayment_MainVC: BaseClassVC {
                 if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
                     
                     for aCompany in (self.billCompanyObj?.companies)!{
-                        if aCompany.code != "MBP" && aCompany.code != "MTUP"{
+                        if aCompany.ubpCompaniesId == 277 || aCompany.ubpCompaniesId == 276
+                        {
+                            
+                        }
+                        else if aCompany.code != "MBP" && aCompany.code != "MTUP"{
                             self.filteredCompanies.append(aCompany)
+//                            self.filteredCompanies.removeLast()
+//                            self.filteredCompanies.removeLast()
                         }
                     }
                     self.tableview.reloadData()
@@ -124,7 +130,7 @@ extension Billpayment_MainVC : UITableViewDelegate, UITableViewDataSource
                 cell.img.image = UIImage(named: "1bill")
             }
             if aCompany.code == "BBP"{
-                cell.img.image = UIImage(named: "1bill")
+                cell.img.image = UIImage(named: "internetbillpayment")
 
             }
             if aCompany.code == "CAREEM"{
@@ -132,15 +138,15 @@ extension Billpayment_MainVC : UITableViewDelegate, UITableViewDataSource
 
             }
             if aCompany.code == "EP"{
-                cell.img.image = UIImage(named: "electricitybillpayment")
+                cell.img.image = UIImage(named: "education")
 
             }
             if aCompany.code == "EBP"{
-                cell.img.image = UIImage(named: "gassbillpayment")
+                cell.img.image = UIImage(named: "electricitybillpayment")
 
             }
             if aCompany.code == "GBP"{
-                cell.img.image = UIImage(named: "1bill")
+                cell.img.image = UIImage(named: "gassbillpayment")
 
             }
             if aCompany.code == "GOV"{
@@ -199,6 +205,6 @@ extension Billpayment_MainVC : UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showToast(title: "done work")
+//        showToast(title: "done work")
     }
 }

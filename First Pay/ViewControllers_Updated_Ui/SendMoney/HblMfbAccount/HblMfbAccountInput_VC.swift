@@ -14,7 +14,7 @@ import ContactsUI
 import libPhoneNumber_iOS
 class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
     private let contactPicker = CNContactPickerViewController()
-    var minvalu  = 100
+    var minvalu  = 1
     var maxvalu = 25000
     var reasonsObj : GetReasonsModel?
     var reasonsList : [String]?
@@ -26,11 +26,12 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
         btn_next.isUserInteractionEnabled = false
         tfAccountNo.delegate = self
         btnPurposeField.setTitle("", for: .normal)
+        amountTextfield.addTarget(self, action: #selector(changeAmountInTextField), for: .editingChanged)
         amountTextfield.delegate = self
         getReasonsForTrans()
         // Do any additional setup after loading the view.
     }
-   
+    
     @IBOutlet weak var lblSubTitle: UILabel!
     @IBOutlet weak var imgnextarrow: UIImageView!
     @IBOutlet weak var back: UIButton!
@@ -38,7 +39,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
     @IBOutlet weak var btn_next: UIButton!
     var transactionApiResponseObj : FTApiResponse?
     @IBOutlet weak var lblMainTitle: UILabel!
-  
+    
     @IBOutlet weak var amountTextfield: UITextField!
     @IBOutlet weak var img: UIImageView!
     @IBOutlet weak var lblAlertAmount: UILabel!
@@ -60,61 +61,190 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
         let newLength = (textField.text?.count)! + string.count - range.length
         
         if textField == amountTextfield{
-               return newLength <= 6
+            return newLength <= 6
             
         }
-        else if textField == tfAccountNo{
+        
+        if textField == tfAccountNo{
             return newLength <= 16
-         
-     }
+            
+        }
         
+        else {
+            return newLength <= 16
+            
+        }
         
-        return newLength <= 16
-      
-       
-     
         
     }
     
+        @objc func changeAmountInTextField() {
+            
+            if amountTextfield?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
+            {
+                imgnextarrow.image = UIImage(named: "grayArrow")
+                imgnextarrow.isUserInteractionEnabled = false
+                lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+                imgnextarrow.isUserInteractionEnabled = false
+                btn_next.isUserInteractionEnabled = false
+            }
+            if amountTextfield?.text?.count != 0
+            {
+               if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0 > Int((maxvalu) ?? 0)
 
+                        {
+                   lblAlertAmount.textColor = .gray
+                   imgnextarrow.image = UIImage(named: "grayArrow")
+                   imgnextarrow.isUserInteractionEnabled = false
+                   lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+                   btn_next.isUserInteractionEnabled = false
+
+                        }
+               else
+               {
+                   let image = UIImage(named:"]greenarrow")
+                   imgnextarrow.image = image
+                   let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+                   imgnextarrow.isUserInteractionEnabled = true
+                   imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+                   lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+                   btn_next.isUserInteractionEnabled = true
+                   
+               }
+        
+            }
+           
+            else if amountTextfield?.text?.count != 0 && tfAccountNo.text?.count != 0
+            {
+                
+                let image = UIImage(named:"]greenarrow")
+                imgnextarrow.image = image
+                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+                imgnextarrow.isUserInteractionEnabled = true
+                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+                lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+                btn_next.isUserInteractionEnabled = true
+
+                
+            }
+            
+             }
+//        var text = amountTextfield.text!.replacingOccurrences(of: "", with: "")
+//        //    textFieldAmount.text = format(with: "PKR XXXXXX", phone: text)
+//        if text == "0" && text == "" {
+//            lblAlertAmount.textColor = .gray
+//            lblAlertAmount.textColor = .gray
+//            imgnextarrow.image = UIImage(named: "grayArrow")
+//            lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+//            imgnextarrow.isUserInteractionEnabled = false
+//
+//        }
+//        else if text > 0 && text.text < Int(maxvalu) {
+//
+//            else {
+//                let image = UIImage(named:"]greenarrow")
+//                imgnextarrow.image = image
+//                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//                imgnextarrow.isUserInteractionEnabled = true
+//                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+//                lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//                self.btn_next.isUserInteractionEnabled = true
+//
+//            }
+//        }
+//    }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-
-        if textField == amountTextfield
-        {
-                    if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  > Int((maxvalu) ?? 0)
-
-                    {
-                        lblAlertAmount.textColor = .gray
-                        imgnextarrow.image = UIImage(named: "grayArrow")
-                        imgnextarrow.isUserInteractionEnabled = false
-           lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-
-                    }
-
-        }
+//        if amountTextfield?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
+//        {
+//            lblAlertAmount.textColor = .gray
+//            imgnextarrow.image = UIImage(named: "grayArrow")
+//            lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+//            imgnextarrow.isUserInteractionEnabled = false
+//        }
+//        if amountTextfield?.text?.count != 0
+//        {
+//
+//            if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0 > Int((maxvalu) ?? 0)
+//            {
+//                let image = UIImage(named:"]greenarrow")
+//                imgnextarrow.image = image
+//                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//                imgnextarrow.isUserInteractionEnabled = true
+//                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+//                lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//                self.btn_next.isUserInteractionEnabled = true
+//            }
+//            else
+//            {
+//                lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
+//                imgnextarrow.image = UIImage(named: "grayArrow")
+//                lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+//                imgnextarrow.isUserInteractionEnabled = false
+//            }
+//
+//    }
+//                end
+        
+//        else  if textField == amountTextfield
+//        {
+//            if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  > Int((maxvalu) ?? 0)
+//
+//            {
+//                lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
+//                imgnextarrow.image = UIImage(named: "grayArrow")
+//                lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+//                imgnextarrow.isUserInteractionEnabled = false
+//
+//            }
+//        }
+        
+     
+       //
         
         
-        if amountTextfield?.text?.count ?? 0 < 0 || amountTextfield?.text?.count == 0
-        {
-            lblAlertAmount.textColor = .gray
-            imgnextarrow.image = UIImage(named: "grayArrow")
-            //
-            imgnextarrow.isUserInteractionEnabled = false
-        }
-        else if amountTextfield?.text?.count != 0
-        {
-            
-            let image = UIImage(named:"]greenarrow")
-            imgnextarrow.image = image
-            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-            imgnextarrow.isUserInteractionEnabled = true
-            imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
-            lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-            self.btn_next.isUserInteractionEnabled = true
-        }
         
         
+        
+        
+        
+        
+//
+//        if textField == amountTextfield
+//        {
+//                    if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  > Int((maxvalu) ?? 0)
+//
+//                    {
+//                        lblAlertAmount.textColor = .gray
+//                        imgnextarrow.image = UIImage(named: "grayArrow")
+//                        imgnextarrow.isUserInteractionEnabled = false
+//           lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+//
+//                    }
+//
+//        }
+//
+//
+//        if amountTextfield?.text?.count ?? 0 < 0 || amountTextfield?.text?.count == 0
+//        {
+//            lblAlertAmount.textColor = .gray
+//            imgnextarrow.image = UIImage(named: "grayArrow")
+//            //
+//            imgnextarrow.isUserInteractionEnabled = false
+//        }
+//        else if amountTextfield?.text?.count != 0
+//        {
+//
+//            let image = UIImage(named:"]greenarrow")
+//            imgnextarrow.image = image
+//            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//            imgnextarrow.isUserInteractionEnabled = true
+//            imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+//            lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//            self.btn_next.isUserInteractionEnabled = true
+//        }
+//
+//
         
         
         
@@ -249,14 +379,14 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
                      
                 }
             }
             else {
                 if let message = self.transactionApiResponseObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
@@ -268,9 +398,16 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = tfAccountNo.text!
               vc.amount = amountTextfield.text!
-            vc.ToaccountTitle = transactionApiResponseObj?.data?.accountTitle!
+        
+           
+        let a = transactionApiResponseObj?.data?.accountTitle!
+        vc.ToaccountTitle = a?.replace(string: " ", replacement: "")
               isfromFirstPayWallet = false
               isfromHblMbfAccount = true
+        GlobalData.money_Reason = "Miscellaneous Payments"
+        vc.harcodePurpose = "Miscellaneous Payments"
+        GlobalData.moneyTransferReasocCode = "0350"
+        
         self.navigationController?.pushViewController(vc, animated: true)
 
     }

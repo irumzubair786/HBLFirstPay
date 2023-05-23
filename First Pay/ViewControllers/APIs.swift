@@ -77,42 +77,78 @@ struct APIs {
         return String(data: data, encoding: String.Encoding.utf8)
     }
     
-    static func postAPI(url: String, parameters: [String: Any], headers: HTTPHeaders?, completion: @escaping(_ response: JSON?, Bool, _ errorMsg: String) -> Void) {
+    static func postAPI(apiName: APIs.name, parameters: [String: Any], headerWithToken: String? = nil , headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         
-        let stringParamters = APIs.json(from: parameters)
+        let baseClass = BaseClassVC()
+        let result = (baseClass.splitString(stringToSplit: baseClass.base64EncodedString(params: parameters)))
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
 
-        let url = URL(string: url)!
+        let completeUrl = APIPath.baseUrl + apiName.rawValue
+        
+        let url = URL(string: completeUrl)!
         let jsonData = stringParamters!.data(using: .utf8, allowLossyConversion: false)!
 
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url)        
         request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
-        request.addValue("\(DataManager.instance.accessToken ?? "nil")", forHTTPHeaderField: "Authorization")
-
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        var tempHeader = ""
+        var token  = ""
+                if apiName == .updateAccountStatus {
+//                    token = DataManager.instance.loginResponseToken ?? ""
+                    token = DataManager.instance.accessToken ?? ""
+                }
+                else if headerWithToken != nil {
+                    token = headerWithToken!
+                }
+                else {
+                    token = "\(DataManager.instance.accessToken ?? "")"
+                }
+                request.addValue(token, forHTTPHeaderField: "Authorization")
+//
+        
+        print("Url: \(completeUrl)")
+        print("Parameters: \(parameters)")
+        print("Headers: \(token)")
+        
         request.httpBody = jsonData
-
         //print("\(APIs.json(from: parameters)))")
+        if let vc = viewController {
+            vc.showActivityIndicator2()
+        }
         
         Alamofire.request(request).responseJSON { response in
             print("Response: \(response)")
-
+            if let vc = viewController {
+                vc.hideActivityIndicator2()
+            }
             switch response.result {
             case .success(let json):
+                let modelGetActiveLoan = try? JSONDecoder().decode(NanoLoanApplyViewController.ModelGetLoanCharges.self, from: response.data!)
+                print(modelGetActiveLoan)
+                
                 let serverResponse = JSON(response.value!)
+                
+                print("Request Headers: \(String(describing: request.allHTTPHeaderFields))")
+                print("Request Url: \(String(describing: request.url))")
+                print("Request Parameters: \(parameters)")
                 print("JSON: \(serverResponse)")
                 print("JSON: \(json)")
                 switch response.response?.statusCode {
                 case 200 :
                     if serverResponse["responsecode"] == 1 {
-                        completion(serverResponse, true, "")
+                        completion(response.data, true, "")
                     }
                     else {
-                        completion(serverResponse, false, serverResponse["message"].string ?? "")
+                        completion(response.data, false, serverResponse["message"].string ?? "")
                     }
                     break
                 default :
-                    completion(serverResponse, false, serverResponse["message"].string ?? "")
+                    completion(response.data, false, serverResponse["message"].string ?? "")
                     break
                 }
             case .failure( _):
@@ -131,7 +167,111 @@ struct APIs {
         }
     }
     
-    
+    static func getAPI(apiName: APIs.name, parameters: [String: Any]? = nil, headerWithToken: String? = nil , headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+        
+        let baseClass = BaseClassVC()
+        
+        let completeUrl = APIPath.baseUrl + apiName.rawValue
+        
+        let url = URL(string: completeUrl)!
+
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.get.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        var tempHeader = ""
+        var token  = ""
+                if apiName == .updateAccountStatus {
+//                    token = DataManager.instance.loginResponseToken ?? ""
+                    token = DataManager.instance.accessToken ?? ""
+                }
+                else if headerWithToken != nil {
+                    token = headerWithToken!
+                }
+                else {
+                    token = "\(DataManager.instance.accessToken ?? "")"
+                }
+                request.addValue(token, forHTTPHeaderField: "Authorization")
+//
+        
+        print("Url: \(completeUrl)")
+        print("Parameters: \(parameters)")
+        print("Headers: \(token)")
+        
+//        request.httpBody = jsonData
+        //print("\(APIs.json(from: parameters)))")
+        if let vc = viewController {
+            vc.showActivityIndicator2()
+        }
+        
+        Alamofire.request(request).responseJSON { response in
+            print("Response: \(response)")
+            if let vc = viewController {
+                vc.hideActivityIndicator2()
+            }
+            switch response.result {
+            case .success(let json):
+                let modelGetActiveLoan = try? JSONDecoder().decode(NanoLoanApplyViewController.ModelGetLoanCharges.self, from: response.data!)
+                print(modelGetActiveLoan)
+                
+                let serverResponse = JSON(response.value!)
+                
+                print("Request Headers: \(String(describing: request.allHTTPHeaderFields))")
+                print("Request Url: \(String(describing: request.url))")
+                print("Request Parameters: \(parameters)")
+                print("JSON: \(serverResponse)")
+                print("JSON: \(json)")
+                switch response.response?.statusCode {
+                case 200 :
+                    if serverResponse["responsecode"] == 1 {
+                        completion(response.data, true, "")
+                    }
+                    else {
+                        completion(response.data, false, serverResponse["message"].string ?? "")
+                    }
+                    break
+                default :
+                    completion(response.data, false, serverResponse["message"].string ?? "")
+                    break
+                }
+            case .failure( _):
+                var errorMessage = ""
+                if let error = response.error?.localizedDescription {
+                    let errorArray = error.components(separatedBy: ":")
+                    errorMessage = errorArray.count > 1 ? errorArray[1] : error
+                    completion(nil, false, errorMessage)
+                }
+                else {
+                    errorMessage = response.error.debugDescription
+                    completion(nil, false, response.error.debugDescription)
+                }
+                break
+            }
+        }
+    }
+    static func decodeDataToObject<T: Codable>(data : Data?)->T?{
+        if let dt = data{
+            do{
+                return try JSONDecoder().decode(T.self, from: dt)
+                
+            }  catch let DecodingError.dataCorrupted(context) {
+                print(context)
+            } catch let DecodingError.keyNotFound(key, context) {
+                print("Key '\(key)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+            } catch let DecodingError.valueNotFound(value, context) {
+                print("Value '\(value)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+            } catch let DecodingError.typeMismatch(type, context)  {
+                print("Type '\(type)' mismatch:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+            } catch {
+                print("error: ", error)
+            }
+        }
+        return nil
+    }
     
     
     //Working Code with URLSession Request
@@ -159,9 +299,25 @@ struct APIs {
 
     
     enum name: String {
-        //MARK:- Auth
-        case LoginUser_multi = "LoginUser_multi"
-        case Login = "Auth/Login"
+        //MARK:- NanoLoan
+        case getActiveLoan = "NanoLoan/v1/getActiveLoan"
+        case applyLoan = "NanoLoan/v1/applyLoan"
+        case nanoLoanEligibilityCheck = "NanoLoan/v1/nanoLoanEligibilityCheck"
+        case getLoanCharges = "NanoLoan/v1/getLoanCharges"
+        case getActiveLoanToPay = "NanoLoan/v1/getActiveLoanToPay"
+        case payActiveLoan = "NanoLoan/v1/payActiveLoan"
+        case getAccLimits = "FirstPayInfo/v1/getAccLimits"
+        case changeAcctLimits = "FirstPayInfo/v1/changeAcctLimits"
+        case getSchCalendar = "NanoLoan/v1/getSchCalendar"
+        case updateAccountStatus = "FirstPayInfo/v1/updateAccountStatus"
+        //WalletCreation
+        case inviteFriends = "FirstPayInfo/v1/inviteFriends"
+        case invitedFriendsList = "FirstPayInfo/v1/invitedFriendsList"
+        case getAtmBranchLocation = "FirstPayInfo/v1/getAtmBranchLocation"
+
+        case getInvitorFriendsList = "WalletCreation/v1/getInvitorFriendsList"
+        case acceptFriendInvite = "WalletCreation/v1/acceptFriendInvite"
+
     }
     
 }

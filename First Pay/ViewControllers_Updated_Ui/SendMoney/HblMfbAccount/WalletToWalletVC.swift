@@ -83,7 +83,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
     @IBOutlet weak var btn_next: UIButton!
     
     @IBOutlet weak var lblMainTitle: UILabel!
-    var minvalu  = 100
+    var minvalu  = 1
     var maxvalu = 25000
     @IBOutlet weak var lblAlertAmount: UILabel!
     @IBOutlet weak var amountTextField: UITextField!
@@ -108,8 +108,15 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
                return newLength <= 11
             
         }
-        
-        return newLength <= 11
+        if textField == amountTextField{
+               return newLength <= 6
+            
+        }
+        else
+        {
+            return newLength <= 11
+          
+        }
       
        
      
@@ -237,14 +244,15 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        
                     }
                      
                 }
             }
             else {
                 if let message = self.transactionApiResponseObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
@@ -252,14 +260,17 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         }
     }
     private func navigateToConfirmation(){
-        
+       
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = tfAccountNo.text!
               vc.amount = amountTextField.text!
            vc.ToaccountTitle = self.transactionApiResponseObj?.data?.accountTitle!
-
+        vc.OTPREQ = self.transactionApiResponseObj?.data?.oTPREQ!
               isfromFirstPayWallet = true
               isfromHblMbfAccount = false
+        GlobalData.money_Reason = "Miscellaneous Payments"
+        vc.harcodePurpose = "Miscellaneous Payments"
+        GlobalData.moneyTransferReasocCode = "0350"
         self.navigationController?.pushViewController(vc, animated: true)
 
     }

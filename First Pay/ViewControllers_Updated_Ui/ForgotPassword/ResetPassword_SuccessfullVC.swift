@@ -18,6 +18,8 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     var setLoginPinObj : setLoginPinModel?
     var mainTitle: String?
     var MobNo : String?
+    var pessi : String?
+    var userCnic : String?
     var genericResponseObj : GenericResponse?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,15 +35,14 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         self.lblMainTitle.text = "Reset Password"
         ConvertLanguage()
         lbl1.text = "Password must contain atleast 1 Upper case,numeric and special character."
-        
         lbl1.textColor = UIColor.gray
         btnnext.isUserInteractionEnabled = true
-
+        self.enterPinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        self.enterConfirmPinTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingDidEnd)
         
     }
     @IBOutlet weak var Alert_view: UIView!
     @IBOutlet weak var Main_View: UIView!
-    
     @IBOutlet weak var btn_next_arrow: UIButton!
     @IBOutlet weak var enterPinTextField: PasswordTextField!
     @IBOutlet weak var enterConfirmPinTextField: PasswordTextField!
@@ -270,14 +271,28 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         }
         
     }
-
+    @objc func changeTextInTextField() {
+        
+        if self.enterPinTextField.text?.count == 6 {
+            self.enterPinTextField.resignFirstResponder()
+            
+        }
+        print(self.enterPinTextField.text)
+    }
+    @objc func changeTextInTextField2() {
+        
+        if self.enterConfirmPinTextField.text?.count == 6 {
+            
+            self.enterConfirmPinTextField.resignFirstResponder()
+            
+        }
+        print(self.enterConfirmPinTextField.text)
+    }
         func movetonext()
                          {
                              print("doneeeeees")
                              setLoginPin()
-//                             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
-//                             self.navigationController?.pushViewController(vc, animated: true)
-            
+
                              
             }
     private func setLoginPin() {
@@ -296,10 +311,10 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         if (enterConfirmPinTextField.text?.isEmpty)!{
             enterConfirmPinTextField.text = ""
         }
-        
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/resetLoginPin"
 
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": MobNo! ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": DataManager.instance.userCnic!, "loginPin": enterConfirmPinTextField.text!]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": MobNo! ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic": userCnic!, "loginPin": enterConfirmPinTextField.text!]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -318,6 +333,27 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
             if response.response?.statusCode == 200 {
                 
                 if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
+                    UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                    let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
+                    print("Remover \(removePessi)")
+                    
+                    var userCnic : String?
+                    if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                        userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+                    }
+                        else{
+                            userCnic = ""
+                        }
+                    UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                    if let passKey = self.enterPinTextField.text{
+                        let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                        print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                        if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
+                            self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
+                            print("password saved"
+                            )
+                        }
+                    }
                     self.Alert_view.isHidden = false
                     self.blur_view.isHidden = false
                   
@@ -326,8 +362,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                 else {
                     
                     if let message = self.setLoginPinObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
-                    }
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)                    }
                     
                     // Html Parse
                     
@@ -340,7 +375,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
             }
             else {
                 if let message = self.setLoginPinObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
                 else {
                     self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
@@ -367,8 +402,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         
     
     
-    var pessi : String?
-    var userCnic : String?
+    
     
 //        let compelteUrl = GlobalConstants.BASE_URL + "login"
     let compelteUrl = GlobalConstants.BASE_URL + "v2/login"
@@ -437,16 +471,25 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                     DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
                     DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
                     print("\(accessToken)")
+                     UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
                      if let passKey = self.enterPinTextField.text{
                         let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
                         print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                         if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
+                             self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
+                             print("password saved"
+                                   )
+                             }
+                         
+                         
+                         
                     }
                     self.saveInDataManager()
                 }
                     else {
              
                 if let message = self.loginObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
                 // Html Parse
                 
@@ -483,7 +526,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     private func saveInDataManager(){
       
                
-               
+          UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
                 AccessTokenEncrypt(plaintext: (self.loginObj?.userData?.token)!, password: encryptionkey)
                 print(self.loginObj?.userData?.token)
         

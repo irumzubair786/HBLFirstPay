@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
+import SDWebImage
 class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     var arrAmount = ["Rs.100","Rs.250","Rs.500","Rs.1000"]
     var IsSelectedAmount = true
@@ -32,7 +33,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
 
         // Do any additional setup after loading the view.
     }
-    var minValue = 100
+    var minValue = 1
     var maxValue = 10000
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var btnContinue: UIButton!
@@ -40,21 +41,19 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     @IBOutlet weak var lblMobileNumber: UILabel!
     @IBOutlet weak var imgoperator: UIImageView!
     @IBOutlet weak var lblAmountLimit: UILabel!
-   
     @IBOutlet weak var img_next_arrow: UIImageView!
     @IBOutlet weak var backbtn: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBAction func Action_back(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        dismiss(animated: true)
+//        self.dismiss(animated: true)
+//        self.navigationController?.popViewController(animated: true)
     }
-    
     @IBAction func Action_Continue(_ sender: UIButton) {
         initiateTopUp()
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         img_next_arrow.isUserInteractionEnabled = true
         img_next_arrow.addGestureRecognizer(tapGestureRecognizerr)
-        
-        
     }
     @IBOutlet weak var btn: UIButton!
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
@@ -74,10 +73,14 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     
     func updateui()
     {
+        let url = URL(string:"\(GlobalConstants.BASE_URL)\(GlobalData.selected_operator_logo!)")
+        imgoperator.sd_setImage(with: url)
+        
 //        imgoperator.image = GlobalData.selected_operator_logo
         lblMobileNumber.text =  phoneNumber
-        
+       
     }
+  
 
     @objc func buttontaped(_sender:UIButton)
     {
@@ -92,7 +95,9 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
              cell.btnAmount.setTitleColor(.white, for: .normal)
         ///set title color here to white
            let setimg = UIImage(named: "")
-        cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+        cell.btnAmount.backgroundColor = UIColor(hexString: "CC6801")
+//        cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+        cell.btnAmount.borderColor = UIColor.clear
 //        cell.btnAmount.borderColor = .clear
         let a = cell.btnAmount.currentTitle
         let x = a?.substring(from: 3)
@@ -106,6 +111,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             img_next_arrow.isUserInteractionEnabled = true
             lblAmountLimit.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
             self.collectionView.reloadData()
+        
     
         
         
@@ -126,6 +132,9 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             let image = UIImage(named:"]greenarrow")
             img_next_arrow.image = image
             img_next_arrow.isUserInteractionEnabled = true
+            btnContinue.isUserInteractionEnabled = true
+            btn.isUserInteractionEnabled = true
+
             lblAmountLimit.textColor =  UIColor(red: 241/255, green: 147/255, blue: 0/255, alpha: 1)
             amountTextField.textColor = .gray
             self.collectionView.reloadData()
@@ -137,9 +146,10 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let newLength:Int = (textField.text?.count)! + string.count - range.length
-        
+ 
         if textField == amountTextField{
             return newLength <= 5
+            
 //            lbl1.textColor = UIColor.green
         }
         if textField == amountTextField{
@@ -209,8 +219,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             }
             else {
                 if let message = self.fundsTransSuccessObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
-                }
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .MismatchNumber)                }
                 print(response.result.value)
                 print(response.response?.statusCode)
             }
@@ -222,8 +231,9 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountConfirmationVc") as! TransferAmountConfirmationVc
         vc.amount =  (amountTextField.text!)
         vc.phoneNumber = phoneNumber
-        
-        self.navigationController!.pushViewController(vc, animated: false)
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true)
+//        self.navigationController!.pushViewController(vc, animated: false)
     }
     
     

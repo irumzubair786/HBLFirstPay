@@ -10,26 +10,9 @@ import UIKit
 import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
+import SDWebImage
 class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     var successmodelobj : FundsTransferApiResponse?
-//    var dueDate:String?
-//    var totalAmountl:String?
-//    var paidAmount:String?
-//    var remainingAmount:String?
-//    var amountAfterDD:String?
-//    var remAmountAftrDD:String?
-//    
-//    var companyName:String?
-//    var utilityBillCompany:String?
-//    var utilityConsumerNo:String?
-//    var utilityBillCompanyId : Int?
-//    var sourceAccount:String?
-//    var beneficaryAccount:String?
-//    var accountTitle: String?
-//    var comments: String?
-//    var otpReq: String?
-//    var utilityCompanyID : String?
-   
     var refferenceNumber:String?
     var company : String?
     var billingMonth : String?
@@ -69,18 +52,27 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     @IBOutlet weak var imageNextArrow: UIImageView!
     @IBOutlet weak var buttonNext: UIButton!
     @IBAction func buttonNext(_ sender: UIButton) {
-       
-        billPyment()
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPaymentOTPVerificationVC") as! BillPaymentOTPVerificationVC
+        vc.consumerNumber = consumerNumber!
+        vc.amount = TextfieldAmount.text!
+        vc.refferenceNumber = refferenceNumber
+        vc.company = company
+        vc.billingMonth = billingMonth
+        vc.amountDue = amountDue
+        vc.dueDate = dueDate
+        vc.totalAmount = TextfieldAmount.text!
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+//        billPyment()
         
     }
     @IBAction func Action_Back(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
         
     }
-    
     func UpdateUi()
     {
-       
+        
         lb_consumer_name.text = DataManager.instance.accountTitle
         lblRefferenceNo.text = consumerNumber
         lblCompany.text = company
@@ -89,6 +81,11 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
         lblDate.text = dueDate
         lbl_Status.text = status
         TextfieldAmount.text = totalAmount
+        
+        var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_operator_logo ?? "")"
+        let url = URL(string: concateString)
+        bank_logo.sd_setImage(with: url)
+        
     }
     private func billPyment() {
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -125,32 +122,34 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
                 }
                 else {
                     if let message = self.successmodelobj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
 //                        self.navigateToSuccessVC()
                     }
                 }
             }
             else {
                 if let message = self.successmodelobj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
-                    self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+//                        self.navigateToSuccessVC()
+                    }
+
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
             }
         }
-    }
+    
 
     func move_to_next()
     {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPayment_SuccessfullVC") as! BillPayment_SuccessfullVC
         vc.refferenceNumber = refferenceNumber
-        vc.totalAmount = TextfieldAmount.text!
+       
         vc.company = company
         vc.billingMonth = billingMonth
         vc.amountDue = amountDue
         vc.dueDate = dueDate
+        vc.totalAmount = TextfieldAmount.text!
         
         self.navigationController!.pushViewController(vc, animated: true)
         

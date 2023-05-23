@@ -52,22 +52,22 @@ class UnlinkAccountVC: BaseClassVC {
             imgUnlinkAccount.image = image
             labelDelink.textColor = UIColor(hexValue: 0xCC6801)
             flag  = "false"
-            
+ 
         }
         
         
         else{
+            getLinkAccounts()
             let image = UIImage(named: "Rectangle Orange")
             imgUnlinkAccount.image = image
-            labelCancel.textColor = .white
+            labelDelink.textColor = .white
             imgUnlinkAccount.contentMode =  .scaleToFill
-            
             let emptyimage = UIImage(named: "Rectangle 6")
             imgCancel.image = emptyimage
             labelCancel.textColor =  UIColor(hexValue: 0xCC6801)
             flag = "true"
 //            api cslling
-            getLinkAccounts()
+            
         }
      
     }
@@ -108,13 +108,15 @@ class UnlinkAccountVC: BaseClassVC {
                 if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
                     let vc = self.storyboard!.instantiateViewController(withIdentifier: "DelinkSuccessfullVC") as! DelinkSuccessfullVC
                     self.navigationController?.pushViewController(vc, animated: true)
+                    
                 }
                 else {
-                    self.showAlert(title: "", message: (self.genericResponseObj?.messages)!, completion: nil)
+                    self.showAlertCustomPopup(title: "",message: genericResponseObj?.messages,iconName: .iconError)
                 }
             }
             else {
                 
+                self.showAlertCustomPopup(title: "",message: genericResponseObj?.messages,iconName: .iconError)
 //                print(response.result.value)
 //                print(response.response?.statusCode)
                 

@@ -30,7 +30,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
     }
     var accountTitle: String?
     var accountNo: String?
-    var minValue = 100
+    var minValue = 1
     var maxValue = 10000
     var genResponseObj : GenericResponse?
     override func viewDidLoad() {
@@ -46,6 +46,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
         imageNextArrow.addGestureRecognizer(tapGestureRecognizer)
         messageView.delegate = self
         
+       
         // Do any additional setup after loading the view.
     }
     @IBOutlet weak var buttonback: UIButton!
@@ -73,6 +74,13 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
     {
         requestMoney()
     }
+    func textView(textView: UITextView, shouldChangeTextInRange  range: NSRange, replacementText text: String) -> Bool {
+          if (text == "\n") {
+             messageView.resignFirstResponder()
+             performAction()
+          }
+          return true
+        }
    
     @IBOutlet weak var buttonNext: UIButton!
     @IBOutlet weak var imageNextArrow: UIImageView!
@@ -187,7 +195,29 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
         labelMobileNumber.text = accountNo
     }
     
-    
+    func performAction()
+    {
+        if messageView.text?.count != 0
+        {
+            let image = UIImage(named:"]greenarrow")
+            imageNextArrow.image = image
+            imageNextArrow.isUserInteractionEnabled = true
+            labelAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 0/255, alpha: 1)
+             textFieldAmount.textColor = .gray
+            buttonNext.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+
+        }
+        else
+        {
+            let image = UIImage(named:"grayArrow")
+            imageNextArrow.image = image
+            imageNextArrow.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+            buttonNext.isUserInteractionEnabled = false
+
+        }
+    }
     public func requestMoney(){
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -241,7 +271,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
                 else {
                     if let message = self.genResponseObj?.messages{
 //                        self.showDefaultAlert(title: "", message: message)
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
                     }
                 }
@@ -249,7 +279,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
             else {
                 if let message = self.genResponseObj?.messages{
 //                    self.showDefaultAlert(title: "", message: message)
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
                 }
 //                print(response.result.value)

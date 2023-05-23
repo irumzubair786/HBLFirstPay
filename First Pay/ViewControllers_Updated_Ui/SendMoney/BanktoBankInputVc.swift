@@ -31,7 +31,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         amountTextField.delegate = self
         lblWalletName.text  = ""
         btn_continue.isUserInteractionEnabled = false
-        amountTextField.isUserInteractionEnabled = false
+//        amountTextField.isUserInteractionEnabled = false
 //        getReasonsForTrans()
         UpdateUi()
         // Do any additional setup after loading the view.
@@ -75,25 +75,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
  
         selectWallettf.text =  GlobalData.Selected_bank
-        
-        
-        
-//            purposeTf.text =  GlobalData.money_Reason
-//            selectWallettf.text =  GlobalData.Selected_bank
-//
-//                if purposeTf.text?.count != 0
-//                {
-////                    lblAlert.textColor = .orange
-//
-//                    let image = UIImage(named:"]greenarrow")
-//                    img_next.image = image
-//                    let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-//                    img_next.isUserInteractionEnabled = true
-//                    img_next.addGestureRecognizer(tapGestureRecognizerrr)
-//
-//                    img_next.isUserInteractionEnabled = true
-//                }
-//            }
+   
         
     }
     func clearAll()
@@ -104,7 +86,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         
     }
     
-    var minvalu  = 100
+    var minvalu  = 1
     var maxvalu = 25000
     @IBOutlet weak var selectWallettf: UITextField!
     @IBOutlet weak var back: UIButton!
@@ -284,14 +266,14 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 //                        self.showDefaultAlert(title: "", message: message)
                     }
                 }
             }
             else {
                 if let message = self.transactionApiResponseObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                    print(response.result.value)
 //                    print(response.response?.statusCode)
@@ -306,7 +288,10 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = walletNumberTf.text!
+          vc.ToaccountTitle = transactionApiResponseObj?.data?.accountTitle!
+            vc.bankname = selectWallettf.text!
               vc.amount = amountTextField.text!
+        vc.OTPREQ = transactionApiResponseObj?.data?.oTPREQ!
               isfromFirstPayWallet = false
               isfromHblMbfAccount = false
                isfromBanktoBank = false
@@ -317,7 +302,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
     
     
     private func movetonext(){
-        
+//        des
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = walletNumberTf.text!
               vc.amount = amountTextField.text!
@@ -326,6 +311,11 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
               isfromHblMbfAccount = false
                isfromBanktoBank = true
         vc.bankname = selectWallettf.text!
+        vc.OTPREQ = transactionApiResponseObj?.data?.oTPREQ!
+       
+        GlobalData.money_Reason = "Miscellaneous Payments"
+        vc.harcodePurpose = "Miscellaneous Payments"
+        GlobalData.moneyTransferReasocCode = "0350"
         self.navigationController?.pushViewController(vc, animated: true)
 
     }
@@ -346,7 +336,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         
        if textField == amountTextField
         {
-           if Int(amountTextField.text!) ?? 0  < (minvalu) || Int(amountTextField.text!) ?? 0 > (maxvalu)
+           if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0 > Int((maxvalu) ?? 0)
 
                     {
                         lblAlert.textColor = .gray

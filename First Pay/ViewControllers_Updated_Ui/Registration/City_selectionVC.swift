@@ -91,14 +91,14 @@ class City_selectionVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate {
                 }
                 else{
                     if let message = self.cityListObj?.messages{
-                        self.showDefaultAlert(title: "", message: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                        
                     }
                 }
             }
             else {
                 if let message = self.cityListObj?.messages{
-                    self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                    
                 }
 //                print(response.result.value)
@@ -134,16 +134,6 @@ extension City_selectionVC: UITableViewDelegate, UITableViewDataSource
         return aCell
 
     }
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.layer.transform = CATransform3DMakeScale(0.1,0.1,1)
-        UIView.animate(withDuration: 0.3, animations: {
-                cell.layer.transform = CATransform3DMakeScale(1.05,1.05,1)
-                },completion: { finished in
-                    UIView.animate(withDuration: 0.1, animations: {
-                        cell.layer.transform = CATransform3DMakeScale(1,1,1)
-                    })
-            })
-        }
    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
@@ -166,9 +156,9 @@ extension City_selectionVC: UITableViewDelegate, UITableViewDataSource
          GlobalData.user_City = Seclected_City!
         GlobalData.User_CityId = cityID
         print("city id get",  GlobalData.User_CityId)
-    
-        self.navigationController?.popViewController(animated: false)
-  
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.navigationController?.popViewController(animated: false)
+        }
         
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)

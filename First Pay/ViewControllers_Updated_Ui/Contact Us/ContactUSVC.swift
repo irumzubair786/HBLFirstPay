@@ -46,7 +46,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         viewScanQR.backgroundColor =  UIColor(hexValue: 0x00CC96)
         btnBack.setTitle("", for: .normal)
         buttonContinue.isUserInteractionEnabled = false
-        
+        Tfname.placeholder = "Enter Name"
         btnAlertView.isHidden = true
         btnAlertView.setTitle("", for: .normal)
         appendArray()
@@ -118,7 +118,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
 
     @IBAction func Action_Back(_ sender: UIButton) {
           self.dismiss(animated: true)
-        
+//        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -126,15 +126,13 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
     @IBAction func Action_AlertView(_ sender: UIButton) {
 //
 //        btnAlertView.isHidden = true
-        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-        self.present(vc, animated: true)
-        
-        
-        
-        
-        
+        self.dismiss(animated: true)
+//        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+//        self.present(vc, animated: true)
+//
     }
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if string.rangeOfCharacter(from: .letters) != nil || string == " " {
@@ -167,7 +165,6 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
 //                img_next.isUserInteractionEnabled = false
 //            }
 
-        
                return true
         
     }
@@ -212,7 +209,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
             if response.response?.statusCode == 200 {
                 if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
                     self.btnAlertView.isHidden = false
-                   
+                    
                 }
                 else {
                     if let message = self.genericObj?.messages{
@@ -244,12 +241,9 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         selectedCategory =  String(arrCategory[tag])
              self.myarr[tag].isSeleccted = true
 
-             cell.btnCategory.setTitleColor(.white, for: .normal)
-//        cell.btnCategory.borderColor = .clear
-        cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-        cell.btnCategory.setImage(.none, for: .normal)
                 self.collectionViewCategory.reloadData()
-        if (Tfname.text != nil) && selectedCategory != nil{
+        if (Tfname.text != "") && selectedCategory != ""{
+            
             buttonContinue.isUserInteractionEnabled = true
             let image = UIImage(named: "]greenarrow")
             img_next.image = image
@@ -259,7 +253,6 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         }
     }
    
-    
 }
 extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
 {
@@ -271,19 +264,15 @@ extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
         let cell = collectionViewCategory .dequeueReusableCell(withReuseIdentifier: "cellCategory", for: indexPath) as! cellCategory
         if(myarr[indexPath.row].isSeleccted == true){
             cell.btnCategory.setTitleColor(.white, for: .normal)  ///set title color here to white
-            
-            cell.backView.backgroundColor =   UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-            cell.btnCategory.setImage(.none, for: .normal)
-//            cell.btnCategory.backgroundColor = .orange
+            cell.btnCategory.backgroundColor = UIColor(hexValue: 0xF19434)
+            cell.btnCategory.borderColor = UIColor(hexValue: 0xF19434)
         }else{
             //set title color here to black
             cell.btnCategory.setTitleColor(.black, for: .normal)
-            cell.btnCategory.backgroundColor = .clear
-            cell.backView.backgroundColor = .clear
-            let setimg = UIImage(named: "")
-            cell.btnCategory.setImage(setimg, for: .normal)
-            cell.btnCategory.backgroundColor = .clear
-            
+            cell.btnCategory.borderColor = UIColor.clear
+            cell.btnCategory.borderColor = UIColor.gray
+            cell.btnCategory.backgroundColor = UIColor.clear
+        
         }
         cell.btnCategory.setTitle(myarr[indexPath.row].name, for: .normal)
         cell.btnCategory.tag = indexPath.row
@@ -292,17 +281,7 @@ extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
         return cell
 
     }
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        NSLog ("You selected row: %@ \(indexPath)")
-//        selectedCategory =  String(arrCategory[indexPath.row])
-//        let cell = collectionViewCategory .dequeueReusableCell(withReuseIdentifier: "cellCategory", for: indexPath) as! cellCategory
-////        cell.backView.
-////        cell.btnCategory.backgroundColor = UIColor.lightGray
-////        cell.btnCategory.setTitleColor(.black, for: .normal)
-////        myarr[indexPath.row].isSeleccted = false
-//
-//
-//    }
+
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         if let visibleIndexPath = self.visibleIndexPath {

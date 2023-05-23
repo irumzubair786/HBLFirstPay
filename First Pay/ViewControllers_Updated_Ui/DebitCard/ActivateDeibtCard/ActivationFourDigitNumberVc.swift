@@ -13,6 +13,11 @@ import SwiftKeychainWrapper
 var DebitCardLast4digit : String?
 class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
     var getDebitDetailsObj : GetDebitCardModel?
+    var lastFourDigit : String?
+    var channel : String?
+    var cardId : String?
+    var accountDebitcardId : Int?
+    var status: String?
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
@@ -23,20 +28,29 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imgNextArrow.isUserInteractionEnabled = true
         imgNextArrow.addGestureRecognizer(tapGestureRecognizer)
-        
+        if (isfromATMON == true ) || (isfromPOSOFF == true)
+        {
+            labelTitle.text = "ATM & POS ACCESSBILITY"
+        }
+        if (isfromPOSON == true ) || (isfromATMOFF == true)
+        {
+            labelTitle.text = "ATM & POS ACCESSBILITY"
+        }
+        self.textfieldLast4digit.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
     }
     
+    @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelMainTitle: UILabel!
     
-    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer) {
+
         if isFromChangePin == true
         {
-           
+            
             isFromChangePin = true
             getDebitCardsCall()
         }
-       
+        
         if isfromReactivateCard == true{
             isFromDeactivate = false
             getDebitCardsCall()
@@ -46,10 +60,31 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
             isFromDeactivate = true
             getDebitCardsCall()
         }
+        if isfromATMON == true || isfromPOSON == true{
+            let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+            vc.cardId = cardId
+            vc.channel = serviceFlag
+            vc.accountDebitcardId =  GlobalData.accountDebitCardId
+            vc.lastFourDigit = textfieldLast4digit.text!
+            vc.status = status
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+      else  if  isfromATMOFF == true || isfromPOSOFF == true
+        {
+          FBEvents.logEvent(title: .Debit_activateotp_attempt)
+
+          let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
+          vc.cardId = cardId
+          vc.channel = serviceFlag
+          vc.accountDebitcardId =  GlobalData.accountDebitCardId
+          vc.status = status
+          vc.lastFourDigit = textfieldLast4digit.text!
+          //          isfromDisableService = true
+          self.navigationController?.pushViewController(vc, animated: true)
+      }
         else{
             getDebitCardsCall()
         }
-      
     }
     
     @IBAction func buttonBack(_ sender: UIButton) {
@@ -103,6 +138,25 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
         
         DebitCardLast4digit = textfieldLast4digit.text!
     }
+    @objc func changeTextInTextField() {
+        
+        if textfieldLast4digit.text?.count == 4
+        {
+            let image = UIImage(named:"]greenarrow")
+            imgNextArrow.image = image
+            buttonContinue.isUserInteractionEnabled = true
+            imgNextArrow.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named:"grayArrow")
+            imgNextArrow.image = image
+            buttonContinue.isUserInteractionEnabled = false
+            imgNextArrow.isUserInteractionEnabled = false
+        }
+        DebitCardLast4digit = textfieldLast4digit.text!
+    }
+    
     @IBOutlet weak var textfieldLast4digit: UITextField!
     // MARK: - Api Call
     
@@ -162,14 +216,13 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.getDebitDetailsObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
- 
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
                 }
             }
             else {
                 if let message = self.getDebitDetailsObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
 //                    self.showDefaultAlert(title: "", message: message)
                 }

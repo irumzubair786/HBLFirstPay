@@ -18,6 +18,7 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         buttonChangePin.setTitle("", for: .normal)
         buttonBack.setTitle("", for: .normal)
         buttonDeactivate.setTitle("", for: .normal)
+        buttonDebitServices.setTitle("", for: .normal)
         getDebitCard()
         // Do any additional setup after loading the view.
     }
@@ -29,12 +30,12 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
 //        self.navigationController?.popViewController(animated: true)
     }
     @IBOutlet weak var buttonDeactivate: UIButton!
-    
     @IBAction func buttonChangePin(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
         isFromChangePin = true
         isFromDeactivate = false
         isfromReactivateCard = false
+      
         self.navigationController?.pushViewController(vc, animated: true)
         
         
@@ -49,12 +50,46 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         
     }
     
+    @IBOutlet weak var buttonDebitServices: UIButton!
+    @IBAction func buttonDebitServices(_ sender: UIButton) {
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "debitCardServicesVc") as! debitCardServicesVc
+        isFromDeactivate = false
+        isFromChangePin = false
+//        isfromServics = true
+        isfromReactivateCard = false
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
     @IBOutlet weak var labeldate: UILabel!
     @IBOutlet weak var buttonChangePin: UIButton!
     
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var labelCardNumber: UILabel!
-    
+    func getValueFromAPI()
+    {
+       if let anObject =  self.getDebitDetailsObj?.newCarddata
+        {
+            if let name = anObject.debitCardTitle {
+                self.labelName.text = name
+            }
+            if let pan =  anObject.pan {
+                self.labelCardNumber.text = pan
+            }
+            if let month = anObject.cardExpiryMonth {
+                if let year = anObject.cardExpiryYear{
+                    self.labeldate.text = "\(month)" + "/\(year)"
+                }
+            }
+          
+            if let accountID = anObject.accountDebitCardId{
+                GlobalData.accountDebitCardId = Int(accountID)
+//                self.accountDebitCardId = "\(accountID)"
+            }
+        }
+
+    }
     private func getDebitCard() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -78,7 +113,7 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         let parameters = ["cnic":userCnic!,"channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!]
         
         print(parameters)
-
+         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
@@ -94,8 +129,6 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        
-        
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<GetDebitCardModel>) in
             
             self.hideActivityIndicator()
@@ -107,26 +140,7 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
                 
                 if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
                 
-                    for anObject in self.getDebitDetailsObj?.debitCardData! ?? []
-                    {
-                        if let name = anObject.debitCardTitle {
-                            self.labelName.text = name
-                        }
-                        if let pan = anObject.pan {
-                            self.labelCardNumber.text = pan
-                        }
-                        if let month = anObject.cardExpiryMonth {
-                            if let year = anObject.cardExpiryYear{
-                                self.labeldate.text = "\(month)" + "/\(year)"
-                            }
-                        }
-                      
-                        if let accountID = anObject.accountDebitCardId{
-                            GlobalData.accountDebitCardId = Int(accountID)
-            //                self.accountDebitCardId = "\(accountID)"
-                        }
-                    }
-                  
+                    getValueFromAPI()
 //                    self.updateUI()
                     
                 }

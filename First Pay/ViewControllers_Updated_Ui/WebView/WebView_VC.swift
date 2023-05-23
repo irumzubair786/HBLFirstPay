@@ -24,7 +24,6 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         webViewOutlet.delegate = self
-        
         self.showActivityIndicator()
         if forHTML == false {
             self.webViewMethod()
@@ -41,7 +40,6 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
     }
     
     //MARK: - WebViewDelegate
-    
     func webViewMethod(){
         if forAwaaz {
             self.hideActivityIndicator()
@@ -63,104 +61,106 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
         if forFaqs{
             
             self.lblMainTitle.text = "FAQs"
-            let localfilePath = Bundle.main.url(forResource: "BBFAQs", withExtension: "html")
+            let localfilePath = Bundle.main.url(forResource: "BBFAQs", withExtension: "pdf")
             let myRequest = URLRequest(url:localfilePath!)
             webViewOutlet.loadRequest(myRequest)
             print("FAQs")
         }
         else if forTerms {
             
-            let consentAlert = UIAlertController(title: "Terms & Conditions", message: "Select Lanaguage", preferredStyle: UIAlertControllerStyle.alert)
-            
-            consentAlert.addAction(UIAlertAction(title: "English", style: .default, handler: { (action: UIAlertAction!) in
-                
-                self.lblMainTitle.text = "Terms & Conditions"
-                if   CheckLanguage  == "en"{
+            self.lblMainTitle.text = "Terms & Conditions"
+            let localfilePath = Bundle.main.url(forResource: "BB", withExtension: "pdf")
+            let myRequest = URLRequest(url:localfilePath!)
+            self.webViewOutlet.loadRequest(myRequest)
+            print("Terms")
+//            let consentAlert = UIAlertController(title: "Terms & Conditions", message: "Select Lanaguage", preferredStyle: UIAlertControllerStyle.alert)
 //
-                let localfilePath = Bundle.main.url(forResource: "BB", withExtension: "pdf")
-                let myRequest = URLRequest(url:localfilePath!)
-                self.webViewOutlet.loadRequest(myRequest)
-                print("Terms")
+//            consentAlert.addAction(UIAlertAction(title: "English", style: .default, handler: { (action: UIAlertAction!) in
+//
+//                self.lblMainTitle.text = "Terms & Conditions"
+//                //                if   CheckLanguage  == "en"{
+//                //
+//                let localfilePath = Bundle.main.url(forResource: "BB", withExtension: "pdf")
+//                let myRequest = URLRequest(url:localfilePath!)
+//                self.webViewOutlet.loadRequest(myRequest)
+//                print("Terms")
+//            }))
+     }
+//    }
+            
                 
-                print("Handle Ok logic here")
+//                print("Handle Ok logic here")
+//
+//            }
+//
+//                else {
+//                    let localfilePath = Bundle.main.url(forResource: "BB", withExtension: "pdf")
+//                    let myRequest = URLRequest(url:localfilePath!)
+//                    self.webViewOutlet.loadRequest(myRequest)
+//                    print("Terms")
+//
+//                    print("Handle Ok logic here")
+//                }
+//            }))
+//
+//            consentAlert.addAction(UIAlertAction(title: "اردو", style: .default, handler: { (action: UIAlertAction!) in
+//
+//                self.lblMainTitle.text = "شرائط و ضوابط"
+//                let localfilePath = Bundle.main.url(forResource: "FirstPay-Urdu-TC", withExtension: "pdf")
+//                let myRequest = URLRequest(url:localfilePath!)
+//                self.webViewOutlet.loadRequest(myRequest)
+//                self.webViewOutlet.scalesPageToFit = true
+//                print("Terms")
+//
+//                print("Handle Ok logic here")
+//            }))
+//            present(consentAlert, animated: true, completion: nil)
+            
         
-            }
-            
-                else {
-                    let localfilePath = Bundle.main.url(forResource: "BB", withExtension: "pdf")
-                    let myRequest = URLRequest(url:localfilePath!)
-                    self.webViewOutlet.loadRequest(myRequest)
-                    print("Terms")
-                    
-                    print("Handle Ok logic here")
-                }
-            }))
-        
-            consentAlert.addAction(UIAlertAction(title: "اردو", style: .default, handler: { (action: UIAlertAction!) in
-                
-                self.lblMainTitle.text = "شرائط و ضوابط"
-                let localfilePath = Bundle.main.url(forResource: "FirstPay-Urdu-TC", withExtension: "pdf")
-                let myRequest = URLRequest(url:localfilePath!)
-                self.webViewOutlet.loadRequest(myRequest)
-                self.webViewOutlet.scalesPageToFit = true
-                print("Terms")
-                
-                print("Handle Ok logic here")
-            }))
-            present(consentAlert, animated: true, completion: nil)
-            
-        }
-        else if forTouchIDTerms {
-            self.lblMainTitle.text = "Terms And Conditions Touch ID/ Face ID"
-            
-            
-            if CheckLanguage == "en" || CheckLanguage == ""
-            {
-                let localfilePath = Bundle.main.url(forResource: "touchid", withExtension: "html")
-                let myRequest = URLRequest(url:localfilePath!)
-                webViewOutlet.loadRequest(myRequest)
-                print("Touch ID")
-            }
-            else{
-                let localfilePath = Bundle.main.url(forResource: "touchid", withExtension: "html")
-                let myRequest = URLRequest(url:localfilePath!)
-                webViewOutlet.loadRequest(myRequest)
-                print("Touch ID")
-            }
-            
-        }
-        else if forBookMe {
-            if CheckLanguage == "en" || CheckLanguage == ""
-            {
-            self.lblMainTitle.text = "Terms And Conditions Book Me"
-            let localfilePath = Bundle.main.url(forResource: "Book Me-Terms and Conditions - Updated", withExtension: "pdf")
-            let myRequest = URLRequest(url:localfilePath!)
-            webViewOutlet.loadRequest(myRequest)
-            print("Book Me")
-            }
-            else
-            {
-                self.lblMainTitle.text = "Terms And Conditions Book Me"
-                let localfilePath = Bundle.main.url(forResource: "Book Me-Terms and Conditions - Updated", withExtension: "pdf")
-                let myRequest = URLRequest(url:localfilePath!)
-                webViewOutlet.loadRequest(myRequest)
-                print("Book Me")
-            }
-        }
-        else if forDebitCardRequest {
-            self.lblMainTitle.text = "Terms And Conditions Debit Card"
-            let localfilePath = Bundle.main.url(forResource: "Debit Card Terms and Conditions", withExtension: "html")
-            let myRequest = URLRequest(url:localfilePath!)
-            webViewOutlet.loadRequest(myRequest)
-            print("Book Me")
-            
-        }
-//        else if fornanloan{
-//            self.lblMainTitle.text = "Terms And Conditions Debit Card"
-//            let localfilePath = Bundle.main.url(forResource: "debitcard_tc", withExtension: "html")
+//        else if forTouchIDTerms {
+//            self.lblMainTitle.text = "Terms And Conditions Touch ID/ Face ID"
+//
+//
+//            if CheckLanguage == "en" || CheckLanguage == ""
+//            {
+//                let localfilePath = Bundle.main.url(forResource: "touchid", withExtension: "html")
+//                let myRequest = URLRequest(url:localfilePath!)
+//                webViewOutlet.loadRequest(myRequest)
+//                print("Touch ID")
+//            }
+//            else{
+//                let localfilePath = Bundle.main.url(forResource: "touchid", withExtension: "html")
+//                let myRequest = URLRequest(url:localfilePath!)
+//                webViewOutlet.loadRequest(myRequest)
+//                print("Touch ID")
+//            }
+//
+//        }
+//        else if forBookMe {
+//            if CheckLanguage == "en" || CheckLanguage == ""
+//            {
+//            self.lblMainTitle.text = "Terms And Conditions Book Me"
+//            let localfilePath = Bundle.main.url(forResource: "Book Me-Terms and Conditions - Updated", withExtension: "pdf")
 //            let myRequest = URLRequest(url:localfilePath!)
 //            webViewOutlet.loadRequest(myRequest)
 //            print("Book Me")
+//            }
+//            else
+//            {
+//                self.lblMainTitle.text = "Terms And Conditions Book Me"
+//                let localfilePath = Bundle.main.url(forResource: "Book Me-Terms and Conditions - Updated", withExtension: "pdf")
+//                let myRequest = URLRequest(url:localfilePath!)
+//                webViewOutlet.loadRequest(myRequest)
+//                print("Book Me")
+//            }
+//        }
+//        else if forDebitCardRequest {
+//            self.lblMainTitle.text = "Terms And Conditions Debit Card"
+//            let localfilePath = Bundle.main.url(forResource: "Debit Card Terms and Conditions", withExtension: "html")
+//            let myRequest = URLRequest(url:localfilePath!)
+//            webViewOutlet.loadRequest(myRequest)
+//            print("Book Me")
+//
 //        }
 //
         
@@ -174,7 +174,8 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
     
     
     @IBAction func Action_back(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
+//        self.navigationController?.popViewController(animated: true)
 //        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
 //        self.navigationController?.pushViewController(vc, animated: true)
         

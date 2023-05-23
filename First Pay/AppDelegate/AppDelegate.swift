@@ -11,6 +11,15 @@ import SwiftKeychainWrapper
 import OneSignal
 import Siren
 import IQKeyboardManager
+import FirebaseCore
+import GoogleMaps
+
+
+let googleApiKey = "AIzaSyBM0HKZjq1TyOBA1HjVW2Wdhx1YfPJpJ3I" //MyAccountKey
+
+//let googleApiKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs" //HeyCab
+let googleApiPlacesKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs"
+
 //@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -47,49 +56,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Siren Pod for Version Check
         self.setupSiren()
-        
-        let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
-                  // This block gets called when the user reacts to a notification received
-                  let payload: OSNotificationPayload? = result?.notification.payload
-                  
-//                  print("Message: \(payload!.body)")
-            
-            if let notiMessage = payload!.body {
-                let saveSuccessful : Bool = KeychainWrapper.standard.set(notiMessage, forKey: "notiMessage")
-//                print("Notification Message SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-            }
-            
-//            let mainStoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//            let homePage = mainStoryboard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
-//            homePage.notificationMessage = payload?.body
-//            self.window?.rootViewController = homePage
-            
-//                  print("badge number:", payload?.badge ?? "nil")
-//                  print("notification sound:", payload?.sound ?? "nil")
-                  
-                  if let additionalData = result!.notification.payload!.additionalData {
-//                      print("additionalData = \(additionalData)")
-                      
-                  }
-              }
-        
+//        //OneSignal Start
+//        let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
+//                  // This block gets called when the user reacts to a notification received
+//                  let payload: OSNotificationPayload? = result?.notification.payload
+//
+////                  print("Message: \(payload!.body)")
+//
+//            if let notiMessage = payload!.body {
+//                let saveSuccessful : Bool = KeychainWrapper.standard.set(notiMessage, forKey: "notiMessage")
+////                print("Notification Message SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+//            }
+//
+////            let mainStoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+////            let homePage = mainStoryboard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
+////            homePage.notificationMessage = payload?.body
+////            self.window?.rootViewController = homePage
+//
+////                  print("badge number:", payload?.badge ?? "nil")
+////                  print("notification sound:", payload?.sound ?? "nil")
+//
+//                  if let additionalData = result!.notification.payload!.additionalData {
+////                      print("additionalData = \(additionalData)")
+//
+//                  }
+//              }
+//
         //Remove this method to stop OneSignal Debugging
          OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+        // OneSignal initialization
+         OneSignal.initWithLaunchOptions(launchOptions)
+         OneSignal.setAppId("12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d")
+        // promptForPushNotifications will show the native iOS notification permission prompt.
+          // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
+          OneSignal.promptForPushNotifications(userResponse: { accepted in
+            print("User accepted notifications: \(accepted)")
+          })
         
-         //START OneSignal initialization code
-         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false, kOSSettingsKeyInAppLaunchURL: false]
-         
-         
-         OneSignal.initWithLaunchOptions(launchOptions,
-           appId: "12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d",
-           handleNotificationAction: notificationOpenedBlock,
-           settings: onesignalInitSettings)
-        
-         OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
-         OneSignal.promptForPushNotifications(userResponse: { accepted in
-//           print("User accepted notifications: \(accepted)")
-         })
-        
+        // Set your customer userId
+        // OneSignal.setExternalUserId("userId")
+//         //START OneSignal initialization code
+//         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false, kOSSettingsKeyInAppLaunchURL: false]
+//
+//
+//         OneSignal.initWithLaunchOptions(launchOptions,
+//           appId: "12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d",
+//           handleNotificationAction: notificationOpenedBlock,
+//           settings: onesignalInitSettings)
+//
+//         OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
+//         OneSignal.promptForPushNotifications(userResponse: { accepted in
+////           print("User accepted notifications: \(accepted)")
+//         })
+
+        FirebaseApp.configure()
+        FBEvents.logEvent(title: .testOne, failureReason: "test fail")
+        GMSServices.provideAPIKey(googleApiKey)
 
         return true
     }

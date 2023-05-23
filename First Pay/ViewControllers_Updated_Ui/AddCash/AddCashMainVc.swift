@@ -33,7 +33,6 @@ class AddCashMainVc: BaseClassVC {
     @IBOutlet weak var buttonFromLinkAccount: UIButton!
     @IBAction func buttonFromLinkAccount(_ sender: UIButton) {
         LinkAccounts()
-        
     }
     @IBOutlet weak var buttonLinkHBLMFBAccount: UIButton!
     
@@ -56,6 +55,33 @@ class AddCashMainVc: BaseClassVC {
     @IBOutlet weak var buttonGetLoan: UIButton!
     
     @IBAction func buttonGetLoan(_ sender: UIButton) {
+        nanoLoanEligibilityCheck()
+    }
+    
+    var modelNanoLoanEligibilityCheck: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? {
+      didSet {
+            if modelNanoLoanEligibilityCheck?.responsecode ?? 0 == 0 {
+                showAlertCustomPopup(title: "Alert", message: modelNanoLoanEligibilityCheck?.messages ?? "", iconName: .iconError)
+            }
+            else {
+                let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
+                vc.isPushViewController = true
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
+    }
+    
+    func nanoLoanEligibilityCheck() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)"
+        ]
+        APIs.postAPI(apiName: .nanoLoanEligibilityCheck, parameters: parameters) { responseData, success, errorMsg in
+            let model: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? = APIs.decodeDataToObject(data: responseData)
+            self.modelNanoLoanEligibilityCheck = model
+        }
     }
     
     private func getLinkAccounts() {
@@ -128,7 +154,6 @@ class AddCashMainVc: BaseClassVC {
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getLinkAccount"
-        
         
         var userCnic : String?
         userCnic = UserDefaults.standard.string(forKey: "userCnic")

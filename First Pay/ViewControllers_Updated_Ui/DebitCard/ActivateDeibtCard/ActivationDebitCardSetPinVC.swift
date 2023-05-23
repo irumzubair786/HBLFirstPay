@@ -15,6 +15,8 @@ import SwiftyRSA
 class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
     var genResponse : GenericResponse?
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .Debit_activatepincreate_landing)
+
         super.viewDidLoad()
         TextFieldEnterPin.delegate = self
         TextFieldConfirmPin.delegate = self
@@ -147,7 +149,8 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
     
     
     private func createDCPin() {
-        
+        FBEvents.logEvent(title: .Debit_activatepincreate_attempt)
+
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
@@ -186,8 +189,6 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        
-        
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
             
             self.hideActivityIndicator()
@@ -196,7 +197,9 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
             print(self.genResponse)
         
             if response.response?.statusCode == 200 {
-                
+                FBEvents.logEvent(title: .Debit_activatepincreate_success)
+                FBEvents.logEvent(title: .Debit_activate_success)
+
                 if self.genResponse?.responsecode == 2 || self.genResponse?.responsecode == 1 {
                   
                     self.blurView.isHidden = false
@@ -226,14 +229,16 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
                 else {
                     if let message = self.genResponse?.messages{
                       
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
                     }
                 }
             }
             else {
+                FBEvents.logEvent(title: .Debit_activatepincreate_failure)
+
                 if let message = self.genResponse?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)

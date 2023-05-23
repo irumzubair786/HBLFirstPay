@@ -19,50 +19,81 @@ var isfromReactivateCard :Bool?
 var isFromDeactivate : Bool?
 var isFromChangePin : Bool?
 var isfromActivate : Bool?
+//var isfromServics : Bool?
+var isfromATMON : Bool?
+var isfromATMOFF : Bool?
+var isfromPOSON : Bool?
+var isfromPOSOFF: Bool?
+var isfromDisableService : Bool?
+var isfromServiceOTpVerification : Bool?
+var isfromOTPHblmfb : Bool?
 class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataSource{
     var homeObj : HomeModel?
     var banObj : GenericResponse?
     var getDebitDetailsObj : GetDebitCardModel?
-   
+    var availableLimitObj: AvailableLimitsModel?
     var topBtnarr =  ["SendMoney", "Mobile Topup", "PayBill","First Option","DebitCard","SeeAll"]
 
+    @IBOutlet weak var imgSeeAll: UIImageView!
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .Homescreen_Landing)
         super.viewDidLoad()
         banapi()
         collectionView.delegate = self
         collectionView.dataSource = self
-        btnPageControl.setTitle("", for: .normal)
        
+        buttonLevelIcon.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoStatement(tapGestureRecognizer:)))
         lblAmount.isUserInteractionEnabled = true
         lblAmount.addGestureRecognizer(tapGestureRecognizerr)
         AddCash()
-        imgLevel.isHidden = true
+//        imgLevel.isHidden = true
         
         homeAction()
-//       tapGestures()
-//        NotificationCenter.default.removeObserver(self)
-//        NotificationCenter.default.addObserver(self, selector: #selector(viewDidLoadCustom), name: Notification.Name("LanguageChangeThroughObserver"), object: nil)
-//        
+        let tapGestureRecognizerrs = UITapGestureRecognizer(target: self, action: #selector(MovetoAccountLevel(tapGestureRecognizer:)))
+        imgLevel.isUserInteractionEnabled = true
+        imgLevel.addGestureRecognizer(tapGestureRecognizerrs)
+        
+        
+        let tapGestureRecognizr = UITapGestureRecognizer(target: self, action: #selector(moveToDebitCard(tapGestureRecognizer:)))
+        viewDebitCard.isUserInteractionEnabled = true
+        viewDebitCard.addGestureRecognizer(tapGestureRecognizr)
+        
+        let tapGestureRecognizrz = UITapGestureRecognizer(target: self, action: #selector(moveToInviteFriend(tapGestureRecognizer:)))
+        imgInviteFriend.isUserInteractionEnabled = true
+        imgInviteFriend.addGestureRecognizer(tapGestureRecognizrz)
+        
+        let tapGestureRecognizrzSeeAll = UITapGestureRecognizer(target: self, action: #selector(moveToSeeAll(tapGestureRecognizer:)))
+        imgSeeAll.isUserInteractionEnabled = true
+        imgSeeAll.addGestureRecognizer(tapGestureRecognizrzSeeAll)
+        
+//        getActiveLoan()
     }
     @IBOutlet weak var toggleMenu: UIImageView!
-    
     @IBOutlet weak var imageAddCash: UIImageView!
+    @IBOutlet weak var buttonLevelIcon: UIButton!
+    @IBOutlet weak var viewDebitCard: UIImageView!
     
+    
+    @IBAction func buttonLevelIcon(_ sender: UIButton) {
+        getAvailableLimits()
+    }
+    @IBAction func buttonInvite(_ sender: UIButton) {
+        let vc = UIStoryboard.init(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteAFriendsNAvigation")
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
+    }
     func AddCash(){
-        
-        
         let tapGestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(btnAddCash(tapGestureRecognizer:)))
         imageAddCash.isUserInteractionEnabled = true
         imageAddCash.addGestureRecognizer(tapGestureRecognizer3)
     }
 
-    @objc func btnAddCash(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func btnAddCash(tapGestureRecognizer: UITapGestureRecognizer) {
+        FBEvents.logEvent(title: .Homescreen_addcash_click)
         let storyBoard = UIStoryboard(name: Storyboard.AddCash.rawValue, bundle: Bundle.main)
         let vc = storyBoard.instantiateViewController(withIdentifier: "navigateToAddCash")
         self.present(vc, animated: true)
-       
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -79,51 +110,76 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         return cella
     }
     
-    @objc func buttontaped(_sender:UIButton)
-    {
-        
+    @objc func buttontaped(_sender:UIButton) {
         let tag = _sender.tag
         
         let cell = collectionView.cellForItem(at: IndexPath(row: tag, section: 0)) as! cellmainfourTransaction
-        if tag == 0
-        {
+        if tag == 0 {
+            FBEvents.logEvent(title: .Homescreen_sendmoney_click)
             let storyboard = UIStoryboard(name: "SendMoney", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "SendMoney_MainVc")
-          
             self.present(vc, animated: true)
         }
-        else if tag == 1
-        {
-//            movtToTopUp
-//            let  myDict = [ "name": "MobileTopUpVC"]
-//                   NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
-//            let storyboard = UIStoryboard(name: "TopUp", bundle: nil)
-//            let vc = storyboard.instantiateViewController(withIdentifier: "MobileTopUpVC")
-//            self.present(vc, animated: true)
-            
-            
-            
+        else if tag == 1 {
+            FBEvents.logEvent(title: .Homescreen_topup_click)
             let storyboard = UIStoryboard(name: "TopUp", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "movtToTopUp")
             self.present(vc, animated: true)
             
         }
-        else if tag == 2
-        {
-            
+        else if tag == 2 {
+            FBEvents.logEvent(title: .Homescreen_paybills_click)
             let storyboard = UIStoryboard(name: "BillPayment", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "moveToBillpayment")
 
             self.present(vc, animated: true)
         }
-        
-        else if tag == 4
-        {
-            
+        else if tag == 3 {
+            FBEvents.logEvent(title: .Homescreen_getloan_click)
+            nanoLoanEligibilityCheck()
+//            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else if tag == 4 {
             getDebitCard()
-            
         }
        
+    }
+    
+    var modelNanoLoanEligibilityCheck: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? {
+      didSet {
+            if modelNanoLoanEligibilityCheck?.responsecode ?? 0 == 0 {
+                showAlertCustomPopup(title: "Alert", message: modelNanoLoanEligibilityCheck?.messages ?? "", iconName: .iconError)
+            }
+            else {
+                let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true)
+            }
+        }
+    }
+    
+    func nanoLoanEligibilityCheck() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)"
+        ]
+        APIs.postAPI(apiName: .nanoLoanEligibilityCheck, parameters: parameters) { responseData, success, errorMsg in
+            let model: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? = APIs.decodeDataToObject(data: responseData)
+            self.modelNanoLoanEligibilityCheck = model
+        }
+    }
+    
+    var comabalanceLimit : String?
+    func CommaSepration()
+    {
+        var number = Double(self.getCurrentBal!)
+        var formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        comabalanceLimit = (formatter.string(from: NSNumber(value: number)))!
     }
     
     let pageIndicator = UIPageControl()
@@ -132,9 +188,11 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var timer = Timer()
     var banaryyString =  [String]()
     
+    @IBOutlet weak var buttonInvite: UIButton!
     
     @IBOutlet weak var imgLevel: UIImageView!
     
+    @IBOutlet weak var imgInviteFriend: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
     
     @IBOutlet weak var lblName: UILabel!
@@ -142,37 +200,26 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @IBOutlet weak var LblMobNo: UILabel!
     @IBOutlet weak var img: UIImageView!
-    @IBOutlet weak var btnPageControl: UIButton!
-    override func viewWillAppear(_ animated: Bool) {
-       
-        
-//        homeAction()
-    }
+   
     @objc func changeImage() {
         
         if counter < self.banaryyString.count {
             
             let index = IndexPath.init(item: counter, section: 0)
             
-            let url = self.banaryyString[counter]
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "HomeBanner"))
+            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
             counter += 1
         } else {
             counter = 0
             let index = IndexPath.init(item: counter, section: 0)
-            let url = self.banaryyString[counter]
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "HomeBanner"))
+            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
             counter = 1
         }
         
     }
 
-    @objc func viewDidLoadCustom() {
-        
-
-        
-        
-    }
     func homeAction() {
         showActivityIndicator()
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -202,8 +249,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             if response.response?.statusCode == 200 {
                 self.homeObj = response.result.value
                 if self.homeObj?.responsecode == 2 || self.homeObj?.responsecode == 1 {
-                    
+                 
                     self.saveInDataManager(index: 0)
+                 
                     self.hideActivityIndicator()
 //                    banapi()
 //
@@ -223,10 +271,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     }
     var getCurrentBal : Double?
     private func saveInDataManager(index : Int){
-        getCurrentBal = homeObj?.userData?[0].currentBalance
-        
-        lblAmount.text =   "\(getCurrentBal!)"
-        
+//
+        getCurrentBal =  homeObj?.userData?[0].currentBalance
+        CommaSepration()
+        lblAmount.text =   "Rs.\(comabalanceLimit!)"
         lblName.text =  homeObj?.userData?[0].accountTitile
         LblMobNo.text =  homeObj?.userData?[0].accountNo
         DataManager.instance.mobile_number = homeObj?.userData?[0].accountNo
@@ -270,17 +318,26 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         if self.homeObj?.userData?[index].levelDescr == "LEVEL 1"
         {
             imgLevel.isHidden = false
-            imgLevel.image = UIImage(named: "Group 427321140")
+            DataManager.instance.accountLevel = "LEVEL 1"
+            imgLevel.image = UIImage(named: "Verified 24x")
         }
+        else
+        {
+            imgLevel.isHidden = false
+            DataManager.instance.accountLevel = "LEVEL 0"
+            imgLevel.image = UIImage(named: "Un-Verified 24x")
+        }
+        
      
         //        NotificationCenter.default.addObserver(self, selector: #selector(updateProfilePhoto), name: Notification.Name("batteryLevelChanged"), object: nil)
     }
     
     func banapi ()
     {
-        
-        // let token = "eWptR0NMbk43RlBINWJCM1JjbWtSc0g1TWFzNFZHVGMgOm1MSzM1WEd3bUtHUFpRclM="
-        
+//<<<<<<< HEAD
+//=======
+////        getActiveLoan()
+//>>>>>>> f3b7f8f (ui fixex)
         ServerManager.GEt_typeWithoutParmsfetchApiData_PostAppJSON(APIMethodName: APIMethods.banner.rawValue, Token: DataManager.instance.accessToken ?? "" ) { [self] (Result : MYBanersModel?) in
             
             //== check if api is responding or not
@@ -316,12 +373,31 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @objc func MovetoStatement(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        
         let storyboard = UIStoryboard(name: "MiniStatement", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "MinistatemnetMainVc")
         self.present(vc, animated: true)
     }
-       
+      
+    @objc func moveToDebitCard(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        getDebitCard()
+    }
+    
+    
+    @objc func moveToInviteFriend(tapGestureRecognizer: UITapGestureRecognizer) {
+        let vc = UIStoryboard.init(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteFriendsAddNumber") as! InviteFriendsAddNumber
+        self.present(vc, animated: true)
+        //        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func moveToSeeAll(tapGestureRecognizer: UITapGestureRecognizer) {
+        FBEvents.logEvent(title: .Homescreen_seeall_click)
+
+    }
+    
+    @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer) {
+        getAvailableLimits()
+    }
     
     // MARK: - Api Call
     var checkDebitCardObj : GetDebitCardCheckModel?
@@ -471,19 +547,31 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                     }
                     else
                     {
-                        if
-                            self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
-                        {
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
-                            self.present(vc, animated: true)
+                        
+                        if self.getDebitDetailsObj?.newCarddata != nil{
+                            if
+                                self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
+                            {
+                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
+                                self.present(vc, animated: true)
+                            }
+                            else if self.getDebitDetailsObj?.newCarddata?.apiFlow == "DeactivateCard"
+                            {
+                                
+                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                                self.present(vc, animated: true)
+                                
+                            }
                         }
+                        
                     }
                     
                 }
                 else {
                     if let message = self.getDebitDetailsObj?.messages{
-                        UtilManager.showToast(message: message)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 
 
                     }
@@ -491,7 +579,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
             else {
                 if let message = self.getDebitDetailsObj?.messages{
-                    UtilManager.showToast(message: message)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     
                 }
 //                print(response.result.value)
@@ -499,7 +587,184 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
         }
     }
-    
+    ////    ----------getaccountlimits
+        private func getAvailableLimits() {
+      //
+              if !NetworkConnectivity.isConnectedToInternet(){
+                  self.showToast(title: "No Internet Available")
+                  return
+              }
+      
+              showActivityIndicator()
+              var userCnic : String?
+              if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                  userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+              }
+              else{
+                  userCnic = ""
+              }
+            userCnic = UserDefaults.standard.string(forKey: "userCnic")
+      
+      //        let compelteUrl = GlobalConstants.BASE_URL + "getAccLimits"
+              let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getLevelLimits"
+      
+              let parameters : Parameters = ["cnic":userCnic!, "accountType" : DataManager.instance.accountType ?? "20", "imeiNo": DataManager.instance.imei!,"channelId": DataManager.instance.channelID ]
+      
+              print(parameters)
+      
+      
+              let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+      
+              let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+      
+      
+              let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+      
+              print(params)
+              print(compelteUrl)
+      
+      
+              NetworkManager.sharedInstance.enableCertificatePinning()
+      
+      
+              NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<AvailableLimitsModel>) in
+      
+                  self.hideActivityIndicator()
+      
+                  self.availableLimitObj = response.result.value
+      
+                  if response.response?.statusCode == 200 {
+      
+                      if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+      
+                          self.updateUI()
+      //                                    self.fromlevel1()
+                      }
+                      else {
+                          if let message = self.availableLimitObj?.messages{
+                              self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                          }
+                      }
+                  }
+                  else {
+                      if let message = self.availableLimitObj?.messages{
+                          self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                      }
+    //                  print(response.result.value)
+    //                  print(response.response?.statusCode)
+                  }
+              }
+          }
+    private func updateUI(){
+        
+        if DataManager.instance.accountLevel == "LEVEL 0" {
+            FBEvents.logEvent(title: .Homescreen_Myaccount_click)
+
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+            if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
+                vc.balanceLimit = Int(balnceLimit)
+                print("balnceLimit",balnceLimit)
+            }
+            if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
+                vc.balanceLimit1 = Int(balnceLimit1)
+                print("balnceLimit",balnceLimit1)
+            }
+            
+            if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
+                vc.totalDailyLimitCr = Int(dailyTotalCr)
+            }
+            if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
+                vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
+            }
+            if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
+            }
+            if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
+            }
+            if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr = Int(yearlyTotalCr)
+            }
+            if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
+            }
+            if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
+                vc.totalDailyLimitDr = Int(totalDailyLimitDr)
+            }
+            if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
+                vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
+            }
+            if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
+            }
+            if let totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
+            }
+            if let totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
+            }
+            if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
+            }
+            self.present(vc, animated: true)
+        }
+        else if DataManager.instance.accountLevel == "LEVEL 1" {
+            FBEvents.logEvent(title: .Homescreen_Myaccount_click)
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+            if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
+                vc.balanceLimit = Int(balnceLimit)
+                print("balnceLimit",balnceLimit)
+            }
+            if let balnceLimit1 = self.availableLimitObj?.limitsData?.levelLimits?[1].balanceLimit{
+                vc.balanceLimit1 = Int(balnceLimit1)
+                print("balnceLimit",balnceLimit1)
+            }
+            
+            if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
+                vc.totalDailyLimitCr = Int(dailyTotalCr)
+            }
+            if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
+                vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
+            }
+            
+            
+            if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
+            }
+            if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
+                vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
+            }
+            
+            
+            if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr = Int(yearlyTotalCr)
+            }
+            if let yearlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitCr{
+                vc.totalYearlyLimitCr1 = Int(yearlyTotalCr1)
+            }
+            
+            //        dr
+            if let  totalDailyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitDr{
+                vc.totalDailyLimitDr = Int(totalDailyLimitDr)
+            }
+            if let  totalDailyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitDr{
+                vc.totalDailyLimitDr1 = Int(totalDailyLimitDr1)
+            }
+            if let  totalMonthlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr = Int(totalMonthlyLimitDr)
+            }
+            if let  totalMonthlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitDr{
+                vc.totalMonthlyLimitDr1 = Int(totalMonthlyLimitDr1)
+            }
+            if let  totalYearlyLimitDr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr = Int(totalYearlyLimitDr)
+            }
+            if let  totalYearlyLimitDr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalYearlyLimitDr{
+                vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
+            }
+            self.present(vc, animated: true)
+        }
+    }
     
 //class end
 }

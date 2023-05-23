@@ -21,6 +21,8 @@ class DebitCardNameSelectionVC: BaseClassVC {
     var arry = [abc]()
 //    var arrNameList = ["Muhammad", "Arshad", "Khawaj", "Bhatti", "Khan"]
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .Debit_ordername_landing)
+
         super.viewDidLoad()
         print("get userName", fullUserName)
         buttonContinue.isUserInteractionEnabled = false
@@ -38,6 +40,7 @@ class DebitCardNameSelectionVC: BaseClassVC {
         labelCount.text = "0/20"
         collectionView.delegate = self
         collectionView.dataSource = self
+        
         load()
     }
    
@@ -66,7 +69,7 @@ class DebitCardNameSelectionVC: BaseClassVC {
         layout.minimumLineSpacing = 8
         /// 5
         layout.minimumInteritemSpacing = 4
-        
+
         /// 6
         collectionView
             .setCollectionViewLayout(layout, animated: true)
@@ -86,8 +89,8 @@ class DebitCardNameSelectionVC: BaseClassVC {
     {
         self.navigationController?.popViewController(animated: false)
     }
-    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer) {
+        FBEvents.logEvent(title: .Debit_orderdeliverypostal_click)
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardAddressVC") as!  DebitCardAddressVC
         vc.fullUserName = fullUserName!
         self.navigationController?.pushViewController(vc, animated: true)
@@ -96,326 +99,126 @@ class DebitCardNameSelectionVC: BaseClassVC {
     @IBOutlet weak var collectionView: UICollectionView!
    
     @IBAction func buttonContinue(_ sender: UIButton) {
+        FBEvents.logEvent(title: .Debit_orderdeliverypostal_click)
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardAddressVC") as!  DebitCardAddressVC
         vc.fullUserName = fullUserName!
         self.navigationController?.pushViewController(vc, animated: true)
-        
-        
     }
-//    @objc func buttonpress(_ sender:UIButton)
-//    {
-//        collectionView.scrollsToTop = false
 //
-//        // disbtn.backgroundColor = UIColor.red
-//        let cell = collectionView.cellForItem(at: IndexPath(row: sender.tag, section: 0))
-//        as! cellDebitCardNameSelection
-////        self.labelName.text =   arry[sender.tag].name
-//        selectedIndex = sender.tag
-//        cell.buttonName.cornerRadius = 10
-//        if selectedIndex == sender.tag
-//        {
-//
-//            if cell.buttonName.backgroundColor == UIColor.clear
-//            {
-//                arry[sender.tag].isSelected = true
-//                cell.buttonName.backgroundColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//                cell.buttonName.borderColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//                // otherbtn.setTitleColor(.red, for: .normal)
-//                let val = cell.buttonName.titleLabel?.text
-//                for id in (arry)
-//                {
-//
-//                    if val == id.name
-//                    {
-//                        let name = id.name
-//
-//                        List.append(name)
-//
-//
-//                    }
-//
-//                }
-//                myarray.append(val!)
-//
-//
-//
-//            }
-//            else if cell.buttonName.backgroundColor == UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//            {
-//                arry[sender.tag].isSelected = false
-//                cell.buttonName.backgroundColor = UIColor.clear
-//
-//                let v = cell.buttonName.titleLabel?.text
-//                for a in (arry)
-//                {
-//                    if v == a.name
-//                    {
-//                        let id = a.name
-//                        if let index = List.index(of: id)
-//                        {
-//                            List.remove(at: index)
-//                            myarray.remove(at: index)
-//                        }
-//
-//
-//
-//                    }
-//                }
-//
-//
-//
-//            }
-//
-//
-//        }
-//        print(myarray)
-//        collectionView.reloadData()
-//        self.labelName.text = ""
-//        for name in myarray
-//        {
-//
-//                self.labelName.text = "\(self.labelName.text ?? "")\(" ")\(name)"
-//
-//        }
-//
-//        self.labelCount.text = "\(self.labelName.text?.count ?? 0)/20"
-////        self.labelName.text =   arry[sender.tag].name
-//        if  labelName.text?.count ?? 0 > 20
-//        {
-////            showToast(title: "You can Enter  ")
-//            buttonContinue.isUserInteractionEnabled = false
-//            imgNextArrow.isUserInteractionEnabled = false
-//            let image = UIImage(named:"grayArrow")
-//            imgNextArrow.image = image
-//            self.collectionView.reloadData()
-//        }
-//        else
-//        {
-//            labelCount.text = "\(labelName.text?.count ?? 0)/20"
-//             buttonContinue.isUserInteractionEnabled = true
-//             imgNextArrow.isUserInteractionEnabled = true
-//             let image = UIImage(named:"]greenarrow")
-//             imgNextArrow.image = image
-//             self.collectionView.reloadData()
-//
-//        }
-//        GlobalData.debitCardUserFullName =  labelName.text
-//
-//    }
-//    @objc func buttontaped(_sender:UIButton)
-//    {
-//
-//        let tag = _sender.tag
-//        collectionView.scrollsToTop = false
-//        let cell = collectionView.cellForItem(at: IndexPath(row: tag, section: 0)) as! cellDebitCardNameSelection
-//
-//        cell.buttonName.setTitle("\(arry[tag])", for: .normal)
-//        cell.buttonName.cornerRadius = 10
-//        labelName.text = "\(labelName.text! )\(" ")\("\(arry[tag])" )"
-//        GlobalData.debitCardUserFullName =  labelName.text
-//
-//
-//        if  labelName.text?.count ?? 0 > 20
-//        {
-//            showToast(title: "You can Enter 20 ")
-//            buttonContinue.isUserInteractionEnabled = false
-//            imgNextArrow.isUserInteractionEnabled = false
-//            let image = UIImage(named:"grayArrow")
-//            imgNextArrow.image = image
-//            self.collectionView.reloadData()
-//        }
-//        else
-//        {
-//            labelCount.text = "\(labelName.text?.count ?? 0)/20"
-//             buttonContinue.isUserInteractionEnabled = true
-//             imgNextArrow.isUserInteractionEnabled = true
-//             let image = UIImage(named:"]greenarrow")
-//             imgNextArrow.image = image
-//             self.collectionView.reloadData()
-//
-//        }
-//
-//}
-   
 }
-extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewDataSource{
+extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        return CGSize(width: arry[indexPath.item].name.size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18)]).width + 30, height: 35)
+       }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arry.count ?? 0
+        return arry.count 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellDebitCardNameSelection", for: indexPath) as! cellDebitCardNameSelection
-        cell.buttonName.setTitle(arry[indexPath.row].name, for: .normal)
-        if arry[indexPath.row].isSelected == false
-        {
-            cell.buttonName.backgroundColor = .white
+        cell.backView.borderColor = UIColor.gray
+
+        cell.labelName.text = arry[indexPath.row].name
+        if arry[indexPath.row].isSelected == false {
+            cell.backView.backgroundColor = .white
+            cell.backView.borderColor = .gray
+            cell.labelName.textColor = .gray
         }
-        else
-        {
-            cell.buttonName.backgroundColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+        else {
+            cell.backView.backgroundColor = UIColor(hexValue: 0xF19434)
+            cell.backView.borderColor = UIColor(hexValue: 0xF19434)
+            cell.labelName.textColor = .white
         }
         
         cell.buttonName.tag = indexPath.row
         cell.buttonName.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
-//        cell.buttonName.tag = indexPath.row
-//        cell.buttonName.setTitle(arry[indexPath.row].name, for: .normal)
-//        cell.buttonName.addTarget(self, action: #selector(buttonpress), for: .touchUpInside)
-//        if arry[indexPath.row].isSelected == false
-//        {
-//            labelName.text = ""
-//            cell.buttonName.backgroundColor = .clear
-//            cell.buttonName.setTitleColor(.gray, for: .normal)
-//        }
-//        else
-//        {
-//            cell.buttonName.backgroundColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//            cell.buttonName.cornerRadius = 12
-//            cell.buttonName.setTitleColor(.white, for: .normal)
-//            let a = UIImage(named: "")
-//            cell.buttonName.setBackgroundImage(a, for: .normal)
-        
-        
-
+        DispatchQueue.main.async {
+            cell.backView.circle()
+        }
         return cell
     }
-    @objc func buttonpress(_ sender:UIButton)
-    {
+    @objc func buttonpress(_ sender:UIButton) {
         collectionView.scrollsToTop = false
         
         // disbtn.backgroundColor = UIColor.red
         let cell = collectionView.cellForItem(at: IndexPath(row: sender.tag, section: 0))
         as! cellDebitCardNameSelection
         
+        cell.backView.borderColor = .clear
         selectedIndex = sender.tag
-        
-        if selectedIndex == sender.tag
-        {
-            if cell.buttonName.backgroundColor == UIColor.white
-            {
+        if selectedIndex == sender.tag {
+            if cell.backView.backgroundColor == UIColor.white {
                 arry[sender.tag].isSelected = true
                 let a = UIImage(named: "")
-                cell.buttonName.setImage(a, for: .normal)
-                cell.buttonName.backgroundColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-                cell.buttonName.borderColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-                cell.backView.cornerRadius = 12
+                cell.backView.backgroundColor = UIColor(hexValue: 0xF19434)
+                cell.backView.borderColor = UIColor(hexValue: 0xF19434)
+                //                cell.backView.cornerRadius = 12
                 // otherbtn.setTitleColor(.red, for: .normal)
-                let val = cell.buttonName.titleLabel?.text
-                for id in (arry)
-                {
-                    
-                    if val == id.name
-                    {
+                let val = cell.labelName.text!
+                for id in (arry) {
+                    if val == id.name {
                         let name = id.name
-                        
                         List.append(name)
-                        
-                        
                     }
-                    
                 }
-                myarray.append(val!)
-                
-                
-                
+                myarray.append(val)
             }
-            else if cell.buttonName.backgroundColor == UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-            {
+            else if cell.backView.backgroundColor == UIColor(hexValue: 0xF19434) {
                 arry[sender.tag].isSelected = false
-                cell.buttonName.backgroundColor = UIColor.clear
-                
-                let v = cell.buttonName.titleLabel?.text
-                for a in (arry)
-                {
-                    if v == a.name
-                    {
+                cell.backView.backgroundColor = UIColor.clear
+                cell.backView.borderColor = UIColor.gray
+                let v = cell.labelName.text!
+                for a in (arry) {
+                    if v == a.name {
                         let id = a.name
-                        if let index = List.index(of: id)
-                        {
+                        if let index = List.index(of: id) {
                             List.remove(at: index)
                             myarray.remove(at: index)
                         }
-                        
-                        
-                        
                     }
                 }
-                
-                
-                
             }
-            
-            
-        }
-       
-        collectionView.reloadData()
-        self.labelName.text = ""
-        for name in myarray
-        {
-
-                self.labelName.text = "\(self.labelName.text ?? "")\(" ")\(name)"
-            GlobalData.debitCardUserFullName = self.labelName.text
-            
-        }
-       
-        if  labelName.text?.count ?? 0 > 20
-               {
-                     if labelName.text?.count != 0
-            {
-                         
-//                   showToast(title: "You can Enter 20 ")
-                   buttonContinue.isUserInteractionEnabled = false
-                   imgNextArrow.isUserInteractionEnabled = false
-                   let image = UIImage(named:"grayArrow")
-                   imgNextArrow.image = image
-                   self.collectionView.reloadData()
-               }
         }
         
-               else
-               {
-                   labelCount.text = "\(labelName.text?.count ?? 0)/20"
-                    buttonContinue.isUserInteractionEnabled = true
-                    imgNextArrow.isUserInteractionEnabled = true
-                    let image = UIImage(named:"]greenarrow")
-                    imgNextArrow.image = image
-                    cell.backView.cornerRadius = 12
-                    self.collectionView.reloadData()
-       
-               }
+        collectionView.reloadData()
+        self.labelName.text = ""
+        for name in myarray {
+            self.labelName.text = "\(self.labelName.text ?? "")\(" ")\(name)"
+            GlobalData.debitCardUserFullName = self.labelName.text
+        }
+        if  labelName.text?.count ?? 0 > 20 {
+            if labelName.text?.count != 0 {
+                //                   showToast(title: "You can Enter 20 ")
+                buttonContinue.isUserInteractionEnabled = false
+                imgNextArrow.isUserInteractionEnabled = false
+                let image = UIImage(named:"grayArrow")
+                imgNextArrow.image = image
+                self.collectionView.reloadData()
+            }
+        }
+        else {
+            labelCount.text = "\(labelName.text?.count ?? 0)/20"
+            buttonContinue.isUserInteractionEnabled = true
+            imgNextArrow.isUserInteractionEnabled = true
+            let image = UIImage(named:"]greenarrow")
+            imgNextArrow.image = image
+            //                    cell.backView.cornerRadius = 12
+            self.collectionView.reloadData()
+        }
         print(myarray)
     }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-           let width = collectionView.bounds.width / 3
-           let height = collectionView.bounds.height / 2
-           return CGSize(width: width, height: height)
-       }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellDebitCardNameSelection", for: indexPath) as! cellDebitCardNameSelection
-        
-        
     }
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let deselectedCell = collectionView.cellForItem(at: indexPath) as?
-        cellDebitCardNameSelection
-        
+        let deselectedCell = collectionView.cellForItem(at: indexPath) as? cellDebitCardNameSelection
     }
-//    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//
-//            if let cell = collectionView.cellForItem(at: indexPath) as? cellDebitCardNameSelection {
-//                cell.isSelected = false
-//                labelName.text = ""
-//                cell.buttonName.backgroundColor = .clear
-//                cell.buttonName.setTitleColor(.gray, for: .normal)
-////                buttonContinue.isUserInteractionEnabled = false
-////                imgNextArrow.isUserInteractionEnabled = false
-//            }
-//        }
-
-
-    
-   }
+}
 
 
 class name

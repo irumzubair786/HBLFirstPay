@@ -123,13 +123,15 @@ class DebitCardPostalAddressConfirmationVC: BaseClassVC {
                }
                else {
                    if let message = self.genericObj?.messages{
-                       self.showDefaultAlert(title: "", message: message)
+                       self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                       
                    }
                }
            }
            else {
                if let message = self.genericObj?.messages{
-                   self.showDefaultAlert(title: "", message: message)
+                   self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+//                   self.showDefaultAlert(title: "", message: message)
                }
 //
            }

@@ -39,14 +39,16 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
         btn2.setTitle("", for: .normal)
         btn3.setTitle("", for: .normal)
         btn4.setTitle("", for: .normal)
-        btn_next_arrow.setTitle("", for: .normal)
         btnBack.setTitle("", for: .normal)
         btnSuccessPopUp.setTitle("", for: .normal)
         btn5.setTitle("", for: .normal)
         btn6.setTitle("", for: .normal)
         btn7.setTitle("", for: .normal)
         messageTextVieew.isUserInteractionEnabled = false
+       
         getDisputes()
+        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTappedShare (tapGestureRecognizer:)))
+        img_next.addGestureRecognizer(tapGestureRecognizerr)
         // Do any additional setup after loading the view.
     }
     var genResObj : GenericResponseModel?
@@ -59,7 +61,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
     @IBOutlet weak var btn4: UIButton!
     @IBOutlet weak var btn3: UIButton!
     @IBOutlet weak var btn2: UIButton!
-    @IBOutlet weak var btn_next_arrow: UIButton!
+   
     @IBOutlet weak var messageTextVieew: UITextView!
     @IBOutlet weak var lbl1: UILabel!
     @IBOutlet weak var lbl2: UILabel!
@@ -73,6 +75,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
     @IBOutlet weak var btn6: UIButton!
     @IBOutlet weak var btn5: UIButton!
     
+    @IBOutlet weak var img_next: UIImageView!
     
     
     
@@ -198,7 +201,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
         Comments = disputeTypesObj?.disputeTypes?[3].disputeTypeDescr
         print("you select dispute id", disputeCode)
         ShowNextbtn()
-            
+//        disputeTypesObj?.disputeTypes?[3].disputeTypeDescr
     }
     
     
@@ -256,6 +259,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
     
     
     @IBAction func Action_btn7(_ sender: UIButton) {
+        messageTextVieew.text = ""
         let checked = UIImage(named: "Radio Button")
         btn7.setImage(checked, for: .normal)
         btn7.backgroundColor = UIColor.clear
@@ -274,33 +278,27 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
         btn5.backgroundColor = UIColor.clear
         messageTextVieew.isUserInteractionEnabled = true
         disputeCode = disputeTypesObj?.disputeTypes?[6].disputeTypeId
-        Comments = disputeTypesObj?.disputeTypes?[6].disputeTypeDescr
-        if messageTextVieew.text?.count != 0
-        {
-            ShowNextbtn()
-
-        }
-        else
-        {
-            Hidenextbtn()
-        }
+//
     }
     
     
-    
+    @objc func imageTappedShare(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        disputeTransaction()
+    }
     
     func ShowNextbtn()
     {
         let image = UIImage(named: "]greenarrow")
-        btn_next_arrow.setImage(image, for: .normal)
-        btn_next_arrow.adjustsImageSizeForAccessibilityContentSizeCategory
+        img_next.image = image
+        img_next.isUserInteractionEnabled = true
         btnContinue.isUserInteractionEnabled = true
     }
     func Hidenextbtn()
     {
         let image = UIImage(named: "grayArrow")
-        btn_next_arrow.setImage(image, for: .normal)
-        btn_next_arrow.adjustsImageSizeForAccessibilityContentSizeCategory
+        img_next.image = image
+        img_next.isUserInteractionEnabled = true
         btnContinue.isUserInteractionEnabled = false
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -335,9 +333,23 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
     func textViewDidBeginEditing(_ textView: UITextView) {
      
         messageTextVieew.text = ""
+        Comments = messageTextVieew.text!
             
        }
-   
+    func textViewDidEndEditing(_ textView: UITextView) {
+        Comments = messageTextVieew.text!
+        if messageTextVieew.text?.count != 0
+        {
+            
+            ShowNextbtn()
+
+        }
+        else
+        {
+            Hidenextbtn()
+        }
+
+    }
     
     @IBAction func Action_Submit(_ sender: UIButton) {
 //
@@ -374,7 +386,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
         
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "getDisputeTypes"
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getDisputeTypes"
         
         let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
        
@@ -406,14 +418,15 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
                 }
                 else {
                     if let message = self.disputeTypesObj?.messages{
-                        self.showAlert(title: "", message: message, completion: nil)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+//                        self.showAlert(title: "", message: message, completion: nil)
                     }
                 }
             }
             else {
                 
                 if let message = self.disputeTypesObj?.messages{
-                self.showDefaultAlert(title: "", message: message)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
             }
                 
             }
@@ -421,7 +434,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
     }
     
     private func disputeTransaction() {
-
+       
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
@@ -435,9 +448,9 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
         }
         showActivityIndicator()
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/disputeTransaction"
-        
+//        "disputeType":("\(self.disputeCode!)")
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"comments":Comments!,"transRefNum":GlobalData.transRefnum,"disputeType":("\(self.disputeCode!)")] as [String : Any]
+        let parameters = ["imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"comments":Comments ?? "" ,"transRefNum":GlobalData.transRefnum,"disputeType": ("\(self.disputeCode!)")] as [String : Any]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
 
@@ -451,27 +464,21 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
         print(header)
 
         NetworkManager.sharedInstance.enableCertificatePinning()
-
+       
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
-
-
             self.hideActivityIndicator()
-
             self.genResObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genResObj?.responsecode == 2 || self.genResObj?.responsecode == 1 {
-                    
                     self.blurView.isHidden = false
                     self.btnSuccessPopUp.isHidden = false
-                    
-                    
 //                    self.showAlert(title: "Success", message: self.genResObj!.messages!, completion: {
 //                        self.navigationController?.popToRootViewController(animated: true)
 //                    })
                 }
                 else {
                     if let message = self.genResObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 //                        self.showDefaultAlert(title: "", message: "\(message)")
 //                        self.navigationController?.popToRootViewController(animated: true)
                     }
@@ -479,7 +486,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
             }
             else {
                 if let message = self.genResObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)

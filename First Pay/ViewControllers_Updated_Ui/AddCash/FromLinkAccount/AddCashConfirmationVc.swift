@@ -123,14 +123,13 @@ class AddCashConfirmationVc: BaseClassVC {
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
-                        UtilManager.showAlertMessage(message: message, viewController: self)
-                    }
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                    }
                      
                 }
             }
             else {
                 if let message = self.transactionApiResponseObj?.messages{
-                    UtilManager.showAlertMessage(message: message, viewController: self)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)

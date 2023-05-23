@@ -16,8 +16,12 @@ class Cell_CitySelectedVC: UITableViewCell {
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
+//        super.setSelected(selected, animated: animated)
+        if (selected) {
+            lblcityname.textColor = UIColor(hexValue: 0x00CC96)
+        } else {
+            lblcityname.textColor = UIColor.black
+        }
         // Configure the view for the selected state
     }
     

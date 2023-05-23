@@ -88,7 +88,7 @@ extension UIView {
 
 
 extension UIView {
-
+    
     @IBInspectable
     var shadowOpacity: Float {
         get {
@@ -153,22 +153,22 @@ extension UIView {
         layer.shouldRasterize = true
         layer.rasterizationScale = scale ? UIScreen.main.scale : 1
     }
-   
+    
 }
 
 
 extension String {
-//     public func localizeString() -> String {
-//
-//        //Default english
-//
-////        let languageCode = UserDefaults.standard.value(forKey: "language-Code") as? String ?? "en"
-//        
-//         let languageCode = UserDefaults.standard.value(forKey: "language-Code") as? String ?? "ur-Arab-PK"
-//         let path = Bundle.main.path(forResource: languageCode, ofType: "lproj") ?? ""
-//         let bundle = Bundle(path: path ?? "")
-//         return NSLocalizedString(self, bundle: (bundle)!, comment: " ")
-//    }
+    //     public func localizeString() -> String {
+    //
+    //        //Default english
+    //
+    ////        let languageCode = UserDefaults.standard.value(forKey: "language-Code") as? String ?? "en"
+    //
+    //         let languageCode = UserDefaults.standard.value(forKey: "language-Code") as? String ?? "ur-Arab-PK"
+    //         let path = Bundle.main.path(forResource: languageCode, ofType: "lproj") ?? ""
+    //         let bundle = Bundle(path: path ?? "")
+    //         return NSLocalizedString(self, bundle: (bundle)!, comment: " ")
+    //    }
 }
 extension String {
     func addLocalizableString(languageCode:String) -> String {
@@ -181,17 +181,17 @@ extension String {
     func index(from: Int) -> Index {
         return self.index(startIndex, offsetBy: from)
     }
-
+    
     func substring(from: Int) -> String {
         let fromIndex = index(from: from)
         return String(self[fromIndex...])
     }
-
+    
     func substring(to: Int) -> String {
         let toIndex = index(from: to)
         return String(self[..<toIndex])
     }
-
+    
     func substring(with r: Range<Int>) -> String {
         let startIndex = index(from: r.lowerBound)
         let endIndex = index(from: r.upperBound)
@@ -207,14 +207,14 @@ extension String {
     }
 }
 extension String {
-   func replace(string:String, replacement:String) -> String {
-       return self.replacingOccurrences(of: string, with: replacement, options: NSString.CompareOptions.literal, range: nil)
-   }
-
-   func removeWhitespace() -> String {
-       return self.replace(string: " ", replacement: "")
-   }
- }
+    func replace(string:String, replacement:String) -> String {
+        return self.replacingOccurrences(of: string, with: replacement, options: NSString.CompareOptions.literal, range: nil)
+    }
+    
+    func removeWhitespace() -> String {
+        return self.replace(string: " ", replacement: "")
+    }
+}
 extension RangeReplaceableCollection where Self: StringProtocol {
     var digits: Self {
         return filter(("0"..."9").contains)
@@ -227,13 +227,13 @@ extension RangeReplaceableCollection where Self: StringProtocol {
     }
 }
 extension String {
-
-  func removeAlphabet() -> String {
-      return self.components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
-  }
+    
+    func removeAlphabet() -> String {
+        return self.components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
+    }
 }
 
-extension UITextView{
+extension UITextView {
     func addDoneButtonOnKeyboard()
     {
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
@@ -287,14 +287,14 @@ extension UITextField {
     {
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         doneToolbar.barStyle = .default
-
+        
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let done = ActionBarButtonItem(title: "Done", style: .done, actionHandler: selector)
-
+        
         let items = [flexSpace, done]
         doneToolbar.items = items
         doneToolbar.sizeToFit()
-
+        
         self.inputAccessoryView = doneToolbar
     }
     
