@@ -13,7 +13,9 @@ extension UIViewController {
     func showAlertCustomPopup(title:String? = "", message: String? = "", iconName: IconNames.iconNameError = .iconError, buttonNames: [[String: AnyObject]]? = [[
         "buttonName": "OK",
         "buttonBackGroundColor": UIColor.clrOrange,
-        "buttonTextColor": UIColor.white]] as? [[String: AnyObject]]) {
+        "buttonTextColor": UIColor.white]] as? [[String: AnyObject]]
+//    ) {
+                              , completion: ((String?) -> Void)? = nil) {
             
         let alertCustomPopup = UIStoryboard.init(name: "AlertPopup", bundle: nil).instantiateViewController(withIdentifier: "AlertPopupMessage") as! AlertPopupMessage
         alertCustomPopup.titleMessage = title!
@@ -22,6 +24,11 @@ extension UIViewController {
         alertCustomPopup.iconName = iconName.rawValue
         
         alertCustomPopup.modalPresentationStyle = .overFullScreen
+        
+        alertCustomPopup.complitionButtonAction = { buttonName in
+            completion?(buttonName)
+        }
+        
         self.present(alertCustomPopup, animated: true)
     }
     

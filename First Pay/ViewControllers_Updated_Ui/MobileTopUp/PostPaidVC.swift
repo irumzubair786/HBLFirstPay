@@ -126,7 +126,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         {
             topUpParentCompanyID = parentCompanyID ?? 0
         }
-        GlobalData.topup = "Postoaid"
+        GlobalData.topup = "Postpaid"
         NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
         
     }

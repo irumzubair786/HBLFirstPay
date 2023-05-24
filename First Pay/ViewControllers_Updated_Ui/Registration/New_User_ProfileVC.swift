@@ -48,14 +48,14 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         blurView.backgroundColor = UIColor.gray
         dismissKeyboard()
         TF_CnicNo.mode = .cnic
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         blurView.alpha = 0.6
         blurView.isHidden = true
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
         popviewView.isUserInteractionEnabled = true
         popviewView.addGestureRecognizer(tapGestureRecognizerr)
         toDate = TF_IssueDate.setPickerDate()
-       
+        
         toDate.maximumDate = Date()
         toDate.addTarget(self, action: #selector(self.tappedOnDate), for: .valueChanged)
         let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
@@ -64,63 +64,63 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         btn_next.isUserInteractionEnabled = true
         TF_CnicNo.addDoneButtonOnKeyboardWithAction { [self] in
             print("end editing")
-           
+            
             if self.TF_CnicNo.text?.count ?? 0 < 13
-                    {
+            {
                 self.lbl_InvalidCnic.isHidden = false
                 self.lbl_InvalidCnic.text = "Invalid Cnic"
-                        
-                    }
-
-            else if self.TF_CnicNo.text == ""
-                    {
-                self.lbl_InvalidCnic.isHidden = true
-                    }
                 
-                else
-                {
-                    self.lbl_InvalidCnic.isHidden = true
-                    cnic_flag = "true"
-                    self.getCnic_value = self.TF_CnicNo.text!
-                }
- 
+            }
+            
+            else if self.TF_CnicNo.text == ""
+            {
+                self.lbl_InvalidCnic.isHidden = true
+            }
+            
+            else
+            {
+                self.lbl_InvalidCnic.isHidden = true
+                cnic_flag = "true"
+                self.getCnic_value = self.TF_CnicNo.text!
+            }
+            
             self.TF_CnicNo.resignFirstResponder()
         }
     }
-   
-//    -------------------------
-//    Outlet
-//    -------------------------
+    
+    //    -------------------------
+    //    Outlet
+    //    -------------------------
     func showDatePicker(){
         //Formate Date
         datePicker.datePickerMode = .date
         datePicker.minimumDate = Calendar.current.date(byAdding: .year, value: -100, to: Date())
-       //ToolBar
-       let toolbar = UIToolbar();
-       toolbar.sizeToFit()
-       let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donedatePicker));
-       let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-      let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker));
-
-     toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
-
-      TF_IssueDate.inputAccessoryView = toolbar
+        //ToolBar
+        let toolbar = UIToolbar();
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donedatePicker));
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker));
+        
+        toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
+        
+        TF_IssueDate.inputAccessoryView = toolbar
         TF_IssueDate.inputView = datePicker
-
-     }
+        
+    }
     
     @objc func donedatePicker(){
-
-      let formatter = DateFormatter()
-      formatter.dateFormat = "DD/MM/YYY"
-      TF_IssueDate.text = formatter.string(from: datePicker.date)
-      self.view.endEditing(true)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "DD/MM/YYY"
+        TF_IssueDate.text = formatter.string(from: datePicker.date)
+        self.view.endEditing(true)
     }
-
+    
     @objc func cancelDatePicker(){
-       self.view.endEditing(true)
-     }
-   
+        self.view.endEditing(true)
+    }
+    
     
     var dateFrom = NSDate()
     var fromNewDateVar : Date?
@@ -142,9 +142,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         if sender == toDate {
             TF_IssueDate.text = stringDate
         }
-       
+        
     }
-
+    
     
     
     
@@ -174,7 +174,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     @IBOutlet weak var btn_Mname2: UIButton!
     @IBOutlet weak var lbl_SelectMName: UILabel!
     @IBOutlet weak var lbl_CnicVerify: UILabel!
-
+    
     @IBOutlet weak var btnContinue: UIButton!
     
     
@@ -191,15 +191,15 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     
     @IBAction func Actions_info(_ sender: UIButton) {
         
-    
+        
         AnimIn(Popview: popviewView)
-//        View_mothername.isHidden = false
+        //        View_mothername.isHidden = false
     }
     
     @IBAction func Action_MothernameNext(_ sender: UIButton) {
         blurView.isHidden = true
         View_mothername.isHidden = true
-           
+        
         motherName()
         
         
@@ -218,19 +218,19 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         if TF_CnicNo.text?.count == 0{
             self.showToast(title: "Please Enter CNIC NO")
             return
-
+            
         }
         if TF_IssueDate.text?.count == 0{
             self.showToast(title: "Please Enter Cnic Issue Date")
             return
-
+            
         }
         if TF_CityList.text?.count == 0{
             self.showToast(title: "Please Select City")
             return
-
+            
         }
-//
+        //
         else{
             if flagMother_nameselected == true
             {
@@ -245,37 +245,37 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         
     }
     @IBAction func Action_Continue(_ sender: UIButton) {
-     
+        
         if TF_CnicNo.text?.count == 0{
             self.showToast(title: "Please Enter CNIC NO")
             return
-
+            
         }
         if TF_IssueDate.text?.count == 0{
             self.showToast(title: "Please Enter Cnic Issue Date")
             return
-
+            
         }
         if TF_CityList.text?.count == 0{
             self.showToast(title: "Please Select City")
             return
-
+            
         }
-//
+        //
         else{
             
             
-                cnicVerification()
+            cnicVerification()
             
-          
+            
         }
-    
+        
     }
-   
+    
     @IBAction func Action_Mname1(_ sender: UIButton) {
         let image = UIImage(named: "Rectangle Orange")
         let emptyimage = UIImage(named: "Rectangle")
-       
+        
         btn_Mname1.setBackgroundImage(image, for: .normal)
         btn_Mname1.setTitleColor(.white, for: .normal)
         btn_Mname2.setBackgroundImage(emptyimage, for: .normal)
@@ -309,7 +309,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     @IBAction func Action_Mname3(_ sender: UIButton) {
         let image = UIImage(named: "Rectangle Orange")
         let emptyimage = UIImage(named: "Rectangle")
-       
+        
         btn_Mname3.setBackgroundImage(image, for: .normal)
         btn_Mname3.setTitleColor(.white, for: .normal)
         btn_Mname1.setBackgroundImage(emptyimage, for: .normal)
@@ -324,10 +324,10 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     }
     
     @IBAction func Action_Mname4(_ sender: UIButton) {
-      
+        
         let image = UIImage(named: "Rectangle Orange")
         let emptyimage = UIImage(named: "Rectangle")
-       
+        
         btn_Mname4.setBackgroundImage(image, for: .normal)
         btn_Mname4.setTitleColor(.white, for: .normal)
         btn_Mname1.setBackgroundImage(emptyimage, for: .normal)
@@ -343,84 +343,84 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     
     @IBAction func Action_HideMother_view(_ sender: UIButton) {
         
-   
-//        View_mothername.isHidden = true
-//        blurView.isHidden = true
+        
+        //        View_mothername.isHidden = true
+        //        blurView.isHidden = true
     }
     
     @IBAction func Action_issuedate(_ sender: UITextField) {
-//           showDatePicker()
-//        let datePickerObj: UIDatePicker = UIDatePicker()
-//        datePickerObj.datePickerMode = UIDatePickerMode.date
-//        sender.inputView = datePickerObj
-//        datePickerObj.maximumDate = datePickerObj.date
-//        datePickerObj.addTarget(self, action: #selector(datePickerValueChanged), for: UIControlEvents.valueChanged)
-////        dd-MM-yyy
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "DD/MM/YYYY"
-//        let newDate = dateFormatter.string(from: datePickerObj.date)
-//
-//        cinc_issuedateFlag = "true"
-//        getCnic_issueDateValue = self.TF_IssueDate.text!
-//        print("cnic issue date", self.getCnic_issueDateValue)
-////        Animout(Popview: popviewView)
-////
-////
-//        if #available(ios 13.4, *)
-//        {
-//            if #available(iOS 13.4, *) {
-//                datePickerObj.preferredDatePickerStyle = .wheels
-//            } else {
-//                // Fallback on earlier versions
-//            }
-//        }
+        //           showDatePicker()
+        //        let datePickerObj: UIDatePicker = UIDatePicker()
+        //        datePickerObj.datePickerMode = UIDatePickerMode.date
+        //        sender.inputView = datePickerObj
+        //        datePickerObj.maximumDate = datePickerObj.date
+        //        datePickerObj.addTarget(self, action: #selector(datePickerValueChanged), for: UIControlEvents.valueChanged)
+        ////        dd-MM-yyy
+        //        let dateFormatter = DateFormatter()
+        //        dateFormatter.dateFormat = "DD/MM/YYYY"
+        //        let newDate = dateFormatter.string(from: datePickerObj.date)
+        //
+        //        cinc_issuedateFlag = "true"
+        //        getCnic_issueDateValue = self.TF_IssueDate.text!
+        //        print("cnic issue date", self.getCnic_issueDateValue)
+        ////        Animout(Popview: popviewView)
+        ////
+        ////
+        //        if #available(ios 13.4, *)
+        //        {
+        //            if #available(iOS 13.4, *) {
+        //                datePickerObj.preferredDatePickerStyle = .wheels
+        //            } else {
+        //                // Fallback on earlier versions
+        //            }
+        //        }
         
     }
-//    @objc func datePickerValueChanged(sender: UIDatePicker) {
-//
-//        let dateFormatter = DateFormatter()
-//
-//        //        yyyy-MM-dd
-//        dateFormatter.dateFormat = "DD/MM/YYYY"
-//        TF_IssueDate.text = dateFormatter.string(from: sender.date)
-//        //   DataManager.instance.cnicIssueDate =  sender.date as NSDate
-//        DataManager.instance.cnicIssueDate =  TF_IssueDate.text
-//        cinc_issuedateFlag = "true"
-//
-//        getCnic_issueDateValue = self.TF_IssueDate.text!
-//        print("cnic issue date", self.getCnic_issueDateValue)
-//
-//    }
-//    func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
-//
-//        let inputFormatter = DateFormatter()
-//        inputFormatter.dateFormat = "DD/MM/YYYY"
-//
-//        if let date = inputFormatter.date(from: dateString) {
-//
-//            let outputFormatter = DateFormatter()
-//          outputFormatter.dateFormat = format
-//
-//            return outputFormatter.string(from: date)
-//        }
-//
-//        return nil
-//    }
-//
+    //    @objc func datePickerValueChanged(sender: UIDatePicker) {
+    //
+    //        let dateFormatter = DateFormatter()
+    //
+    //        //        yyyy-MM-dd
+    //        dateFormatter.dateFormat = "DD/MM/YYYY"
+    //        TF_IssueDate.text = dateFormatter.string(from: sender.date)
+    //        //   DataManager.instance.cnicIssueDate =  sender.date as NSDate
+    //        DataManager.instance.cnicIssueDate =  TF_IssueDate.text
+    //        cinc_issuedateFlag = "true"
+    //
+    //        getCnic_issueDateValue = self.TF_IssueDate.text!
+    //        print("cnic issue date", self.getCnic_issueDateValue)
+    //
+    //    }
+    //    func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
+    //
+    //        let inputFormatter = DateFormatter()
+    //        inputFormatter.dateFormat = "DD/MM/YYYY"
+    //
+    //        if let date = inputFormatter.date(from: dateString) {
+    //
+    //            let outputFormatter = DateFormatter()
+    //          outputFormatter.dateFormat = format
+    //
+    //            return outputFormatter.string(from: date)
+    //        }
+    //
+    //        return nil
+    //    }
+    //
     @IBAction func Dropdown_CityList(_ sender: DropDown) {
-       
+        
         
     }
     
     @IBAction func Action_termsCon(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "RegistrationProcess", bundle: nil)
-       //        let vc = storyboard.instantiateViewController(withIdentifier: "WebView_VC")
-       //        self.present(vc, animated: true)
+        //        let vc = storyboard.instantiateViewController(withIdentifier: "WebView_VC")
+        //        self.present(vc, animated: true)
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
-      vc.forHTML = true
+        vc.forHTML = true
         vc.forFaqs = false
         vc.forTerms = true
-//        self.present(vc, animated: true)
+        //        self.present(vc, animated: true)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -450,28 +450,28 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         {
             lbl_InvalidCnic.isHidden = true
         }
-//        if textField == TF_IssueDate
-////        {
-////            AnimIn(Popview: popviewView)
-//
-//
-////        }
-//        if textField == TF_CityList
-//        {
-////
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "City_selectionVC") as! City_selectionVC
-//
-////            self.present(vc, animated: true)
-//            self.navigationController?.pushViewController(vc, animated: false)
-//
-//
-//
-//        }
+        //        if textField == TF_IssueDate
+        ////        {
+        ////            AnimIn(Popview: popviewView)
+        //
+        //
+        ////        }
+        //        if textField == TF_CityList
+        //        {
+        ////
+        //            let vc = self.storyboard?.instantiateViewController(withIdentifier: "City_selectionVC") as! City_selectionVC
+        //
+        ////            self.present(vc, animated: true)
+        //            self.navigationController?.pushViewController(vc, animated: false)
+        //
+        //
+        //
+        //        }
         
         
         return true
     }
-   
+    
     func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
         
         let inputFormatter = DateFormatter()
@@ -498,7 +498,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                 lbl_InvalidCnic.text = "Invalid Cnic"
                 
             }
-
+            
             else if TF_CnicNo.text == ""
             {
                 lbl_InvalidCnic.isHidden = true
@@ -510,8 +510,8 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
             cnic_flag = "true"
             getCnic_value = TF_CnicNo.text!
         }
-       
-       
+        
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         if (TF_CnicNo.text?.count == 0) && (TF_IssueDate?.text?.count == 0)
@@ -527,19 +527,19 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
             let image = UIImage(named: "]greenarrow")
             btn_next_arrow.setImage(image, for: .normal)
         }
-       
+        
     }
-   
+    
     
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-         if TF_CnicNo.text == ""
+        if TF_CnicNo.text == ""
         {
             lbl_InvalidCnic.isHidden = true
         }
     }
     
-
+    
     @objc func PopUpHide(tapGestureRecognizer: UITapGestureRecognizer)
     {
         Animout(Popview: popviewView)
@@ -550,16 +550,16 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     @objc func City_view_show(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
-//              Animout(Popview: City_View)
-//
-//                blurView.isHidden = true
+        //              Animout(Popview: City_View)
+        //
+        //                blurView.isHidden = true
     }
     
     @IBAction func Action_dropdwon(_ sender: UIButton) {
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "City_selectionVC") as! City_selectionVC
-
-//            self.present(vc, animated: true)
+        
+        //            self.present(vc, animated: true)
         self.navigationController?.pushViewController(vc, animated: false)
         
     }
@@ -567,9 +567,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     @IBAction func Action_tfcity(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "City_selectionVC") as! City_selectionVC
         
-//                    self.present(vc, animated: true)
-                self.navigationController?.pushViewController(vc, animated: false)
-////
+        //                    self.present(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: false)
+        ////
         
     }
     
@@ -580,43 +580,43 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         if TF_CnicNo.text?.count == 0{
             self.showToast(title: "Please Enter CNIC NO")
             return
-           
+            
         }
         if TF_IssueDate.text?.count == 0{
             self.showToast(title: "Please Enter Cnic Issue Date")
             return
-           
+            
         }
         if TF_CityList.text?.count == 0{
             self.showToast(title: "Please Select City")
             return
-
+            
         }
         
         else{
-//            if flagMother_nameselected == true{
-                cnicVerification()
-//            }
-//            else
-//            {
-//                self.View_mothername.isHidden = true
-//                self.blurView.isHidden = true
-//            }
+            //            if flagMother_nameselected == true{
+            cnicVerification()
+            //            }
+            //            else
+            //            {
+            //                self.View_mothername.isHidden = true
+            //                self.blurView.isHidden = true
+            //            }
             
             
         }
         
         
-//        let vc = self.storyboard!.instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
-//      vc.forHTML = true
-//       vc.forFaqs = true
-//        vc.forTerms = true
-//        self.navigationController?.pushViewController(vc, animated: true)
+        //        let vc = self.storyboard!.instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
+        //      vc.forHTML = true
+        //       vc.forFaqs = true
+        //        vc.forTerms = true
+        //        self.navigationController?.pushViewController(vc, animated: true)
         
-//        let storyboard = UIStoryboard(name: "Stroyboard2_sub", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "WebView_VC")
-//        self.present(vc, animated: true)
-       
+        //        let storyboard = UIStoryboard(name: "Stroyboard2_sub", bundle: nil)
+        //        let vc = storyboard.instantiateViewController(withIdentifier: "WebView_VC")
+        //        self.present(vc, animated: true)
+        
     }
     
     
@@ -648,7 +648,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
-    
+        
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
@@ -658,28 +658,28 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<cnicVerficationModel>) in
-  
+            
             self.hideActivityIndicator()
             self.cnicVerificationObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.cnicVerificationObj?.responsecode == 2 || self.cnicVerificationObj?.responsecode == 1 {
                     if cnicVerificationObj?.data != nil{
-                
+                        
                         self.View_mothername.isHidden = false
                         
                         self.blurView.isHidden = false
                         flagMother_nameselected = false
-                       btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
+                        btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
                         btn_Mname2.setTitle(cnicVerificationObj?.data?.motherNamesList?[1], for: .normal)
-
-                          btn_Mname3.setTitle(cnicVerificationObj?.data?.motherNamesList?[2], for: .normal)
-
+                        
+                        btn_Mname3.setTitle(cnicVerificationObj?.data?.motherNamesList?[2], for: .normal)
+                        
                         btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
                     }
-                  
-
-
+                    
+                    
+                    
                 }
                 else{
                     
@@ -711,19 +711,19 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                         }
                         
                         
-//                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        //                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                 }
                 
-                    
-                   
-        }
+                
+                
+            }
         }
     }
-            
     
     
-//    MARK: API
+    
+    //    MARK: API
     private func  motherName() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -745,7 +745,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         cnicNumber = cnicNumber.replacingOccurrences(of: "_", with: "")
         DataManager.instance.userCnic = cnicNumber
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/customerKyc"
-
+        
         let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo": DataManager.instance.mobNo ,"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)", "cnic":      DataManager.instance.userCnic , "issueDate": TF_IssueDate.text!, "motherName": Selected_Mother_name,"cityId": GlobalData.User_CityId! as Any]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
@@ -764,40 +764,58 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                 
                 if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
                     if let message = self.genericObj?.messages {
-                        
-                    self.showAlert(title: message, message: "", completion: {
-//                        if message == "Customer Registered successfully"
-//                        if self.genericObj?.data != nil{
-                        
-                        UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
-                        print("Save user cnic  is ",DataManager.instance.userCnic)
-                        DataManager.instance.userCnic = DataManager.instance.userCnic!
-                        print("get cnic",DataManager.instance.userCnic)
-                        
+                        //MARK: - Shakeel Need to add Complition in alertCustomPopup for further action
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSucess) {_ in 
+                            //                        if message == "Customer Registered successfully"
+                            //                        if self.genericObj?.data != nil{
+                            
+                            UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
+                            print("Save user cnic  is ",DataManager.instance.userCnic)
+                            DataManager.instance.userCnic = DataManager.instance.userCnic!
+                            print("get cnic",DataManager.instance.userCnic)
+                            
                             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
                             UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
                             self.navigationController?.pushViewController(vc, animated: true)
-//                        }
+                            //                        }
+                            
+                            
+                            //                        }
+                        }
                         
-                           
-//                        }
-               })
-                    
-                }
+                        //                    self.showAlert(title: message, message: "", completion: {
+                        ////                        if message == "Customer Registered successfully"
+                        ////                        if self.genericObj?.data != nil{
+                        //
+                        //                        UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
+                        //                        print("Save user cnic  is ",DataManager.instance.userCnic)
+                        //                        DataManager.instance.userCnic = DataManager.instance.userCnic!
+                        //                        print("get cnic",DataManager.instance.userCnic)
+                        //
+                        //                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
+                        //                            UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
+                        //                            self.navigationController?.pushViewController(vc, animated: true)
+                        ////                        }
+                        //
+                        //
+                        ////                        }
+                        //               })
+                        
+                    }
                 }
                 else{
                     if let message = self.genericObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconSucess)
                     }
-                   
-                }
+                    
                 }
             }
-    
-           
+        }
+        
+        
         print(genericObj?.data)
         print(genericObj?.responsecode)
-            }
+    }
     
     
 }

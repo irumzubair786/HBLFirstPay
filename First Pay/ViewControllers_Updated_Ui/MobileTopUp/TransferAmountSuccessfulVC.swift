@@ -82,7 +82,7 @@ class TransferAmountSuccessfulVC: BaseClassVC {
         lblSendTo.text = phoneNumber
         lblSendBy.text = "FirstPay Account\(DataManager.instance.accountNo!)"
       
-        if GlobalData.topup == "MBP"
+        if GlobalData.topup == "Postpaid"
         {
             lblTransactionType.text = "Mobile Load Postpaid"
         }

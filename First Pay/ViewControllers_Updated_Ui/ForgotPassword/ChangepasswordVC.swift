@@ -74,14 +74,13 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
     @IBAction func buttonContinue(_ sender: UIButton) {
         if newPasswordTextfield.text?.count == 0 {
             self.showAlertCustomPopup(title: "",message: "password should be Alpha Numeric",iconName: .iconError)
-           
         }
         
         if newPasswordTextfield.text?.count == 0{
             self.showAlertCustomPopup(title: "",message: "password should be Alpha Numeric",iconName: .iconError)
         }
         if newPasswordTextfield.text != confirmPasswordTextfield.text! {
-           self.showAlertCustomPopup(title: "",message: "Password and Confirm Password not match",iconName: .iconError)
+            self.showAlertCustomPopup(title: "",message: "Password and Confirm Password not match",iconName: .iconError)
             return
         }
         
@@ -277,10 +276,9 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
                 }
             }
             else {
-                    if let message = self.genericObj?.messages{
-                self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-            }
-//
+                if let message = self.genericObj?.messages{
+                    self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+                }
             }
         }
     }

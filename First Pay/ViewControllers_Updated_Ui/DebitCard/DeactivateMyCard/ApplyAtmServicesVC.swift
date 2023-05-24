@@ -154,7 +154,6 @@ class ApplyAtmServicesVC: BaseClassVC {
                 else {
                     if let message = self.otpserviceobj?.messages{
                         self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
-                        
                     }
                 }
                 
