@@ -55,7 +55,32 @@ class AddCashMainVc: BaseClassVC {
     @IBOutlet weak var buttonGetLoan: UIButton!
     
     @IBAction func buttonGetLoan(_ sender: UIButton) {
-        nanoLoanEligibilityCheck()
+        getActiveLoan()
+    }
+    
+    var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
+        didSet {
+            
+            if modelGetActiveLoan?.data?.currentLoan.count ?? 0 > 0 {
+                self.openNanoLoan()
+            }
+            else {
+                nanoLoanEligibilityCheck()
+            }
+        }
+    }
+    func getActiveLoan() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)"
+        ]
+        APIs.postAPI(apiName: .getActiveLoan, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetActiveLoan = model
+        }
     }
     
     var modelNanoLoanEligibilityCheck: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? {
@@ -64,9 +89,7 @@ class AddCashMainVc: BaseClassVC {
                 showAlertCustomPopup(title: "Alert", message: modelNanoLoanEligibilityCheck?.messages ?? "", iconName: .iconError)
             }
             else {
-                let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
-                vc.isPushViewController = true
-                self.navigationController?.pushViewController(vc, animated: true)
+                openNanoLoan()
             }
         }
     }
@@ -84,6 +107,11 @@ class AddCashMainVc: BaseClassVC {
         }
     }
     
+    func openNanoLoan() {
+        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
+        vc.isPushViewController = true
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     private func getLinkAccounts() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
