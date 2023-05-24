@@ -247,6 +247,14 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
         if completed
         {
             currentIndex = pendingIndex
+            if currentIndex == 0 {
+                imgPostpaid.isHidden = true
+                imgPrepaid.isHidden = false
+            }
+            else if currentIndex == 1 {
+                imgPostpaid.isHidden = false
+                imgPrepaid.isHidden = true
+            }
             //                if let index = currentIndex
             //                {
             //                    //pageControl.currentPage = index
