@@ -26,7 +26,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         super.viewDidLoad()
         getBillPaymentCompanies()
         updateUi()
-//        TfmobileNumber.delegate = self
+        tfMobileNo.delegate = self
         textFieldOperator.delegate = self
         buttonContactList.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
@@ -34,15 +34,29 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         imgnextarrow.addGestureRecognizer(tapGestureRecognizerr)
         tfMobileNo.placeholder = "Enter Number "
         // Do any additional setup after loading the view.
+        self.tfMobileNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         NotificationCenter.default.removeObserver(self)
+        
         NotificationCenter.default.addObserver(self, selector:#selector(showSelectedDataPostpaid), name: Notification.Name("showSelectedDataPostpaid"),object: nil)
     }
     @objc func showSelectedDataPostpaid() {
-        textFieldOperator.text = GlobalData.Selected_operator
-        let image = UIImage(named:"]greenarrow")
-        imgnextarrow.image = image
-        imgnextarrow.isUserInteractionEnabled = true
-        buttonContinue.isUserInteractionEnabled = true
+        if tfMobileNo.text?.count == 11
+        {
+            textFieldOperator.text = GlobalData.Selected_operator
+            let image = UIImage(named:"]greenarrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named:"grayArrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+            
+        }
+       
     }
     func updateUi() {
         companyID = billCompanyObj?.companies?[0].code
@@ -90,6 +104,27 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
     }
     
+   
+    @objc func changeTextInTextField() {
+        if tfMobileNo.text?.count  != 11
+        {
+            let image = UIImage(named:"grayArrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+        }
+        if tfMobileNo.text?.count  == 11 && textFieldOperator.text?.count != 0
+        {
+            textFieldOperator.text = GlobalData.Selected_operator
+            let image = UIImage(named:"]greenarrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+        }
+        
+        
+        print("end editing")
+    }
     @IBAction func TfmobileNumber(_ sender: UITextField) {
         if tfMobileNo.text! == "" {
             return()

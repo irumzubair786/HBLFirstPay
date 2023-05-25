@@ -33,8 +33,8 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
 
         // Do any additional setup after loading the view.
     }
-    var minValue = 1
-    var maxValue = 10000
+    var minValue = 100
+    var maxValue = 1000
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var btnContinue: UIButton!
     @IBOutlet weak var amountTextField: UITextField!
@@ -143,10 +143,22 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         }
 
     }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == amountTextField
+         {
+            for i in myarr
+            {
+                i.isSeleccted = false
+                
+            }
+            collectionView.reloadData()
+         }
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let newLength:Int = (textField.text?.count)! + string.count - range.length
- 
+     
         if textField == amountTextField{
             return newLength <= 5
             
@@ -257,8 +269,9 @@ extension TransferAmountVc: UICollectionViewDelegate, UICollectionViewDataSource
             cell.btnAmount.setTitleColor(.white, for: .normal)
             ///
          
-            cell.backView.backgroundColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//            cell.btnAmount.borderColor = .clear
+            cell.btnAmount.backgroundColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+            cell.btnAmount.borderColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+            cell.btnAmount.cornerRadius = 12
             let setimg = UIImage(named: "")
             cell.btnAmount.setImage(setimg, for: .normal)
 
@@ -268,6 +281,7 @@ extension TransferAmountVc: UICollectionViewDelegate, UICollectionViewDataSource
         {
             cell.btnAmount.setTitleColor(.black, for: .normal)
             cell.btnAmount.backgroundColor = .clear
+          
             cell.backView.backgroundColor = .clear
             let setimg = UIImage(named: "")
             cell.btnAmount.setImage(setimg, for: .normal)

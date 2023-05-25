@@ -86,6 +86,7 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
         vc.parentCompanyID = topUpParentCompanyID
        
         vc.returnData? = {
+            
             NotificationCenter.default.post(name: Notification.Name("showSelectedDataPrePaid"), object: nil)
         }
         self.present(vc, animated: false)
