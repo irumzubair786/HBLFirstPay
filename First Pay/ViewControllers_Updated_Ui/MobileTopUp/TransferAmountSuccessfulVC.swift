@@ -73,10 +73,9 @@ class TransferAmountSuccessfulVC: BaseClassVC {
         
     }
     
-    func updateui()
-    {
+    func updateui() {
         
-        lblAmount.text = amount
+        lblAmount.text = "Rs. \(Int(amount!)?.twoDecimal() ?? "0")"
         lblFee.text = "Rs. 0.00 Charged"
         lblTransationId.text = Trascationid
         lblSendTo.text = phoneNumber

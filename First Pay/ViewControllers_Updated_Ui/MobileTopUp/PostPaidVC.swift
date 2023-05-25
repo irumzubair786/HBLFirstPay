@@ -48,6 +48,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
 @objc func removeFieldsPostpaid() {
     tfMobileNo.text = ""
     textFieldOperator.text = ""
+    changeTextInTextField()
 }
     @objc func showSelectedDataPostpaid() {
         if tfMobileNo.text?.count == 11
@@ -96,7 +97,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.post(name: Notification.Name("removeFieldsPrepaid"), object: nil)
+        
         
 //        if TfmobileNumber.text?.count != 0
 //        {
@@ -345,7 +346,6 @@ extension PostPaidVC: CNContactPickerDelegate {
         //  let name = "\(contact.givenName + contact.familyName)"
         let name = "\(contact.givenName) \(contact.familyName)"
         
-        self.tfMobileNo.text = name
         
         guard phoneNumberCount > 0 else {
             dismiss(animated: true)
@@ -353,9 +353,9 @@ extension PostPaidVC: CNContactPickerDelegate {
             return
         }
         
-        if phoneNumberCount == 1 {
+        if phoneNumberCount > 0 {
             setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
-            
+            self.tfMobileNo.text = contact.phoneNumbers[0].value.stringValue.getIntegerValue()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
             

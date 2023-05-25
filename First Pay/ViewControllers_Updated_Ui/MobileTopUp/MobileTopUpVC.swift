@@ -60,20 +60,18 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     @objc func removeFieldsPrepaid() {
         Tf_mobileNumber.text = ""
         selectOperator.text = ""
+        changeTextInTextField()
     }
     
     @objc func showSelectedDataPrePaid() {
-        if Tf_mobileNumber.text?.count == 11
-        {
+        if Tf_mobileNumber.text?.count == 11 {
             selectOperator.text = GlobalData.Selected_operator
-            
             let image = UIImage(named:"]greenarrow")
             img_next_arrow.image = image
             img_next_arrow.isUserInteractionEnabled = true
             btnContinue.isUserInteractionEnabled = true
         }
-        else
-        {
+        else {
             let image = UIImage(named:"grayArrow")
             img_next_arrow.image = image
             img_next_arrow.isUserInteractionEnabled = false
@@ -168,7 +166,11 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     }
    
     @IBAction func Action_Operator(_ sender: UIButton) {
-        if Tf_mobileNumber.text! == "" {
+        if Tf_mobileNumber.text! == "" || Tf_mobileNumber.text?.count ?? 0 < 11 {
+            
+            if Tf_mobileNumber.text?.count ?? 0 < 11 {
+                
+            }
             return()
         }
         if parentCompanyID == nil
@@ -206,7 +208,6 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
    
     }
     override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.post(name: Notification.Name("removeFieldsPostpaid"), object: nil)
 
 //        if Tf_mobileNumber.text?.count != 0 && selectOperator.text?.count !=  0
 //        {
@@ -434,18 +435,16 @@ extension MobileTopUpVC: CNContactPickerDelegate {
         let phoneNumberCount = contact.phoneNumbers.count
       //  let name = "\(contact.givenName + contact.familyName)"
         let name = "\(contact.givenName) \(contact.familyName)"
-        
-        self.Tf_mobileNumber.text = name
 
         guard phoneNumberCount > 0 else {
             dismiss(animated: true)
             //show pop up: "Selected contact does not have a number"
             return
         }
-
-        if phoneNumberCount == 1 {
+        if phoneNumberCount > 0 {
             setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
-
+            self.Tf_mobileNumber.text = contact.phoneNumbers[0].value.stringValue.getIntegerValue()
+            
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
 

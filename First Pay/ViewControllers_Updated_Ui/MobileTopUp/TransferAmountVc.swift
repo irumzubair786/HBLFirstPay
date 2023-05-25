@@ -30,8 +30,66 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         img_next_arrow.isUserInteractionEnabled = false
         appendArray()
         updateui()
+        self.amountTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
 
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func changeTextInTextField() {
+        for i in  myarr {
+            i.isSeleccted = false
+        }
+        setColorTextField(isFromChangeChar: true)
+    }
+
+    func setColorTextField(isFromChangeChar: Bool? = false) {
+        if myarr.count > 0 {
+            var text = amountTextField.text?.getIntegerValue()
+            if text == "" {
+                return
+            }
+            
+            var tempText = text?.components(separatedBy: ".").first as? String
+            if tempText == nil {
+                text = (amountTextField.text?.getIntegerValue())!
+            }
+            else {
+                text = tempText ?? ""
+            }
+            amountTextField.text = text
+            if amountTextField.text != "" {
+                text = amountTextField.text!.replacingOccurrences(of: "", with: "")
+                let minAmount = Int(myarr.first!.valueamount.getIntegerValue())! - 1
+                let maxAmount = (Int(myarr.last!.valueamount.getIntegerValue()) ?? 0) + 1
+
+                let selectedColor = (Int(text!)! > minAmount && Int(text!)! < maxAmount) ? UIColor.clrGreen : UIColor.clrLightRed
+                amountTextField.textColor = selectedColor
+                text = String(Int(text!)!.twoDecimal())
+                text = text?.components(separatedBy: ".").first as? String
+                amountTextField.text = text
+               // amountTextField.attributedText = attributedText(textField: amountTextField, withString: amountTextField.text!, boldString: text!, boldStringColor: selectedColor)
+                
+                lblAmountLimit.textColor = selectedColor
+                
+                if selectedColor == UIColor.clrGreen {
+                    let image = UIImage(named:"]greenarrow")
+                    img_next_arrow.image = image
+                    img_next_arrow.isUserInteractionEnabled = true
+                    btnContinue.isUserInteractionEnabled = true
+                    btn.isUserInteractionEnabled = true
+                }
+                else {
+                    let image = UIImage(named:"grayArrow")
+                    img_next_arrow.image = image
+                    img_next_arrow.isUserInteractionEnabled = false
+                    btnContinue.isUserInteractionEnabled = false
+                    btn.isUserInteractionEnabled = false
+                }
+            }
+        }
+        if isFromChangeChar! {
+            self.collectionView.reloadData()
+        }
     }
     var minValue = 100
     var maxValue = 1000
@@ -81,67 +139,37 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
        
     }
   
-
-    @objc func buttontaped(_sender:UIButton)
-    {
-        let tag = _sender.tag
+    @objc func buttontaped(indexPath: IndexPath) {
+        let tag = indexPath.item
         self.amountTextField.textColor = .gray
-                let cell = collectionView.cellForItem(at: IndexPath(row: tag, section: 0)) as! cellAmount
-                for i in  myarr{
-                    i.isSeleccted = false
-                }
+        let cell = collectionView.cellForItem(at: indexPath) as! cellAmount
+        for i in  myarr{
+            i.isSeleccted = false
+        }
         
-                self.myarr[tag].isSeleccted = true
-             cell.btnAmount.setTitleColor(.white, for: .normal)
+        self.myarr[tag].isSeleccted = true
+        cell.btnAmount.setTitleColor(.white, for: .normal)
         ///set title color here to white
-           let setimg = UIImage(named: "")
+        let setimg = UIImage(named: "")
         cell.btnAmount.backgroundColor = UIColor(hexString: "CC6801")
-//        cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+        //        cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
         cell.btnAmount.borderColor = UIColor.clear
-//        cell.btnAmount.borderColor = .clear
+        //        cell.btnAmount.borderColor = .clear
         let a = cell.btnAmount.currentTitle
         let x = a?.substring(from: 3)
-          amountTextField.text = x
-       
-            cell.btnAmount.setImage(setimg, for: .normal)
-            btnContinue.isUserInteractionEnabled = true
-            btn.isUserInteractionEnabled = true
-            let image = UIImage(named:"]greenarrow")
-            img_next_arrow.image = image
-            img_next_arrow.isUserInteractionEnabled = true
-            lblAmountLimit.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-            self.collectionView.reloadData()
+        amountTextField.text = x
         
-    
-        
-        
-}
+        cell.btnAmount.setImage(setimg, for: .normal)
+        btnContinue.isUserInteractionEnabled = true
+        btn.isUserInteractionEnabled = true
+        let image = UIImage(named:"]greenarrow")
+        img_next_arrow.image = image
+        img_next_arrow.isUserInteractionEnabled = true
+        lblAmountLimit.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+        self.collectionView.reloadData()
+    }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if amountTextField?.text ?? "" < "\(minValue)" ||  amountTextField?.text  ?? "" > "\(maxValue)"
-        {
-            let image = UIImage(named:"grayArrow")
-            img_next_arrow.image = image
-            img_next_arrow.isUserInteractionEnabled = false
-            btnContinue.isUserInteractionEnabled = false
-            btn.isUserInteractionEnabled = false
-            lblAmountLimit.textColor = UIColor(hexValue: 0xFF3932)
-            amountTextField.textColor = UIColor(hexValue: 0xFF3932)
-
-        }
-        else{
-            let image = UIImage(named:"]greenarrow")
-            img_next_arrow.image = image
-            img_next_arrow.isUserInteractionEnabled = true
-            btnContinue.isUserInteractionEnabled = true
-            btn.isUserInteractionEnabled = true
-
-            lblAmountLimit.textColor =  UIColor(red: 241/255, green: 147/255, blue: 0/255, alpha: 1)
-            amountTextField.textColor = .gray
-            self.collectionView.reloadData()
-            
-    
-        }
-
+        changeTextInTextField()
     }
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == amountTextField
@@ -241,7 +269,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     func navigatezToConfirmationVC()
     {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountConfirmationVc") as! TransferAmountConfirmationVc
-        vc.amount =  (amountTextField.text!)
+        vc.amount =  (amountTextField.text!.getIntegerValue())
         vc.phoneNumber = phoneNumber
         vc.modalPresentationStyle = .overFullScreen
         self.present(vc, animated: true)
@@ -274,8 +302,6 @@ extension TransferAmountVc: UICollectionViewDelegate, UICollectionViewDataSource
             cell.btnAmount.cornerRadius = 12
             let setimg = UIImage(named: "")
             cell.btnAmount.setImage(setimg, for: .normal)
-
-            
         }
         else
         {
@@ -286,7 +312,6 @@ extension TransferAmountVc: UICollectionViewDelegate, UICollectionViewDataSource
             let setimg = UIImage(named: "")
             cell.btnAmount.setImage(setimg, for: .normal)
         
-            
         }
         
         
@@ -298,7 +323,11 @@ extension TransferAmountVc: UICollectionViewDelegate, UICollectionViewDataSource
 
     }
 
-   
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! cellAmount
+        buttontaped(indexPath: indexPath)
+        setColorTextField()
+    }
     
 }
 class amount

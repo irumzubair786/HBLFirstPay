@@ -18,7 +18,12 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
     @IBOutlet weak var vcontainer: UIView!
     @IBOutlet weak var pagecontrol: UIPageControl!
     @IBOutlet weak var buttonPrepaid: UIButton!
+    
+
+    
+    
     @IBAction func buttonPrepaid(_ sender: Any) {
+        NotificationCenter.default.post(name: Notification.Name("removeFieldsPostpaid"), object: nil)
         currentIndex = currentIndex! - 1
         if currentIndex! < 0 {
             currentIndex = 0
@@ -39,6 +44,7 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
     }
     @IBOutlet weak var buttonPostpaid: UIButton!
     @IBAction func buttonPostpaid(_ sender: Any) {
+        NotificationCenter.default.post(name: Notification.Name("removeFieldsPrepaid"), object: nil)
         currentIndex = currentIndex! + 1
         if currentIndex! > 1 {
             currentIndex = 1
@@ -245,16 +251,17 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if completed
-        {
+        if completed {
             currentIndex = pendingIndex
             if currentIndex == 0 {
                 imgPostpaid.isHidden = true
                 imgPrepaid.isHidden = false
+                NotificationCenter.default.post(name: Notification.Name("removeFieldsPostpaid"), object: nil)
             }
             else if currentIndex == 1 {
                 imgPostpaid.isHidden = false
                 imgPrepaid.isHidden = true
+                NotificationCenter.default.post(name: Notification.Name("removeFieldsPrepaid"), object: nil)
             }
             //                if let index = currentIndex
             //                {

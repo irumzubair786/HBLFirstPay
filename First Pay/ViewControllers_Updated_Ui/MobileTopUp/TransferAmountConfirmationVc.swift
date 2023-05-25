@@ -40,15 +40,13 @@ class TransferAmountConfirmationVc: BaseClassVC {
     @IBOutlet weak var lblDateTime: UILabel!
     @IBOutlet weak var popupView: UIView!
     @IBOutlet weak var nextBtn: UIButton!
-    func updateUi()
-    {
-        lblAmount.text = "Rs. \(amount!)"
-        lblTotalAmount.text = "Rs. \(amount!)"
+    func updateUi(){
+        lblAmount.text = "Rs. \(Int(amount!)?.twoDecimal() ?? "0")"
+        lblTotalAmount.text = "Rs. \(Int(amount!)?.twoDecimal() ?? "0")"
         lblFee.text = "Rs. 0.00"
         lblRecipientPhoneNumber.text = phoneNumber
         lblOperator.text = GlobalData.Selected_operator
         lblTransactionType.text = GlobalData.topup
-        
     }
     
     
@@ -98,7 +96,7 @@ class TransferAmountConfirmationVc: BaseClassVC {
         showActivityIndicator()
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany":GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":self.amount!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":"","addBeneficiary":"","utilityBillCompanyId":GlobalData.Select_operator_id ?? ""] as [String : Any]
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany":GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":self.amount!.getIntegerValue(),"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":"","addBeneficiary":"","utilityBillCompanyId":GlobalData.Select_operator_id ?? ""] as [String : Any]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(result.apiAttribute1)
@@ -140,7 +138,7 @@ class TransferAmountConfirmationVc: BaseClassVC {
            
            let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountSuccessfulVC") as! TransferAmountSuccessfulVC
         vc.phoneNumber = phoneNumber
-        vc.amount = amount
+        vc.amount = amount?.getIntegerValue()
         vc.Trascationid = successmodelobj?.data?.authIdResponse
         vc.TransactionDate = successmodelobj?.data?.transDate
         
