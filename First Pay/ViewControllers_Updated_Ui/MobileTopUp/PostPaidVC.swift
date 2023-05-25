@@ -38,7 +38,17 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         NotificationCenter.default.removeObserver(self)
         
         NotificationCenter.default.addObserver(self, selector:#selector(showSelectedDataPostpaid), name: Notification.Name("showSelectedDataPostpaid"),object: nil)
-    }
+    
+    
+    NotificationCenter.default.addObserver(self, selector:#selector(removeFieldsPostpaid), name: Notification.Name("removeFieldsPostpaid"),object: nil)
+}
+    
+    
+
+@objc func removeFieldsPostpaid() {
+    tfMobileNo.text = ""
+    textFieldOperator.text = ""
+}
     @objc func showSelectedDataPostpaid() {
         if tfMobileNo.text?.count == 11
         {
@@ -86,6 +96,8 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.post(name: Notification.Name("removeFieldsPrepaid"), object: nil)
+        
 //        if TfmobileNumber.text?.count != 0
 //        {
 //            textFieldOperator.text = GlobalData.Selected_operator

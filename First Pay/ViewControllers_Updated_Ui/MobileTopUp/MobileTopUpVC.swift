@@ -25,6 +25,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     var companyCode: Int?
     var DueDate : String?
     var status: String?
+    
+    
     override func viewDidLoad() {
         
 //        Tf_mobileNumber.text = "03404601050"
@@ -51,6 +53,13 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector:#selector(showSelectedDataPrePaid), name: Notification.Name("showSelectedDataPrePaid"),object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector:#selector(removeFieldsPrepaid), name: Notification.Name("removeFieldsPrepaid"),object: nil)
+    }
+    
+    @objc func removeFieldsPrepaid() {
+        Tf_mobileNumber.text = ""
+        selectOperator.text = ""
     }
     
     @objc func showSelectedDataPrePaid() {
@@ -197,6 +206,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
    
     }
     override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.post(name: Notification.Name("removeFieldsPostpaid"), object: nil)
+
 //        if Tf_mobileNumber.text?.count != 0 && selectOperator.text?.count !=  0
 //        {
 //            selectOperator.text = GlobalData.Selected_operator
