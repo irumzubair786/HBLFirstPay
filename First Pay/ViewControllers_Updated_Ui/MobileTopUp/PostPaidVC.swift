@@ -24,6 +24,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     override func viewDidLoad() {
         tfMobileNo.isUserInteractionEnabled = true
         super.viewDidLoad()
+        contactPicker.delegate = self
         getBillPaymentCompanies()
         updateUi()
         tfMobileNo.delegate = self
@@ -179,7 +180,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
     }
     @IBAction func buttonContactList(_ sender: UIButton) {
-        contactPicker.delegate = self
+       
         self.present(contactPicker, animated: true, completion: nil)
         
     }
@@ -356,6 +357,14 @@ extension PostPaidVC: CNContactPickerDelegate {
         if phoneNumberCount > 0 {
 //            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
             self.tfMobileNo.text = contact.phoneNumbers[0].value.stringValue.getIntegerValue()
+       var tempMobileNo =  self.tfMobileNo.text?.replacingOccurrences(of: "+92", with: "0")
+            var a = tempMobileNo?.substring(to: 2)
+            if a == "92"
+            {
+                tempMobileNo =  tempMobileNo?.replacingOccurrences(of: a!, with: "0")
+            }
+            
+            tempMobileNo =  tempMobileNo?.replacingOccurrences(of: "+92", with: "0")
             self.showSelectedDataPostpaid()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
