@@ -68,7 +68,26 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
             buttonContinue.isUserInteractionEnabled = false
             
         }
-       
+    }
+    func submitButtonEnable() {
+        if tfMobileNo.text?.count == 11
+        {
+            if textFieldOperator.text == "" {
+                return
+            }
+            let image = UIImage(named:"]greenarrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named:"grayArrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+            
+        }
     }
     func updateUi() {
         companyID = billCompanyObj?.companies?[0].code
@@ -366,7 +385,7 @@ extension PostPaidVC: CNContactPickerDelegate {
             
             tempMobileNo =  tempMobileNo?.replacingOccurrences(of: "+92", with: "0")
             self.tfMobileNo.text = tempMobileNo
-            self.showSelectedDataPostpaid()
+            self.submitButtonEnable()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
             

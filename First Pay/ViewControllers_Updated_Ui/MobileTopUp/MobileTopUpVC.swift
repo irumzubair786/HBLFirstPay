@@ -77,7 +77,24 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             img_next_arrow.isUserInteractionEnabled = false
             btnContinue.isUserInteractionEnabled = false
         }
-        
+    }
+    
+    func submitButtonEnable() {
+        if Tf_mobileNumber.text?.count == 11 {
+            if selectOperator.text == "" {
+                return
+            }
+            let image = UIImage(named:"]greenarrow")
+            img_next_arrow.image = image
+            img_next_arrow.isUserInteractionEnabled = true
+            btnContinue.isUserInteractionEnabled = true
+        }
+        else {
+            let image = UIImage(named:"grayArrow")
+            img_next_arrow.image = image
+            img_next_arrow.isUserInteractionEnabled = false
+            btnContinue.isUserInteractionEnabled = false
+        }
     }
   
     @objc func changeTextInTextField() {
@@ -453,7 +470,7 @@ extension MobileTopUpVC: CNContactPickerDelegate {
                  
                  tempMobileNo =  tempMobileNo?.replacingOccurrences(of: "+92", with: "0")
                  self.Tf_mobileNumber.text = tempMobileNo
-            showSelectedDataPrePaid()
+            submitButtonEnable()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
 
