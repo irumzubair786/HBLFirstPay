@@ -20,6 +20,9 @@ class FakeLoginVc: UIViewController {
     var timer = Timer()
     var banaryyString =  [String]()
     override func viewDidLoad() {
+        
+        
+        
         super.viewDidLoad()
         btnHome.setTitle("", for: .normal)
         btnmain.setTitle("", for: .normal)
@@ -40,10 +43,12 @@ class FakeLoginVc: UIViewController {
     
     @IBOutlet weak var imageLogin: UIImageView!
     @IBAction func buttonLogin(_ sender: UIButton) {
+//        self.showAlertCustomPopup() { button in
+//            print(button)
+//            print(button)
+//        }
         if isfromHomwWithoutCreationAccount == false
         {
-            
-            
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -76,17 +81,17 @@ class FakeLoginVc: UIViewController {
     @IBOutlet weak var img: UIImageView!
     func updateUI()
     {
-       if  isfromHomwWithoutCreationAccount == true
-        {
-        imageLogin.image = UIImage(named: "Button copy")
-           
-          
-           
+        if let _ = UserDefaults.standard.value(forKey: "AlreadyRegistered") as? String {
+            isfromHomwWithoutCreationAccount = false
         }
-        else
-        {
+        else {
+            isfromHomwWithoutCreationAccount = true
+        }
+        if isfromHomwWithoutCreationAccount == true {
+            imageLogin.image = UIImage(named: "Button copy")
+        }
+        else {
             imageLogin.image = UIImage(named: "btnLogin")
-          
         }
     }
     func banapi ()

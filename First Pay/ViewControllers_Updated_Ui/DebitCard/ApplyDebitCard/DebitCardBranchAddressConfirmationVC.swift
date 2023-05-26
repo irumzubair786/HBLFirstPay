@@ -117,7 +117,6 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
                else {
                    if let message = self.genericObj?.messages{
                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                       
                    }
                }
            }

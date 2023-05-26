@@ -26,7 +26,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         super.viewDidLoad()
         getBillPaymentCompanies()
         updateUi()
-//        TfmobileNumber.delegate = self
+        tfMobileNo.delegate = self
         textFieldOperator.delegate = self
         buttonContactList.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
@@ -34,15 +34,40 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         imgnextarrow.addGestureRecognizer(tapGestureRecognizerr)
         tfMobileNo.placeholder = "Enter Number "
         // Do any additional setup after loading the view.
+        self.tfMobileNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         NotificationCenter.default.removeObserver(self)
+        
         NotificationCenter.default.addObserver(self, selector:#selector(showSelectedDataPostpaid), name: Notification.Name("showSelectedDataPostpaid"),object: nil)
-    }
+    
+    
+    NotificationCenter.default.addObserver(self, selector:#selector(removeFieldsPostpaid), name: Notification.Name("removeFieldsPostpaid"),object: nil)
+}
+    
+    
+
+@objc func removeFieldsPostpaid() {
+    tfMobileNo.text = ""
+    textFieldOperator.text = ""
+    changeTextInTextField()
+}
     @objc func showSelectedDataPostpaid() {
-        textFieldOperator.text = GlobalData.Selected_operator
-        let image = UIImage(named:"]greenarrow")
-        imgnextarrow.image = image
-        imgnextarrow.isUserInteractionEnabled = true
-        buttonContinue.isUserInteractionEnabled = true
+        if tfMobileNo.text?.count == 11
+        {
+            textFieldOperator.text = GlobalData.Selected_operator
+            let image = UIImage(named:"]greenarrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named:"grayArrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+            
+        }
+       
     }
     func updateUi() {
         companyID = billCompanyObj?.companies?[0].code
@@ -72,6 +97,8 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        
 //        if TfmobileNumber.text?.count != 0
 //        {
 //            textFieldOperator.text = GlobalData.Selected_operator
@@ -90,6 +117,27 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
     }
     
+   
+    @objc func changeTextInTextField() {
+        if tfMobileNo.text?.count  != 11
+        {
+            let image = UIImage(named:"grayArrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+        }
+        if tfMobileNo.text?.count  == 11 && textFieldOperator.text?.count != 0
+        {
+            textFieldOperator.text = GlobalData.Selected_operator
+            let image = UIImage(named:"]greenarrow")
+            imgnextarrow.image = image
+            imgnextarrow.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+        }
+        
+        
+        print("end editing")
+    }
     @IBAction func TfmobileNumber(_ sender: UITextField) {
         if tfMobileNo.text! == "" {
             return()
@@ -126,7 +174,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         {
             topUpParentCompanyID = parentCompanyID ?? 0
         }
-        GlobalData.topup = "Postoaid"
+        GlobalData.topup = "Postpaid"
         NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
         
     }
@@ -298,7 +346,6 @@ extension PostPaidVC: CNContactPickerDelegate {
         //  let name = "\(contact.givenName + contact.familyName)"
         let name = "\(contact.givenName) \(contact.familyName)"
         
-        self.tfMobileNo.text = name
         
         guard phoneNumberCount > 0 else {
             dismiss(animated: true)
@@ -306,9 +353,9 @@ extension PostPaidVC: CNContactPickerDelegate {
             return
         }
         
-        if phoneNumberCount == 1 {
+        if phoneNumberCount > 0 {
             setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
-            
+            self.tfMobileNo.text = contact.phoneNumbers[0].value.stringValue.getIntegerValue()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
             

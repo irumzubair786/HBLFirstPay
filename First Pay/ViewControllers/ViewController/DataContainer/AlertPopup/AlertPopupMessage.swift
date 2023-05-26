@@ -17,45 +17,30 @@ class AlertPopupMessage: UIViewController {
     @IBOutlet weak var viewButtonOne: UIView!
     @IBOutlet weak var viewButtonOneInner: UIView!
     @IBOutlet weak var labelButtonOne: UILabel!
-
     @IBOutlet weak var buttonOne: UIButton!
-    @IBAction func buttonOne(_ sender: Any) {
-        buttonPressed(buttonNumber: 0)
-    }
+    
+    
     
     @IBOutlet weak var viewButtonTwo: UIView!
     @IBOutlet weak var viewButtonTwoInner: UIView!
     @IBOutlet weak var labelButtonTwo: UILabel!
     @IBOutlet weak var buttonTwo: UIButton!
-    @IBAction func buttonTwo(_ sender: Any) {
-        buttonPressed(buttonNumber: 1)
-    }
     
     @IBOutlet weak var viewButtonThree: UIView!
     @IBOutlet weak var viewButtonThreeInner: UIView!
     @IBOutlet weak var labelButtonThree: UILabel!
     @IBOutlet weak var buttonThree: UIButton!
-    @IBAction func buttonThree(_ sender: Any) {
-        buttonPressed(buttonNumber: 2)
-    }
-
+    
     @IBOutlet weak var imageViewMessageIcon: UIImageView!
     @IBOutlet weak var viewButtonFour: UIView!
     @IBOutlet weak var viewButtonFourInner: UIView!
     @IBOutlet weak var labelButtonFour: UILabel!
     @IBOutlet weak var buttonFour: UIButton!
-    @IBAction func buttonFour(_ sender: Any) {
-        buttonPressed(buttonNumber: 3)
-    }
-    
     
     @IBOutlet weak var viewButtonFive: UIView!
     @IBOutlet weak var viewButtonFiveInner: UIView!
     @IBOutlet weak var labelButtonFive: UILabel!
     @IBOutlet weak var buttonFive: UIButton!
-    @IBAction func buttonFive(_ sender: Any) {
-        buttonPressed(buttonNumber: 4)
-    }
     
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelErrorCode: UILabel!
@@ -72,6 +57,7 @@ class AlertPopupMessage: UIViewController {
 //    ]
     var arrayButtonNames = [[String: AnyObject]]()
     var complitionButtonAction: ((String)->())!
+    
     var iconName = ""
     
     override func viewDidAppear(_ animated: Bool) {
@@ -79,6 +65,7 @@ class AlertPopupMessage: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+
         viewBackGround.radius(radius: 40)
         setUISetting()
         
@@ -94,7 +81,21 @@ class AlertPopupMessage: UIViewController {
         
         
     }
-    
+    @IBAction func buttonFive(_ sender: Any) {
+        buttonPressed(buttonNumber: 4)
+    }
+    @IBAction func buttonFour(_ sender: Any) {
+        buttonPressed(buttonNumber: 3)
+    }
+    @IBAction func buttonThree(_ sender: Any) {
+        buttonPressed(buttonNumber: 2)
+    }
+    @IBAction func buttonTwo(_ sender: Any) {
+        buttonPressed(buttonNumber: 1)
+    }
+    @IBAction func buttonOne(_ sender: Any) {
+        buttonPressed(buttonNumber: 0)
+    }
     
     func setUISetting() {
         viewButtonTwo.isHidden = true
@@ -164,9 +165,10 @@ class AlertPopupMessage: UIViewController {
         let buttonName = self.arrayButtonNames[buttonNumber]["buttonName"] as? String ?? "Error Button"
         self.view.backgroundColor = .clear
         view.viewWithTag(999)?.removeFromSuperview()
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.complitionButtonAction?(buttonName)
             self.dismiss(animated: true)
+            self.complitionButtonAction?(buttonName)
         }
     }
     

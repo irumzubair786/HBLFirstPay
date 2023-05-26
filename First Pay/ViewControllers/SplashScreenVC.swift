@@ -14,7 +14,7 @@ class SplashScreenVC: UIViewController {
         var counter = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+       print("appear ")
         imgsplash.image = ary[counter]
              DispatchQueue.main.async {
                  self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)

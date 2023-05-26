@@ -27,6 +27,14 @@ extension String {
             Set("1234567890.,".characters)
         return String(self.characters.filter {okayChars.contains($0) })
     }
+    
+    func getIntegerValue() -> String {
+        //let okayChars : Set<Character> =
+//            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_".characters)
+        let okayChars : Set<Character> =
+            Set("1234567890".characters)
+        return String(self.characters.filter {okayChars.contains($0) })
+    }
 }
 extension Double {
     func twoDecimal() -> String {

@@ -369,6 +369,7 @@ class BaseClassVC: UIViewController {
         DataManager.instance.imei = nil
         DataManager.instance.Latitude = nil
         DataManager.instance.Longitude = nil
+        UserDefaults.standard.set("true", forKey: "AlreadyRegistered")
         CheckLanguage = UserDefaults.standard.string(forKey: "language-Code") ?? "en"
 //            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginPinVC") as! LoginPinVC
 //            self.navigationController?.pushViewController(vc, animated: true)
