@@ -1090,7 +1090,7 @@
                                         <color key="textColor" red="0.0" green="0.80000000000000004" blue="0.58823529411764708" alpha="0.5628139673" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="M O B I L E  L O A D   A M O U N T" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="obN-av-TVi">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOTAL  A M O U N T" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="obN-av-TVi">
                                         <rect key="frame" x="64" y="39.5" width="255" height="23"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="255" id="khl-0S-qJg"/>
@@ -1228,6 +1228,7 @@
                                     <constraint firstAttribute="trailing" secondItem="Gq4-Kw-YlI" secondAttribute="trailing" constant="20" id="dib-SF-9qc"/>
                                     <constraint firstAttribute="trailing" secondItem="cSN-wg-RVI" secondAttribute="trailing" constant="20" id="gia-Rk-bu0"/>
                                     <constraint firstItem="IEO-5O-OY6" firstAttribute="top" secondItem="4vZ-WF-ldX" secondAttribute="top" id="glB-wB-NGH"/>
+                                    <constraint firstAttribute="height" constant="236" id="gql-Ru-aML"/>
                                     <constraint firstItem="FFP-iC-KRX" firstAttribute="leading" secondItem="Nlb-2O-11O" secondAttribute="leading" constant="16" id="kn0-h1-gGM"/>
                                     <constraint firstItem="4U4-o4-OdH" firstAttribute="top" secondItem="FFP-iC-KRX" secondAttribute="bottom" constant="21" id="ojt-bj-nnB"/>
                                     <constraint firstItem="4vZ-WF-ldX" firstAttribute="leading" secondItem="Nlb-2O-11O" secondAttribute="leading" constant="16" id="pYt-fk-dgi"/>
@@ -1241,53 +1242,68 @@
                                     <constraint firstAttribute="height" constant="27" id="Kep-tT-gnx"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kcC-ja-Zq7">
-                                <rect key="frame" x="39" y="506" width="260" height="69"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCe-er-6F6">
+                                <rect key="frame" x="40" y="538" width="295" height="69"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kcC-ja-Zq7">
+                                        <rect key="frame" x="0.0" y="0.0" width="295" height="69"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="69" id="XNn-Al-yDc"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="  CONFIRM">
+                                            <backgroundConfiguration key="background" image="Background"/>
+                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="15"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" systemColor="systemGreenColor"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="Continue:" destination="2oW-kv-f4X" eventType="touchUpInside" id="rbq-hj-t6P"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYf-mV-VN8">
+                                        <rect key="frame" x="231" y="7" width="50" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="H8h-8e-NTy"/>
+                                            <constraint firstAttribute="width" constant="50" id="vWT-BM-Kg5"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <backgroundConfiguration key="background" image="]greenarrow"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" systemColor="systemGreenColor"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="Continue:" destination="2oW-kv-f4X" eventType="touchUpInside" id="FwW-BS-YWW"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="69" id="XNn-Al-yDc"/>
+                                    <constraint firstItem="nYf-mV-VN8" firstAttribute="top" secondItem="kcC-ja-Zq7" secondAttribute="top" constant="7" id="2Eh-ea-dbK"/>
+                                    <constraint firstAttribute="trailing" secondItem="kcC-ja-Zq7" secondAttribute="trailing" id="EeV-2s-xkE"/>
+                                    <constraint firstAttribute="height" constant="69" id="Mhg-Dv-RG1"/>
+                                    <constraint firstItem="kcC-ja-Zq7" firstAttribute="top" secondItem="xCe-er-6F6" secondAttribute="top" id="Stf-Ic-bnh"/>
+                                    <constraint firstItem="nYf-mV-VN8" firstAttribute="leading" secondItem="kcC-ja-Zq7" secondAttribute="trailing" constant="-64" id="Svh-wN-Db1"/>
+                                    <constraint firstAttribute="bottom" secondItem="kcC-ja-Zq7" secondAttribute="bottom" id="Z9B-zU-xQO"/>
+                                    <constraint firstItem="kcC-ja-Zq7" firstAttribute="leading" secondItem="xCe-er-6F6" secondAttribute="leading" id="jUB-4v-cyF"/>
                                 </constraints>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="  CONFIRM">
-                                    <backgroundConfiguration key="background" image="Background"/>
-                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="15"/>
-                                </buttonConfiguration>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="16"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" systemColor="systemGreenColor"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="Continue:" destination="2oW-kv-f4X" eventType="touchUpInside" id="rbq-hj-t6P"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYf-mV-VN8">
-                                <rect key="frame" x="235" y="513" width="50" height="50"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="H8h-8e-NTy"/>
-                                    <constraint firstAttribute="width" constant="50" id="vWT-BM-Kg5"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
-                                    <backgroundConfiguration key="background" image="]greenarrow"/>
-                                </buttonConfiguration>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="16"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" systemColor="systemGreenColor"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="Continue:" destination="2oW-kv-f4X" eventType="touchUpInside" id="FwW-BS-YWW"/>
-                                </connections>
-                            </button>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="7hq-cv-m7g"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1299,18 +1315,15 @@
                             <constraint firstItem="4vZ-WF-ldX" firstAttribute="top" secondItem="z0y-o7-Ig7" secondAttribute="bottom" constant="-5" id="GJ3-sM-Lmu"/>
                             <constraint firstItem="Nlb-2O-11O" firstAttribute="leading" secondItem="7hq-cv-m7g" secondAttribute="leading" constant="5" id="J8F-ry-BJm"/>
                             <constraint firstItem="Nlb-2O-11O" firstAttribute="trailing" secondItem="7hq-cv-m7g" secondAttribute="trailing" constant="5" id="KSW-d7-cU2"/>
-                            <constraint firstItem="kcC-ja-Zq7" firstAttribute="top" secondItem="Nlb-2O-11O" secondAttribute="bottom" constant="8" id="NmK-1r-4Ey"/>
-                            <constraint firstItem="nYf-mV-VN8" firstAttribute="top" secondItem="kcC-ja-Zq7" secondAttribute="top" constant="7" id="Q45-O4-W8X"/>
+                            <constraint firstItem="xCe-er-6F6" firstAttribute="top" secondItem="Nlb-2O-11O" secondAttribute="bottom" constant="40" id="PTd-4H-aE7"/>
                             <constraint firstItem="z0y-o7-Ig7" firstAttribute="top" secondItem="WDo-eE-j2A" secondAttribute="bottom" constant="-7" id="Z6e-mr-DfO"/>
                             <constraint firstItem="Rej-3t-yL7" firstAttribute="trailing" secondItem="7hq-cv-m7g" secondAttribute="trailing" id="bTe-Og-Ckf"/>
+                            <constraint firstItem="7hq-cv-m7g" firstAttribute="trailing" secondItem="xCe-er-6F6" secondAttribute="trailing" constant="40" id="cuo-XW-hm2"/>
                             <constraint firstItem="7hq-cv-m7g" firstAttribute="trailing" secondItem="z0y-o7-Ig7" secondAttribute="trailing" id="dkC-we-CZl"/>
                             <constraint firstItem="Rej-3t-yL7" firstAttribute="top" secondItem="H24-TY-5AP" secondAttribute="bottom" constant="8" symbolic="YES" id="hn6-Bk-oXc"/>
                             <constraint firstItem="Nlb-2O-11O" firstAttribute="top" secondItem="Rej-3t-yL7" secondAttribute="bottom" constant="5" id="kpG-Vv-mbR"/>
                             <constraint firstItem="Rej-3t-yL7" firstAttribute="leading" secondItem="7hq-cv-m7g" secondAttribute="leading" id="mip-ob-yyB"/>
-                            <constraint firstItem="7hq-cv-m7g" firstAttribute="trailing" secondItem="kcC-ja-Zq7" secondAttribute="trailing" constant="76" id="nXK-vE-0cr"/>
-                            <constraint firstItem="nYf-mV-VN8" firstAttribute="leading" secondItem="kcC-ja-Zq7" secondAttribute="trailing" constant="-64" id="vf2-Dn-ab7"/>
-                            <constraint firstItem="kcC-ja-Zq7" firstAttribute="leading" secondItem="7hq-cv-m7g" secondAttribute="leading" constant="39" id="wyX-Cl-bH8"/>
-                            <constraint firstAttribute="bottom" secondItem="Nlb-2O-11O" secondAttribute="bottom" constant="169" id="y2B-D5-93W"/>
+                            <constraint firstItem="xCe-er-6F6" firstAttribute="leading" secondItem="7hq-cv-m7g" secondAttribute="leading" constant="40" id="rMQ-rE-2jw"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="375" height="667"/>
