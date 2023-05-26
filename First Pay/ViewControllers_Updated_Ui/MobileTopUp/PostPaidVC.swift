@@ -356,7 +356,7 @@ extension PostPaidVC: CNContactPickerDelegate {
         if phoneNumberCount > 0 {
 //            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
             self.tfMobileNo.text = contact.phoneNumbers[0].value.stringValue.getIntegerValue()
-            showSelectedDataPrePaid()
+            self.showSelectedDataPostpaid()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
             

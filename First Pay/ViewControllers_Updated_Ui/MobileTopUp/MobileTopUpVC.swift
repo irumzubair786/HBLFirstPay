@@ -451,7 +451,7 @@ extension MobileTopUpVC: CNContactPickerDelegate {
             for i in 0...phoneNumberCount-1 {
                 let phoneAction = UIAlertAction(title: contact.phoneNumbers[i].value.stringValue, style: .default, handler: {
                 alert -> Void in
-                    self.setNumberFromContact(contactNumber: contact.phoneNumbers[i].value.stringValue)
+//                    self.setNumberFromContact(contactNumber: contact.phoneNumbers[i].value.stringValue)
                 })
                 alertController.addAction(phoneAction)
             }
