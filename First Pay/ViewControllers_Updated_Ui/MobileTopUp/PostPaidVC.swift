@@ -365,6 +365,7 @@ extension PostPaidVC: CNContactPickerDelegate {
             }
             
             tempMobileNo =  tempMobileNo?.replacingOccurrences(of: "+92", with: "0")
+            self.tfMobileNo.text = tempMobileNo
             self.showSelectedDataPostpaid()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)

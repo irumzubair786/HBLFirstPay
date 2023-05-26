@@ -444,6 +444,15 @@ extension MobileTopUpVC: CNContactPickerDelegate {
         if phoneNumberCount > 0 {
 //            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
             self.Tf_mobileNumber.text = contact.phoneNumbers[0].value.stringValue.getIntegerValue()
+            var tempMobileNo =  self.Tf_mobileNumber.text?.replacingOccurrences(of: "+92", with: "0")
+                 var a = tempMobileNo?.substring(to: 2)
+                 if a == "92"
+                 {
+                     tempMobileNo =  tempMobileNo?.replacingOccurrences(of: a!, with: "0")
+                 }
+                 
+                 tempMobileNo =  tempMobileNo?.replacingOccurrences(of: "+92", with: "0")
+                 self.Tf_mobileNumber.text = tempMobileNo
             showSelectedDataPrePaid()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
