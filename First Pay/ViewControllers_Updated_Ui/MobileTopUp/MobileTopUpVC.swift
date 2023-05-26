@@ -442,9 +442,9 @@ extension MobileTopUpVC: CNContactPickerDelegate {
             return
         }
         if phoneNumberCount > 0 {
-            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
+//            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
             self.Tf_mobileNumber.text = contact.phoneNumbers[0].value.stringValue.getIntegerValue()
-            
+            showSelectedDataPrePaid()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
 

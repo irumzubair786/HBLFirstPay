@@ -354,15 +354,16 @@ extension PostPaidVC: CNContactPickerDelegate {
         }
         
         if phoneNumberCount > 0 {
-            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
+//            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
             self.tfMobileNo.text = contact.phoneNumbers[0].value.stringValue.getIntegerValue()
+            showSelectedDataPrePaid()
         } else {
             let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
             
             for i in 0...phoneNumberCount-1 {
                 let phoneAction = UIAlertAction(title: contact.phoneNumbers[i].value.stringValue, style: .default, handler: {
                     alert -> Void in
-                    self.setNumberFromContact(contactNumber: contact.phoneNumbers[i].value.stringValue)
+//                    self.setNumberFromContact(contactNumber: contact.phoneNumbers[i].value.stringValue)
                 })
                 alertController.addAction(phoneAction)
             }
