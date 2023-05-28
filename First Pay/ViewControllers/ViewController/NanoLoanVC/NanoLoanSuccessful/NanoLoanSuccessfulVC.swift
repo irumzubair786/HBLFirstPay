@@ -49,7 +49,8 @@ class NanoLoanSuccessfullVC: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        FBEvents.logEvent(title: .Loans_applyconfirm_success)
+        FaceBookEvents.logEvent(title: .Loans_applyconfirm_success)
         viewBackGroundHint.radius()
     }
     @IBAction func buttonCancel(_ sender: Any) {

@@ -108,6 +108,7 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
            self.genericObj = response.result.value
            if response.response?.statusCode == 200 {
                FBEvents.logEvent(title: .Debit_orderconfirm_success)
+               FaceBookEvents.logEvent(title: .Debit_orderconfirm_success)
 
                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
                    self.blurview.isHidden = false

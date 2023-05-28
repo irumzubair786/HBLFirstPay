@@ -43,6 +43,8 @@ class NanoLoanRepayConfirmationVC: UIViewController {
                 self.showAlertCustomPopup(title: "Alert", message: modelPayActiveLoan?.messages ?? "Empty Message", iconName: .iconError, buttonNames:  [buttonFirst] as? [[String: AnyObject]])
             }
             else {
+                FBEvents.logEvent(title: .Loans_repayconfirm_success)
+                FaceBookEvents.logEvent(title: .Loans_repayconfirm_success)
                 self.openNanoLoanRepaySucessfullVC()
             }
         }
@@ -73,6 +75,8 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .Loans_repayconfirm_landing)
+        FaceBookEvents.logEvent(title: .Loans_repayconfirm_landing)
         viewBackGroundTotalAmount.radius()
         viewBackGroundRepayNowButton.circle()
     }

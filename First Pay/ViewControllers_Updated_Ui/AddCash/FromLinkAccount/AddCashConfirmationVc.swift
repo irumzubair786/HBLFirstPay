@@ -39,6 +39,8 @@ class AddCashConfirmationVc: BaseClassVC {
     
     
     @IBAction func buttonContinue(_ sender: UIButton) {
+        FBEvents.logEvent(title: .Transactions_active)
+        FaceBookEvents.logEvent(title: .Transactions_active)
         self.initiateAddCashFT()
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)

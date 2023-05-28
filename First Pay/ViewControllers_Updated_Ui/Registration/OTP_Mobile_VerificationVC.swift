@@ -536,6 +536,8 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
                 self.mobileRegistrationObj = response.result.value
                 if response.response?.statusCode == 200 {
                     FBEvents.logEvent(title: .Signup_login_success)
+                    FaceBookEvents.logEvent(title: .Signup_login_success)
+
                     if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
                         if let accessToken = self.mobileRegistrationObj?.data?.token{
                             DataManager.instance.AuthToken = accessToken
@@ -563,6 +565,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
                 else {
                     if let message = self.mobileRegistrationObj?.messages {
                         FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
+                        FBEvents.logEvent(title: .Signup_login_failure, failureReason: message)
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                     else {

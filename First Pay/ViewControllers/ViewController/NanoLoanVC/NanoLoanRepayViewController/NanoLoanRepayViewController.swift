@@ -98,7 +98,8 @@ class NanoLoanRepayViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        FBEvents.logEvent(title: .Loans_repay_landing)
+        FaceBookEvents.logEvent(title: .Loans_repay_landing)
         // Do any additional setup after loading the view.
         
         viewApplyButton.circle()

@@ -35,8 +35,8 @@ target 'First Pay' do
     pod 'SDWebImage', '~> 4.3'
   pod 'Kingfisher', '~> 4.0'
   pod 'GoogleMaps'
-  pod 'GooglePlaces'
-
+  
+  
   
   #pod 'GoogleMLKit/BarcodeScanning'
   #pod 'GoogleMLKit/TextRecognition'

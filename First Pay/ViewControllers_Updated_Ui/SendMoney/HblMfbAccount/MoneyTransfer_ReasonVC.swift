@@ -23,6 +23,9 @@ class MoneyTransfer_ReasonVC: BaseClassVC {
     var Seclected_Rzn :String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .SendMoney_category_selection)
+        FaceBookEvents.logEvent(title: .SendMoney_category_selection)
+        
         tableView.delegate = self
         tableView.dataSource = self
 //        getReasonsForTrans()

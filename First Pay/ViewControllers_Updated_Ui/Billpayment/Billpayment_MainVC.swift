@@ -15,6 +15,9 @@ class Billpayment_MainVC: BaseClassVC {
     var BillcompanyID : Int?
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .PayBills_category_selection)
+        FaceBookEvents.logEvent(title: .PayBills_category_selection)
+        
         tableview.delegate = self
         tableview.dataSource = self
         tableview.rowHeight = 80

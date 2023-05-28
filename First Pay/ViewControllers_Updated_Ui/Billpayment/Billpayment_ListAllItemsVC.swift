@@ -131,6 +131,9 @@ extension Billpayment_ListAllItemsVC: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
         Selected_Company = (filteredData[indexPath.row].name)
+        FBEvents.logEvent(title: .PayBills_company_selection)
+        FaceBookEvents.logEvent(title: .PayBills_company_selection)
+
         for i in getClassBillComapny
         {
             if i.name == Selected_Company

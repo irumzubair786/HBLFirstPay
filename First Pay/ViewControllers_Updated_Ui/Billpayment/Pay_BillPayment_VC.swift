@@ -17,6 +17,8 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
     var billtransactionOBj : BillAPiResponse?
     var utilityBillCompany:String?
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .PayBills_successrecept_landing)
+        FaceBookEvents.logEvent(title: .PayBills_successrecept_landing)
         super.viewDidLoad()
         blurView.isHidden = true
         back.setTitle("", for: .normal)

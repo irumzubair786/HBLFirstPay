@@ -27,6 +27,9 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
     override func viewDidLoad() {
         super.viewDidLoad()
       
+        FBEvents.logEvent(title: .SendMoney_category_selection)
+        FaceBookEvents.logEvent(title: .SendMoney_category_selection)
+        
         btnCross.setTitle("", for: .normal)
         btnDownlload.setTitle("", for: .normal)
         btnShare.setTitle("", for: .normal)

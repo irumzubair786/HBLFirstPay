@@ -15,6 +15,9 @@ class SendMoney_MainVc: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .SendMoney_category_selection)
+        FaceBookEvents.logEvent(title: .SendMoney_category_selection)
+        
         btn1.setTitle("", for: .normal)
         btn2.setTitle("", for: .normal)
         btn3.setTitle("", for: .normal)

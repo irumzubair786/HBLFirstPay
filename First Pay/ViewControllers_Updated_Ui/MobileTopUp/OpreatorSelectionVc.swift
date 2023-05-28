@@ -25,6 +25,9 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     var returnData: (() -> ())!
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .Easyload_category_selection)
+        FaceBookEvents.logEvent(title: .Easyload_category_selection)
+        
         print("get parentCompanyID", parentCompanyID!)
       
         tableView.rowHeight = 90

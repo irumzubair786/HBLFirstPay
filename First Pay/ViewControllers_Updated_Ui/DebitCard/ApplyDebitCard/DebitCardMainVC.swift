@@ -27,6 +27,8 @@ class DebitCardMainVC: BaseClassVC {
     @IBOutlet weak var buttonContinue: UIButton!
     @IBAction func buttonContinue(_ sender: UIButton) {
         FBEvents.logEvent(title: .Debit_getonenow_click)
+        FaceBookEvents.logEvent(title: .Debit_getonenow_click)
+
         getDebitCardCheck()
     }
     @IBAction func buttonBack(_ sender: UIButton) {

@@ -34,7 +34,8 @@ class NanoLoanRepaySucessfullVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        FBEvents.logEvent(title: .Loans_repay_success)
+        FaceBookEvents.logEvent(title: .Loans_repay_success)
         // Do any additional setup after loading the view.
     }
     @IBAction func buttonCancel(_ sender: Any) {

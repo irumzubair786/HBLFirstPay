@@ -13,12 +13,13 @@ import Siren
 import IQKeyboardManager
 import FirebaseCore
 import GoogleMaps
+import FacebookCore
 
 
 let googleApiKey = "AIzaSyBM0HKZjq1TyOBA1HjVW2Wdhx1YfPJpJ3I" //MyAccountKey
 
 //let googleApiKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs" //HeyCab
-let googleApiPlacesKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs"
+//let googleApiPlacesKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs"
 
 //@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -43,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 dateformat.dateFormat = "YYYY-MM-DD"
                 return dateformat
             }()
+    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -113,8 +115,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FBEvents.logEvent(title: .testOne, failureReason: "test fail")
         GMSServices.provideAPIKey(googleApiKey)
 
+        
+        ApplicationDelegate.shared.application(
+                    application,
+                    didFinishLaunchingWithOptions: launchOptions
+                )
+        
+        FaceBookEvents.logEvent(title: .testOne, failureReason: "test fail")
+        
+        
         return true
     }
+    
+    func application(
+            _ app: UIApplication,
+            open url: URL,
+            options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+        ) -> Bool {
+            ApplicationDelegate.shared.application(
+                app,
+                open: url,
+                sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+            )
+        }
     
     func setupSiren() {
         let sirenObj = Siren.sharedInstance

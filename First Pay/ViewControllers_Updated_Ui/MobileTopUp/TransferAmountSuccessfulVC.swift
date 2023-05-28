@@ -15,6 +15,9 @@ class TransferAmountSuccessfulVC: BaseClassVC {
     var TransactionDate : String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .Easyload_confirmation_success)
+        FaceBookEvents.logEvent(title: .Easyload_confirmation_success)
+        
         btnCancel.setTitle("", for: .normal)
         btnFavourite.setTitle("", for: .normal)
         btnDownload.setTitle("", for: .normal)

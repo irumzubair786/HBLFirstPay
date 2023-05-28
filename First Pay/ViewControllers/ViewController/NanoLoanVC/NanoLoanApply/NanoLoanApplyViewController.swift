@@ -90,6 +90,8 @@ class NanoLoanApplyViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .Loans_apply_landing)
+        FaceBookEvents.logEvent(title: .Loans_apply_landing)
         // Do any additional setup after loading the view.
         textFieldAmount.text = "PKR "
         viewBackGround.isHidden = true

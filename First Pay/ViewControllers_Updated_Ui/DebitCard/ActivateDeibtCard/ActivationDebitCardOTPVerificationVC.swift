@@ -180,6 +180,7 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     
     @IBAction func butttonContinue(_ sender: UIButton) {
 //        movetoNext()
+
         UpdateChannelStatus()
 //
     }
@@ -265,7 +266,6 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         FBEvents.logEvent(title: .Debit_activateotp_attempt)
-
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
             
             self.hideActivityIndicator()
@@ -398,7 +398,8 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     }
     
     private func UpdateChannelStatus() {
-        
+        FBEvents.logEvent(title: .Debit_activate_click)
+        FaceBookEvents.logEvent(title: .Debit_activate_click)
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
@@ -441,7 +442,8 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
             
             self.UpdateStatusObj = response.result.value
             if response.response?.statusCode == 200 {
-                
+                FBEvents.logEvent(title: .Debit_activate_success)
+                FaceBookEvents.logEvent(title: .Debit_activate_success)
                 if self.UpdateStatusObj?.responsecode == 2 || self.UpdateStatusObj?.responsecode == 1 {
                     movetoNext()
                 }
@@ -453,6 +455,8 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
                 }
             }
             else {
+                FBEvents.logEvent(title: .Debit_activateotp_failure)
+
              if let message = self.UpdateStatusObj?.messages{
                  self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
