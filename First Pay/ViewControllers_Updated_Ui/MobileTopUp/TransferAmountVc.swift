@@ -91,7 +91,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             self.collectionView.reloadData()
         }
     }
-    var minValue = 100
+    var minValue = 1
     var maxValue = 1000
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var btnContinue: UIButton!
@@ -129,11 +129,13 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         }
     }
     
+    @IBOutlet weak var labelMainTitle: UILabel!
     func updateui()
     {
         let url = URL(string:"\(GlobalConstants.BASE_URL)\(GlobalData.selected_operator_logo!)")
         imgoperator.sd_setImage(with: url)
         
+        labelMainTitle.text = GlobalData.topup
 //        imgoperator.image = GlobalData.selected_operator_logo
         lblMobileNumber.text =  phoneNumber
        

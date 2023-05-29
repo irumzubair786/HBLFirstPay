@@ -8,19 +8,15 @@
 
 import UIKit
 import GoogleMaps
-import GooglePlaces
+//import GooglePlaces
 
 class ATMLocatormainVc: UIViewController {
     @IBOutlet weak var viewForMap: GMSMapView!
-    
-    
-    
     @IBOutlet weak var viewDetail: UIView!
     @IBOutlet weak var buttonDetail: UIButton!
     @IBOutlet weak var buttonATM: UIButton!
     @IBAction func buttonATM(_ sender: UIButton) {
         viewForMap.clear()
-
         branchFlag = false
         cashFlag = false
         atmFlag = true
@@ -30,15 +26,12 @@ class ATMLocatormainVc: UIViewController {
         buttonBranch.backgroundColor = UIColor.clear
         buttonBranch.borderColor = UIColor.gray
         buttonBranch.setTitleColor(UIColor.black, for: .normal)
-        
         buttonCash.backgroundColor = UIColor.clear
         buttonCash.borderColor = UIColor.gray
         buttonCash.setTitleColor(UIColor.black, for: .normal)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         viewDetail.isUserInteractionEnabled = true
         viewDetail.addGestureRecognizer(tapGestureRecognizer)
-
-       
         buttonDetail.isUserInteractionEnabled = true
         buttonDetail.backgroundColor = UIColor.clear
         if modelATMLocation?.data.atmLocation.count ?? 0 > 0 {
@@ -52,8 +45,8 @@ class ATMLocatormainVc: UIViewController {
             }
         }
     }
+    
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
-
         if branchFlag == true{
             let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "test") as! test
             DispatchQueue.main.async {
@@ -126,8 +119,6 @@ class ATMLocatormainVc: UIViewController {
         buttonATM.borderColor = UIColor.gray
         buttonATM.setTitleColor(UIColor.black, for: .normal)
         buttonDetail.isUserInteractionEnabled = true
-        
-        
         if modelATMLocation?.data.branchLocation.count ?? 0 > 0 {
             let atmLocations = modelATMLocation?.data.branchLocation
             viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
@@ -147,6 +138,7 @@ class ATMLocatormainVc: UIViewController {
             }
 //            ATMBranchDetailViewController
         }
+        
         else if cashFlag == true{
             let vc =  UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "CashDetailVC") as! CashDetailVC
             DispatchQueue.main.async {
@@ -161,36 +153,29 @@ class ATMLocatormainVc: UIViewController {
             }
         }
     }
-    
+
     var branchFlag : Bool = false
     var cashFlag :Bool = false
     var atmFlag : Bool = false
-    
     var modelATMLocation: ModelATMLocation? {
         didSet {
             viewForMap.clear()
-
             print(modelATMLocation)
             dump(modelATMLocation)
             viewForMap.clear()
-
             branchFlag = true
             cashFlag = false
             atmFlag = false
             buttonBranch.backgroundColor = UIColor(hexValue: 0x00CC96)
             buttonBranch.setTitleColor(.white, for: .normal)
             buttonBranch.borderColor = UIColor.clear
-            
             buttonCash.backgroundColor = UIColor.clear
             buttonCash.borderColor = UIColor.gray
             buttonCash.setTitleColor(UIColor.black, for: .normal)
-            
             buttonATM.backgroundColor = UIColor.clear
             buttonATM.borderColor = UIColor.gray
             buttonATM.setTitleColor(UIColor.black, for: .normal)
             buttonDetail.isUserInteractionEnabled = true
-            
-            
             if modelATMLocation?.data.branchLocation.count ?? 0 > 0 {
                 let atmLocations = modelATMLocation?.data.branchLocation
                 viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
@@ -201,11 +186,11 @@ class ATMLocatormainVc: UIViewController {
                     marker.map = self.viewForMap
                 }
             }
-            
+        
         }
     }
+
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         buttonDetail.setTitle("", for: .normal)
         buttonDetail.isUserInteractionEnabled = false
@@ -271,7 +256,6 @@ func drawMarker(labelText: String, imageName: String, coordinate2D: CLLocationCo
 extension ATMLocatormainVc: GMSMapViewDelegate {
     
 }
-
 
 extension ATMLocatormainVc {
     // MARK: - ModelinvitedFriendsList
