@@ -36,7 +36,7 @@ class ATMLocatormainVc: UIViewController {
         buttonDetail.backgroundColor = UIColor.clear
         if modelATMLocation?.data.atmLocation.count ?? 0 > 0 {
             let atmLocations = modelATMLocation?.data.atmLocation
-            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
+            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 12.0)
             for item in atmLocations! {
                 let coordinate2D = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
                 let markerColor = "markerAtm"
@@ -91,7 +91,7 @@ class ATMLocatormainVc: UIViewController {
         
         if modelATMLocation?.data.branchLocation.count ?? 0 > 0 {
             let atmLocations = modelATMLocation?.data.branchLocation
-            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
+            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 12.0)
             for item in atmLocations! {
                 let coordinate2D = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
                 let markerColor = "markerCashPoints"
@@ -121,7 +121,7 @@ class ATMLocatormainVc: UIViewController {
         buttonDetail.isUserInteractionEnabled = true
         if modelATMLocation?.data.branchLocation.count ?? 0 > 0 {
             let atmLocations = modelATMLocation?.data.branchLocation
-            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
+            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 12.0)
             for item in atmLocations! {
                 let coordinate2D = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
                 let markerColor = "markerBranch"
@@ -178,7 +178,7 @@ class ATMLocatormainVc: UIViewController {
             buttonDetail.isUserInteractionEnabled = true
             if modelATMLocation?.data.branchLocation.count ?? 0 > 0 {
                 let atmLocations = modelATMLocation?.data.branchLocation
-                viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
+                viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 12.0)
                 for item in atmLocations! {
                     let coordinate2D = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
                     let markerColor = "markerBranch"
