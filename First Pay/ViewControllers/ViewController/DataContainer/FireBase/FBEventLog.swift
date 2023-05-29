@@ -275,6 +275,7 @@ struct FaceBookEvents {
             //MARK: - For Single Event
 //            AppEvents.shared.logEvent(AppEvents.Name(rawValue: titleName))
             AppEvents.shared.logEvent(AppEvents.Name(rawValue: "AppEventName"), parameters: parameter)
+            
         }
     }
 

@@ -36,8 +36,11 @@ target 'First Pay' do
   pod 'Kingfisher', '~> 4.0'
   pod 'GoogleMaps'
   
-  
-  
+#  pod "FacebookCore"#, '~> 14.0.0'
+#  pod "FacebookLogin"#, '~> 14.0.0'
+#  pod "FacebookShare"#, '~> 14.0.0'
+  #pod "FacebookGamingServices"#, '~> 14.0.0'
+
   #pod 'GoogleMLKit/BarcodeScanning'
   #pod 'GoogleMLKit/TextRecognition'
   pod 'SCLAlertView', '~> 0.8'

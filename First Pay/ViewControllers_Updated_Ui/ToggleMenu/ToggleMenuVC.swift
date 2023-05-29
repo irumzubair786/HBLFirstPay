@@ -576,23 +576,23 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         let render = UIPrintPageRenderer()
         render.addPrintFormatter(fmt, startingAtPageAt: 0)
 
-        // 3. Assign paperRect and printableRect
+        let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8) // A4, 72 dpi
 
-        let page = CGRect(x: 0, y: 0, width: 612.2, height: 800.0) // A4, 72 dpi
         let printable = page.insetBy(dx: 0, dy: 0)
 
         render.setValue(NSValue(cgRect: page), forKey: "paperRect")
         render.setValue(NSValue(cgRect: printable), forKey: "printableRect")
-       
-        // 4. Create PDF context and draw
 
+        // 4. Create PDF context and draw
         let pdfData = NSMutableData()
         UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
 
-        for i in 1...render.numberOfPages {
-            UIGraphicsBeginPDFPage();
-            let bounds = UIGraphicsGetPDFContextBounds()
-            render.drawPage(at: i - 1, in: bounds)
+        for i in 0...render.numberOfPages {
+            if i == 0 {
+                UIGraphicsBeginPDFPage();
+                let bounds = UIGraphicsGetPDFContextBounds()
+                render.drawPage(at: i , in: bounds)
+            }
         }
 
         UIGraphicsEndPDFContext();
@@ -600,6 +600,39 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         return pdfData as Data
     }
 
+    func createPDF2() -> Data {
+        // 1
+        
+        
+        let pdfMetaData = [
+            kCGPDFContextCreator: "Flyer Builder",
+            kCGPDFContextAuthor: "raywenderlich.com"
+        ]
+        let format = UIGraphicsPDFRendererFormat()
+        //      format.documentInfo = pdfMetaData as [String: Any]
+        
+        // 2
+        let pageWidth = 8.5 * 72.0
+        let pageHeight = 11 * 72.0
+        let pageRect = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
+        
+        // 3
+        let renderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
+        // 4
+        let data = renderer.pdfData { (context) in
+            // 5
+            context.beginPage()
+            // 6
+            let attributes = [
+                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 72)
+            ]
+            let html = ""
+            let text = html
+            text.draw(at: CGPoint(x: 0, y: 0), withAttributes: attributes)
+        }
+        
+        return data
+    }
     
     var userCnic : String?
     func getcnic()
@@ -619,30 +652,26 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                <body>
          <style>
             p {
-              font-family: Helvetica Neue;
-             font-size: 32px;
-              color: Light gray;
-            }
-               <h3>
-               <p style="text-align: center;"><b>ACCOUNT MAINTENANCE </b></p>
-                        <p style="text-align, Inter: center;"><b>
-                    <p style="text-align: center;">
-                   CERTIFICATE </b></p>
-               </h3>
-              <style>
-
-
-                         </style>
+                          font-family: Helvetica Neue;
+                         font-size: 32px;
+                          color: Light gray;
+                        }
+                        </style>
+                        <b></b>
+                        <p style="text-align: center;"style="font-size: 200px;">
+                        <b>ACCOUNT MAINTENANCE CERTIFICATE</b>
+                        </p>
+        
                <p style="text-align: center;" style="font-size: 200px;">
                This is to certify that</p>
                <p style="text-align: center;">
                <b>\(DataManager.instance.accountTitle!)</b></p>
                <p style="text-align: center;">
-               having CNIC # <b>\(maskingCNic!)</b></p>
+               having CNIC # <b>\(maskingCNic ?? "")</b></p>
                <p style="text-align: center;">
                is maintaining  account  A/C# </p>
             <p style="text-align: center;">
-           <b>\(maskingAccountNo!)</b>
+           <b>\(maskingAccountNo ?? "")</b>
                </p>
                <p style="text-align: center;">
                This certificate is issued on request

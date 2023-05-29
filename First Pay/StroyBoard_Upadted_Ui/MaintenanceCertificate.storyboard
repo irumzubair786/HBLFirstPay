@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qnZ-da-Uq7" userLabel="TOPVIEW">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="84"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mId-US-xLi">
                                         <rect key="frame" x="8" y="26" width="50" height="50"/>
@@ -65,7 +65,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xxH-EH-srZ">
-                                <rect key="frame" x="0.0" y="79" width="375" height="88"/>
+                                <rect key="frame" x="0.0" y="99" width="375" height="88"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="First Pay" translatesAutoresizingMaskIntoConstraints="NO" id="pNH-D5-uRp">
                                         <rect key="frame" x="30" y="10" width="145" height="49"/>
@@ -92,11 +92,8 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vC2-HC-aL9">
-                                <rect key="frame" x="40" y="171" width="295" height="368"/>
+                                <rect key="frame" x="30" y="191" width="315" height="348"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="295" id="TlR-Rc-xu9"/>
-                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                         <color key="value" systemColor="systemGrayColor"/>
@@ -169,15 +166,15 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="vC2-HC-aL9" secondAttribute="bottom" constant="128" id="4Mg-Qa-yUJ"/>
-                            <constraint firstItem="vC2-HC-aL9" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="40" id="4NV-dS-kzu"/>
+                            <constraint firstItem="vC2-HC-aL9" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="30" id="4NV-dS-kzu"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="QDi-2P-6mh" secondAttribute="trailing" constant="87" id="7He-hz-PKd"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="xxH-EH-srZ" secondAttribute="trailing" id="Iqc-p4-h50"/>
                             <constraint firstAttribute="trailing" secondItem="qnZ-da-Uq7" secondAttribute="trailing" id="K5E-we-TDk"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="vC2-HC-aL9" secondAttribute="trailing" constant="30" id="Lcr-xl-MLt"/>
                             <constraint firstItem="xxH-EH-srZ" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="MqJ-d0-CA2"/>
                             <constraint firstItem="vC2-HC-aL9" firstAttribute="top" secondItem="xxH-EH-srZ" secondAttribute="bottom" constant="4" id="Tpm-mF-OpK"/>
                             <constraint firstItem="QDi-2P-6mh" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="87" id="Uou-1y-RKO"/>
                             <constraint firstItem="NwA-b8-vDD" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="36.5" id="bMV-UF-Lkt"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="vC2-HC-aL9" secondAttribute="trailing" constant="40" id="bie-SI-35g"/>
                             <constraint firstItem="QDi-2P-6mh" firstAttribute="top" secondItem="vC2-HC-aL9" secondAttribute="bottom" constant="-23" id="ihS-p0-fLQ"/>
                             <constraint firstItem="qnZ-da-Uq7" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="lbD-6w-s0x"/>
                             <constraint firstItem="NwA-b8-vDD" firstAttribute="top" secondItem="QDi-2P-6mh" secondAttribute="bottom" constant="8" symbolic="YES" id="qfK-Zf-yVl"/>

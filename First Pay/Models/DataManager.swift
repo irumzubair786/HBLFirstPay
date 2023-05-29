@@ -27,7 +27,7 @@ class DataManager: NSObject {
     var channelID : String = "1"
     var PushPull : String?
     var PushPullTitle : String?
-    var appversion : String = "3.1.2"
+    var appversion : String = "5.0.0"
     var devicemodel: String?
     var deviceversion: String?
     var mobNo = ""
