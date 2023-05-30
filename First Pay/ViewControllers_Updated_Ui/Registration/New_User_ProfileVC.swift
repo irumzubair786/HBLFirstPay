@@ -271,7 +271,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         }
         
     }
-    
+
     @IBAction func Action_Mname1(_ sender: UIButton) {
         let image = UIImage(named: "Rectangle Orange")
         let emptyimage = UIImage(named: "Rectangle")
@@ -691,7 +691,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                             
                         }
                         
-                        if message == "HBL MFB-N211.0  incorrect issue date"
+                       else if message == "HBL MFB-N211.0  incorrect issue date"
                         {
                             labelInvalidIssuedate.isHidden = false
                             labelInvalidIssuedate.text = "Invalid Issue Date"
@@ -716,19 +716,17 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                                     
                                 }
                                 else {
-                                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                                    
                                 }
                                
-                               
+                                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                                 
                                 
                             }
                         }
                         
                     }
-                    
-                    
-                    
+                
                 }
             }
         }

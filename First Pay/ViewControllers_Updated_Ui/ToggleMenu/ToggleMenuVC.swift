@@ -659,11 +659,10 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                         </style>
                         <b></b>
                         <p style="text-align: center;"style="font-size: 200px;">
-                        <b>ACCOUNT MAINTENANCE CERTIFICATE</b>
                         </p>
         
                <p style="text-align: center;" style="font-size: 200px;">
-               This is to certify that</p>
+                   This is to certify that</p>
                <p style="text-align: center;">
                <b>\(DataManager.instance.accountTitle!)</b></p>
                <p style="text-align: center;">
@@ -686,8 +685,6 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                <p style="text-align: center;">
                undersigned and part of the bank.
                </p>
-             <br>
-              </br>
              <p style="text-align: center;" style="font-size: 150px;">
                HBL Microfinance Bank Ltd
                16th & 17th Floor
