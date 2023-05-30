@@ -69,6 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                let saveSuccessful : Bool = KeychainWrapper.standard.set(notiMessage, forKey: "notiMessage")
 ////                print("Notification Message SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
 //            }
+//            }
 //
 ////            let mainStoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 ////            let homePage = mainStoryboard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
@@ -153,7 +154,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        sirenObj.showAlertAfterCurrentVersionHasBeenReleasedForDays = 0
         sirenObj.alertType = .force
-        
+
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

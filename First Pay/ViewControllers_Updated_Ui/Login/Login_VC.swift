@@ -484,7 +484,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         print(params)
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        //
+        
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<login>) in
             //            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
             self.hideActivityIndicator()

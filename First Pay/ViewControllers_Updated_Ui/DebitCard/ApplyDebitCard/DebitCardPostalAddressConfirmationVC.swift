@@ -62,10 +62,11 @@ class DebitCardPostalAddressConfirmationVC: BaseClassVC {
     }
     func updateui()
     {
+        
         labelName.text = GlobalData.debitCardUserFullName
         labelAddress.text = address
-        labelCardFee.text = debitCardFee
-        labelTotalFee.text = debitCardFeeDeliveryCharges
+        labelCardFee.text = "\(debitCardFee!)"
+        labelTotalFee.text = "\(debitCardFeeDeliveryCharges!)"
         labelMobileNumber.text = DataManager.instance.accountNo
     }
     // MARK: - Api Call

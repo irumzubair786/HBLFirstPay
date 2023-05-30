@@ -13,8 +13,8 @@ import SwiftKeychainWrapper
 class DebitCardBranchAddressConfirmationVC: BaseClassVC {
     var fullUserName : String?
     var address : String?
-    var cardFee : String?
-    var totalFee: String?
+    var cardFee : Float?
+    var totalFee: Float?
     var genericObj:GenericResponse?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,8 +64,8 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
         labelName.text = GlobalData.debitCardUserFullName
         labelBranchAddress.text = GlobalData.selectedBranch
         labelAddress.text = homeAddrss
-        labelCardFee.text = debitCardFee
-        labelTotalFee.text = debitCardFeeDeliveryCharges
+        labelCardFee.text = "\(debitCardFee!)"
+        labelTotalFee.text = "\(debitCardFeeDeliveryCharges!)"
         labelMobileNumber.text = DataManager.instance.accountNo
         
         

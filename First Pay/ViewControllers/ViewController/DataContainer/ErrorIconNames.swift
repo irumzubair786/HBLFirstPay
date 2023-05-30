@@ -13,12 +13,14 @@ class IconNames {
         //MARK:- Auth
         case iconError = "errorIcon"
         case iconErrorAuth = "]greenarrow"
-        case iconSucess = "f"
+        case iconSucess = "icon-check-mark-big"
         case iconDormant = "iconDormant"
         case comingSoon = "Coming Soon"
         case FailedTransaction = "ErrorTransactionFailed"
         case MismatchNumber = "ErrorOperator"
-       
+        
+        
+        
     }
 }
 

@@ -10,8 +10,8 @@ import UIKit
 import Alamofire
 import AlamofireObjectMapper
 import SwiftKeychainWrapper
-var debitCardFee : String?
-var debitCardFeeDeliveryCharges : String?
+var debitCardFee : Float?
+var debitCardFeeDeliveryCharges : Float?
 var homeAddrss: String?
 var userDebitCardName :String?
 class DebitCardMainVC: BaseClassVC {
@@ -80,8 +80,8 @@ class DebitCardMainVC: BaseClassVC {
                     let fullName = self.checkDebitCardObj?.data?.customerName
                     print("phone no",DataManager.instance.mobile_number)
                     //     let fullNameArr = fullName?.components(separatedBy: " ")/*fullName?.split{$0 == " "}.map(String.init)*/
-                    debitCardFee = self.checkDebitCardObj?.data?.dcCharges
-                    debitCardFeeDeliveryCharges = self.checkDebitCardObj?.data?.dcChargesWithDelivery
+                    debitCardFee = Float(self.checkDebitCardObj?.data?.dcCharges ?? "")
+                    debitCardFeeDeliveryCharges = Float(self.checkDebitCardObj?.data?.dcChargesWithDelivery ?? "")
                     homeAddrss = self.checkDebitCardObj?.data?.address
                     userDebitCardName = self.checkDebitCardObj?.data?.customerName
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardNameSelectionVC") as!  DebitCardNameSelectionVC
