@@ -10,15 +10,9 @@ import Foundation
 
 class GlobalConstants {
     // Live
-<<<<<<< HEAD
-    public static let BASE_URL = "https://bb.hblmfb.com/"
-//     Stagging
-//    public static let BASE_URL = "http://bbuat.hblmfb.com/"
-=======
 //    public static let BASE_URL = "https://bb.hblmfb.com/"
     // Stagging
     public static let BASE_URL = "http://bbuat.hblmfb.com/"
->>>>>>> 12cd08a (add cnic verification flow)
 }
     class GlobalOTPTypes { 
         public static let OTP_CASH_OUT = "B"                                                 //CASH OUT
