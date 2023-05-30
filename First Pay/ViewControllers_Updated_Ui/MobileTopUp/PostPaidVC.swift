@@ -24,6 +24,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     override func viewDidLoad() {
         tfMobileNo.isUserInteractionEnabled = true
         super.viewDidLoad()
+        print("postpaid class on")
         contactPicker.delegate = self
         getBillPaymentCompanies()
         updateUi()
@@ -214,16 +215,13 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         //        NotificationCenter.default.post(name: Notification.Name("operationSelectionPostpaid"), object: nil)
         
     }
-    
-    
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
-        let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-        vc.phoneNumber = tfMobileNo.text!
-        vc.modalPresentationStyle = .overFullScreen
+        GlobalData.topup = "Postpaid"
         
-        self.present(vc, animated: true)
+        getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+        //                let vc =
         //               self.navigationController?.pushViewController(vc, animated: true)
     }
     

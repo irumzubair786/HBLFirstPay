@@ -27,8 +27,8 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
        
         TextfieldAmount.delegate = self
         otpTextField.delegate = self
-        imageNextArrow.isUserInteractionEnabled = false
-        buttonNext.isUserInteractionEnabled = false
+        imageNextArrow.isUserInteractionEnabled = true
+        buttonNext.isUserInteractionEnabled = true
          UpdateUi()
         back.setTitle("", for: .normal)
         // Do any additional setup after loading the view.
@@ -53,6 +53,7 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     @IBOutlet weak var buttonNext: UIButton!
     @IBAction func buttonNext(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPaymentOTPVerificationVC") as! BillPaymentOTPVerificationVC
+      
         vc.consumerNumber = consumerNumber!
         vc.amount = TextfieldAmount.text!
         vc.refferenceNumber = refferenceNumber
@@ -73,15 +74,15 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     func UpdateUi()
     {
         
-        lb_consumer_name.text = DataManager.instance.accountTitle
+        lb_consumer_name.text = "NOT AVAILABLE"
         lblRefferenceNo.text = consumerNumber
         lblCompany.text = company
         Lbl_BiilingMonth.text = billingMonth
-        lblAmount.text = amountDue
+        lblAmount.text = "RS, \(amountDue ?? "")"
         lblDate.text = dueDate
         lbl_Status.text = status
-        TextfieldAmount.text = totalAmount
-        
+        TextfieldAmount.text = "PKR \(amountDue ?? "")"
+    
         var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_operator_logo ?? "")"
         let url = URL(string: concateString)
         bank_logo.sd_setImage(with: url)

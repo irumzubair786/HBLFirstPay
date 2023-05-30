@@ -129,12 +129,24 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
 
     @IBOutlet weak var selectOperator: UITextField!
     @IBAction func Action_next(_ sender: Any) {
-     
-//        if GlobalData.topup == "Prepaid"
+//        if GlobalData.topup == "Postpaid"
 //        {
-//            if  GlobalData.Select_operator_id == 40
+//
+//                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+//        }
+//        else
+//        {
+            let vc = UIStoryboard.init(name: "TopUp", bundle: nil).instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+            vc.phoneNumber = Tf_mobileNumber.text!
+            vc.modalPresentationStyle = .overFullScreen
+            present(vc, animated: true)
+//        }
+////
+//        if GlobalData.topup == "Postpaid"
+//        {
+//            if  GlobalData.Select_operator_id == 43
 //            {
-                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+//                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
 //            }
 //           else
 //            {
@@ -147,41 +159,59 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
 //        else
 //        {
 //         getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
-//
+////
 //        }
        
     }
     
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        
-        if GlobalData.topup == "Prepaid"
-        {
-            if  GlobalData.Select_operator_id == 43
-            {
-                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
-            }
-           else
-            {
-               
-               let vc = UIStoryboard.init(name: "TopUp", bundle: nil).instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
-               vc.phoneNumber = Tf_mobileNumber.text!
-               vc.modalPresentationStyle = .overFullScreen
-               present(vc, animated: true)
-               
-//               self.navigationController?.pushViewController(vc, animated: true)
-           }
-        }
-        else
-        {
-            getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
-           
-        }
-        
-        
-//        self.present(vc, animated: true)
+//        if GlobalData.topup == "Postpaid"
+//        {
+//
+//                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+//        }
+//        else
+//        {
+            let vc = UIStoryboard.init(name: "TopUp", bundle: nil).instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+            vc.phoneNumber = Tf_mobileNumber.text!
+            vc.modalPresentationStyle = .overFullScreen
+            present(vc, animated: true)
+//        }
+            
     }
-   
+        
+        
+        
+//
+//        if GlobalData.topup == "Postpaid"
+//        {
+////            if  GlobalData.Select_operator_id == 43
+////            {
+//                getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+////            }
+//
+//           else
+//            {
+//
+//               let vc = UIStoryboard.init(name: "TopUp", bundle: nil).instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
+//               vc.phoneNumber = Tf_mobileNumber.text!
+//               vc.modalPresentationStyle = .overFullScreen
+//               present(vc, animated: true)
+//
+////               self.navigationController?.pushViewController(vc, animated: true)
+//           }
+//        }
+//        else
+//        {
+//            getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
+//
+//        }
+//
+//
+////        self.present(vc, animated: true)
+//    }
+//
     @IBAction func Action_Operator(_ sender: UIButton) {
         if Tf_mobileNumber.text! == "" || Tf_mobileNumber.text?.count ?? 0 < 11 {
             
@@ -483,7 +513,7 @@ extension MobileTopUpVC: CNContactPickerDelegate {
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: {
             alert -> Void in
-
+                
             })
             alertController.addAction(cancelAction)
 

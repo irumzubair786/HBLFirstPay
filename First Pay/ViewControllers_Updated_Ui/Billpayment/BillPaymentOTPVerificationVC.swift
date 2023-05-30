@@ -38,6 +38,7 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         buttonResendOTP.isUserInteractionEnabled = false
         buttonResendOTVCall.isHidden = true
         startTimer()
+        
         labelmessage.isHidden = true
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imgNextArrow.isUserInteractionEnabled = true

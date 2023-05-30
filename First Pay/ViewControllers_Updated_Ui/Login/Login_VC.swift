@@ -531,9 +531,18 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 }
                 else{
                     if let message = self.loginObj?.messages{
-                        lbl_InvalidPassword.isHidden = false
-                        lbl_InvalidPassword.text = message
-                        lbl_InvalidPassword.textColor = .red
+                        if message == "Password Authentication Failed"
+                        {
+                            lbl_InvalidPassword.isHidden = false
+                            lbl_InvalidPassword.text = message
+                            lbl_InvalidPassword.textColor = .red
+                        }
+                        
+                      else
+                        {
+                          lbl_InvalidPassword.isHidden = true
+                          self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
+                      }
 //                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
 //
 //                            ["buttonName": "OK",

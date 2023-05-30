@@ -21,30 +21,29 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     var amount :String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        buttonContinue.isUserInteractionEnabled = false
+        buttonContinue.isUserInteractionEnabled = true
         amounttextField.delegate = self
         buttonBack.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         
         imageNext.addGestureRecognizer(tapGestureRecognizerr)
         updateui()
+        imageNext.isUserInteractionEnabled = true
         amounttextField.isUserInteractionEnabled = false
         // Do any additional setup after loading the view.
     }
-    
-    
-    
+   
     @IBOutlet weak var otptextField: UITextField!
     @IBOutlet weak var labelStatus: UILabel!
     @IBOutlet weak var labelDate: UILabel!
     @IBOutlet weak var buttonBack: UIButton!
-    
     @IBOutlet weak var labelAlert: UILabel!
     @IBOutlet weak var amounttextField: UITextField!
     @IBOutlet weak var labelAmount: UILabel!
     @IBOutlet weak var labelMobileNumber: UILabel!
     @IBOutlet weak var imglogo: UIImageView!
     @IBAction func buttonBack(_ sender: UIButton) {
+        self.dismiss(animated: true)
         self.navigationController?.popViewController(animated: true
         )
     }
@@ -93,8 +92,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             return newLength <= 4
         }
         return newLength <= 4
-        
-        
+
     }
     
     @IBOutlet weak var imageNext: UIImageView!

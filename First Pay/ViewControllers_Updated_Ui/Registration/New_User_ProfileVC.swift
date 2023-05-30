@@ -685,41 +685,55 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                     
                     if let message = self.cnicVerificationObj?.messages{
                         
-                        if let message = self.cnicVerificationObj?.messages{
+                        if  message == "HBL MFB-N142.0  cnic does not exists in NADRA database"{
                             lbl_InvalidCnic.isHidden = false
                             lbl_InvalidCnic.text = "Invalid Cnic"
                             
-                            //                            self.showDefaultAlert(title: "", message: message)
                         }
-                        //                        lbl_InvalidCnic.text
-                        if lbl_InvalidCnic.text == ""
+                        
+                        if message == "HBL MFB-N211.0  incorrect issue date"
                         {
-                            if let message = self.cnicVerificationObj?.messages{
-                                labelInvalidIssuedate.isHidden = false
-                                labelInvalidIssuedate.text = "Invalid Issue Date"
-                                
-                                //                            self.showDefaultAlert(title: "", message: message)
-                            }
+                            labelInvalidIssuedate.isHidden = false
+                            labelInvalidIssuedate.text = "Invalid Issue Date"
+                            
                         }
+                        
                         else
                         {
                             
                             if let message = self.cnicVerificationObj?.messages{
-                                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                                
+                                if  message == "HBL MFB-N142.0  cnic does not exists in NADRA database"{
+                                    lbl_InvalidCnic.isHidden = true
+                                   
+                                    
+                                }
+                                
+                                if message == "HBL MFB-N211.0  incorrect issue date"
+                                {
+                                    labelInvalidIssuedate.isHidden = true
+                                  
+                                    
+                                }
+                                else {
+                                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                                }
+                               
+                               
+                                
                                 
                             }
                         }
                         
-                        
-                        //                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    
+                    
+                    
                 }
-                
-                
-                
             }
         }
     }
+
     
     
     

@@ -268,18 +268,17 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         }
     }
     func ResendOTVCall() {
-
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
         }
-        showActivityIndicator()
         
+        showActivityIndicator()
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
         let removeDashes = fetchCnic?.replacingOccurrences(of: "-", with: "")
         print("cnic is",removeDashes as Any)
         
-        let parameters = ["mobileNo":"","otpType": "FP" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : removeDashes!, "otpSendType" : "OTV" ?? ""]
+        let parameters = ["mobileNo": Fetch_MobNo ?? "","otpType": "FP" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : removeDashes!, "otpSendType" : "OTV" ?? ""]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -307,13 +306,13 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
-                        self.showAlert(title: "", message: message, completion: nil)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
                 }
             }
             else {
                 if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
                 //                print(response.result.value)
                 //                print(response.response?.statusCode)
@@ -333,7 +332,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
      let removeDashes = fetchCnic?.replacingOccurrences(of: "-", with: "")
         print("cnic is",removeDashes)
         
-        let parameters = ["mobileNo":"","otpType":"FP" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" :removeDashes! ?? "", "otpSendType" : "OTP" ?? ""]
+        let parameters = ["mobileNo": Fetch_MobNo ?? "","otpType":"FP" ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" :removeDashes! ?? "", "otpSendType" : "OTP" ?? ""]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -342,7 +341,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.clientSecret ?? "nil")"]
         //
                 print(parameters)
                 print(compelteUrl)
@@ -369,13 +368,13 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
-                        self.showAlert(title: "", message: message, completion: nil)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
                 }
             }
             else {
                 if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
                 //                print(response.result.value)
                 //                print(response.response?.statusCode)

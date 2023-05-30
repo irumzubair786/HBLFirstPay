@@ -50,7 +50,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var btn_Continue: UIButton!
     @IBOutlet weak var btn_img_next: UIButton!
     @IBAction func Continue(_ sender: UIButton) {
-
+  print ("bill text", utilityBillCompany)
         getBillInquiry(utilityBillCompany: utilityBillCompany!)
         
     }
