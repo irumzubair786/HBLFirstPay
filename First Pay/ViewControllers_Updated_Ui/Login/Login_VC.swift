@@ -97,6 +97,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     }
     
     func textFieldSetting() {
+        lbl_InvalidPassword.isHidden = true
         viewCircleOne.circle()
         viewCircleTwo.circle()
         viewCircleThree.circle()
@@ -285,7 +286,29 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             task.resume()
         }
         
-        self.navigateToHome()
+        
+        if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "Y" == "N" {
+            let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "CNICVerification") as! CNICVerification
+            vc.modalPresentationStyle = .fullScreen
+            vc.successFullNICVerification = { success in
+                if success {
+                    self.navigateToHome()
+                }
+                else {
+                    print("Error Display Verification Failed")
+                    print("Error Display Verification Failed")
+                    self.pinTextField.text = nil
+                    self.textFieldSetting()
+                }
+            }
+            self.present(vc, animated: true)
+            
+        }
+        else {
+            self.navigateToHome()
+        }
+        
         
     }
     //MARK: - TextField Delegates
@@ -390,7 +413,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         //     LoginChnaged
         let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-        
         self.present(vc, animated: true)
     }
     func getOneSignalUUIDD(){

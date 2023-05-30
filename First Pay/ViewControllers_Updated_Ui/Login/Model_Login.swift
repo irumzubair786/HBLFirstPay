@@ -57,6 +57,7 @@ struct HomeScreen : Mappable {
     var monthlyamtlmt : String?
     var monthlytranslmt : String?
     var yearlyamtlmt : String?
+    var accountDiscrepant : String?
     var yearlytranslmt : String?
     var levelDescr : String?
     var accountPic : String?
@@ -98,8 +99,7 @@ struct HomeScreen : Mappable {
         emailVerified <- map["emailVerified"]
         accountDormant <- map["accountDormant"]
         loginHistoryId <- map["loginHistoryId"]
-        
-        
+        accountDiscrepant <- map["accountDiscrepant"]
     }
 
 }
