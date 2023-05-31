@@ -268,6 +268,8 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         vc.OTPREQ = self.transactionApiResponseObj?.data?.oTPREQ!
               isfromFirstPayWallet = true
               isfromHblMbfAccount = false
+        isfromBanktoBank = false
+        isfromOtherLocalBank =  false
         GlobalData.money_Reason = "Miscellaneous Payments"
         vc.harcodePurpose = "Miscellaneous Payments"
         GlobalData.moneyTransferReasocCode = "0350"

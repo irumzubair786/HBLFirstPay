@@ -292,6 +292,9 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
             vc.bankname = selectWallettf.text!
               vc.amount = amountTextField.text!
         vc.OTPREQ = transactionApiResponseObj?.data?.oTPREQ!
+        GlobalData.money_Reason = "Miscellaneous Payments"
+        vc.harcodePurpose = "Miscellaneous Payments"
+        GlobalData.moneyTransferReasocCode = "0350"
               isfromFirstPayWallet = false
               isfromHblMbfAccount = false
                isfromBanktoBank = false

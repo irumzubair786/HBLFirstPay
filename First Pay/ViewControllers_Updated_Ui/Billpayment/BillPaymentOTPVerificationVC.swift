@@ -57,6 +57,7 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         buttonResendOTVCall.setTitleColor(.gray ,for: .normal)
         startTimer()
         ResendOTVCall()
+       
         
     }
     
