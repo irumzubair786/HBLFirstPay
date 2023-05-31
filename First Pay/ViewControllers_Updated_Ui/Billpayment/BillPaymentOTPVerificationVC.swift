@@ -44,9 +44,6 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         imgNextArrow.isUserInteractionEnabled = true
         imgNextArrow.addGestureRecognizer(tapGestureRecognizerr)
     }
-    
-    
-    
     @IBOutlet weak var labelCount: UILabel!
     @IBOutlet weak var buttonResendOTP: UIButton!
     

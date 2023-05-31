@@ -26,7 +26,7 @@ class MaintenenceCertificate: BaseClassVC {
         pdfView.frame = pdfViewContainer.frame
         pdfView.frame.origin.x = 0
         pdfView.frame.origin.y = 0
-
+        pdfView.backgroundColor = .white
         
         pdfView.scaleFactor = pdfView.maxScaleFactor
         pdfView.leadingAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.leadingAnchor).isActive = true
