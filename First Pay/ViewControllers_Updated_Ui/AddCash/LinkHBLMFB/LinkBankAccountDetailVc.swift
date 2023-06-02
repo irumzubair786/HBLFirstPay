@@ -16,10 +16,10 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         textFieldMobileNo.delegate = self
+        textFieldCNIC.delegate = self
         buttonback.setTitle("", for: .normal)
-       
         buttonContinue.isUserInteractionEnabled = false
-        
+        self.textFieldMobileNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingDidEnd)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imgNext.addGestureRecognizer(tapGestureRecognizer)
        
@@ -30,22 +30,48 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
     @IBAction func buttonback(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true
         )
+        
     }
     
     
-    @IBAction func textFieldMobileNo(_ sender: UITextField) {
-        if textFieldMobileNo?.text?.count == 11
+    
+    @IBOutlet weak var textFieldCNIC: NumberTextField!
+    @IBAction func textFieldCNIC(_ sender: UITextField) {
+        
+        
+    }
+  
+    @objc func changeTextInTextField() {
+       
+        if (textFieldCNIC.text?.count ?? 0) == 13 && (textFieldMobileNo.text?.count ?? 0 == 11)
         {
             imgNext.image = UIImage(named: "]greenarrow")
             buttonContinue.isUserInteractionEnabled = true
-            
+            imgNext.isUserInteractionEnabled = true
+ 
         }
-        else
+        else if (textFieldCNIC.text?.count ?? 0) < 13 ||  (textFieldMobileNo.text?.count ?? 0) < 11
         {
-            imgNext.image = UIImage(named: "grayArrowrrow")
+            imgNext.image = UIImage(named: "grayArrow")
             buttonContinue.isUserInteractionEnabled = false
-
+            imgNext.isUserInteractionEnabled = false
         }
+        
+        
+    }
+    @IBAction func textFieldMobileNo(_ sender: UITextField) {
+//        if textFieldMobileNo?.text?.count == 11
+//        {
+//            imgNext.image = UIImage(named: "]greenarrow")
+//            buttonContinue.isUserInteractionEnabled = true
+//
+//        }
+//        else
+//        {
+//            imgNext.image = UIImage(named: "grayArrowrrow")
+//            buttonContinue.isUserInteractionEnabled = false
+//
+//        }
         
         
     }
@@ -68,6 +94,11 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
             
             return newLength <= 11 // Bool
         }
+        if textField == textFieldCNIC {
+            
+            return newLength <= 13 // Bool
+        }
+        
         else {
             
             return newLength <= 11
@@ -98,7 +129,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         }
         
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"mobileNo":textFieldMobileNo.text!]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":textFieldCNIC.text!,"mobileNo":textFieldMobileNo.text!]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         

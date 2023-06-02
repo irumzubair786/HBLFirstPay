@@ -34,7 +34,7 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
     }
     //MARK: - WebViewDelegate
     func webViewHtmlMethod(){
-            let localfilePath = Bundle.main.url(forResource: "TouchID", withExtension: "htm")
+            let localfilePath = Bundle.main.url(forResource: "TouchID", withExtension: "pdf")
             let myRequest = URLRequest(url:localfilePath!)
             webViewOutlet.loadRequest(myRequest)
             print("Touch ID")
