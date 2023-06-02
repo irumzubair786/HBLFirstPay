@@ -38,6 +38,7 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
             let myRequest = URLRequest(url:localfilePath!)
             webViewOutlet.loadRequest(myRequest)
             print("Touch ID")
+        
     }
     func webViewDidFinishLoad(_ webView: UIWebView) {
         self.hideActivityIndicator()

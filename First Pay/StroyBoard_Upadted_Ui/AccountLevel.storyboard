@@ -80,45 +80,49 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AccountlevelBack" translatesAutoresizingMaskIntoConstraints="NO" id="HQB-HD-jUe">
                                                         <rect key="frame" x="20" y="10" width="327" height="108"/>
                                                     </imageView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkf-rr-cmw">
+                                                        <rect key="frame" x="226" y="46" width="112" height="28"/>
+                                                        <color key="backgroundColor" red="0.1019607843" green="0.12549019610000001" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="112" id="7Yx-tF-fug"/>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="UNY-hU-9uJ"/>
+                                                            <constraint firstAttribute="height" constant="28" id="UYQ-sC-oXd"/>
+                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="112" id="r6k-MD-JIq"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal">
+                                                            <color key="titleColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                <color key="value" red="0.1019607843" green="0.12549019610000001" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="1"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="buttonUpgrade:" destination="Ito-h9-wvZ" eventType="touchUpInside" id="XpB-89-lrn"/>
+                                                        </connections>
+                                                    </button>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="UnverifiedIcon" translatesAutoresizingMaskIntoConstraints="NO" id="MPx-0N-R5f">
                                                         <rect key="frame" x="35" y="24" width="188" height="77"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qxh-D1-Oc1">
-                                                        <rect key="frame" x="238" y="41" width="98" height="28"/>
-                                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="28" id="1xt-7s-nHh"/>
-                                                            <constraint firstAttribute="width" constant="98" id="j00-nq-HQ5"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="UPGRADE">
-                                                            <backgroundConfiguration key="background" image="BackgroundBtn"/>
-                                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="10"/>
-                                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </buttonConfiguration>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="16"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                <color key="value" systemColor="systemGreenColor"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="buttonUpgrade:" destination="Ito-h9-wvZ" eventType="touchUpInside" id="RCj-Tm-Rp8"/>
-                                                        </connections>
-                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="HQB-HD-jUe" firstAttribute="leading" secondItem="KZI-aP-kUA" secondAttribute="leading" constant="20" id="4VX-Nd-x6J"/>
                                                     <constraint firstAttribute="height" constant="128" id="Ael-t5-0fn"/>
                                                     <constraint firstItem="HQB-HD-jUe" firstAttribute="top" secondItem="KZI-aP-kUA" secondAttribute="top" constant="10" id="J95-Sf-mum"/>
+                                                    <constraint firstItem="wkf-rr-cmw" firstAttribute="top" secondItem="KZI-aP-kUA" secondAttribute="top" constant="46" id="TJt-oa-Bw0"/>
                                                     <constraint firstAttribute="trailing" secondItem="HQB-HD-jUe" secondAttribute="trailing" constant="20" id="XgP-9Z-xUp"/>
+                                                    <constraint firstAttribute="trailing" secondItem="wkf-rr-cmw" secondAttribute="trailing" constant="29" id="bEY-pO-uvA"/>
                                                     <constraint firstAttribute="bottom" secondItem="HQB-HD-jUe" secondAttribute="bottom" constant="10" id="ePa-rF-TxX"/>
-                                                    <constraint firstAttribute="trailing" secondItem="Qxh-D1-Oc1" secondAttribute="trailing" constant="31" id="feA-LV-d5o"/>
-                                                    <constraint firstItem="Qxh-D1-Oc1" firstAttribute="top" secondItem="KZI-aP-kUA" secondAttribute="top" constant="41" id="iLz-os-Kev"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MyO-kZ-I7o">
@@ -993,7 +997,7 @@
                     <size key="freeformSize" width="375" height="1250"/>
                     <connections>
                         <outlet property="buttonBack" destination="ZD6-F2-A4O" id="MOE-Sb-SVa"/>
-                        <outlet property="buttonUpgrade" destination="Qxh-D1-Oc1" id="JZR-Vl-H5S"/>
+                        <outlet property="buttonUpgrade" destination="wkf-rr-cmw" id="Vkh-kl-rfe"/>
                         <outlet property="labelBalnaceLimitLevel0" destination="cYm-yR-j2Y" id="dG1-oB-UHk"/>
                         <outlet property="labelBalnaceLimitLevel1" destination="hWM-Ue-ohB" id="E0m-Tr-xXc"/>
                         <outlet property="labelDailyLimitCrlevel0" destination="ZEC-dR-93a" id="kEd-pB-pjT"/>
@@ -1012,7 +1016,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yJJ-Bq-b9k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="768.79999999999995" y="242.87856071964021"/>
+            <point key="canvasLocation" x="1199" y="243"/>
         </scene>
         <!--Verified AccountVC-->
         <scene sceneID="yCe-ef-TpK">
@@ -1945,7 +1949,6 @@
                             <constraint firstItem="2et-KL-RA8" firstAttribute="top" secondItem="Rss-Ve-EoW" secondAttribute="top" id="n1P-St-6uD"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="go8-qL-dqr"/>
                     <size key="freeformSize" width="375" height="1230"/>
                     <connections>
                         <outlet property="buttonBack" destination="4f5-UJ-0CR" id="Ht6-HF-eku"/>
@@ -2306,12 +2309,13 @@
                             <constraint firstItem="3BO-XW-G4b" firstAttribute="leading" secondItem="XzO-vi-ZAo" secondAttribute="leading" id="s0a-60-Dzf"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="cYh-ch-sxi"/>
+                    <navigationItem key="navigationItem" id="go8-qL-dqr"/>
                     <size key="freeformSize" width="375" height="900"/>
                     <connections>
                         <outlet property="buttonBack" destination="7SU-87-0wq" id="zZa-YO-gHt"/>
                         <outlet property="buttonUpgrade" destination="PUb-97-YYh" id="Myu-lc-edS"/>
                         <outlet property="buttonVeiwDetail" destination="DPT-Or-Wa2" id="Uz6-tj-zpJ"/>
+                        <outlet property="imageCheckLevel" destination="ML8-d2-x30" id="2dV-dV-RaD"/>
                         <outlet property="tableView" destination="4Pr-Ga-kGR" id="TOY-tO-L8y"/>
                     </connections>
                 </viewController>
@@ -2996,7 +3000,6 @@
         <image name="AccountText" width="1224" height="457"/>
         <image name="AccountlevelBack" width="1305" height="305"/>
         <image name="Background" width="1276" height="240"/>
-        <image name="BackgroundBtn" width="319" height="60"/>
         <image name="Group 427321071" width="1304" height="506"/>
         <image name="Left Button" width="152" height="153"/>
         <image name="Line" width="638" height="2.5"/>

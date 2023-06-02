@@ -368,12 +368,10 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                 vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
             }
             self.present(vc, animated: true)
-            
         }
-         
             else if DataManager.instance.accountLevel == "LEVEL 1"
             {
-                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
                 flagLevel1  = true
                 flagLevel0  = false
                 if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{

@@ -42,12 +42,28 @@ class MyAccountLimitsVc: BaseClassVC {
         //        getAvailableLimits()
         apicall()
         buttonBack.setTitle("", for: .normal)
-        
+        buttonUpgrade.isHidden = true
         buttonUpgrade.setTitle("UPGRADE", for: .normal)
         buttonUpgrade.setTitleColor(.white, for: .normal)
         tableView.rowHeight = 110
-        
+        checkLevel()
         // Do any additional setup after loading the view.
+    }
+    @IBOutlet weak var imageCheckLevel: UIImageView!
+    func checkLevel()
+    {
+        if  DataManager.instance.accountLevel == "LEVEL 0"
+        {
+            buttonUpgrade.isHidden = false
+            imageCheckLevel.image = UIImage(named: "UnverifiedIcon")
+            
+        }
+        else
+        {
+            buttonUpgrade.isHidden = true
+            imageCheckLevel.image = UIImage(named: "verifiedicon")
+        }
+        
     }
     func CommaSeprationSection1()
     {
@@ -179,22 +195,45 @@ class MyAccountLimitsVc: BaseClassVC {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var buttonVeiwDetail: UIButton!
     @IBAction func buttonVeiwDetail(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
-        vc.balanceLimit = balanceLimit
-        vc.balanceLimit1 = balanceLimit1
-        vc.totalDailyLimitCr =  totalDailyLimitCr
-        vc.totalDailyLimitCr1 =  totalDailyLimitCr1
-        vc.totalMonthlyLimitCr = totalMonthlyLimitCr
-        vc.totalMonthlyLimitCr1 = totalMonthlyLimitCr1
-        vc.totalYearlyLimitCr =  totalYearlyLimitCr
-        vc.totalYearlyLimitCr1 =  totalYearlyLimitCr1
-        vc.totalDailyLimitDr = totalDailyLimitDr
-        vc.totalDailyLimitDr1 = totalDailyLimitDr1
-        vc.totalMonthlyLimitDr =  totalMonthlyLimitDr
-        vc.totalMonthlyLimitDr1 =  totalMonthlyLimitDr1
-        vc.totalYearlyLimitDr = totalYearlyLimitDr
-        vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
-        self.present(vc, animated: true)
+        if   DataManager.instance.accountLevel == "LEVEL 0"
+        {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UnVerifiedAccountVC") as! UnVerifiedAccountVC
+            vc.balanceLimit = balanceLimit
+            vc.balanceLimit1 = balanceLimit1
+            vc.totalDailyLimitCr =  totalDailyLimitCr
+            vc.totalDailyLimitCr1 =  totalDailyLimitCr1
+            vc.totalMonthlyLimitCr = totalMonthlyLimitCr
+            vc.totalMonthlyLimitCr1 = totalMonthlyLimitCr1
+            vc.totalYearlyLimitCr =  totalYearlyLimitCr
+            vc.totalYearlyLimitCr1 =  totalYearlyLimitCr1
+            vc.totalDailyLimitDr = totalDailyLimitDr
+            vc.totalDailyLimitDr1 = totalDailyLimitDr1
+            vc.totalMonthlyLimitDr =  totalMonthlyLimitDr
+            vc.totalMonthlyLimitDr1 =  totalMonthlyLimitDr1
+            vc.totalYearlyLimitDr = totalYearlyLimitDr
+            vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
+            self.present(vc, animated: true)
+        }
+        else
+        {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+            vc.balanceLimit = balanceLimit
+            vc.balanceLimit1 = balanceLimit1
+            vc.totalDailyLimitCr =  totalDailyLimitCr
+            vc.totalDailyLimitCr1 =  totalDailyLimitCr1
+            vc.totalMonthlyLimitCr = totalMonthlyLimitCr
+            vc.totalMonthlyLimitCr1 = totalMonthlyLimitCr1
+            vc.totalYearlyLimitCr =  totalYearlyLimitCr
+            vc.totalYearlyLimitCr1 =  totalYearlyLimitCr1
+            vc.totalDailyLimitDr = totalDailyLimitDr
+            vc.totalDailyLimitDr1 = totalDailyLimitDr1
+            vc.totalMonthlyLimitDr =  totalMonthlyLimitDr
+            vc.totalMonthlyLimitDr1 =  totalMonthlyLimitDr1
+            vc.totalYearlyLimitDr = totalYearlyLimitDr
+            vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
+            self.present(vc, animated: true)
+        }
+        
         
     }
     

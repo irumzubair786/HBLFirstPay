@@ -24,15 +24,17 @@ func checkIdEnable()
     {
         if KeychainWrapper.standard.bool(forKey: "enableTouchID") == true {
             butttonEnableFaceid.isOn
-            
         }
         else
         {
+            
             butttonEnableFaceid.isOn = false
         }
         
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        checkIdEnable()
+    }
     @IBAction func butttonEnableFaceid(_ sender: UISwitch) {
         
          
