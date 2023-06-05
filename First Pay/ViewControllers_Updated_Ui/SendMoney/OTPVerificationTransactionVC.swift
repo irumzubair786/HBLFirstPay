@@ -29,6 +29,8 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
     var OTPREQ : String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        labelPhoneNo.text = DataManager.instance.accountNo
         TF_otp.delegate = self
         btnVerify.isUserInteractionEnabled = false
         btnResendOtp.isUserInteractionEnabled = false
@@ -41,6 +43,8 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         IMG_NEXT_ARROW.addGestureRecognizer(tapGestureRecognizerr)
         // Do any additional setup after loading the view.
     }
+    
+    @IBOutlet weak var labelPhoneNo: UILabel!
     @IBOutlet weak var btnResendOtp: UIButton!
     @IBOutlet weak var TF_otp: OTPTextField!
     @IBOutlet weak var btnVerify: UIButton!
