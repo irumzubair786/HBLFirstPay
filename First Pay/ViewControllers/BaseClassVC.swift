@@ -410,8 +410,6 @@ class BaseClassVC: UIViewController {
        
         delegate.window?.rootViewController = storyBoard.instantiateInitialViewController()
 //        languageCode = UserDefaults.standard.string(forKey: "language-Code") ?? ""
-        
-        
     }
     
     
