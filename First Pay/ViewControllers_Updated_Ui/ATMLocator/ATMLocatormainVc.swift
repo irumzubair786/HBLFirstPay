@@ -192,7 +192,7 @@ class ATMLocatormainVc: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //Rawalpindi Latitude Longitude
+        //Rawalpindi Latitude Longitude for default location
         viewForMap.camera = GMSCameraPosition.camera(withLatitude: 33.5651, longitude: 73.0169, zoom: 12.0)
         buttonDetail.setTitle("", for: .normal)
         buttonDetail.isUserInteractionEnabled = false
