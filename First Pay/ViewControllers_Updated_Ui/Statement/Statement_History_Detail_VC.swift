@@ -173,18 +173,17 @@ class Statement_History_Detail_VC: BaseClassVC {
         else{
             lblClosingBalance.text = ""
         }
-//        if let status = self.status{
-//
-//            if status == "Y"{
-//                self.btnreport.isUserInteractionEnabled = false
-//            }
-//                        else{
-//                self.btnreport.isUserInteractionEnabled = true
-//            }
-//        }
+        if let status = self.status{
+
+            if status == "Y"{
+                self.btnreport.isUserInteractionEnabled = false
+            }
+                        else{
+                self.btnreport.isUserInteractionEnabled = true
+            }
+        }
         
-        
-        
+
         
     }
 

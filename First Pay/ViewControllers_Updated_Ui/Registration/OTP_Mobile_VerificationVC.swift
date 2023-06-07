@@ -31,6 +31,8 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         lbl_mobileno.text = DataManager.instance.mobNo
+       
+        labelMobileNo.text = DataManager.instance.mobNo
         TF_otp.delegate = self
         btnResendOtp.isUserInteractionEnabled = false
         btnResendotpCall.isHidden = true
@@ -49,7 +51,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         btn_next_arrow.isUserInteractionEnabled = false
         self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         self.labelMessage.isHidden = true
-        self.mobileRegistration()
+//        self.mobileRegistration()
        
         
     }
@@ -503,8 +505,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         }
     }
       func  mobileRegistration() {
-          lbl_mobileno.text = DataManager.instance.mobNo
-          labelMobileNo.text = DataManager.instance.mobNo
+         
             if !NetworkConnectivity.isConnectedToInternet(){
                 self.showToast(title: "No Internet Available")
                 return

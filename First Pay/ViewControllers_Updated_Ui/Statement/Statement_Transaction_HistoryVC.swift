@@ -317,13 +317,8 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
             self.myStatementObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
-                    
                     GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
                     print("fetch transation refference Number",  GlobalData.transRefnum)
-                    
-                    
-                    
-                    
                     self.tableView.reloadData()
                 }
                 else {

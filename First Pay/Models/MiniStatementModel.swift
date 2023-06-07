@@ -66,7 +66,7 @@ class SingleMiniStatement : Mappable {
     var destinationBank : String?
     var channel : String?
     var whtAmt : Int?
-    
+    var disputeStatus : String?
     required init?(map: Map){ }
     
     func mapping(map: Map){
@@ -106,6 +106,7 @@ class SingleMiniStatement : Mappable {
         sourceBank <- map ["sourceBank"]
         destinationBank <- map ["destinationBank"]
         channel <- map ["channel"]
+        disputeStatus <- map ["disputeStatus"]
         
     }
 }
