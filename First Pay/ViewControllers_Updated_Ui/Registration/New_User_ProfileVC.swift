@@ -658,16 +658,12 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<cnicVerficationModel>) in
-            
             self.hideActivityIndicator()
             self.cnicVerificationObj = response.result.value
             if response.response?.statusCode == 200 {
-                
                 if self.cnicVerificationObj?.responsecode == 2 || self.cnicVerificationObj?.responsecode == 1 {
                     if cnicVerificationObj?.data != nil{
-                        
                         self.View_mothername.isHidden = false
-                        
                         self.blurView.isHidden = false
                         flagMother_nameselected = false
                         btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
@@ -677,63 +673,100 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                         
                         btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
                     }
-                    
-                    
-                    
                 }
-                else{
-                    
-                    if let message = self.cnicVerificationObj?.messages{
-                        
-                        if  message == "HBL MFB-N142.0  cnic does not exists in NADRA database"{
-                            lbl_InvalidCnic.isHidden = false
-                            lbl_InvalidCnic.text = "Invalid Cnic"
-                            
-                        }
-                        
-                       else if message == "HBL MFB-N211.0  incorrect issue date"
+                else
+               {
+                 checkValue()
+               }
+            }
+        }
+        func checkValue()
+        {
+            if let checkInlineResponse = self.cnicVerificationObj?.responseblock
+            {
+                if checkInlineResponse.responseType == "I"
+                {
+                    if checkInlineResponse.field == "cnic"
+                    {
+                        lbl_InvalidCnic.isHidden = false
+                        lbl_InvalidCnic.text = checkInlineResponse.responseDescr
+                    }
+                    else
+                    {
+                        if checkInlineResponse.field == "idate"
                         {
                             labelInvalidIssuedate.isHidden = false
-                            labelInvalidIssuedate.text = "Invalid Issue Date"
-                            
+                            labelInvalidIssuedate.text = checkInlineResponse.responseDescr
                         }
-                        
                         else
                         {
-                            
-                            if let message = self.cnicVerificationObj?.messages{
-                                
-                                if  message == "HBL MFB-N142.0  cnic does not exists in NADRA database"{
-                                    lbl_InvalidCnic.isHidden = true
-                                   
-                                    
-                                }
-                                
-                                if message == "HBL MFB-N211.0  incorrect issue date"
-                                {
-                                    labelInvalidIssuedate.isHidden = true
-                                  
-                                    
-                                }
-                                else {
-                                    
-                                }
-                               
-                                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                                
-                                
-                            }
+                            let message = self.cnicVerificationObj?.messages
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                         }
                         
                     }
-                
                 }
             }
+            else
+            {
+                let message = self.cnicVerificationObj?.messages
+                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+            }
+            
         }
     }
-
-    
-    
+//
+//
+//
+//
+//
+//           if var checkResponse = self.cnicVerificationObj?.responseblock?.responseType == "I" {
+//
+//                    if let  mess =  self.cnicVerificationObj?.responseblock?.responseDescr &&  self.cnicVerificationObj?.responseblock?.field == "idate"
+//                    {
+//                        lbl_InvalidCnic.isHidden = false
+//                        lbl_InvalidCnic.text = mess
+//
+//                    }
+//
+//                    else
+//                    {
+//                        if let responseMessage = self.cnicVerificationObj?.responseblock?.responseDescr
+//                        {
+//                            labelInvalidIssuedate.isHidden = false
+//                            labelInvalidIssuedate.text = responseMessage
+//
+//                        }
+//                    }
+//                else
+//                {
+//
+//                    if let message = self.cnicVerificationObj?.responseblock?.responseType  == "P"{
+//                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+//                        //                                if  message == "HBL MFB-N142.0  cnic does not exists in NADRA database"{
+//                        //                                    lbl_InvalidCnic.isHidden = true
+//                        //
+//                        //
+//                        //                                }
+//                        //
+//                        //                                if message == "HBL MFB-N211.0  incorrect issue date"
+//                        //                                {
+//                        //                                    labelInvalidIssuedate.isHidden = true
+//                        //
+//                        //
+//                        //                                }
+//                        //                                else {
+//                        //
+//                        //                                }
+//
+//
+//
+//
+//                    }
+//                }
+//
+//            }
+//        }
     
     //    MARK: API
     private func  motherName() {

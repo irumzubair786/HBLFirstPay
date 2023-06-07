@@ -29,7 +29,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         imageNext.addGestureRecognizer(tapGestureRecognizerr)
         updateui()
         imageNext.isUserInteractionEnabled = true
-        amounttextField.isUserInteractionEnabled = false
+        amounttextField.isUserInteractionEnabled = true
         // Do any additional setup after loading the view.
     }
    
