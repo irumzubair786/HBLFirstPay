@@ -190,12 +190,23 @@ class ATMLocatormainVc: UIViewController {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//            // your code here
+//            let coordinate2D = CLLocationCoordinate2D(latitude: 33.5651,longitude: 73.0169)
+//            let markerColor = "markerAtm"
+//            let marker = drawMarker(labelText: "Test branch", imageName: markerColor, coordinate2D: coordinate2D)
+//            marker.map = self.viewForMap
+//        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         //Rawalpindi Latitude Longitude for default location
         viewForMap.camera = GMSCameraPosition.camera(withLatitude: 33.5651, longitude: 73.0169, zoom: 12.0)
         buttonDetail.setTitle("", for: .normal)
         buttonDetail.isUserInteractionEnabled = false
+        viewForMap.delegate = self
+        
         // Do any additional setup after loading the view.
 //        viewForMap.camera = GMSCameraPosition.camera(withLatitude: 18.514043, longitude: 57.377796, zoom: 6.0)
         
@@ -256,7 +267,18 @@ func drawMarker(labelText: String, imageName: String, coordinate2D: CLLocationCo
 }
 
 extension ATMLocatormainVc: GMSMapViewDelegate {
-    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        print("You tapped : \(marker.position.latitude),\(marker.position.longitude)")
+        let url = "https://www.google.com/maps/dir/?api=1&destination=\(marker.position.latitude)%2C\(marker.position.longitude)"
+        DispatchQueue.main.async {
+            guard let googleUrl = URL.init(string: url) else {
+                // handle error
+                return
+            }
+            UIApplication.shared.open(googleUrl)
+        }
+        return true // or false as needed.
+    }
 }
 
 extension ATMLocatormainVc {
