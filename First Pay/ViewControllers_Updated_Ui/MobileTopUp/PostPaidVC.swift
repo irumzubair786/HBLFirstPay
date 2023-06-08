@@ -325,7 +325,17 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
                     vc.status = self.billtransactionOBj?.data?.billStatus
                     //                    vc.DueDate = DueDate ?? ""
                     //                    vc.status = status ?? ""
-                    vc.amount = self.billtransactionOBj?.data?.actualDueAmount
+                   
+                  let Amount = self.billtransactionOBj?.data?.actualDueAmount
+                    if Amount != nil
+                    {
+                        vc.amount = Amount
+                    }
+                    else
+                    {
+                        vc.amount = "0"
+                    }
+                   
                     self.present(vc, animated: true)
                     //                    self.navigationController?.pushViewController(vc, animated: true)
                     

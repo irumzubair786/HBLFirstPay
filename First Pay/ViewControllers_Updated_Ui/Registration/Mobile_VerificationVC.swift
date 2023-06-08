@@ -338,7 +338,6 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
                     }
 
                     // Html Parse
-
                     if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
                         if title.contains("Request Rejected") {
                             self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")

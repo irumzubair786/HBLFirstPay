@@ -62,7 +62,6 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         selectOperator.text = ""
         changeTextInTextField()
     }
-    
     @objc func showSelectedDataPrePaid() {
         if Tf_mobileNumber.text?.count == 11 {
             selectOperator.text = GlobalData.Selected_operator

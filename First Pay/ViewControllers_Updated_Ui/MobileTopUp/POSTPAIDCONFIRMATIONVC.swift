@@ -21,18 +21,53 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     var amount :String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        buttonContinue.isUserInteractionEnabled = true
+        buttonContinue.isUserInteractionEnabled = false
         amounttextField.delegate = self
         buttonBack.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         
         imageNext.addGestureRecognizer(tapGestureRecognizerr)
         updateui()
-        imageNext.isUserInteractionEnabled = true
+        imageNext.isUserInteractionEnabled = false
         amounttextField.isUserInteractionEnabled = true
+        self.amounttextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
+//    private func textFieldShouldBeginEditing(_ textField: UITextField) {
+//        if amounttextField.text == "0"
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            imageNext.image = image
+//            imageNext.isUserInteractionEnabled = false
+//            buttonContinue.isUserInteractionEnabled = false
+//        }
+//
+//    }
    
+    @objc func changeTextInTextField() {
+        if amounttextField.text?.count ?? 0 > 0
+        {
+            let image = UIImage(named:"]greenarrow")
+            imageNext.image = image
+            imageNext.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+        }
+//        else if amounttextField.text! == "0"
+//        {
+//
+//                let image = UIImage(named:"grayArrow")
+//                imageNext.image = image
+//                imageNext.isUserInteractionEnabled = false
+//                buttonContinue.isUserInteractionEnabled = false
+//        }
+        else  if amounttextField.text?.count == 0
+        {
+            let image = UIImage(named:"grayArrow")
+            imageNext.image = image
+            imageNext.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+        }
+    }
     @IBOutlet weak var otptextField: UITextField!
     @IBOutlet weak var labelStatus: UILabel!
     @IBOutlet weak var labelDate: UILabel!
@@ -47,35 +82,35 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         self.navigationController?.popViewController(animated: true
         )
     }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if otptextField.text?.count != 4
-        {
-            let image = UIImage(named:"grayArrow")
-            imageNext.image = image
-            imageNext.isUserInteractionEnabled = false
-            buttonContinue.isUserInteractionEnabled = false
-        }
-        else{
-            let image = UIImage(named:"]greenarrow")
-            imageNext.image = image
-            imageNext.isUserInteractionEnabled = true
-            buttonContinue.isUserInteractionEnabled = true
-        }
-    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        if otptextField.text?.count != 4
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            imageNext.image = image
+//            imageNext.isUserInteractionEnabled = false
+//            buttonContinue.isUserInteractionEnabled = false
+//        }
+//        else{
+//            let image = UIImage(named:"]greenarrow")
+//            imageNext.image = image
+//            imageNext.isUserInteractionEnabled = true
+//            buttonContinue.isUserInteractionEnabled = true
+//        }
+//    }
     @IBAction func otptextfield(_ sender: UITextField) {
-        if otptextField.text?.count != 4
-        {
-            let image = UIImage(named:"grayArrow")
-            imageNext.image = image
-            imageNext.isUserInteractionEnabled = false
-            buttonContinue.isUserInteractionEnabled = false
-        }
-        else{
-            let image = UIImage(named:"]greenarrow")
-            imageNext.image = image
-            imageNext.isUserInteractionEnabled = true
-            buttonContinue.isUserInteractionEnabled = true
-        }
+//        if otptextField.text?.count != 4
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            imageNext.image = image
+//            imageNext.isUserInteractionEnabled = false
+//            buttonContinue.isUserInteractionEnabled = false
+//        }
+//        else{
+//            let image = UIImage(named:"]greenarrow")
+//            imageNext.image = image
+//            imageNext.isUserInteractionEnabled = true
+//            buttonContinue.isUserInteractionEnabled = true
+//        }
         
         
     }
@@ -91,7 +126,30 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         if textField == otptextField{
             return newLength <= 4
         }
-        return newLength <= 4
+        if textField == amounttextField
+        {
+            let newText = (amounttextField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? ""
+            if newText.count == 1 && newText.first == "0" {
+                let image = UIImage(named:"grayArrow")
+                imageNext.image = image
+                imageNext.isUserInteractionEnabled = false
+                buttonContinue.isUserInteractionEnabled = false
+                return false // Disallow entering zero as the first digit
+            }
+        }
+
+         return true
+        
+//            if amounttextField.text == "0"
+//            {
+//                let image = UIImage(named:"grayArrow")
+//                imageNext.image = image
+//                imageNext.isUserInteractionEnabled = false
+//                buttonContinue.isUserInteractionEnabled = false
+//            }
+       
+        
+        return newLength <= 9
 
     }
     
@@ -135,12 +193,31 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
                 labelStatus.text = status
             }
             labelAmount.text = amounttextField.text
-            amounttextField.text = amount
+            
             labelAmount.text = amount
+            amounttextField.text = amount
+            checkAmount()
+            
         }
         
     }
-    
+    func checkAmount()
+    {
+        if amount == "0"
+        {
+            let image = UIImage(named:"grayArrow")
+            imageNext.image = image
+            imageNext.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+        }
+        else
+        {
+            let image = UIImage(named:"]greenarrow")
+            imageNext.image = image
+            imageNext.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+        }
+    }
     private func billPyment() {
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")

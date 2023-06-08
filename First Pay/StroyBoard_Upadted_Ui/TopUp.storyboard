@@ -2333,7 +2333,7 @@
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Rs 10,000" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j3b-Pp-FM4">
+                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j3b-Pp-FM4">
                                                     <rect key="frame" x="122" y="59" width="169" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2377,21 +2377,18 @@
                                             <rect key="frame" x="0.0" y="511" width="414" height="70"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ob-Rr-XrA">
-                                                    <rect key="frame" x="93" y="5.5" width="228" height="59"/>
+                                                    <rect key="frame" x="74" y="8" width="247" height="58"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="59" id="iMq-3d-imT"/>
+                                                        <constraint firstAttribute="height" constant="58" id="iMq-3d-imT"/>
                                                     </constraints>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" title="     CONTINUE">
+                                                    <buttonConfiguration key="configuration" style="plain" title="CONTINUE">
                                                         <backgroundConfiguration key="background" image="Background"/>
-                                                        <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="14"/>
+                                                        <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="13"/>
                                                     </buttonConfiguration>
                                                     <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                            <real key="value" value="16"/>
-                                                        </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                                             <color key="value" systemColor="systemGreenColor"/>
                                                         </userDefinedRuntimeAttribute>
@@ -2400,8 +2397,8 @@
                                                         <action selector="buttonContinue:" destination="rd4-Hk-JbC" eventType="touchUpInside" id="Rbi-th-aKA"/>
                                                     </connections>
                                                 </button>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="]greenarrow" translatesAutoresizingMaskIntoConstraints="NO" id="hqe-LA-g4g">
-                                                    <rect key="frame" x="264" y="12.5" width="47" height="45"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grayArrow" translatesAutoresizingMaskIntoConstraints="NO" id="hqe-LA-g4g">
+                                                    <rect key="frame" x="268" y="15.5" width="47" height="45"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="45" id="9wN-ew-4Jv"/>
                                                         <constraint firstAttribute="width" constant="47" id="B0c-pI-IO7"/>
@@ -2411,11 +2408,11 @@
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="70" id="7vR-Ha-I9x"/>
-                                                <constraint firstItem="hqe-LA-g4g" firstAttribute="leading" secondItem="0ob-Rr-XrA" secondAttribute="trailing" constant="-57" id="S7Z-df-Hkx"/>
-                                                <constraint firstItem="0ob-Rr-XrA" firstAttribute="centerY" secondItem="BBn-eU-8JW" secondAttribute="centerY" id="iio-HZ-XZT"/>
-                                                <constraint firstItem="0ob-Rr-XrA" firstAttribute="centerX" secondItem="BBn-eU-8JW" secondAttribute="centerX" id="jBo-pN-Ibx"/>
-                                                <constraint firstItem="0ob-Rr-XrA" firstAttribute="leading" secondItem="BBn-eU-8JW" secondAttribute="leading" constant="93" id="jfL-EN-5ld"/>
-                                                <constraint firstItem="0ob-Rr-XrA" firstAttribute="centerY" secondItem="hqe-LA-g4g" secondAttribute="centerY" id="vKZ-K0-vdB"/>
+                                                <constraint firstItem="hqe-LA-g4g" firstAttribute="leading" secondItem="0ob-Rr-XrA" secondAttribute="trailing" constant="-53" id="S7Z-df-Hkx"/>
+                                                <constraint firstItem="0ob-Rr-XrA" firstAttribute="centerY" secondItem="BBn-eU-8JW" secondAttribute="centerY" constant="2" id="iio-HZ-XZT"/>
+                                                <constraint firstItem="0ob-Rr-XrA" firstAttribute="centerX" secondItem="BBn-eU-8JW" secondAttribute="centerX" constant="-9.5" id="jBo-pN-Ibx"/>
+                                                <constraint firstItem="0ob-Rr-XrA" firstAttribute="leading" secondItem="BBn-eU-8JW" secondAttribute="leading" constant="74" id="jfL-EN-5ld"/>
+                                                <constraint firstItem="0ob-Rr-XrA" firstAttribute="centerY" secondItem="hqe-LA-g4g" secondAttribute="centerY" constant="-1" id="vKZ-K0-vdB"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -2630,7 +2627,7 @@
                                 </constraints>
                             </stackView>
                             <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="3FN-86-QrL">
-                                <rect key="frame" x="107" y="618" width="135" height="38"/>
+                                <rect key="frame" x="106" y="618" width="135" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <color key="pageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="currentPageIndicatorTintColor" red="0.32643818860000001" green="0.71371430160000005" blue="0.90590906140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

@@ -87,6 +87,7 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         detailsVC.strOpenningBalance = "\(aStatement?.openingbalance ?? 00)"
         detailsVC.strClosingBalance = "\(aStatement?.closingBalance ?? 00)"
         detailsVC.status = aStatement?.status
+        detailsVC.refferenceNo = aStatement?.transRefnum
         self.transRefNum = aStatement?.transRefnum
         if  withoutholdingtax != nil{
             detailsVC.whtAmt = aStatement?.whtAmt
@@ -118,12 +119,12 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         detailsVC.strSourceWallet = ("\(aStatement?.fromAccountTitle ?? "") \n\(aStatement?.fromAccountNo ?? "")")
         detailsVC.strDateTime = aStatement?.transDate
         detailsVC.strTransactionType = aStatement?.transDocsDescr
-        detailsVC.strPurpose = aStatement?.transRefnum
         detailsVC.strSourceBank = aStatement?.sourceBank
         detailsVC.strDestinationBank = aStatement?.destinationBank
         detailsVC.strChannel = aStatement?.channel
         detailsVC.strOpenningBalance = "\(aStatement?.openingbalance ?? 00)"
         detailsVC.strClosingBalance = "\(aStatement?.closingBalance ?? 00)"
+        detailsVC.refferenceNo = aStatement?.transRefnum
         detailsVC.status = aStatement?.status
         self.transRefNum = aStatement?.transRefnum
         if  withoutholdingtax != nil{

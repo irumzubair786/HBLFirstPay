@@ -24,6 +24,7 @@ class Statement_History_Detail_VC: BaseClassVC {
     var strClosingBalance: String?
     var status : String?
     var whtAmt : Int?
+    var refferenceNo : String?
     var image :UIImage?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +63,7 @@ class Statement_History_Detail_VC: BaseClassVC {
     @IBOutlet weak var lblOpeningBalance: UILabel!
     @IBOutlet weak var lblClosingBalance: UILabel!
 
+    @IBOutlet weak var labelRefferenceNo: UILabel!
     private func updateUI() {
       
         if let amount = strAmount {
@@ -106,12 +108,12 @@ class Statement_History_Detail_VC: BaseClassVC {
             lblTransactionType.text = ""
         }
         
-//        if let purpose = strPurpose {
-//            lblPurpose.text = purpose
-//        }
-//        else{
-//            lblPurpose.text = ""
-//        }
+        if let refferenceNo =   refferenceNo{
+            labelRefferenceNo.text = refferenceNo
+        }
+        else{
+            labelRefferenceNo.text = ""
+        }
         
         if let sourceBank = strSourceBank {
             lblSourceWallet.text = sourceBank
