@@ -25,7 +25,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         amounttextField.delegate = self
         buttonBack.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        
+        buttonContinue.isUserInteractionEnabled = false
         imageNext.addGestureRecognizer(tapGestureRecognizerr)
         updateui()
         imageNext.isUserInteractionEnabled = false
@@ -139,20 +139,11 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         }
 
          return true
-        
-//            if amounttextField.text == "0"
-//            {
-//                let image = UIImage(named:"grayArrow")
-//                imageNext.image = image
-//                imageNext.isUserInteractionEnabled = false
-//                buttonContinue.isUserInteractionEnabled = false
-//            }
-       
-        
+ 
         return newLength <= 9
 
     }
-    
+
     @IBOutlet weak var imageNext: UIImageView!
     @IBOutlet weak var buttonContinue: UIButton!
     @IBAction func buttonContinue(_ sender: UIButton) {
@@ -160,14 +151,22 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         {
             billPyment()
         }
+        else
+        {
+            showAlertCustomPopup(title: "",message: "Aleady Paid")
+        }
         
         
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        if ((status == "U") || (status == "u"))
+        if ((status == "U") || (status == "u") || ((status == "T") || (status == "t")))
         {
             billPyment()
+        }
+        else
+        {
+            showAlertCustomPopup(title: "",message: "Aleady Paid")
         }
         //        self.present(vc, animated: true)
     }
