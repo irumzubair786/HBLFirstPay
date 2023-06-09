@@ -325,16 +325,22 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
                     vc.status = self.billtransactionOBj?.data?.billStatus
                     //                    vc.DueDate = DueDate ?? ""
                     //                    vc.status = status ?? ""
-                   
-                  let Amount = self.billtransactionOBj?.data?.actualDueAmount
-                    if Amount != nil
+                    let Amount = self.billtransactionOBj?.data?.actualDueAmount
+                   if  GlobalData.Select_operator_code == "TELNOR02"
                     {
-                        vc.amount = Amount
-                    }
-                    else
+                         if Amount != nil
+                         {
+                             vc.amount = Amount
+                         }
+                         else
+                         {
+                             vc.amount = "0"
+                         }
+                   }
+                 else
                     {
-                        vc.amount = "0"
-                    }
+                     vc.amount = Amount
+                 }
                    
                     self.present(vc, animated: true)
                     //                    self.navigationController?.pushViewController(vc, animated: true)

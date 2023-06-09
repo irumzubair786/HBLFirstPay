@@ -29,7 +29,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         imageNext.addGestureRecognizer(tapGestureRecognizerr)
         updateui()
         imageNext.isUserInteractionEnabled = false
-        amounttextField.isUserInteractionEnabled = true
+       
         self.amounttextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
@@ -151,10 +151,10 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         {
             billPyment()
         }
-        else
+      else if GlobalData.Select_operator_code == "TELNOR02"
         {
-            showAlertCustomPopup(title: "",message: "Aleady Paid")
-        }
+          billPyment()
+       }
         
         
     }
@@ -164,11 +164,11 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         {
             billPyment()
         }
-        else
-        {
-            showAlertCustomPopup(title: "",message: "Aleady Paid")
-        }
-        //        self.present(vc, animated: true)
+       
+        else if GlobalData.Select_operator_code == "TELNOR02"
+          {
+            billPyment()
+         }
     }
     func updateui()
     {
@@ -195,6 +195,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             
             labelAmount.text = amount
             amounttextField.text = amount
+            amounttextField.isUserInteractionEnabled = false
             checkAmount()
             
         }
@@ -202,20 +203,26 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     }
     func checkAmount()
     {
-        if amount == "0"
+        if GlobalData.Select_operator_code == "TELNOR02"
         {
-            let image = UIImage(named:"grayArrow")
-            imageNext.image = image
-            imageNext.isUserInteractionEnabled = false
-            buttonContinue.isUserInteractionEnabled = false
+            amounttextField.isUserInteractionEnabled = true
+            if amount == "0"
+            {
+                let image = UIImage(named:"grayArrow")
+                imageNext.image = image
+                imageNext.isUserInteractionEnabled = false
+                buttonContinue.isUserInteractionEnabled = false
+            }
+            else
+            {
+                let image = UIImage(named:"]greenarrow")
+                imageNext.image = image
+                imageNext.isUserInteractionEnabled = true
+                buttonContinue.isUserInteractionEnabled = true
+            }
+            
         }
-        else
-        {
-            let image = UIImage(named:"]greenarrow")
-            imageNext.image = image
-            imageNext.isUserInteractionEnabled = true
-            buttonContinue.isUserInteractionEnabled = true
-        }
+        
     }
     private func billPyment() {
         if !NetworkConnectivity.isConnectedToInternet(){
