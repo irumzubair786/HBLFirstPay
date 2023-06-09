@@ -40,7 +40,8 @@ class ATMLocatormainVc: UIViewController {
             for item in atmLocations! {
                 let coordinate2D = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
                 let markerColor = "markerAtm"
-                let marker = drawMarker(labelText: item.branchName, imageName: markerColor, coordinate2D: coordinate2D)
+                let locationNameAddressContact = "\(item.branchName ) \(item.branchCode)*\(item.branchAddress)*Number: \(item.branchContactNo)"
+                let marker = drawMarker(labelText: locationNameAddressContact, imageName: markerColor, coordinate2D: coordinate2D)
                 marker.map = self.viewForMap
             }
         }
@@ -147,7 +148,12 @@ class ATMLocatormainVc: UIViewController {
         }
         else
         {
-            let vc =  UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "ATMDetailVC") as! ATMDetailVC
+//            let vc =  UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "ATMDetailVC") as! ATMDetailVC
+//            DispatchQueue.main.async {
+//                self.present(vc, animated: true)
+//            }
+            
+            let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "test") as! test
             DispatchQueue.main.async {
                 self.present(vc, animated: true)
             }
@@ -195,7 +201,7 @@ class ATMLocatormainVc: UIViewController {
 //            // your code here
 //            let coordinate2D = CLLocationCoordinate2D(latitude: 33.5651,longitude: 73.0169)
 //            let markerColor = "markerAtm"
-//            let marker = drawMarker(labelText: "Test branch", imageName: markerColor, coordinate2D: coordinate2D)
+//            let marker = drawMarker(labelText: "Test branch 0092*Rawalpindi Pakistan tench bhatta shalimar street mughalabad factory quarters road*Number: 0519922334", imageName: markerColor, coordinate2D: coordinate2D)
 //            marker.map = self.viewForMap
 //        }
     }
@@ -269,14 +275,44 @@ func drawMarker(labelText: String, imageName: String, coordinate2D: CLLocationCo
 extension ATMLocatormainVc: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         print("You tapped : \(marker.position.latitude),\(marker.position.longitude)")
-        let url = "https://www.google.com/maps/dir/?api=1&destination=\(marker.position.latitude)%2C\(marker.position.longitude)"
-        DispatchQueue.main.async {
-            guard let googleUrl = URL.init(string: url) else {
-                // handle error
-                return
-            }
-            UIApplication.shared.open(googleUrl)
+                
+        let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "LocationAddress") as! LocationAddress
+        
+        let addressTitleContact = marker.title?.components(separatedBy: "*")
+        vc.locationName = addressTitleContact?[0] ?? ""
+        if addressTitleContact?.count ?? 0 > 1 {
+            vc.locationAddress = addressTitleContact?[1] ?? ""
         }
+        else {
+            vc.locationAddress = ""
+        }
+        if addressTitleContact?.count ?? 0 > 2 {
+            vc.locationContact = addressTitleContact?[2] ?? ""
+        }
+        else {
+            vc.locationContact = ""
+        }
+        if branchFlag == true {
+            vc.titleName = "BRANCH"
+        }
+        if atmFlag == true {
+            vc.titleName = "ATM"
+        }
+        
+        vc.getDirection = {
+            let url = "https://www.google.com/maps/dir/?api=1&destination=\(marker.position.latitude)%2C\(marker.position.longitude)"
+            DispatchQueue.main.async {
+                guard let googleUrl = URL.init(string: url) else {
+                    // handle error
+                    return
+                }
+                UIApplication.shared.open(googleUrl)
+            }
+        }
+        DispatchQueue.main.async {
+            self.present(vc, animated: true)
+        }
+        
         return true // or false as needed.
     }
 }

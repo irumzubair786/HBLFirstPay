@@ -6,7 +6,7 @@ func customActivityIndicatory(_ viewContainer: UIView, startAnimate:Bool? = true
     
       let mainContainer: UIView = UIView(frame: viewContainer.frame)
       mainContainer.center = viewContainer.center
-      mainContainer.backgroundColor = UIColor.black//UIColor.init(netHex: 0xFFFFFF)
+      mainContainer.backgroundColor = UIColor.clear//UIColor.init(netHex: 0xFFFFFF)
       mainContainer.alpha = 0.5
       mainContainer.tag = 789456123
       mainContainer.isUserInteractionEnabled = true

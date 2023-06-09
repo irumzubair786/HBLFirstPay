@@ -234,8 +234,9 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
             return
         }
         
-        showActivityIndicator()
-        
+//        showActivityIndicator()
+        self.showActivityIndicator2()
+
         let compelteUrl = GlobalConstants.BASE_URL +          "Transactions/v1/getParentTopUpCompanies"
         //getcompanyfromparentid
         //biillinquiry
@@ -247,8 +248,8 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<BillPaymentCompanies>) in
-            
-            self.hideActivityIndicator()
+            self.hideActivityIndicator2()
+//            self.hideActivityIndicator()
             self.billCompanyObj = response.result.value
             if response.response?.statusCode == 200 {
                 
