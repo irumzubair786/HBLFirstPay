@@ -196,6 +196,10 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             labelAmount.text = amount
             amounttextField.text = amount
             amounttextField.isUserInteractionEnabled = false
+            let image = UIImage(named:"]greenarrow")
+            imageNext.image = image
+            imageNext.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
             checkAmount()
             
         }
@@ -220,6 +224,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
                 imageNext.isUserInteractionEnabled = true
                 buttonContinue.isUserInteractionEnabled = true
             }
+            
             
         }
         

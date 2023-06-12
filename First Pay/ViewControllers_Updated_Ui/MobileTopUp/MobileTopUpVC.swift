@@ -63,8 +63,9 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         changeTextInTextField()
     }
     @objc func showSelectedDataPrePaid() {
-        if Tf_mobileNumber.text?.count == 11 {
-            selectOperator.text = GlobalData.Selected_operator
+        selectOperator.text = GlobalData.Selected_operator
+        if selectOperator.text?.count != 0 &&  Tf_mobileNumber.text?.count == 11{
+//            selectOperator.text = GlobalData.Selected_operator
             let image = UIImage(named:"]greenarrow")
             img_next_arrow.image = image
             img_next_arrow.isUserInteractionEnabled = true
@@ -212,13 +213,13 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
 //    }
 //
     @IBAction func Action_Operator(_ sender: UIButton) {
-        if Tf_mobileNumber.text! == "" || Tf_mobileNumber.text?.count ?? 0 < 11 {
-            
-            if Tf_mobileNumber.text?.count ?? 0 < 11 {
-                
-            }
-            return()
-        }
+//        if Tf_mobileNumber.text! == "" || Tf_mobileNumber.text?.count ?? 0 < 11 {
+//
+//            if Tf_mobileNumber.text?.count ?? 0 < 11 {
+//
+//            }
+//            return()
+//        }
         if parentCompanyID == nil
         {
             topUpParentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId ?? 0

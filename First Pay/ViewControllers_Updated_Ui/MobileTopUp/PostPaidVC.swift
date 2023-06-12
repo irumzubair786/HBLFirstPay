@@ -53,22 +53,37 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     changeTextInTextField()
 }
     @objc func showSelectedDataPostpaid() {
-        if tfMobileNo.text?.count == 11
-        {
-            textFieldOperator.text = GlobalData.Selected_operator
+        textFieldOperator.text = GlobalData.Selected_operator
+        if textFieldOperator.text?.count != 0 &&  tfMobileNo.text?.count == 11{
+       
             let image = UIImage(named:"]greenarrow")
             imgnextarrow.image = image
             imgnextarrow.isUserInteractionEnabled = true
             buttonContinue.isUserInteractionEnabled = true
         }
-        else
-        {
+        else {
             let image = UIImage(named:"grayArrow")
             imgnextarrow.image = image
             imgnextarrow.isUserInteractionEnabled = false
             buttonContinue.isUserInteractionEnabled = false
-            
         }
+        
+//        if tfMobileNo.text?.count == 11
+//        {
+//            textFieldOperator.text = GlobalData.Selected_operator
+//            let image = UIImage(named:"]greenarrow")
+//            imgnextarrow.image = image
+//            imgnextarrow.isUserInteractionEnabled = true
+//            buttonContinue.isUserInteractionEnabled = true
+//        }
+//        else
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            imgnextarrow.image = image
+//            imgnextarrow.isUserInteractionEnabled = false
+//            buttonContinue.isUserInteractionEnabled = false
+//
+//        }
     }
     func submitButtonEnable() {
         if tfMobileNo.text?.count == 11
@@ -160,9 +175,9 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         print("end editing")
     }
     @IBAction func TfmobileNumber(_ sender: UITextField) {
-        if tfMobileNo.text! == "" {
-            return()
-        }
+//        if tfMobileNo.text! == "" {
+//            return()
+//        }
         if parentCompanyID == nil
         {
             topUpParentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId ?? 0
@@ -184,9 +199,9 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var tfMobileNo: UITextField!
     @IBOutlet weak var buttonDropDown: UIButton!
     @IBAction func buttonDropDown(_ sender: UIButton) {
-        if tfMobileNo.text! == "" {
-            return()
-        }
+//        if tfMobileNo.text! == "" {
+//            return()
+//        }
         if parentCompanyID == nil
         {
             topUpParentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId ?? 0
@@ -336,8 +351,10 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
                          else
                          {
                              vc.amount = "0"
+                           
                          }
                    }
+                
                  else
                     {
                      vc.amount = Amount

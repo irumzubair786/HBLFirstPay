@@ -258,21 +258,10 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         
         return nil
     }
-    
-    
-    
-    
-    
+  
     @IBAction func Show(_ sender: UIButton) {
-        
         getMiniStatement()
-        
     }
-    
-    
-    
-    
-    
     @IBAction func back(_ sender: UIButton) {
         if isfromSideMenu == true
         {
