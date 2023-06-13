@@ -83,7 +83,7 @@ class CNICVerification: UIViewController {
         maskingCNic = a.substring(to: 2)
         var concate = maskingCNic
         var x = a.substring(with: 2..<3)
-        x = x.replacingOccurrences(of: "\(x)", with: "X")
+        //x = x.replacingOccurrences(of: "\(x)", with: "X")
         concate = "\(concate)\(x)"
         var d = a.substring(with: 3..<5)
         concate = "\(concate)\(x)\(d)"
