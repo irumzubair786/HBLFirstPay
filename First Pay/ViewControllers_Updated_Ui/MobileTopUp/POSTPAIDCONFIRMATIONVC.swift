@@ -45,6 +45,8 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
 //    }
    
     @objc func changeTextInTextField() {
+        AmountSepartor()
+        labelAmount.text = amounttextField.text!
         if amounttextField.text?.count ?? 0 > 0
         {
             let image = UIImage(named:"]greenarrow")
@@ -191,10 +193,10 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             {
                 labelStatus.text = status
             }
-            labelAmount.text = amounttextField.text
+//            labelAmount.text = amounttextField.text
             
-            labelAmount.text = amount
-            amounttextField.text = amount
+            labelAmount.text =  "\(amount?.floatValue ?? 0)"
+            amounttextField.text = "\(amount?.floatValue ?? 0)"
             amounttextField.isUserInteractionEnabled = false
             let image = UIImage(named:"]greenarrow")
             imageNext.image = image
@@ -210,7 +212,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         if GlobalData.Select_operator_code == "TELNOR02"
         {
             amounttextField.isUserInteractionEnabled = true
-            if amount == "0"
+            if amount == ("0.0")
             {
                 let image = UIImage(named:"grayArrow")
                 imageNext.image = image
@@ -229,6 +231,23 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         }
         
     }
+    func  AmountSepartor()
+    {
+        var text = amounttextField.text?.getIntegerValue()
+        var tempText = text?.components(separatedBy: ".").first as? String
+        if tempText == nil {
+            text = (amounttextField.text?.getIntegerValue())!
+        }
+        else {
+            text = tempText ?? ""
+        }
+        amounttextField.text = "\(Int(amounttextField.text!)?.twoDecimal() ?? "0")"
+        
+        if amounttextField.text != "" {
+            text = amounttextField.text!.replacingOccurrences(of: "", with: "")
+          
+        }
+    }
     private func billPyment() {
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
@@ -244,7 +263,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         showActivityIndicator()
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany": GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":amount!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otptextField.text!,"addBeneficiary":"","utilityBillCompanyId": GlobalData.Select_operator_id!] as [String : Any]
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany": GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":labelAmount.text!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otptextField.text!,"addBeneficiary":"","utilityBillCompanyId": GlobalData.Select_operator_id!] as [String : Any]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(parameters)
@@ -285,7 +304,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     func navigatezToConfirmationVC()
     {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountConfirmationVc") as! TransferAmountConfirmationVc
-        vc.amount = amount
+        vc.amount = "\(amount)"
         vc.phoneNumber = phoneNumber
     
         self.navigationController!.pushViewController(vc, animated: false)

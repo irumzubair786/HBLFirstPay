@@ -231,7 +231,6 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         GlobalData.topup = "Prepaid"
         NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
 
-
         
 //<<<<<<< HEAD
 ////        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
@@ -450,7 +449,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
                     vc.status = self.billtransactionOBj?.data?.billStatus
 //                    vc.DueDate = DueDate ?? ""
 //                    vc.status = status ?? ""
-                    vc.amount = self.billtransactionOBj?.data?.actualDueAmount
+                    vc.amount = (self.billtransactionOBj?.data?.actualDueAmount)
                     self.navigationController?.pushViewController(vc, animated: true)
                    
                 }

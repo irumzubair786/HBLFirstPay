@@ -347,10 +347,11 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
                          if Amount != nil
                          {
                              vc.amount = Amount
+                             
                          }
                          else
                          {
-                             vc.amount = "0"
+                             vc.amount = "0.0"
                            
                          }
                    }

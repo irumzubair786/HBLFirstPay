@@ -279,7 +279,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             btn_next_arrow.setImage(image, for: .normal)
             btn_next_arrow.isUserInteractionEnabled = false
         }
-        
+     
     }
     
     

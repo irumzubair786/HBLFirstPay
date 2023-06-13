@@ -5,14 +5,12 @@
 //  Created by Syed Uzair Ahmed on 12/11/2018.
 //  Copyright © 2018 FMFB Pakistan. All rights reserved.
 //
-
 import Foundation
-
 class GlobalConstants {
     // Live
-    public static let BASE_URL = "https://bb.hblmfb.com/"
+//    public static let BASE_URL = "https://bb.hblmfb.com/"
     // Stagging
-//    public static let BASE_URL = "http://bbuat.hblmfb.com/"
+    public static let BASE_URL = "http://bbuat.hblmfb.com/"
 }
     class GlobalOTPTypes { 
         public static let OTP_CASH_OUT = "B"                                                 //CASH OUT
@@ -31,5 +29,7 @@ class GlobalConstants {
         public static let REQUIRED_OTP_YES  = "Y"
         public static let REQUIRED_OTP_NO  = "N"
     
+        
+        
 }
 

@@ -1042,7 +1042,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KYx-cM-LC9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="83" y="-560"/>
+            <point key="canvasLocation" x="138" y="-570"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oB0-2X-hMr">
@@ -1373,8 +1373,6 @@
         <!--Other HomeVC-->
         <scene sceneID="FNh-vG-7wc">
             <objects>
-                <tapGestureRecognizer id="3ij-IC-WLM"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Fbz-KV-sMe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="OtherHomeVC" id="ceT-eP-6o6" customClass="OtherHomeVC" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Uhh-ND-vUk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
@@ -2116,6 +2114,8 @@
                         <outlet property="viewnanoloan" destination="QWE-gK-9TC" id="cBZ-d2-OGK"/>
                     </connections>
                 </viewController>
+                <tapGestureRecognizer id="3ij-IC-WLM"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fbz-KV-sMe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4500.7246376811599" y="-392.41071428571428"/>
         </scene>
@@ -2128,7 +2128,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background-Home" translatesAutoresizingMaskIntoConstraints="NO" id="qQJ-co-M7M">
-                                <rect key="frame" x="0.0" y="0.0" width="458" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uBV-wh-BOm">
                                 <rect key="frame" x="22" y="345.5" width="100" height="27"/>
@@ -2171,7 +2171,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Enter OTP" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xbz-m9-LiK">
-                                <rect key="frame" x="10" y="302.5" width="438" height="31"/>
+                                <rect key="frame" x="10" y="302.5" width="355" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="DTn-tz-56K"/>
                                 </constraints>
@@ -2206,7 +2206,7 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="header" translatesAutoresizingMaskIntoConstraints="NO" id="CjJ-Q3-cn7">
-                                <rect key="frame" x="10" y="194.5" width="438" height="50"/>
+                                <rect key="frame" x="10" y="194.5" width="355" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="5Vn-10-TZ0"/>
                                 </constraints>
@@ -2257,7 +2257,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXK-rq-ahH">
-                                <rect key="frame" x="10" y="277.5" width="438" height="28"/>
+                                <rect key="frame" x="10" y="277.5" width="355" height="28"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Your OTP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dM-zg-C2H">
                                         <rect key="frame" x="8" y="1" width="326" height="23"/>
@@ -2541,7 +2541,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="EEv-BE-MjX">
-                                <rect key="frame" x="-33" y="-73" width="413" height="2003"/>
+                                <rect key="frame" x="-33" y="-74" width="412" height="2003"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="WVi-7l-uT5">
@@ -5047,6 +5047,9 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 <state key="normal" title="      VERIFY CODE" backgroundImage="BackgroundBtn">
                                     <color key="titleColor" systemColor="systemGray6Color"/>
                                 </state>
+                                <connections>
+                                    <action selector="BtnNextArrow:" destination="Uk6-Ro-Ias" eventType="touchUpInside" id="FuU-Ey-FD3"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YXY-5v-YjH">
                                 <rect key="frame" x="291" y="460.5" width="50" height="50"/>
@@ -5935,14 +5938,14 @@ other charges) from accounts maintained by the borrower at the Bank.
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ksq-9n-7gA">
-                                <rect key="frame" x="0.0" y="-44" width="375" height="1302"/>
+                                <rect key="frame" x="0.0" y="-44" width="375" height="711"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LH1-vi-E9w">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="793"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="202"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundMotherNameScreen" translatesAutoresizingMaskIntoConstraints="NO" id="THt-zf-bsh">
-                                        <rect key="frame" x="0.0" y="-19" width="375" height="812"/>
+                                        <rect key="frame" x="0.0" y="-19" width="375" height="221"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -5956,7 +5959,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8vc-qU-zWG">
-                                <rect key="frame" x="0.0" y="784" width="375" height="474"/>
+                                <rect key="frame" x="0.0" y="193" width="375" height="474"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select City" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="39d-za-nil">
                                         <rect key="frame" x="61" y="43" width="217" height="31"/>
@@ -6615,11 +6618,11 @@ other charges) from accounts maintained by the borrower at the Bank.
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="loginBackGround" translatesAutoresizingMaskIntoConstraints="NO" id="rR9-Ws-3xW">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginBackGround" translatesAutoresizingMaskIntoConstraints="NO" id="rR9-Ws-3xW">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <button hidden="YES" opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZRj-JG-e9X">
-                                <rect key="frame" x="4260" y="240" width="19" height="15"/>
+                                <rect key="frame" x="315" y="240" width="19" height="15"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="1La-4h-EPb"/>
@@ -6639,7 +6642,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 </connections>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzY-qh-3v3" userLabel="faceid">
-                                <rect key="frame" x="4141" y="442" width="142" height="40"/>
+                                <rect key="frame" x="196" y="442" width="142" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wWL-vc-KC9">
                                         <rect key="frame" x="-9" y="0.0" width="138" height="38"/>
@@ -6671,7 +6674,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C5b-t9-tRs" userLabel="fingerprint_view">
-                                <rect key="frame" x="2070" y="313.5" width="180" height="40"/>
+                                <rect key="frame" x="97.5" y="313.5" width="180" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyu-X0-4d5">
                                         <rect key="frame" x="-6" y="0.0" width="188" height="40"/>
@@ -6714,7 +6717,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="10i-Jj-dg0">
-                                <rect key="frame" x="2088.5" y="299" width="151" height="55"/>
+                                <rect key="frame" x="116" y="299" width="151" height="55"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="151" id="9Nb-gZ-PWd"/>
@@ -6734,7 +6737,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Password To Login" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HCU-SQ-TLu">
-                                <rect key="frame" x="86" y="150" width="4149" height="21"/>
+                                <rect key="frame" x="86" y="150" width="204" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="CT6-Ng-29K"/>
                                     <constraint firstAttribute="height" constant="21" id="PZI-OA-6eo"/>
@@ -6745,7 +6748,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nqH-Io-3m4" userLabel="Logo_View">
-                                <rect key="frame" x="2051" y="68.5" width="231" height="65"/>
+                                <rect key="frame" x="78.5" y="68.5" width="231" height="65"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="First Pay copy 2" translatesAutoresizingMaskIntoConstraints="NO" id="ikL-wZ-uPs">
                                         <rect key="frame" x="7.5" y="8" width="224" height="57"/>
@@ -6762,14 +6765,14 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 </constraints>
                             </view>
                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line" translatesAutoresizingMaskIntoConstraints="NO" id="rFd-sf-Ze6">
-                                <rect key="frame" x="50" y="246" width="4233" height="21"/>
+                                <rect key="frame" x="50" y="246" width="288" height="21"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="sOa-tk-a9p"/>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vvR-4t-sZM">
-                                <rect key="frame" x="2089.5" y="211" width="142" height="35"/>
+                                <rect key="frame" x="117" y="211" width="142" height="35"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IkL-Dp-auv">
                                         <rect key="frame" x="0.0" y="0.0" width="17" height="35"/>
@@ -6946,7 +6949,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 </constraints>
                             </stackView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8GR-HH-5xt" customClass="PasswordTextField" customModule="PasswordTextField">
-                                <rect key="frame" x="2050.5" y="212" width="220" height="34"/>
+                                <rect key="frame" x="78" y="212" width="220" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="220" id="QU6-nM-05p"/>
                                     <constraint firstAttribute="height" constant="34" id="of5-Jb-9tA"/>
@@ -7025,7 +7028,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Odv-oE-vna" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3316" y="-473.6131934032984"/>
+            <point key="canvasLocation" x="810" y="-571"/>
         </scene>
         <!--Fake Login Vc-->
         <scene sceneID="wCs-yH-d0u">
