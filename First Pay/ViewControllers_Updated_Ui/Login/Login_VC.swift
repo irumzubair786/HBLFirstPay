@@ -32,7 +32,13 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var flag :Bool = false
     
     
-    
+    @IBOutlet weak var labelOne: UILabel!
+    @IBOutlet weak var labelTwo: UILabel!
+    @IBOutlet weak var labelThree: UILabel!
+    @IBOutlet weak var labelFour: UILabel!
+    @IBOutlet weak var labelFive: UILabel!
+    @IBOutlet weak var labelSix: UILabel!
+
     @IBOutlet weak var viewCircleOne: UIView!
     @IBOutlet weak var viewCircleTwo: UIView!
     @IBOutlet weak var viewCircleThree: UIView!
@@ -53,6 +59,15 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        labelOne.text = ""
+        labelTwo.text = ""
+        labelThree.text = ""
+        labelFour.text = ""
+        labelFive.text = ""
+        labelSix.text = ""
+        
+        passwordShow(isShow: false)
         UITextField.appearance().tintColor = .clear
         textFieldSetting()
 //        self.showAlertCustomPopup(title: "", message: "",buttonName: ["OK","CANCEL"],viewController: self)
@@ -141,22 +156,43 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         viewLineFive.backgroundColor = .clrLightGrayCalendar
         viewLineSix.backgroundColor = .clrLightGrayCalendar
         
+        labelOne.text = ""
+        labelTwo.text = ""
+        labelThree.text = ""
+        labelFour.text = ""
+        labelFive.text = ""
+        labelSix.text = ""
+        
         if filedNo == 0 {
             return
         }
+        
+        let array = pinTextField.text!.reduce(into: [Character]()) { result, letter in
+            result.append(letter)
+        }
+        print(array[0] )
+
+//        labelThree.text = array[0]
+//        labelFour.text = array[0]
+//        labelFive.text = array[0]
+//        labelSix.text = array[0]
+        
         for i in 1...filedNo {
             print(i)
             if i == 1 {
+                labelOne.text = "\(array[0])"
                 viewLineOne.backgroundColor = .white
                 viewCircleOne.backgroundColor = .white
             }
             if i == 2 {
+                labelTwo.text = "\(array[1])"
                 viewLineOne.backgroundColor = .white
                 viewCircleOne.backgroundColor = .white
                 viewLineTwo.backgroundColor = .white
                 viewCircleTwo.backgroundColor = .white
             }
             else if i == 3 {
+                labelThree.text = "\(array[2])"
                 viewLineOne.backgroundColor = .white
                 viewCircleOne.backgroundColor = .white
                 viewLineTwo.backgroundColor = .white
@@ -165,6 +201,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 viewCircleThree.backgroundColor = .white
             }
             else if i == 4 {
+                labelFour.text = "\(array[3])"
                 viewLineOne.backgroundColor = .white
                 viewCircleOne.backgroundColor = .white
                 viewLineTwo.backgroundColor = .white
@@ -175,6 +212,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 viewCircleFour.backgroundColor = .white
             }
             else if i == 5 {
+                labelFive.text = "\(array[4])"
                 viewLineOne.backgroundColor = .white
                 viewCircleOne.backgroundColor = .white
                 viewLineTwo.backgroundColor = .white
@@ -187,6 +225,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 viewCircleFive.backgroundColor = .white
             }
             else if i == 6 {
+                labelSix.text = "\(array[5])"
                 viewLineOne.backgroundColor = .white
                 viewCircleOne.backgroundColor = .white
                 viewLineTwo.backgroundColor = .white
@@ -216,16 +255,58 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     @IBOutlet weak var show_text: UIButton!
     
     @IBAction func Show_Passowrd(_ sender: UIButton) {
-        flag = true
-        if flag == false
-        {
-            pinTextField.isSecureTextEntry  = true
+//        flag = true
+//        if flag == false
+//        {
+//            pinTextField.isSecureTextEntry  = true
+//        }
+//        else
+//        {
+//            pinTextField.isSecureTextEntry  = false
+//        }
+        if show_text.tag == 0 {
+            passwordShow(isShow: true)
         }
-        else
-        {
-            pinTextField.isSecureTextEntry  = false
+        else {
+            passwordShow(isShow: false)
         }
-        
+    }
+    
+    func passwordShow(isShow: Bool) {
+        if isShow {
+            show_text.setImage(UIImage(named: "Change Password"), for: .normal)
+            show_text.tag = 1
+            labelOne.isHidden = false
+            labelTwo.isHidden = false
+            labelThree.isHidden = false
+            labelFour.isHidden = false
+            labelFive.isHidden = false
+            labelSix.isHidden = false
+            
+            viewCircleOne.isHidden = true
+            viewCircleTwo.isHidden = true
+            viewCircleThree.isHidden = true
+            viewCircleFour.isHidden = true
+            viewCircleFive.isHidden = true
+            viewCircleSix.isHidden = true
+        }
+        else {
+            show_text.setImage(UIImage(named: "svgg"), for: .normal)
+            show_text.tag = 0
+            labelOne.isHidden = true
+            labelTwo.isHidden = true
+            labelThree.isHidden = true
+            labelFour.isHidden = true
+            labelFive.isHidden = true
+            labelSix.isHidden = true
+            
+            viewCircleOne.isHidden = false
+            viewCircleTwo.isHidden = false
+            viewCircleThree.isHidden = false
+            viewCircleFour.isHidden = false
+            viewCircleFive.isHidden = false
+            viewCircleSix.isHidden = false
+        }
     }
     
     

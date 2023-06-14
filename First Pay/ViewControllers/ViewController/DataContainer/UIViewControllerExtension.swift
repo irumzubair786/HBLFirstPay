@@ -19,7 +19,7 @@ extension UIViewController {
             
         let alertCustomPopup = UIStoryboard.init(name: "AlertPopup", bundle: nil).instantiateViewController(withIdentifier: "AlertPopupMessage") as! AlertPopupMessage
         alertCustomPopup.titleMessage = title!
-        alertCustomPopup.message = message!
+        alertCustomPopup.message = message ?? ""
         alertCustomPopup.arrayButtonNames = buttonNames!
         alertCustomPopup.iconName = iconName.rawValue
         

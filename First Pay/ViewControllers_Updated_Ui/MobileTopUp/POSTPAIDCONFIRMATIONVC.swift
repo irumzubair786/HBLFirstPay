@@ -45,11 +45,17 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
 //    }
    
     @objc func changeTextInTextField() {
-//        AmountSepartor()
+        AmountSepartor()
+        let array = amounttextField.text!.reduce(into: [Character]()) { result, letter in
+            result.append(letter)
+        }
         
-        labelAmount.text = "\(amounttextField.text?.floatValue ?? 0)"
-//        var a = Int(amounttextField.text!)
-//        labelAmount.text =   a?.twoDecimal()
+        if array.contains(".") {
+            labelAmount.text = amounttextField.text!
+        }
+        else {
+            labelAmount.text = "\(Int(amounttextField.text!)?.twoDecimal() ?? "0")"
+        }
         if amounttextField.text?.count ?? 0 > 0
         {
             let image = UIImage(named:"]greenarrow")
@@ -71,7 +77,6 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             imageNext.image = image
             imageNext.isUserInteractionEnabled = false
             buttonContinue.isUserInteractionEnabled = false
-           
         }
     }
     @IBOutlet weak var otptextField: UITextField!
@@ -87,7 +92,6 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         self.dismiss(animated: true)
         self.navigationController?.popViewController(animated: true
         )
-    10
     }
 //    func textFieldDidEndEditing(_ textField: UITextField) {
 //        if otptextField.text?.count != 4
@@ -217,7 +221,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         if GlobalData.Select_operator_code == "TELNOR02"
         {
             amounttextField.isUserInteractionEnabled = true
-            if amount == "0"
+            if amount == ("0.0")
             {
                 let image = UIImage(named:"grayArrow")
                 imageNext.image = image
@@ -238,20 +242,39 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     }
     func  AmountSepartor()
     {
-        var text = amounttextField.text?.getIntegerValue()
-        var tempText = text?.components(separatedBy: ".").first as? String
-        if tempText == nil {
-            text = (amounttextField.text?.getIntegerValue())!
-        }
-        else {
-            text = tempText ?? ""
-        }
-        amounttextField.text = "\(Int(amounttextField.text!)?.twoDecimal() ?? "0")"
         
-        if amounttextField.text != "" {
-            text = amounttextField.text!.replacingOccurrences(of: "", with: "")
-          
-        }
+//        var text = amounttextField.text?.getIntegerValue()
+//        if text == "" {
+//            return
+//        }
+//
+//        let tempText = text?.components(separatedBy: ".").first as? String
+//        if tempText == nil {
+//            text = (amounttextField.text?.getIntegerValue())!
+//        }
+//        else {
+//            text = tempText ?? ""
+//        }
+//        amounttextField.text = text
+//
+//
+//
+//
+//
+////        var text = amounttextField.text?.getIntegerValue()
+////        var tempText = text?.components(separatedBy: ".").first as? String
+//        if tempText == nil {
+//            text = (amounttextField.text?.getIntegerValue())!
+//        }
+//        else {
+//            text = tempText ?? ""
+//        }
+//        amounttextField.text = "\(Int(amounttextField.text!)?.twoDecimal() ?? "0")"
+//
+//        if amounttextField.text != "" {
+//            text = amounttextField.text!.replacingOccurrences(of: "", with: "")
+//
+//        }
     }
     private func billPyment() {
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -266,7 +289,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             userCnic = ""
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billPayment"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany": GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":labelAmount.text!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otptextField.text!,"addBeneficiary":"","utilityBillCompanyId": GlobalData.Select_operator_id!] as [String : Any]
         
