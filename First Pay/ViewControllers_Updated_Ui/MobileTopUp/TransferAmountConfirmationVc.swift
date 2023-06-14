@@ -94,7 +94,7 @@ class TransferAmountConfirmationVc: BaseClassVC {
             userCnic = ""
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany":GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":self.amount!.getIntegerValue(),"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":"","addBeneficiary":"","utilityBillCompanyId":GlobalData.Select_operator_id ?? ""] as [String : Any]
         

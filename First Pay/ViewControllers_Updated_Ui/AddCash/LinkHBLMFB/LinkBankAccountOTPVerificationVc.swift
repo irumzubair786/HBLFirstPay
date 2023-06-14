@@ -30,15 +30,15 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         otptextField.delegate = self
         buttonBack.setTitle("", for: .normal)
         labelMobNo.text = DataManager.instance.accountNo
-        
         buttonResendOtP.setTitle("", for: .normal)
         buttonResendOtVCall.setTitle("", for: .normal)
         buttonNext.setTitle("", for: .normal)
         buttonNext.isUserInteractionEnabled = false
         buttonCoontinue.isUserInteractionEnabled = false
+        self.labelMessage.isHidden = true
         startTimer()
         getIMEI()
-        // Do any additional setup after loading the view.
+       
     }
     @objc func timerAction() {
              counter += 1
@@ -46,7 +46,6 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
          }
     func startTimer() {
         totalSecond = 60
-       
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {
@@ -115,6 +114,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     
     @IBOutlet weak var buttonBack: UIButton!
   
+    @IBOutlet weak var labelMessage: UILabel!
     @IBAction func buttonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
        
@@ -144,9 +144,19 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     @IBOutlet weak var labelCount: UILabel!
     @IBOutlet weak var buttonResendOtP: UIButton!
     @IBAction func buttonResendOtP(_ sender: UIButton) {
+        buttonResendOtP.isUserInteractionEnabled = false
+        buttonResendOtP.setTitleColor(.gray ,for: .normal)
+        startTimer()
+        ResendOTP()
+        
     }
     @IBOutlet weak var buttonResendOtVCall: UIButton!
     @IBAction func buttonResendOtVCall(_ sender: UIButton) {
+        buttonResendOtVCall.isUserInteractionEnabled = true
+        buttonResendOtVCall.setTitleColor(.gray ,for: .normal)
+        //        showToast(title: "OTP send Via Call")
+        startTimer()
+        ResendOTVCall()
     }
     
     @IBAction func buttonCoontinue(_ sender: UIButton) {
@@ -160,6 +170,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
             verifyOtpResetPass()
         }
     }
+    
     private func verifyOtpResetPass() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -324,5 +335,131 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         vc.dateTime = fundsTransSuccessObj?.data?.transDate
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    func ResendOTP() {
+//        blurView.isHidden = false
+//        popupView.isHidden = false
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
+        
+        
+        let parameters = ["mobileNo":"\(DataManager.instance.mobNo)","otpType":"PULL","channelId":"\(DataManager.instance.channelID)", "cnic" :"", "otpSendType" : "OTP"]
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+        //        print(result.apiAttribute1)
+        //        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        //
+                print(parameters)
+                print(compelteUrl)
+        
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            self.hideActivityIndicator()
+            self.genRespBaseObj = response.result.value
+            if response.response?.statusCode == 200 {
+                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                    self.labelMessage.isHidden = false
+                    self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                        self.labelMessage.isHidden = true
+//                        self.blurView.isHidden = true
+//                        self.popupView.isHidden = true
+                    }
+//
+                    
+                }
+                else {
+                    if let message = self.genRespBaseObj?.messages {
+                        self.showAlert(title: "", message: message, completion: nil)
+                    }
+                }
+            }
+            else {
+                if let message = self.genRespBaseObj?.messages {
+                    self.showAlert(title: "", message: message, completion: nil)
+                }
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
+                
+            }
+        }
+    }
+    func ResendOTVCall() {
+//        blurView.isHidden = false
+//        popupView.isHidden = false
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
+        
+        
+        let parameters = ["mobileNo":"\(DataManager.instance.mobNo)","otpType": "PULL","channelId":"\(DataManager.instance.channelID)", "cnic" :"", "otpSendType" : "OTV"]
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+        //        print(result.apiAttribute1)
+        //        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        //
+                print(parameters)
+                print(compelteUrl)
+        
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            self.hideActivityIndicator()
+            self.genRespBaseObj = response.result.value
+            if response.response?.statusCode == 200 {
+                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                    
+//                    self.labelMessage.isHidden = false
+//                    self.labelMessage.text = "OTP Call  will be Resend after 30 Second"
+//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+//                        self.labelMessage.isHidden = true
+////                        self.blurView.isHidden = true
+////                        self.popupView.isHidden = true
+//                    }
     
+                    
+                }
+                else {
+                    if let message = self.genRespBaseObj?.messages {
+                        self.showAlert(title: "", message: message, completion: nil)
+                    }
+                }
+            }
+            else {
+                if let message = self.genRespBaseObj?.messages {
+                    self.showAlert(title: "", message: message, completion: nil)
+                }
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
+                
+            }
+        }
+    }
+    
+
 }

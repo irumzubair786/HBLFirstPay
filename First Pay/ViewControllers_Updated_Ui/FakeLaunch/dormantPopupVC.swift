@@ -131,7 +131,7 @@ class dormantPopupVC: BaseClassVC {
         var userCnic : String?
         
         //      let compelteUrl = GlobalConstants.BASE_URL + "v2/fundsTransferIbft"
-        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/login"
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v2/login"
         
         if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
             //            pessi = KeychainWrapper.standard.string(forKey: "userKey")

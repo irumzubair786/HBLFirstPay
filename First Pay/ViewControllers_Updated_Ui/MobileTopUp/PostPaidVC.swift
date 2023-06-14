@@ -310,7 +310,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         }
         
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billInquiry"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billInquiry"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany": GlobalData.Select_operator_code,"utilityConsumerNo":self.tfMobileNo.text!,"accountType": DataManager.instance.accountType!]
         
@@ -351,7 +351,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
                          }
                          else
                          {
-                             vc.amount = "0.0"
+                             vc.amount = "0"
                            
                          }
                    }

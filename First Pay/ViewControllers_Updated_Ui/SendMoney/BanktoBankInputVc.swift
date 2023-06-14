@@ -121,7 +121,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
     @IBAction func Action_continue(_ sender: UIButton) {
         initiateIBFT()
      
-    }
+   }
     
     @IBAction func Purpose(_ sender: UIButton) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "MoneyTransfer_ReasonVC") as! MoneyTransfer_ReasonVC
@@ -223,7 +223,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         }
         
 //            let compelteUrl = GlobalConstants.BASE_URL + "initiateIbft"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateIbft"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/initiateIbft"
         
 //
     userCnic = UserDefaults.standard.string(forKey: "userCnic")
@@ -254,13 +254,17 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
             if response.response?.statusCode == 200 {
                 
                 if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
-                    if isfromBanktoBank == true{
-                        self.navigateToConfirmation()
-                    }
-                    else
-                    {
-                        self.movetonext()
-                    }
+//                    if self.transactionApiResponseObj?.data?.oTPREQ == "Y"
+//                    {
+                        if isfromBanktoBank == true{
+                            self.navigateToConfirmation()
+                        }
+                        else
+                        {
+                            self.movetonext()
+                        }
+//                    }
+                   
                     
 //
                 }

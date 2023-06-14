@@ -212,7 +212,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         }
 //        let compelteUrl = GlobalConstants.BASE_URL + "initiateLocalFT"
 //
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateLocalFT"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/initiateLocalFT"
          
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":tfAccountNo.text!,"amount":self.amountTextField.text!,"transPurpose":"0350","accountType": DataManager.instance.accountType!] as [String : Any]
@@ -260,7 +260,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         }
     }
     private func navigateToConfirmation(){
-       
+//      pending issue oTPREQ
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = tfAccountNo.text!
               vc.amount = amountTextField.text!

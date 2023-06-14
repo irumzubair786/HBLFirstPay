@@ -24,12 +24,12 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         textFieldAmount.delegate = self
         buttonContinue.isUserInteractionEnabled = false
         buttonBack.setTitle("", for: .normal)
-        
+        self.textFieldAmount.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         
         // Do any additional setup after loading the view.
     }
-   var minimumValue = 100
-    var maximumValue = 10000
+   var minimumValue = "100"
+    var maximumValue = "10000"
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
@@ -54,23 +54,55 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         
     }
     @IBAction func textFieldAmount(_ sender: UITextField) {
-
-        if textFieldAmount?.text?.count != 0
+//
+//        if textFieldAmount?.text?.count != 0
+//        {
+//            img_Next.image = UIImage(named: "]greenarrow")
+//            buttonContinue.isUserInteractionEnabled = true
+//
+//        }
+//        else
+//        {
+//            img_Next.image = UIImage(named: "grayArrow")
+//            buttonContinue.isUserInteractionEnabled = false
+//        }
+        
+    }
+    @objc func changeTextInTextField() {
+        if (textFieldAmount?.text! ?? "")! < minimumValue
         {
-            img_Next.image = UIImage(named: "]greenarrow")
-            buttonContinue.isUserInteractionEnabled = true
-            
+            let image = UIImage(named:"grayArrow")
+            img_Next.image = image
+            img_Next.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
+        }
+       if (textFieldAmount?.text! ?? "")! > (maximumValue)
+        {
+            let image = UIImage(named:"grayArrow")
+            img_Next.image = image
+            img_Next.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
         }
         else
         {
-            img_Next.image = UIImage(named: "grayArrow")
-            buttonContinue.isUserInteractionEnabled = false
+            
+            let image = UIImage(named:"]greenarrow")
+            img_Next.image = image
+            img_Next.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+            labelAlert.textColor = UIColor.orange
+            textFieldAmount.textColor = UIColor.gray
         }
+
         
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
 
-        if Int(textFieldAmount?.text! ?? "")! < minimumValue
+        if (textFieldAmount?.text! ?? "")! < minimumValue
         {
             let image = UIImage(named:"grayArrow")
             img_Next.image = image
@@ -79,7 +111,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
             labelAlert.textColor = UIColor(hexValue: 0xFF3932)
             textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
         }
-        if  Int(textFieldAmount?.text! ?? "")! > (maximumValue)
+       if (textFieldAmount?.text! ?? "")! > (maximumValue)
         {
             let image = UIImage(named:"grayArrow")
             img_Next.image = image
@@ -88,6 +120,16 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
             labelAlert.textColor = UIColor(hexValue: 0xFF3932)
             textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
         }
+        else
+        {
+            let image = UIImage(named:"]greenarrow")
+            img_Next.image = image
+            img_Next.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+            labelAlert.textColor = UIColor.orange
+            textFieldAmount.textColor = UIColor.gray
+        }
+
 
 }
     @IBOutlet weak var labelAlert: UILabel!

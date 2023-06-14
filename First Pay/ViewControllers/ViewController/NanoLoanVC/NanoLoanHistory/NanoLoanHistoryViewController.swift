@@ -67,6 +67,7 @@ extension NanoLoanHistoryViewController: UITableViewDelegate, UITableViewDataSou
         var row = indexPath.row
         if modelGetActiveLoan?.data?.currentLoan.count ?? 0 > 0 && row != 0 {
             row -= 1
+            
         }
         
         if modelGetActiveLoan?.data?.currentLoan.count ?? 0 > 0 && row == 0 {

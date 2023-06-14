@@ -96,7 +96,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         {
            
             
-            VerifyOTPForTransaction()
+            ResendOTP()
 //            FundTransferIBFT()
         }
         else
@@ -275,8 +275,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     @IBAction func Action_Next(_ sender: UIButton) {
         if isfromBanktoBank == true || isfromOtherLocalBank == true
         {
-           
-            VerifyOTPForTransaction()
+            ResendOTP()
+            
 //            FundTransferIBFT()
         }
         else
@@ -328,7 +328,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         
         
 //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferLocal"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferLocal"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/fundsTransferLocal"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":number!,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"beneficiaryName":"","beneficiaryMobile":
             "","beneficiaryEmail":"","addBeneficiary":"N","otp":otpTextField.text ?? "","requestMoneyId":requestMoneyId!,"accountType":DataManager.instance.accountType!] as [String : Any]
@@ -430,6 +430,67 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         }
         
         
+   
+    func ResendOTP() {
+
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        showActivityIndicator()
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v2/getOtpOrOtv"
+        var userCnic : String?
+        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+        }
+        else{
+            userCnic = ""
+        }
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["mobileNo":"","otpType":GlobalOTPTypes.OTP_IBFT ?? "","channelId":"\(DataManager.instance.channelID ?? "")", "cnic" : userCnic!, "otpSendType" : "OTP" ?? ""]
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+        //        print(result.apiAttribute1)
+        //        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        //
+                print(parameters)
+                print(compelteUrl)
+        
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            self.hideActivityIndicator()
+            self.genRespBaseObj = response.result.value
+            if response.response?.statusCode == 200 {
+                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                   
+                    self.VerifyOTPForTransaction()
+                    
+                }
+                else {
+                    if let message = self.genRespBaseObj?.messages {
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        
+                    }
+                }
+            }
+            else {
+                if let message = self.genRespBaseObj?.messages {
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                }
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
+                
+            }
+        }
+    }
     
  
     
