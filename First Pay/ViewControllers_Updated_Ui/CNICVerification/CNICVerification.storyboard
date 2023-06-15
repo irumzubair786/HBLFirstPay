@@ -51,7 +51,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="A1n-jw-wbt">
-                                <rect key="frame" x="30" y="171" width="333" height="213.33333333333337"/>
+                                <rect key="frame" x="30" y="171" width="333" height="240.66666666666663"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CNIC Verification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTk-Hy-sNK">
                                         <rect key="frame" x="0.0" y="0.0" width="333" height="26.333333333333332"/>
@@ -180,6 +180,19 @@
                                             <constraint firstAttribute="height" constant="1" id="JYa-WJ-yCq"/>
                                         </constraints>
                                     </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i1p-Jy-83h">
+                                        <rect key="frame" x="0.0" y="213.33333333333331" width="333" height="8"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="8" id="gVQ-bs-RXH"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your CNIC " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fei-Be-pbC">
+                                        <rect key="frame" x="0.0" y="221.33333333333331" width="333" height="19.333333333333343"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" red="0.56078431370000004" green="0.57254901960000004" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NaS-wf-cez">
@@ -266,6 +279,7 @@
                     <connections>
                         <outlet property="buttonBack" destination="9Ow-Mx-ASB" id="gME-fe-h9a"/>
                         <outlet property="buttonContinue" destination="gtI-Gs-cpz" id="vmt-TD-zPr"/>
+                        <outlet property="cnicErrorLabel" destination="Fei-Be-pbC" id="2TZ-I6-lZ2"/>
                         <outlet property="cniclabel" destination="wBG-Sp-VN6" id="x2V-bj-N7V"/>
                         <outlet property="imageContinue" destination="U4q-MG-m2y" id="Y56-ge-xcN"/>
                         <outlet property="selectDate" destination="tfs-yG-Vnu" id="DjO-US-wkN"/>

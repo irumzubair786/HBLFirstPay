@@ -11,6 +11,7 @@ import Alamofire
 
 class CNICVerification: UIViewController {
 
+    @IBOutlet weak var cnicErrorLabel: UILabel!
     @IBOutlet weak var cniclabel: UILabel!
     @IBOutlet weak var tfSelectExpiryDate: UITextField!
     @IBOutlet weak var imageContinue: UIImageView!
@@ -26,6 +27,7 @@ class CNICVerification: UIViewController {
 
     var modelExpiredCnicVerification: ModelExpiredCnicVerification? {
         didSet {
+            cnicErrorLabel.isHidden = true
             if modelExpiredCnicVerification?.responsecode == 1 {
                 self.showAlertCustomPopup(title: "Congratulations!\nVerification Successfull", message: modelExpiredCnicVerification?.messages, iconName: .iconSucess) {_ in
                     self.dismiss(animated: true)
@@ -33,13 +35,17 @@ class CNICVerification: UIViewController {
                 }
             }
             else {
-                self.showAlertCustomPopup(title: "Error", message: modelExpiredCnicVerification?.messages, iconName: .iconError)
+                cnicErrorLabel.text = modelExpiredCnicVerification?.messages
+                cnicErrorLabel.textColor = .red
+                cnicErrorLabel.isHidden = false
+//                self.showAlertCustomPopup(title: "Error", message: modelExpiredCnicVerification?.messages, iconName: .iconError)
             }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        cnicErrorLabel.isHidden = true
         buttonContinue.isUserInteractionEnabled = false
 
         maskingCNIC()
