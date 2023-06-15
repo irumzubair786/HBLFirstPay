@@ -131,9 +131,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             FBEvents.logEvent(title: .Homescreen_paybills_click)
             let storyboard = UIStoryboard(name: "BillPayment", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "moveToBillpayment")
-
+           
             self.present(vc, animated: true)
         }
+
         else if tag == 3 {
             FBEvents.logEvent(title: .Homescreen_getloan_click)
             getActiveLoan()

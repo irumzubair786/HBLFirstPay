@@ -132,7 +132,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         if textField == otptextField{
             return newLength <= 4
             
-            //            lbl1.textColor = UIColor.green
+            //  lbl1.textColor = UIColor.green
         }
         if textField == otptextField{
             return newLength <= 4

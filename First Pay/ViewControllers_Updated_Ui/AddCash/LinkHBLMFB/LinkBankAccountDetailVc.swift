@@ -13,11 +13,14 @@ import SwiftKeychainWrapper
 class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
     var genericresponseObj : otpVerificationModel?
     var accountList = [CbsData]()
+    var userCnic : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         textFieldMobileNo.delegate = self
         textFieldCNIC.delegate = self
         buttonback.setTitle("", for: .normal)
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        textFieldCNIC.text = userCnic
         buttonContinue.isUserInteractionEnabled = false
         self.textFieldMobileNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingDidEnd)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
@@ -115,7 +118,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
             return
         }
         
-        var userCnic : String?
+        
         
         showActivityIndicator()
         

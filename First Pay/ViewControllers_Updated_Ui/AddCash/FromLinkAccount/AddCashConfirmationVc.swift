@@ -120,8 +120,6 @@ class AddCashConfirmationVc: BaseClassVC {
                             self.navigationController?.pushViewController(vc, animated: true
                             )
                             
-                            
-                            
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{

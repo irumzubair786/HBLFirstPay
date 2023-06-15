@@ -31,6 +31,7 @@ class FromLinkAccountListVc: BaseClassVC {
     @IBOutlet weak var tableView: UITableView!
     private func getLinkAccounts() {
         
+        
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
@@ -63,7 +64,9 @@ class FromLinkAccountListVc: BaseClassVC {
             if response.response?.statusCode == 200 {
             
                 if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
+                    
                     if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
+                     
                         self.tableView.delegate = self
                         self.tableView.dataSource = self
                         self.tableView.reloadData()
@@ -97,6 +100,8 @@ class FromLinkAccountListVc: BaseClassVC {
         let tag = sender.tag
         let cell = tableView.cellForRow(at: IndexPath(row: sender.tag, section: 0))
         as! cellFromLinkedAccountListVc
+        GlobalData.userAcc = self.LinkedAccountsObj?.data?[tag].cbsAccountNo!
+        GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "AddCashVC") as!   AddCashVC
         self.navigationController?.pushViewController(vc, animated: true)
         
@@ -118,6 +123,7 @@ extension FromLinkAccountListVc :UITableViewDelegate, UITableViewDataSource {
         aCell.labelAccountNo.text = aRequest?.cbsAccountNo
         aCell.labelBankName.text = aRequest?.branchName
         aCell.buttonBackView.setTitle("", for: .normal)
+        aCell.buttonBackView.tag = indexPath.row
         aCell.buttonBackView.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
         
         aCell.buttonDotedIcon.setTitle("", for: .normal)

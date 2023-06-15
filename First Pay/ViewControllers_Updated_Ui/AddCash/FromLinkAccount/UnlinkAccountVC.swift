@@ -83,21 +83,19 @@ class UnlinkAccountVC: BaseClassVC {
         
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/deLinkAccount"
         
-        
+//        DataManager.instance.accountNo
         var userCnic : String?
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!,"accountNo":DataManager.instance.accountNo!]
-        
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!,"accountNo":GlobalData.userAcc ?? ""]
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
         
-        print(header)
-        print(compelteUrl)
         print(params)
+        print(compelteUrl)
+        print(parameters)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<GenericResponseModel>) in
             
             

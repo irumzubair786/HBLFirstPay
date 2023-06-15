@@ -13,7 +13,7 @@ import AlamofireObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
 class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
-    var totalSecond = 60
+    var totalSecond = 10
     var ForTransactionConsent:Bool = false
     var timer = Timer()
     var counter = 0
@@ -30,14 +30,14 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         otptextField.delegate = self
         buttonBack.setTitle("", for: .normal)
         labelMobNo.text = DataManager.instance.accountNo
-        buttonResendOtP.setTitle("", for: .normal)
-        buttonResendOtVCall.setTitle("", for: .normal)
         buttonNext.setTitle("", for: .normal)
         buttonNext.isUserInteractionEnabled = false
         buttonCoontinue.isUserInteractionEnabled = false
         self.labelMessage.isHidden = true
+        buttonResendOtVCall.isHidden = true
         startTimer()
         getIMEI()
+        self.otptextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
        
     }
     @objc func timerAction() {
@@ -45,7 +45,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
              labelCount.text = "\(counter)"
          }
     func startTimer() {
-        totalSecond = 60
+        totalSecond = 10
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {
@@ -75,7 +75,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
 //            resendopt
         }
         else{
-//            buttonResendOtP.isHidden = true
+           buttonResendOtP.isHidden = true
            buttonResendOtVCall.isHidden = false
 //
             
@@ -102,6 +102,21 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         buttonNext.setImage(image, for: .normal)
         buttonCoontinue.isUserInteractionEnabled = true
         buttonNext.isUserInteractionEnabled = true
+    }
+    @objc func changeTextInTextField() {
+        if otptextField.text?.count == 4
+        {
+            buttonNext.setImage(UIImage(named: "]greenarrow"), for: .normal)
+            buttonNext.isUserInteractionEnabled = true
+            buttonCoontinue.isUserInteractionEnabled = true
+        }
+      
+        else
+        {
+            buttonNext.setImage(UIImage(named: "grayArrow"), for: .normal)
+            buttonNext.isUserInteractionEnabled = false
+            buttonCoontinue.isUserInteractionEnabled = false
+        }
     }
     
     func timeFormatted(_ totalSeconds: Int) -> String {
@@ -145,6 +160,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     @IBOutlet weak var buttonResendOtP: UIButton!
     @IBAction func buttonResendOtP(_ sender: UIButton) {
         buttonResendOtP.isUserInteractionEnabled = false
+        
         buttonResendOtP.setTitleColor(.gray ,for: .normal)
         startTimer()
         ResendOTP()
@@ -196,8 +212,8 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
             userCnic = ""
         }
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"mobileNo":(DataManager.instance.accountNo!),"imei":DataManager.instance.imei!,"accountNo":DataManager.instance.accountNo!,"otpRequired": GlobalData.otpRequired! ,"otp": otptextField.text!,"accountType": DataManager.instance.accountType! ,"accountTitle": DataManager.instance.accountTitle!,"branchCode": GlobalData.branchCode!
-                          ,"branchName": GlobalData.branchName!] as [String : Any]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"mobileNo":(DataManager.instance.accountNo!),"imei":DataManager.instance.imei!,"accountNo": GlobalData.userAcc!,"otpRequired": GlobalData.otpRequired! ,"otp": otptextField.text!,"accountType": DataManager.instance.accountType! ,"accountTitle": DataManager.instance.accountTitle!,"branchCode": GlobalData.branchCode!
+           ,"branchName": GlobalData.branchName!] as [String : Any]
         
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
@@ -226,13 +242,15 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
                 
                 else {
                     if let message = self.genResponseObj?.messages {
-                        self.showAlert(title: "", message: message, completion: nil)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        
                     }
                 }
             }
             else {
                 if let message = self.genResponseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                   
                 }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
@@ -269,12 +287,8 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
 //
         
         showActivityIndicator()
-        
-        
+
 //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferLocal"
-        
-        
-        
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/addCashFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":GlobalData.userAcc!,"amount":TotalAmount!,"transPurpose":"miscellaneous","accountTitle": DataManager.instance.accountTitle!,"transactionType":"PULL","otp":otptextField.text!] as [String : Any]
@@ -282,8 +296,6 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         print(parameters)
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-        
-        
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
@@ -308,14 +320,16 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
-                        self.showToast(title: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+//                        self.showToast(title: message)
 //                        self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.messages ?? "") ")
                     }
                 }
             }
             else {
                 if let message = self.fundsTransSuccessObj?.messages{
-                    self.showToast(title: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                  
 //                    self.showAlert(title: "", message: message, completion: nil)
                 }
 //                print(response.result.value)
@@ -330,6 +344,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         vc.transactionAmount = TotalAmount
         vc.transactionId = fundsTransSuccessObj?.data?.authIdResponse
         vc.transactionType = "Add Cash Linked Account"
+//        changes
         vc.beneficiaryAccount = GlobalData.userAcc
         vc.sourceAccount = DataManager.instance.accountNo!
         vc.dateTime = fundsTransSuccessObj?.data?.transDate
@@ -344,10 +359,10 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         }
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v2/getOtpOrOtv"
         
         
-        let parameters = ["mobileNo":"\(DataManager.instance.mobNo)","otpType":"PULL","channelId":"\(DataManager.instance.channelID)", "cnic" :"", "otpSendType" : "OTP"]
+        let parameters = ["mobileNo":"\(DataManager.instance.accountNo!)","otpType":"PULL","channelId":"\(DataManager.instance.channelID)", "cnic" :"", "otpSendType" : "OTP"]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -370,6 +385,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
             self.genRespBaseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                  
                     self.labelMessage.isHidden = false
                     self.labelMessage.text = "OTP will be Resend after 30 Seconds"
 //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")

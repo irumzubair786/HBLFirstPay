@@ -342,6 +342,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
                         if title.contains("Request Rejected") {
                             self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
                         }
+                       
                     }
                 }
             }

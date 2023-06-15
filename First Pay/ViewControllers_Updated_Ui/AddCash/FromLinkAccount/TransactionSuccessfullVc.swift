@@ -56,7 +56,7 @@ class TransactionSuccessfullVc: BaseClassVC {
     func updateUi()
     {
         
-        labelTransactionAmount.text = transactionAmount
+        labelTransactionAmount.text = "\(transactionAmount?.floatValue)"
         labelTransactionId.text = transactionId
         labelTransationType.text = transactionType
         labelBeneficiaryAccount.text = beneficiaryAccount

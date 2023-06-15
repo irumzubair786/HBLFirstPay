@@ -28,8 +28,8 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         
         // Do any additional setup after loading the view.
     }
-   var minimumValue = "100"
-    var maximumValue = "10000"
+   var minimumValue = "1"
+    var maximumValue = "25000"
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
@@ -69,7 +69,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         
     }
     @objc func changeTextInTextField() {
-        if (textFieldAmount?.text! ?? "")! < minimumValue
+        if (textFieldAmount?.text! ?? "") ?? "" < minimumValue
         {
             let image = UIImage(named:"grayArrow")
             img_Next.image = image
@@ -78,7 +78,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
             labelAlert.textColor = UIColor(hexValue: 0xFF3932)
             textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
         }
-       if (textFieldAmount?.text! ?? "")! > (maximumValue)
+       else if (textFieldAmount?.text! ?? "") ?? "" > (maximumValue)
         {
             let image = UIImage(named:"grayArrow")
             img_Next.image = image
@@ -101,8 +101,8 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-
-        if (textFieldAmount?.text! ?? "")! < minimumValue
+        
+        if (textFieldAmount?.text! ?? "") ?? "" < minimumValue
         {
             let image = UIImage(named:"grayArrow")
             img_Next.image = image
@@ -111,7 +111,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
             labelAlert.textColor = UIColor(hexValue: 0xFF3932)
             textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
         }
-       if (textFieldAmount?.text! ?? "")! > (maximumValue)
+        if (textFieldAmount?.text! ?? "") ?? "" > (maximumValue)
         {
             let image = UIImage(named:"grayArrow")
             img_Next.image = image
@@ -129,9 +129,33 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
             labelAlert.textColor = UIColor.orange
             textFieldAmount.textColor = UIColor.gray
         }
-
+    
 
 }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newLength:Int = (textField.text?.count)! + string.count - range.length
+        if textField == textFieldAmount
+        {
+            
+            let newText = (textFieldAmount.text as NSString?)?.replacingCharacters(in: range, with: string) ?? ""
+            if newText.count == 1 && newText.first == "0" {
+                let image = UIImage(named:"grayArrow")
+                img_Next.image = image
+                img_Next.isUserInteractionEnabled = false
+                buttonContinue.isUserInteractionEnabled = false
+                labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+                textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
+                return false
+            }
+            if textField == textFieldAmount{
+                return newLength <= 6
+            }
+            
+            return true
+        }
+        return true
+        
+    }
     @IBOutlet weak var labelAlert: UILabel!
     @IBOutlet weak var img_Next: UIImageView!
     private func getLinkAccounts() {
@@ -172,8 +196,8 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
 //
 //
 //                }
-                    GlobalData.userAcc = self.LinkedAccountsObj?.data?[0].cbsAccountNo
-                    GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
+//                    GlobalData.userAcc = self.LinkedAccountsObj?.data?[0].cbsAccountNo
+//                    GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
                     labelAccountTitle.text = LinkedAccountsObj?.data?[0].cbsAccountTitle
                     labelAccountNo.text = LinkedAccountsObj?.data?[0].cbsAccountNo
                     
@@ -239,8 +263,8 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
                         if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
                            
                             let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddCashConfirmationVc") as! AddCashConfirmationVc
-                            GlobalData.userAcc = self.LinkedAccountsObj?.data?[0].cbsAccountNo
-                            GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
+//                            GlobalData.userAcc = self.LinkedAccountsObj?.data?[0].cbsAccountNo
+//                            GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
                             vc.accontNo = self.LinkedAccountsObj?.data?[0].cbsAccountNo
                             vc.accounttilte = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
                             vc.bankName = self.LinkedAccountsObj?.data?[0].branchName

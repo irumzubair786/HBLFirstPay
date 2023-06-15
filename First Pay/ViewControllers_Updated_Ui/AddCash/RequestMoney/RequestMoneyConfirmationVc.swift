@@ -86,8 +86,25 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
     @IBOutlet weak var imageNextArrow: UIImageView!
     @IBOutlet weak var buttonContinue: UIButton!
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newLength:Int = (textField.text?.count)! + string.count - range.length
         if textField == textFieldAmount
         {
+            let newText = (textFieldAmount.text as NSString?)?.replacingCharacters(in: range, with: string) ?? ""
+            if newText.count == 1 && newText.first == "0" {
+                let image = UIImage(named:"grayArrow")
+                imageNextArrow.image = image
+                imageNextArrow.isUserInteractionEnabled = false
+                buttonContinue.isUserInteractionEnabled = false
+                buttonNext.isUserInteractionEnabled = false
+                labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+                textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
+                return false
+           // Disallow entering zero as the first digit
+            }
+            if textField == textFieldAmount{
+                return newLength <= 6
+            }
+            
             return true
         }
         if string.rangeOfCharacter(from: .letters) != nil || string == " " {
@@ -95,7 +112,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
         }
         else if !(string == "" && range.length > 0) {
         return false
-        
+            
         }
         return true
     }
@@ -112,13 +129,12 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
         {
             messageView.resignFirstResponder()
         }
-
+       
         return true
-        
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
 
-        if Int(textFieldAmount?.text! ?? "")! < minValue
+        if Int(textFieldAmount?.text! ?? "") ?? 0 < minValue
         {
             let image = UIImage(named:"grayArrow")
             imageNextArrow.image = image
@@ -128,7 +144,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
             labelAlert.textColor = UIColor(hexValue: 0xFF3932)
             textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
         }
-        if  Int(textFieldAmount?.text! ?? "")! > (maxValue)
+        if  Int(textFieldAmount?.text! ?? "") ?? 0 > (maxValue)
         {
             let image = UIImage(named:"grayArrow")
             imageNextArrow.image = image
@@ -138,9 +154,8 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
             labelAlert.textColor = UIColor(hexValue: 0xFF3932)
             textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
         }
-
-        else{
-            if messageView.text?.count != 0
+           else{
+            if messageView.text?.count != 0 && textFieldAmount.text?.count != 0
             {
                 let image = UIImage(named:"]greenarrow")
                 imageNextArrow.image = image
@@ -265,14 +280,13 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
             self.genResponseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "RequestMoneySuccessfullVc") as!   RequestMoneySuccessfullVc
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "RequestMoneySuccessfullVc") as! RequestMoneySuccessfullVc
                          self.navigationController?.pushViewController(vc,animated: true)
                 }
                 else {
                     if let message = self.genResponseObj?.messages{
 //                        self.showDefaultAlert(title: "", message: message)
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
                     }
                 }
             }

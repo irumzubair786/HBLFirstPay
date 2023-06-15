@@ -67,9 +67,7 @@ class LinkBankAccountListVC: BaseClassVC {
             
                 if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
                     if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
-                        GlobalData.branchName = cbsAccountsObj?.accdata?[0].accountBranch
-                        GlobalData.branchCode = cbsAccountsObj?.accdata?[0].accountBranchCode
-                        
+
                         self.tableView.delegate = self
                         self.tableView.dataSource = self
                         self.tableView.reloadData()
@@ -99,12 +97,12 @@ class LinkBankAccountListVC: BaseClassVC {
     
     @IBAction func buttoncellback(_ sender: UIButton) {
         
-      let tag =  sender.tag
-      let cell = tableView.cellForRow(at: IndexPath(row: tag, section: 0)) as! cellLinkedAccount
-      cell.backView.borderColor = .green
-       let a = UIImage(named: "teenyicons_tick-circle-solid")
-       cell.img.image = a
-        cell.buttonImgChecked.isUserInteractionEnabled = true
+//      let tag =  sender.tag
+//      let cell = tableView.cellForRow(at: IndexPath(row: tag, section: 0)) as! cellLinkedAccount
+//      cell.backView.borderColor = .green
+//       let a = UIImage(named: "teenyicons_tick-circle-solid")
+//       cell.img.image = a
+//        cell.buttonImgChecked.isUserInteractionEnabled = true
 //       let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
 //        cell.img.addGestureRecognizer(tapGestureRecognizer)
         
@@ -115,7 +113,26 @@ class LinkBankAccountListVC: BaseClassVC {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "LinkBankAccountDetailVc") as! LinkBankAccountDetailVc
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
+    @objc func buttonpress(_ sender:UIButton)
+    {
+        let tag = sender.tag
+        let cell = tableView.cellForRow(at: IndexPath(row: sender.tag, section: 0))
+        as! cellLinkedAccount
+        
+        GlobalData.branchName = cbsAccountsObj?.accdata?[tag].accountBranch
+        GlobalData.branchCode = cbsAccountsObj?.accdata?[tag].accountBranchCode
+        GlobalData.userAcc =  cbsAccountsObj?.accdata?[tag].accountNumber!
+        GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
+        cell.backView.borderColor = .green
+        let a = UIImage(named: "teenyicons_tick-circle-solid")
+        cell.img.image = a
+        cell.buttonImgChecked.isUserInteractionEnabled = true
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+        cell.img.addGestureRecognizer(tapGestureRecognizer)
+//        let vc = self.storyboard!.instantiateViewController(withIdentifier: "AddCashVC") as!   AddCashVC
+//        self.navigationController?.pushViewController(vc, animated: true)
+        
+    }
     
 }
 
@@ -138,7 +155,8 @@ extension LinkBankAccountListVC :UITableViewDelegate, UITableViewDataSource {
         aCell.buttonback.setTitle("", for: .normal)
         aCell.buttonImgChecked.setTitle("", for: .normal)
         aCell.buttonImgChecked.isUserInteractionEnabled = false
-
+        aCell.buttonback.tag = indexPath.row
+        aCell.buttonback.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
         return aCell
     }
     
@@ -149,11 +167,19 @@ extension LinkBankAccountListVC :UITableViewDelegate, UITableViewDataSource {
     
 //        let tag =  indexPath.row
 //      let cell = tableView.cellForRow(at: IndexPath(row: tag, section: 0)) as! cellLinkedAccount
-//        cell.buttonChecked.isUserInteractionEnabled = true
-//        cell.buttonChecked.setBackgroundImage(UIImage(named: "teenyicons_tick-circle-solid"), for: .normal)
+//        cell.buttonImgChecked.isUserInteractionEnabled = true
+//        cell.buttonImgChecked.setBackgroundImage(UIImage(named: "teenyicons_tick-circle-solid"), for: .normal)
 //        cell.backView.borderColor = .green
 //        let vc = self.storyboard!.instantiateViewController(withIdentifier: "LinkBankAccountDetailVc") as! LinkBankAccountDetailVc
 //        self.navigationController?.pushViewController(vc, animated: true)
+
+    }
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellLinkedAccount") as! cellLinkedAccount
+        cell.buttonImgChecked.isUserInteractionEnabled = false
+       
+        cell.img.image = nil
         
     }
 }
