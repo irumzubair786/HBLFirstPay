@@ -369,7 +369,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         //shakeel
 //        self.navigateToHome()
 //        return
-        if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "N" {
+        if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "Y" {
             let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "CNICVerification") as! CNICVerification
             vc.modalPresentationStyle = .fullScreen
