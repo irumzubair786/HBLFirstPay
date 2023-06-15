@@ -122,7 +122,7 @@ class CNICVerification: UIViewController {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         
         let issueDateArray = tfSelectExpiryDate.text!.components(separatedBy: "/")
-        let issueDate = "\(issueDateArray.first!)-\(issueDateArray[1])-\(issueDateArray.last!)"
+        let issueDate = "\(issueDateArray[2])-\(issueDateArray[1])-\(issueDateArray[0])"
         print(issueDate)
         let parameters: Parameters = [
             "cnic" : userCnic!,
