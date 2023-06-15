@@ -121,11 +121,14 @@ class CNICVerification: UIViewController {
 //    }
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         
+        let issueDateArray = tfSelectExpiryDate.text!.components(separatedBy: "/")
+        let issueDate = "\(issueDateArray.first!)-\(issueDateArray[1])-\(issueDateArray.last!)"
+        print(issueDate)
         let parameters: Parameters = [
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            "issueDate":tfSelectExpiryDate.text!
+            "issueDate":issueDate
         ]
         
         APIs.postAPI(apiName: .expiredCnicVerification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
@@ -142,11 +145,16 @@ extension CNICVerification {
     // MARK: - ModelGetActiveLoan
     struct ModelExpiredCnicVerification: Codable {
         let messages: String
-        let responseblock: JSONNull?
+        let responseblock: Responseblock?
         let responsecode: Int
         let data: JSONNull?
     }
     
+    // MARK: - Responseblock
+    struct Responseblock: Codable {
+        let responseDescr, heading, responseType, responseCode: String
+        let field: String
+    }
     // MARK: - Encode/decode helpers
     class JSONNull: Codable, Hashable {
         
