@@ -25,7 +25,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         self.textFieldMobileNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingDidEnd)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imgNext.addGestureRecognizer(tapGestureRecognizer)
-       
+        
         // Do any additional setup after loading the view.
     }
     
@@ -45,21 +45,36 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
     }
   
     @objc func changeTextInTextField() {
-       
-        if (textFieldCNIC.text?.count ?? 0) == 13 && (textFieldMobileNo.text?.count ?? 0 == 11)
+       if (textFieldMobileNo.text?.count ?? 0 == 11)
         {
-            imgNext.image = UIImage(named: "]greenarrow")
-            buttonContinue.isUserInteractionEnabled = true
-            imgNext.isUserInteractionEnabled = true
- 
-        }
-        else if (textFieldCNIC.text?.count ?? 0) < 13 ||  (textFieldMobileNo.text?.count ?? 0) < 11
+           imgNext.image = UIImage(named: "]greenarrow")
+           buttonContinue.isUserInteractionEnabled = true
+           imgNext.isUserInteractionEnabled = true
+
+       }
+        else if (textFieldMobileNo.text?.count ?? 0) < 11
         {
             imgNext.image = UIImage(named: "grayArrow")
             buttonContinue.isUserInteractionEnabled = false
             imgNext.isUserInteractionEnabled = false
         }
         
+        
+        
+//        if (textFieldCNIC.text?.count ?? 0) == 13 && (textFieldMobileNo.text?.count ?? 0 == 11)
+//        {
+//            imgNext.image = UIImage(named: "]greenarrow")
+//            buttonContinue.isUserInteractionEnabled = true
+//            imgNext.isUserInteractionEnabled = true
+//
+//        }
+//        else if (textFieldCNIC.text?.count ?? 0) < 13 ||  (textFieldMobileNo.text?.count ?? 0) < 11
+//        {
+//            imgNext.image = UIImage(named: "grayArrow")
+//            buttonContinue.isUserInteractionEnabled = false
+//            imgNext.isUserInteractionEnabled = false
+//        }
+//
         
     }
     @IBAction func textFieldMobileNo(_ sender: UITextField) {

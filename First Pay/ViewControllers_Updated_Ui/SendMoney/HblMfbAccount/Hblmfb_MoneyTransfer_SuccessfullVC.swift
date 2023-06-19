@@ -63,19 +63,15 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
     @IBOutlet weak var imgview: UIView!
     @IBAction func Action_Download(_ sender: UIButton) {
         imgview.snapshotView(afterScreenUpdates: true)
-        
         image = imgview.convertToImage()
         print(image)
        UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
         showToast(title: "Photo Saved Succussfully!")
         
     }
-    
-    
-    
+   
     @IBAction func Action_Share(_ sender: UIButton) {
         let image =  imgview.convertToImage()
-            
         let imageShare = [ image ]
             let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = self.view

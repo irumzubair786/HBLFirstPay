@@ -176,7 +176,7 @@ struct GetCBSAccounts : Mappable {
     var responsecode : Int?
     var accdata : [CbsData]?
     var messages : String?
-
+   
     init?(map: Map) {
 
     }
@@ -203,7 +203,7 @@ struct CbsData : Mappable {
     var accountStatusCode : String?
     var accountCurrencyId : String?
     var accountBranch : String?
-
+    var isSelected : Bool?
     init?(map: Map) {
 
     }

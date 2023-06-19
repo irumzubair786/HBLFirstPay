@@ -24,7 +24,9 @@ class TransactionSuccessfullVc: BaseClassVC {
         updateUi()
         // Do any additional setup after loading the view.
     }
-    @IBOutlet weak var imgview: UIImageView!
+    
+    @IBOutlet weak var imgview: UIView!
+//    @IBOutlet weak var imgview: UIImageView!
     @IBOutlet weak var buttonShare: UIButton!
     @IBOutlet weak var labelFeeCharged: UILabel!
     @IBOutlet weak var labelDateTime: UILabel!
@@ -56,7 +58,7 @@ class TransactionSuccessfullVc: BaseClassVC {
     func updateUi()
     {
         
-        labelTransactionAmount.text = "\(transactionAmount?.floatValue)"
+        labelTransactionAmount.text = "\(transactionAmount?.floatValue ?? 0)"
         labelTransactionId.text = transactionId
         labelTransationType.text = transactionType
         labelBeneficiaryAccount.text = beneficiaryAccount

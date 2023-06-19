@@ -105,6 +105,7 @@ class UnlinkAccountVC: BaseClassVC {
             
                 if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
                     let vc = self.storyboard!.instantiateViewController(withIdentifier: "DelinkSuccessfullVC") as! DelinkSuccessfullVC
+                    isfromPullFund = false
                     self.navigationController?.pushViewController(vc, animated: true)
                     
                 }

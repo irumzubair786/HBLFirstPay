@@ -19,13 +19,15 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
     var LinkedAccountsObj : getLinkedAccountModel?
 
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad()   
         getLinkAccounts()
         textFieldAmount.delegate = self
         buttonContinue.isUserInteractionEnabled = false
         buttonBack.setTitle("", for: .normal)
         self.textFieldAmount.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+        img_Next.addGestureRecognizer(tapGestureRecognizer)
+    
         // Do any additional setup after loading the view.
     }
    var minimumValue = "1"
@@ -52,6 +54,17 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         )
 
         
+    }
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddCashConfirmationVc") as! AddCashConfirmationVc
+        vc.accontNo = self.LinkedAccountsObj?.data?[0].cbsAccountNo
+        vc.accounttilte = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
+        vc.bankName = self.LinkedAccountsObj?.data?[0].branchName
+        vc.FirstPayNo = self.LinkedAccountsObj?.data?[0].mobileNo
+        vc.TotalAmount = self.textFieldAmount.text!
+        self.navigationController?.pushViewController(vc, animated: true
+        )
     }
     @IBAction func textFieldAmount(_ sender: UITextField) {
 //
@@ -97,8 +110,6 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
             labelAlert.textColor = UIColor.orange
             textFieldAmount.textColor = UIColor.gray
         }
-
-        
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         

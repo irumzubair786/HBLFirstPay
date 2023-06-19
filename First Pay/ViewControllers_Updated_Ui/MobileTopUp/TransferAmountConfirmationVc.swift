@@ -41,8 +41,8 @@ class TransferAmountConfirmationVc: BaseClassVC {
     @IBOutlet weak var popupView: UIView!
     @IBOutlet weak var nextBtn: UIButton!
     func updateUi(){
-        lblAmount.text = "Rs. \(Int(amount!)?.twoDecimal() ?? "0")"
-        lblTotalAmount.text = "Rs. \(Int(amount!)?.twoDecimal() ?? "0")"
+        lblAmount.text = "Rs. \(amount!)"
+        lblTotalAmount.text = "Rs. \(amount!)"
         lblFee.text = "Rs. 0.00"
         lblRecipientPhoneNumber.text = phoneNumber
         lblOperator.text = GlobalData.Selected_operator
@@ -138,7 +138,7 @@ class TransferAmountConfirmationVc: BaseClassVC {
            
            let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountSuccessfulVC") as! TransferAmountSuccessfulVC
         vc.phoneNumber = phoneNumber
-        vc.amount = amount?.getIntegerValue()
+        vc.amount = amount!
         vc.Trascationid = successmodelobj?.data?.authIdResponse
         vc.TransactionDate = successmodelobj?.data?.transDate
         

@@ -327,14 +327,14 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
 //                print(response.response?.statusCode)
             }
         }
-    
-   
+
     func navigatezToConfirmationVC()
     {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountConfirmationVc") as! TransferAmountConfirmationVc
-        vc.amount = "\(amount)"
+        vc.amount = "\(labelAmount.text!)"
         vc.phoneNumber = phoneNumber
-    
-        self.navigationController!.pushViewController(vc, animated: false)
+        self.present(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: false)
     }
+    
 }

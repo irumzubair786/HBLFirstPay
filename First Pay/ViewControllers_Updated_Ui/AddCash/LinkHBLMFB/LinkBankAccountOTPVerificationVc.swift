@@ -13,7 +13,7 @@ import AlamofireObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
 class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
-    var totalSecond = 10
+    var totalSecond = 60
     var ForTransactionConsent:Bool = false
     var timer = Timer()
     var counter = 0
@@ -45,7 +45,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
              labelCount.text = "\(counter)"
          }
     func startTimer() {
-        totalSecond = 10
+        totalSecond = 60
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {
@@ -237,6 +237,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
             if response.response?.statusCode == 200 {
                 if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
                     let vc = self.storyboard!.instantiateViewController(withIdentifier: "POPUPSuccessfullVc") as! POPUPSuccessfullVc
+                  
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
                 

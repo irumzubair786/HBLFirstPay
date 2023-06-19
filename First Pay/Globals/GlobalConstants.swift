@@ -12,6 +12,7 @@ class GlobalConstants {
     // Stagging
     public static let BASE_URL = "http://bbuat.hblmfb.com/"
 }
+
     class GlobalOTPTypes { 
         public static let OTP_CASH_OUT = "B"                                                 //CASH OUT
         public static let OTP_IBFT = "IBFT"                                                  //IBFT

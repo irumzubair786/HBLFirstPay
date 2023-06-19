@@ -45,6 +45,7 @@ class ActivateDebitCardVC: BaseClassVC {
     @IBOutlet weak var labelCardNumber: UILabel!
     
     @IBAction func button3(_ sender: UIButton) {
+       
     }
     @IBAction func button2(_ sender: UIButton) {
     }

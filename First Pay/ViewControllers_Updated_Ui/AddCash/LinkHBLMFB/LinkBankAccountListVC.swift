@@ -14,7 +14,7 @@ class LinkBankAccountListVC: BaseClassVC {
 //    var  accountTitle :String?
 //    var  accountNumber :String?
 //    var  bankName :String?
-   
+  
     var cbsAccountsObj : GetCBSAccounts?
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
@@ -32,6 +32,7 @@ class LinkBankAccountListVC: BaseClassVC {
         self.navigationController?.popViewController(animated: true
         )
     }
+   
     private func getLinkAccounts() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -115,23 +116,44 @@ class LinkBankAccountListVC: BaseClassVC {
     }
     @objc func buttonpress(_ sender:UIButton)
     {
+        
+        let range = (self.cbsAccountsObj?.accdata!.count ?? 0)-1
+        for i in stride(from: 0, to: range, by: 1)
+        {
+            self.cbsAccountsObj?.accdata![i].isSelected = false
+        }
+//        for i in self.cbsAccountsObj?.accdata ?? []
+//        {
+//
+//            i.isSelected = false
+//            i.accountNumber = ""
+//        }
+//
         let tag = sender.tag
         let cell = tableView.cellForRow(at: IndexPath(row: sender.tag, section: 0))
         as! cellLinkedAccount
-        
-        GlobalData.branchName = cbsAccountsObj?.accdata?[tag].accountBranch
-        GlobalData.branchCode = cbsAccountsObj?.accdata?[tag].accountBranchCode
-        GlobalData.userAcc =  cbsAccountsObj?.accdata?[tag].accountNumber!
-        GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
-        cell.backView.borderColor = .green
-        let a = UIImage(named: "teenyicons_tick-circle-solid")
-        cell.img.image = a
-        cell.buttonImgChecked.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        cell.img.addGestureRecognizer(tapGestureRecognizer)
-//        let vc = self.storyboard!.instantiateViewController(withIdentifier: "AddCashVC") as!   AddCashVC
-//        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if self.cbsAccountsObj?.accdata?[tag].isSelected == false
+        {
+            self.cbsAccountsObj?.accdata?[tag].isSelected = true
+                GlobalData.branchName = cbsAccountsObj?.accdata?[tag].accountBranch
+                GlobalData.branchCode = cbsAccountsObj?.accdata?[tag].accountBranchCode
+                GlobalData.userAcc =  cbsAccountsObj?.accdata?[tag].accountNumber!
+                GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
+                cell.backView.borderColor = .green
+                let a = UIImage(named: "teenyicons_tick-circle-solid")
+                cell.img.image = a
+                cell.buttonImgChecked.isUserInteractionEnabled = true
+                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+                cell.img.addGestureRecognizer(tapGestureRecognizer)
+        }
+       else
+        {
+           self.cbsAccountsObj?.accdata?[tag].isSelected = false
+           let img = UIImage(named: "Doted")
+           cell.img.image = img
+           cell.backView.borderColor = UIColor.gray
+           cell.buttonImgChecked.isUserInteractionEnabled = false
+       }
     }
     
 }
@@ -146,7 +168,6 @@ extension LinkBankAccountListVC :UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let aCell = tableView.dequeueReusableCell(withIdentifier: "cellLinkedAccount") as! cellLinkedAccount
-        
         let aRequest =  self.cbsAccountsObj?.accdata?[indexPath.row]
         aCell.LabelName.text = aRequest?.accountTitle
         aCell.labelAccNo.text = aRequest?.accountNumber
@@ -157,6 +178,18 @@ extension LinkBankAccountListVC :UITableViewDelegate, UITableViewDataSource {
         aCell.buttonImgChecked.isUserInteractionEnabled = false
         aCell.buttonback.tag = indexPath.row
         aCell.buttonback.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
+        if aRequest?.isSelected == true {
+            let a = UIImage(named: "teenyicons_tick-circle-solid")
+            aCell.img.image = a
+            aCell.buttonImgChecked.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let img = UIImage(named: "Doted")
+            aCell.img.image = img
+            aCell.backView.borderColor = UIColor.gray
+            aCell.buttonImgChecked.isUserInteractionEnabled = false
+        }
         return aCell
     }
     
@@ -176,10 +209,10 @@ extension LinkBankAccountListVC :UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellLinkedAccount") as! cellLinkedAccount
-        cell.buttonImgChecked.isUserInteractionEnabled = false
-       
-        cell.img.image = nil
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "cellLinkedAccount") as! cellLinkedAccount
+//        cell.buttonImgChecked.isUserInteractionEnabled = false
+//       
+//        cell.img.image = nil
         
     }
 }
