@@ -27,15 +27,18 @@ class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
   
     
     let image8 = UIImage(named: "internet")
-    let image9 = UIImage(named: "landline")
+    let image9 = UIImage(named: "landline 1")
     let image10 = UIImage(named: "elecricitypng")
     let image11 = UIImage(named: "suigas")
-    
+    var imageNames : [UIImage] = []
+//    ["Water", "investment", "insurance","gov"]
+    var images: [UIImage] = []
     
     var filteredData: [UIImage]!
     var Seclected_City :String?
     override func viewDidLoad() {
         super.viewDidLoad()
+//        imageNames.append(UIImage(named: "logo.png")!,UIImage(named: "logo2.png"))
         imgarrMobileLoad.append(image1!)
         imgarrMobileLoad.append(image2!)
         imgarrMobileLoad.append(image3!)
@@ -49,12 +52,17 @@ class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
         billpayments.append(image9!)
         billpayments.append(image10!)
         billpayments.append(image11!)
-        
+//        for name in imageNames {
+//            if let image = UIImage(named: name) {
+//                images.append(image)
+//            }
+//        }
         btnback.setTitle("", for: .normal)
         collectionViewMobileLoad.delegate = self
         collectionViewMobileLoad.dataSource = self
         searchBar.delegate = self
-        
+        collectionViewLoans.isHidden = true
+        collectionViewTravel.isHidden = true
         collectionViewSendMoney.delegate = self
         collectionViewSendMoney.dataSource = self
         collectionViewBillPyment.delegate = self
