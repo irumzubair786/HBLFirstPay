@@ -48,7 +48,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         lblAmount.addGestureRecognizer(tapGestureRecognizerr)
         AddCash()
 //        imgLevel.isHidden = true
-        
+        buttonMobilepakegs.setTitle("", for: .normal)
         homeAction()
         let tapGestureRecognizerrs = UITapGestureRecognizer(target: self, action: #selector(MovetoAccountLevel(tapGestureRecognizer:)))
         imgLevel.isUserInteractionEnabled = true
@@ -73,8 +73,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     @IBOutlet weak var imageAddCash: UIImageView!
     @IBOutlet weak var buttonLevelIcon: UIButton!
     @IBOutlet weak var viewDebitCard: UIImageView!
-    
-    
     @IBAction func buttonLevelIcon(_ sender: UIButton) {
         getAvailableLimits()
     }
@@ -83,23 +81,30 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
+    
+    
+    
+    @IBOutlet weak var buttonMobilepakegs: UIButton!
+    @IBAction func buttonMobilepakegs(_ sender: UIButton) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "OtherServices_VC") as! OtherServices_VC
+        self.present(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     func AddCash(){
         let tapGestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(btnAddCash(tapGestureRecognizer:)))
         imageAddCash.isUserInteractionEnabled = true
         imageAddCash.addGestureRecognizer(tapGestureRecognizer3)
     }
-
     @objc func btnAddCash(tapGestureRecognizer: UITapGestureRecognizer) {
         FBEvents.logEvent(title: .Homescreen_addcash_click)
         let storyBoard = UIStoryboard(name: Storyboard.AddCash.rawValue, bundle: Bundle.main)
         let vc = storyBoard.instantiateViewController(withIdentifier: "navigateToAddCash")
         self.present(vc, animated: true)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return topBtnarr.count
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cella = collectionView .dequeueReusableCell(withReuseIdentifier: "cellmainfourTransaction", for: indexPath) as! cellmainfourTransaction
         cella.btn.setTitle("", for: .normal)
@@ -109,10 +114,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         //        cella.img.image = topBtnarr[indexPath.row
         return cella
     }
-    
     @objc func buttontaped(_sender:UIButton) {
         let tag = _sender.tag
-        
         let cell = collectionView.cellForItem(at: IndexPath(row: tag, section: 0)) as! cellmainfourTransaction
         if tag == 0 {
             FBEvents.logEvent(title: .Homescreen_sendmoney_click)

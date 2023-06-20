@@ -13,17 +13,43 @@ import SwiftKeychainWrapper
 import RNCryptor
 import Kingfisher
 class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
-    var imgarrMobileLoad : [UIImage] =  [#imageLiteral(resourceName: "Bookme"), #imageLiteral(resourceName: "ComityLogo"), #imageLiteral(resourceName: "Discounts"), #imageLiteral(resourceName: "Donations"),#imageLiteral(resourceName: "Bookme"),#imageLiteral(resourceName: "Bookme"),#imageLiteral(resourceName: "Bookme"),#imageLiteral(resourceName: "Bookme")]
-
-//    ["Bookme.png","ComityLogo.png","Discounts.png","Donations.png","Bookme.png","ComityLogo.png","Discounts.png","Donations.png"]
+    var imgarrMobileLoad: [UIImage] = []
+    var SendMoney:[UIImage] = []
+    var billpayments:[UIImage] = []
+    let image1 = UIImage(named: "postpaid")
+    let image2 = UIImage(named: "postpaid")
+    let image3 = UIImage(named: "mblPkg")
     
-    var MobileLoaddarrName = ["Book Me", "Committee", "Discounts", "Donations","Book Me", "Committee", "Discounts", "Donations"]
+    let image4 = UIImage(named: "firstpayWallet")
+    let image5 = UIImage(named: "hblMfbAcc")
+    let image6 = UIImage(named: "otherbank")
+    let image7 = UIImage(named: "otherwallet")
+  
+    
+    let image8 = UIImage(named: "internet")
+    let image9 = UIImage(named: "landline")
+    let image10 = UIImage(named: "elecricitypng")
+    let image11 = UIImage(named: "suigas")
     
     
     var filteredData: [UIImage]!
     var Seclected_City :String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        imgarrMobileLoad.append(image1!)
+        imgarrMobileLoad.append(image2!)
+        imgarrMobileLoad.append(image3!)
+        
+        SendMoney.append(image4!)
+        SendMoney.append(image5!)
+        SendMoney.append(image6!)
+        SendMoney.append(image7!)
+        
+        billpayments.append(image8!)
+        billpayments.append(image9!)
+        billpayments.append(image10!)
+        billpayments.append(image11!)
+        
         btnback.setTitle("", for: .normal)
         collectionViewMobileLoad.delegate = self
         collectionViewMobileLoad.dataSource = self
@@ -38,6 +64,7 @@ class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
         collectionViewTravel.delegate = self
         collectionViewTravel.dataSource = self
         filteredData = imgarrMobileLoad
+        
         // Do any additional setup after loading the view.
     }
     
@@ -58,7 +85,7 @@ class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
     
     @IBAction func back(_ sender: UIButton) {
         self.dismiss(animated: true)
-        
+        self.navigationController?.popViewController(animated: true)
         
         
         
@@ -91,11 +118,11 @@ extension OtherServices_VC : UICollectionViewDelegate , UICollectionViewDataSour
         }
         else if collectionView == collectionViewSendMoney
         {
-            return filteredData.count ?? 0
+            return SendMoney.count ?? 0
         }
         else if collectionView == collectionViewBillPyment
         {
-            return filteredData.count ?? 0
+            return billpayments.count ?? 0
         }
         else if collectionView == collectionViewLoans
         {
@@ -126,7 +153,7 @@ extension OtherServices_VC : UICollectionViewDelegate , UICollectionViewDataSour
         {
             let cellA = collectionViewSendMoney .dequeueReusableCell(withReuseIdentifier: "cellSendMoney", for: indexPath) as! cellSendMoney
             cellA.btnSendMoney.setTitle("", for: .normal)
-            cellA.btnSendMoney.setImage(filteredData[indexPath.row], for: UIControl.State.normal)
+            cellA.btnSendMoney.setImage(SendMoney[indexPath.row], for: UIControl.State.normal)
             cellA.btnSendMoney.tag = indexPath.row
             return cellA
         }
@@ -134,7 +161,7 @@ extension OtherServices_VC : UICollectionViewDelegate , UICollectionViewDataSour
         {
             let cellA = collectionViewBillPyment .dequeueReusableCell(withReuseIdentifier: "cellBillPayment", for: indexPath) as! cellBillPayment
             cellA.btnBillPayment.setTitle("", for: .normal)
-            cellA.btnBillPayment.setImage(filteredData[indexPath.row], for: UIControl.State.normal)
+            cellA.btnBillPayment.setImage(billpayments[indexPath.row], for: UIControl.State.normal)
             cellA.btnBillPayment.tag = indexPath.row
             return cellA
         }

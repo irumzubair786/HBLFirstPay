@@ -367,29 +367,29 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             task.resume()
         }
         //shakeel
-//        self.navigateToHome()
+        self.navigateToHome()
 //        return
-        if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "N" {
-            let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "CNICVerification") as! CNICVerification
-            vc.modalPresentationStyle = .fullScreen
-            vc.successFullNICVerification = { success in
-                if success {
-                    self.navigateToHome()
-                }
-                else {
-                    print("Error Display Verification Failed")
-                    print("Error Display Verification Failed")
-                    self.pinTextField.text = nil
-                    self.textFieldSetting()
-                }
-            }
-            self.present(vc, animated: true)
-            
-        }
-        else {
-            self.navigateToHome()
-        }        
+//        if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "N" {
+//            let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)
+//            let vc = storyboard.instantiateViewController(withIdentifier: "CNICVerification") as! CNICVerification
+//            vc.modalPresentationStyle = .fullScreen
+//            vc.successFullNICVerification = { success in
+//                if success {
+//                    self.navigateToHome()
+//                }
+//                else {
+//                    print("Error Display Verification Failed")
+//                    print("Error Display Verification Failed")
+//                    self.pinTextField.text = nil
+//                    self.textFieldSetting()
+//                }
+//            }
+//            self.present(vc, animated: true)
+//            
+//        }
+//        else {
+//            self.navigateToHome()
+//        }        
     }
     //MARK: - TextField Delegates
     
