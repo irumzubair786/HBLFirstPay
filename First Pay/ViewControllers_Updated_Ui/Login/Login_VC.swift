@@ -368,6 +368,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         }
         //shakeel
         self.navigateToHome()
+        
 //        return
         if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "N" {
             let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)

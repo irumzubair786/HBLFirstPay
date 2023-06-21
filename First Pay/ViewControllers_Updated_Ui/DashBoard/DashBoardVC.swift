@@ -66,7 +66,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         let tapGestureRecognizrzSeeAll = UITapGestureRecognizer(target: self, action: #selector(moveToSeeAll(tapGestureRecognizer:)))
         imgSeeAll.isUserInteractionEnabled = true
         imgSeeAll.addGestureRecognizer(tapGestureRecognizrzSeeAll)
-        
+        labelSeeAll.isUserInteractionEnabled = true
+        labelSeeAll.addGestureRecognizer(tapGestureRecognizrzSeeAll)
+       
 //        getActiveLoan()
     }
     @IBOutlet weak var toggleMenu: UIImageView!
@@ -81,8 +83,11 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
+
     
     
+    
+    @IBOutlet weak var labelSeeAll: UILabel!
     
     @IBOutlet weak var buttonMobilepakegs: UIButton!
     @IBAction func buttonMobilepakegs(_ sender: UIButton) {
@@ -426,7 +431,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @objc func moveToSeeAll(tapGestureRecognizer: UITapGestureRecognizer) {
         FBEvents.logEvent(title: .Homescreen_seeall_click)
-
+        let vc = storyboard?.instantiateViewController(withIdentifier: "OtherServices_VC") as! OtherServices_VC
+        self.present(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true)
+       
     }
     
     @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer) {

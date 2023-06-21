@@ -25,7 +25,6 @@ class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
     let image6 = UIImage(named: "otherbank")
     let image7 = UIImage(named: "otherwallet")
   
-    
     let image8 = UIImage(named: "internet")
     let image9 = UIImage(named: "landline 1")
     let image10 = UIImage(named: "elecricitypng")
@@ -36,7 +35,6 @@ class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
     let image15 = UIImage(named: "gov")
     
 
-    
     var filteredData: [UIImage]!
     var Seclected_City :String?
     override func viewDidLoad() {
