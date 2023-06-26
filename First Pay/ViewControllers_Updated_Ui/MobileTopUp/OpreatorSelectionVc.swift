@@ -252,7 +252,7 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
             self.navigationController?.popViewController(animated: false)
 //            self.dismiss(animated: false)
             DispatchQueue.main.async {
-                if  GlobalData.topup == "Prepaid" {
+                if  GlobalData.topup == "P R E P A I D" {
                     NotificationCenter.default.post(name: Notification.Name("showSelectedDataPrePaid"), object: nil)
                 }
                 else {

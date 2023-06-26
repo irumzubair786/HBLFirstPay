@@ -750,9 +750,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
             self.present(vc, animated: true)
         }
+
         else if DataManager.instance.accountLevel == "LEVEL 1" {
             FBEvents.logEvent(title: .Homescreen_Myaccount_click)
-            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
             if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                 vc.balanceLimit = Int(balnceLimit)
                 print("balnceLimit",balnceLimit)

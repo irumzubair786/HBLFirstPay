@@ -113,7 +113,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
         
         if self.billCompanyObj?.companies?[0].code ?? "" == "MBP" {
-            GlobalData.topup = "Postpaid"
+            GlobalData.topup = "P O S T P A I D"
             
         }
         print("Postpaid",  GlobalData.topup)
@@ -187,7 +187,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
             topUpParentCompanyID = parentCompanyID ?? 0
         }
         
-        GlobalData.topup = "Postpaid"
+        GlobalData.topup = "P O S T P A I D"
         NotificationCenter.default.post(name: Notification.Name("showSelectedDataPostpaid"), object: nil)
     }
     
@@ -210,7 +210,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         {
             topUpParentCompanyID = parentCompanyID ?? 0
         }
-        GlobalData.topup = "Postpaid"
+        GlobalData.topup = "P O S T P A I D"
         NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
         
     }
@@ -220,7 +220,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
     }
     @IBAction func buttonContinue(_ sender: UIButton) {
-        GlobalData.topup = "Postpaid"
+        GlobalData.topup = "P O S T P A I D"
         
         getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
         //                let vc = storyboard?.instantiateViewController(withIdentifier: "TransferAmountVc") as! TransferAmountVc
@@ -233,7 +233,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
-        GlobalData.topup = "Postpaid"
+        GlobalData.topup = "P O S T P A I D"
         
         getBillInquiry(utilityBillCompany: GlobalData.Select_operator_code)
         //                let vc =
@@ -270,7 +270,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
                 
                 if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
                     
-                    GlobalData.topup = "Postpaid"
+                    GlobalData.topup = "P O S T P A I D"
                     self.companyID = self.billCompanyObj?.companies?[0].code
                     self.parentCompanyID = self.billCompanyObj?.companies?[0].ubpCompaniesId
                     print("u selected prepaid id", self.companyID)
@@ -310,7 +310,8 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         }
         
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billInquiry"
+//        v2
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billInquiry"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany": GlobalData.Select_operator_code,"utilityConsumerNo":self.tfMobileNo.text!,"accountType": DataManager.instance.accountType!]
         

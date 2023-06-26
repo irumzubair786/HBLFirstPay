@@ -296,7 +296,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         }
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/mobileRegistration"
         let a = TF_Mobileno.text!
-
+       
         var mobileNumber = a.replacingOccurrences(of: "-", with: "")
         mobileNumber = mobileNumber.replacingOccurrences(of: "_", with: "")
         DataManager.instance.mobNo = mobileNumber

@@ -212,8 +212,8 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         }
 //        let compelteUrl = GlobalConstants.BASE_URL + "initiateLocalFT"
 //
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/initiateLocalFT"
-         
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateLocalFT"
+//         v2
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":tfAccountNo.text!,"amount":self.amountTextField.text!,"transPurpose":"0350","accountType": DataManager.instance.accountType!] as [String : Any]
         print(parameters)

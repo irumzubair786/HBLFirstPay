@@ -328,7 +328,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         
         
 //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferLocal"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/fundsTransferLocal"
+//        v2
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferLocal"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":number!,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"beneficiaryName":"","beneficiaryMobile":
             "","beneficiaryEmail":"","addBeneficiary":"N","otp":otpTextField.text ?? "","requestMoneyId":requestMoneyId!,"accountType":DataManager.instance.accountType!] as [String : Any]
@@ -438,6 +439,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
             return
         }
         showActivityIndicator()
+
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v2/getOtpOrOtv"
         var userCnic : String?
         if KeychainWrapper.standard.hasValue(forKey: "userCnic"){

@@ -228,7 +228,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         {
             topUpParentCompanyID = parentCompanyID ?? 0
         }
-        GlobalData.topup = "Prepaid"
+        GlobalData.topup = "P R E P A I D"
         NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
 
         
@@ -299,7 +299,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         print("u selected prepaidcode ", parentCompanyID)
         if (self.billCompanyObj?.companies?[1].code)! != "MBP"
         {
-            GlobalData.topup = "Prepaid"
+            GlobalData.topup = "P R E P A I D"
         }
         
         print("Prepaid",  GlobalData.topup)
@@ -330,7 +330,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         
         if (self.billCompanyObj?.companies?[0].code)! == "MBP"
         {
-            GlobalData.topup = "Postpaid"
+            GlobalData.topup = "P O S T P A I D"
             
         }
         print("Postpaid",  GlobalData.topup)
@@ -385,7 +385,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
 ////                    print("u selected prepaidcode ", self.parentCompanyID)
                      
 //
-                     
+                  
                 }
                 else {
                     self.showAlertCustomPopup(title: "",message: self.billCompanyObj?.messages, iconName: .iconError)
@@ -418,7 +418,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
                }
         
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billInquiry"
+//        v2
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billInquiry"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany": GlobalData.Select_operator_code,"utilityConsumerNo":self.Tf_mobileNumber.text!,"accountType": DataManager.instance.accountType!]
         

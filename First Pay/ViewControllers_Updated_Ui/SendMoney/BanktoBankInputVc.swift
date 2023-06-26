@@ -223,9 +223,9 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         }
         
 //            let compelteUrl = GlobalConstants.BASE_URL + "initiateIbft"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/initiateIbft"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateIbft"
         
-//
+//v2
     userCnic = UserDefaults.standard.string(forKey: "userCnic")
         
         

@@ -360,8 +360,8 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         }
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v2/getOtpOrOtv"
-        
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
+//        v2
         
         let parameters = ["mobileNo":"\(DataManager.instance.accountNo!)","otpType":"PULL","channelId":"\(DataManager.instance.channelID)", "cnic" :"", "otpSendType" : "OTP"]
         

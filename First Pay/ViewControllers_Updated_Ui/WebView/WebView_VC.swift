@@ -60,7 +60,7 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
         
         if forFaqs{
             
-            self.lblMainTitle.text = "FAQs"
+            self.lblMainTitle.text = "F A Q s"
             let localfilePath = Bundle.main.url(forResource: "BBFAQs", withExtension: "pdf")
             let myRequest = URLRequest(url:localfilePath!)
             webViewOutlet.loadRequest(myRequest)
@@ -68,7 +68,7 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
         }
         else if forTerms {
             
-            self.lblMainTitle.text = "Terms & Conditions"
+            self.lblMainTitle.text = "T E R M S  &  C O N D I T I O N S"
             let localfilePath = Bundle.main.url(forResource: "BB", withExtension: "pdf")
             let myRequest = URLRequest(url:localfilePath!)
             self.webViewOutlet.loadRequest(myRequest)

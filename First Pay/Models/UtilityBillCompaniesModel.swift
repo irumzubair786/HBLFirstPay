@@ -27,7 +27,7 @@ class UtilityBillCompaniesModel: Mappable {
         messages <- map["messages"]
         companies <- map["data"]
         
-        for aCompany in self.companies! {
+        for aCompany in self.companies ?? [] {
             stringCompaniesList.append(aCompany.name!)
         }
         

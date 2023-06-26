@@ -101,7 +101,8 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
             userCnic = ""
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billPayment"
+//        v2
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany":GlobalData.Selected_Company_code!,"beneficiaryAccountTitle":"","utilityConsumerNo":consumerNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":self.TextfieldAmount.text!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otpTextField.text!,"addBeneficiary":"","utilityBillCompanyId":GlobalData.Selected_Company_id!] as [String : Any]
         

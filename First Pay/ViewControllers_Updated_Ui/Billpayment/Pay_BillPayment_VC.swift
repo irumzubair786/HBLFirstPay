@@ -92,9 +92,9 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         showActivityIndicator()
         
   //      let compelteUrl = GlobalConstants.BASE_URL + "billInquiry"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billInquiry"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billInquiry"
         
-        
+//        v2
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany":utilityBillCompany!,"utilityConsumerNo":self.enterconsumerNo.text!,"accountType": DataManager.instance.accountType!]
         
