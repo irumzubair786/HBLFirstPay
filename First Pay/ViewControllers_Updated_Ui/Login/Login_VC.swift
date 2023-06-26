@@ -5,7 +5,6 @@
 //  Created by Irum Butt on 11/12/2022.
 //  Copyright © 2022 FMFB Pakistan. All rights reserved.
 //
-
 import UIKit
 import KYDrawerController
 import Alamofire
@@ -22,6 +21,7 @@ import PasswordTextField
 import CoreLocation
 import OneSignal
 
+
 class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var homeObj : HomeModel?
     var concateString = ""
@@ -30,8 +30,12 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var viaBio : Bool = false
     var loginObj : login?
     var flag :Bool = false
+    var moveToSignUp: (() -> ())!
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> a408e5e (pod update)
     @IBOutlet weak var labelOne: UILabel!
     @IBOutlet weak var labelTwo: UILabel!
     @IBOutlet weak var labelThree: UILabel!
@@ -59,6 +63,14 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+<<<<<<< HEAD
+=======
+        
+#if targetEnvironment(simulator)
+#else
+#endif
+
+>>>>>>> a408e5e (pod update)
 
         labelOne.text = ""
         labelTwo.text = ""
@@ -95,6 +107,17 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
       
         
         // Do any additional setup after loading the view.
+        
+        
+    }
+    
+    func fingerPrintConfigurationSetup() {
+//        let fingerprintConfig = FingerprintConfig(
+//                                mode: .EXPORT_WSQ,
+//                                hand: .BOTH_HANDS,
+//                                fingers: .EIGHT_FINGERS,
+//                                liveness: true,
+//                                isPackPng: false)
     }
     
     @objc func changeTextInTextField() {
@@ -311,6 +334,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     
     
     @IBAction func loginActionviaTouchID(_ sender: UIButton) {
+        fingerPrintConfigurationSetup()
+        return()
         if KeychainWrapper.standard.bool(forKey: "enableTouchID") == true  {
             self.authenticateUserViaTouchID()
             viaBio = true
@@ -368,6 +393,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         }
         //shakeel
         self.navigateToHome()
+<<<<<<< HEAD
         
 //        return
         if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "N" {
@@ -391,6 +417,35 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         else {
             self.navigateToHome()
         }
+=======
+
+//        return
+        if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "N" {
+            
+            if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "Y" {
+                
+                let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "CNICVerification") as! CNICVerification
+                vc.modalPresentationStyle = .fullScreen
+                vc.successFullNICVerification = { success in
+                    if success {
+                        self.navigateToHome()
+                    }
+                    else {
+                        print("Error Display Verification Failed")
+                        print("Error Display Verification Failed")
+                        self.pinTextField.text = nil
+                        self.textFieldSetting()
+                    }
+                }
+                self.present(vc, animated: true)
+                
+            }
+            else {
+                self.navigateToHome()
+            }
+        }
+>>>>>>> a408e5e (pod update)
     }
     //MARK: - TextField Delegates
     
@@ -595,7 +650,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             if response.response?.statusCode == 200 {
                 FBEvents.logEvent(title: .Login_success)
                 FaceBookEvents.logEvent(title: .Login_success)
-
+                
                 if self.pinTextField.text != ""
                 {
                     UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
@@ -604,64 +659,83 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                     if self.loginObj?.data != nil{
                         
-                            if let accessToken = self.loginObj?.data?.token{
-                                DataManager.instance.accessToken = accessToken
-                                DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType
-                                DataManager.instance.customerId = self.loginObj?.data?.customerHomeScreens?[0].customerId
-                                print("\(accessToken)")
-                                if let passKey = self.pinTextField.text{
-                                    let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
-                                    print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-                                }
-                                
-                   }
+                        if let accessToken = self.loginObj?.data?.token{
+                            DataManager.instance.accessToken = accessToken
+                            DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType
+                            DataManager.instance.customerId = self.loginObj?.data?.customerHomeScreens?[0].customerId
+                            print("\(accessToken)")
+                            if let passKey = self.pinTextField.text{
+                                let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                                print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                            }
+                            
+                        }
                         if self.loginObj?.data?.customerHomeScreens?[0].accountDormant == "Y"
                         {
                             let vc = storyboard?.instantiateViewController(withIdentifier: "dormantPopupVC") as! dormantPopupVC
                             vc.consentStatus = loginObj?.data?.customerHomeScreens?[0].accountDormant
                             vc.loginHistoryId = loginObj?.data?.customerHomeScreens?[0].loginHistoryId
-                           
-//                            DataManager.instance.accessToken   = loginObj?.data?.customerHomeScreens?[0].token
+                            //                            DataManager.instance.accessToken   = loginObj?.data?.customerHomeScreens?[0].token
                             self.navigationController?.pushViewController(vc, animated: true)
-//                            self.present(vc, animated: true)
+                            //                            self.present(vc, animated: true)
                         }
                         else
                         {
                             self.saveInDataManager()
                         }
                     }
-                   
                 }
                 else{
-                    if let message = self.loginObj?.messages{
-                        if message == "Password Authentication Failed"
-                        {
-                            lbl_InvalidPassword.isHidden = false
-                            lbl_InvalidPassword.text = message
-                            lbl_InvalidPassword.textColor = .red
+                    let message = self.loginObj?.messages ?? ""
+//                    if self.loginObj?.responseblock == nil {
+
+                    if self.loginObj?.responseblock?.responseType?.lowercased() == "L".lowercased() {
+                        lbl_InvalidPassword.isHidden = true
+                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconError) {_ in
+                            self.navigationController?.popViewController(animated: true)
+                            self.moveToSignUp!()
                         }
-                        
-                      else
-                        {
-                          lbl_InvalidPassword.isHidden = true
-                          self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
-                      }
-//                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
-//
-//                            ["buttonName": "OK",
-//                            "buttonBackGroundColor": UIColor.clrOrange,
-//                            "buttonTextColor": UIColor.white]
-                        
-//                                ["buttonName": "CANCEL",
-//                                "buttonBackGroundColor": UIColor.clrOrange,
-//                                "buttonTextColor": UIColor.white]
-                        
-                        
-//                        ] as? [[String: AnyObject]])
-                      
                     }
+                    else if self.loginObj?.responseblock?.responseType?.lowercased() == "P".lowercased() {
+                        lbl_InvalidPassword.isHidden = false
+                        lbl_InvalidPassword.text = message
+                        lbl_InvalidPassword.textColor = .red
+                    }
+                    else {
+                        lbl_InvalidPassword.isHidden = false
+                        lbl_InvalidPassword.text = message
+                        lbl_InvalidPassword.textColor = .red
+                    }
+                    //                    if let message = self.loginObj?.messages{
+                    //                        if message == "Password Authentication Failed" {
+                    //                            lbl_InvalidPassword.isHidden = false
+                    //                            lbl_InvalidPassword.text = message
+                    //                            lbl_InvalidPassword.textColor = .red
+                    //                        }
+                    //
+                    //                      else
+                    //                        {
+                    //                          lbl_InvalidPassword.isHidden = true
+                    //                          self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
+                    //                      }
+                    
+                    
+                    
+                    //                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
+                    //
+                    //                            ["buttonName": "OK",
+                    //                            "buttonBackGroundColor": UIColor.clrOrange,
+                    //                            "buttonTextColor": UIColor.white]
+                    
+                    //                                ["buttonName": "CANCEL",
+                    //                                "buttonBackGroundColor": UIColor.clrOrange,
+                    //                                "buttonTextColor": UIColor.white]
+                    
+                    
+                    //                        ] as? [[String: AnyObject]])
+                    
                 }
-        }
+            }
             else{
                 self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
             }

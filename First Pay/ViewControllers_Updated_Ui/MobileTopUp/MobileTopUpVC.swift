@@ -246,11 +246,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
 ////
 ////        }
 ////        self.present(vc, animated: false)
-//=======
-//
-//        self.present(vc, animated: false)
-//>>>>>>> d80d484 (postpaid)
-//        self.navigationController?.pushViewController(vc, animated: false)
+
    
     }
     override func viewWillAppear(_ animated: Bool) {

@@ -11,6 +11,7 @@ import ObjectMapper
 struct login : Mappable {
     var responsecode : Int?
     var data : DataUser?
+    var responseblock: Responseblock?
     var messages : String?
 
     init?(map: Map) {
@@ -18,13 +19,14 @@ struct login : Mappable {
     }
 
     mutating func mapping(map: Map) {
-
+        responseblock <- map["responseblock"]
         responsecode <- map["responsecode"]
         data <- map["data"]
         messages <- map["messages"]
     }
 
 }
+
 struct DataUser : Mappable {
     var token : String?
     var customerHomeScreens : [HomeScreen]?
