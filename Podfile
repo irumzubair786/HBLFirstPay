@@ -7,7 +7,7 @@ target 'First Pay' do
 
   # Pods for First Pay
   pod 'XLPagerTabStrip'
-  pod 'IQKeyboardManager'
+  pod 'IQKeyboardManager', '~> 2.5'
   pod 'KYDrawerController'
   pod 'Alamofire' , '~> 4.7.3'
   pod 'AlamofireObjectMapper'
@@ -46,7 +46,7 @@ target 'First Pay' do
   pod 'SCLAlertView', '~> 0.8'
    #pod 'OneSignal', '~> 3.2'
    pod 'Toast-Swift', '~> 5.0'
-  pod 'IQDropDownTextField'
+  pod 'IQDropDownTextField', '~> 3.0.1'
   #pod 'iOSDropDown'
    pod 'PasswordTextField', '~> 1.2'
    pod 'OneSignalXCFramework', '>= 3.0.0', '< 4.0'

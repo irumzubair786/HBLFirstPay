@@ -32,7 +32,14 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var flag :Bool = false
     var moveToSignUp: (() -> ())!
     
-
+////<<<<<<< HEAD
+////
+////=======
+////<<<<<<< HEAD
+////
+////=======
+////>>>>>>> a408e5e (pod update)
+//>>>>>>> 9c3ef07 (add cash ui fix)
     @IBOutlet weak var labelOne: UILabel!
     @IBOutlet weak var labelTwo: UILabel!
     @IBOutlet weak var labelThree: UILabel!
@@ -60,11 +67,22 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
- 
-#if targetEnvironment(simulator)
-#else
-#endif
-
+//<<<<<<< HEAD
+//
+//#if targetEnvironment(simulator)
+//#else
+//#endif
+//
+//=======
+//<<<<<<< HEAD
+//=======
+//
+//#if targetEnvironment(simulator)
+//#else
+//#endif
+//
+//>>>>>>> a408e5e (pod update)
+>>>>>>> 9c3ef07 (add cash ui fix)
 
         labelOne.text = ""
         labelTwo.text = ""
@@ -387,30 +405,56 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         }
         //shakeel
         self.navigateToHome()
+////<<<<<<< HEAD
 //<<<<<<< HEAD
+////
+//////        return
+////        if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "N" {
+////            let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)
+////            let vc = storyboard.instantiateViewController(withIdentifier: "CNICVerification") as! CNICVerification
+////            vc.modalPresentationStyle = .fullScreen
+////            vc.successFullNICVerification = { success in
+////                if success {
+////                    self.navigateToHome()
+////                }
+////                else {
+////                    print("Error Display Verification Failed")
+////                    print("Error Display Verification Failed")
+////                    self.pinTextField.text = nil
+////                    self.textFieldSetting()
+////                }
+////            }
+////            self.present(vc, animated: true)
+////
+////        }
+////        else {
+////            self.navigateToHome()
+////        }
+//=======
 //
-////        return
-//        if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "N" {
-//            let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)
-//            let vc = storyboard.instantiateViewController(withIdentifier: "CNICVerification") as! CNICVerification
-//            vc.modalPresentationStyle = .fullScreen
-//            vc.successFullNICVerification = { success in
-//                if success {
-//                    self.navigateToHome()
-//                }
-//                else {
-//                    print("Error Display Verification Failed")
-//                    print("Error Display Verification Failed")
-//                    self.pinTextField.text = nil
-//                    self.textFieldSetting()
-//                }
-//            }
-//            self.present(vc, animated: true)
-//
-//        }
-//        else {
-//            self.navigateToHome()
-//        }
+//        return
+        if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "N" {
+            let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "CNICVerification") as! CNICVerification
+            vc.modalPresentationStyle = .fullScreen
+            vc.successFullNICVerification = { success in
+                if success {
+                    self.navigateToHome()
+                }
+                else {
+                    print("Error Display Verification Failed")
+                    print("Error Display Verification Failed")
+                    self.pinTextField.text = nil
+                    self.textFieldSetting()
+                }
+            }
+            self.present(vc, animated: true)
+
+        }
+        else {
+            self.navigateToHome()
+        }
+//>>>>>>> 9c3ef07 (add cash ui fix)
 //=======
 
 //        return
@@ -439,6 +483,10 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 self.navigateToHome()
             }
         }
+//<<<<<<< HEAD
+//=======
+//>>>>>>> a408e5e (pod update)
+//>>>>>>> 9c3ef07 (add cash ui fix)
     }
     //MARK: - TextField Delegates
     
