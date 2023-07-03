@@ -9,7 +9,7 @@
 import UIKit
 import SwiftKeychainWrapper
 import Alamofire
-import AlamofireObjectMapper
+//import AlamofireObjectMapper
 class MyAccountLimitsVc: BaseClassVC {
     var levelCode :String?
     var totalDailyLimitDr : Int?
