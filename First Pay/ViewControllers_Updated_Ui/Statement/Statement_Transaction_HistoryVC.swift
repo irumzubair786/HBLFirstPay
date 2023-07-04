@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import PDFKit
 class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource , UITextFieldDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -297,14 +297,19 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         print(result.apiAttribute1)
         print(result.apiAttribute2)
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
         print(compelteUrl)
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<MiniStatementModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<MiniStatementModel>) in
+            response in
             self.hideActivityIndicator()
-            self.myStatementObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.myStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
+//            self.myStatementObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
                     GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
@@ -351,15 +356,19 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         print(result.apiAttribute2)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
         print(compelteUrl)
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<MiniStatementModel>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<MiniStatementModel>) in
+            response in
             self.hideActivityIndicator()
-            self.myStatementObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.myStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
+//            self.myStatementObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
                     GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!

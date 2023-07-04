@@ -11,7 +11,7 @@ import Kingfisher
 import CryptoSwift
 import SDWebImage
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class FakeLoginVc: UIViewController {
     let pageIndicator = UIPageControl()

@@ -15,7 +15,7 @@ import RNCryptor
 import SwiftKeychainWrapper
 import WebKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 var CheckLanguage = ""
 var ThemeSelection = ""
 var  dateString  : String?
@@ -271,7 +271,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
           let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
   
   
-          let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+           let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
   
           print(params)
           print(compelteUrl)
@@ -280,11 +280,15 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
           NetworkManager.sharedInstance.enableCertificatePinning()
   
   
-          NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<AvailableLimitsModel>) in
-  
+          NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//              (response: DataResponse<AvailableLimitsModel>) in
+              response in
               self.hideActivityIndicator()
+              guard let data = response.data else { return }
+              let json = try! JSONSerialization.jsonObject(with: data, options: [])
+              self.availableLimitObj = Mapper<AvailableLimitsModel>().map(JSONObject: json)
   
-              self.availableLimitObj = response.result.value
+//              self.availableLimitObj = response.result.value
   
               if response.response?.statusCode == 200 {
   

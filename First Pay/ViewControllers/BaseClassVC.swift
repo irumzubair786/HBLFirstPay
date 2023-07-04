@@ -10,7 +10,7 @@ import UIKit
 import KYDrawerController
 import Toaster
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import GolootloWebViewLibrary
 import SwiftyRSA
 import SafariServices
@@ -448,7 +448,7 @@ class BaseClassVC: UIViewController {
         
         let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
 //
 //        print(params)
 //        print(compelteUrl)
@@ -456,13 +456,18 @@ class BaseClassVC: UIViewController {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
             
-            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
             
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
             
-            self.genRespBaseObj = response.result.value
+//            self.genRespBaseObj = response.result.value
             
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
@@ -515,7 +520,7 @@ class BaseClassVC: UIViewController {
         
         let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
 //        print(params)
 //        print(compelteUrl)
@@ -525,11 +530,15 @@ class BaseClassVC: UIViewController {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<MiniStatementModel>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<MiniStatementModel>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.miniStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
             
-            self.miniStatementObj = response.result.value
+//            self.miniStatementObj = response.result.value
             
             if response.response?.statusCode == 200 {
                 if self.miniStatementObj?.responsecode == 2 || self.miniStatementObj?.responsecode == 1 {

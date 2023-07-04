@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import ContactsUI
 import libPhoneNumber_iOS
@@ -107,7 +107,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
@@ -115,10 +115,15 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<BillAPiResponse>) in
-
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<BillAPiResponse>) in
+            response in
             self.hideActivityIndicator()
-            self.billtransactionOBj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
+            
+//            self.billtransactionOBj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
                     self.navigateToDetailsVC(code: utilityBillCompany!)

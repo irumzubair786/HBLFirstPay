@@ -8,7 +8,7 @@
 import UIKit
 import KYDrawerController
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import MapKit
 import PinCodeTextField
 import SwiftKeychainWrapper
@@ -629,26 +629,32 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         
         // longitude and latitude round off to 4 digits
         
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecret]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecret]
         
         
         print(params)
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<login>) in
-            //            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
+//            (response: DataResponse<login>) in
+            //            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<LoginActionModel>) in
+            response in
             self.hideActivityIndicator()
-            self.loginObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+//            self.loginObj = Mapper<login>().map(JSONObject: json)
+            
+//            self.loginObj = response.result.value
             if response.response?.statusCode == 200 {
                 FBEvents.logEvent(title: .Login_success)
                 FaceBookEvents.logEvent(title: .Login_success)
                 
-                if self.pinTextField.text != ""
-                {
+                if self.pinTextField.text != "" {
                     UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
                 }
-                self.loginObj = response.result.value
+                self.loginObj = Mapper<login>().map(JSONObject: json)
+
+//                self.loginObj = response.result.value
                 if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                     if self.loginObj?.data != nil{
                         
@@ -732,7 +738,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             else{
                 self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
             }
-            print(response.result.value)
+            print(response.value)
             print(response.response?.statusCode)
         }
     }

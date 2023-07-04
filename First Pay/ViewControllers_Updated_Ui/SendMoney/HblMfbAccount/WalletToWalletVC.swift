@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import ContactsUI
 import libPhoneNumber_iOS
@@ -220,9 +220,9 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
        
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+//         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
 //        print(result.apiAttribute1)
 //        print(result.apiAttribute2)
         print(params)
@@ -230,11 +230,18 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
 //        print(header)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FTApiResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<FTApiResponse>) in
             
-            //         Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundInitiateModel>) in
+            //         Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<FundInitiateModel>) in
+            response in
             self.hideActivityIndicator()
-            self.transactionApiResponseObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
+            
+            
+//            self.transactionApiResponseObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                                 if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
@@ -287,17 +294,25 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         }
         showActivityIndicator()
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getFtTransPurpose"
-        let header = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<GetReasonsModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<GetReasonsModel>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            
+            
             if response.response?.statusCode == 200 {
-                self.reasonsObj = response.result.value
+                self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
+
+//                self.reasonsObj = response.result.value
                 if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
                    
 //                    self.reasonsList = self.reasonsObj!.stringReasons
@@ -310,7 +325,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
             }
             else {
                 
-                print(response.result.value)
+                print(response.value)
                 print(response.response?.statusCode)
             }
         }

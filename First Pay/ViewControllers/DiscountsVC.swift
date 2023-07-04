@@ -8,7 +8,7 @@
 //
 //import UIKit
 //import Alamofire
-//import AlamofireObjectMapper
+import ObjectMapper
 //import SDWebImage
 //import Foundation
 //
@@ -319,14 +319,14 @@
 //        showActivityIndicator()
 //        
 //        let compelteUrl = GlobalConstants.BASE_URL + "getDiscountCity"
-//        let header = ["Content-Type":"application/json"]
+//         let header: HTTPHeaders = ["Content-Type":"application/json"]
 //        
 //        print(header)
 //        print(compelteUrl)
 //        
 //        NetworkManager.sharedInstance.enableCertificatePinning()
 //        
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<DiscountCityModel>) in
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response { (response: DataResponse<DiscountCityModel>) in
 //          
 //            self.hideActivityIndicator()
 //            
@@ -365,14 +365,14 @@
 //        showActivityIndicator()
 //        
 //        let compelteUrl = GlobalConstants.BASE_URL + "getDiscountsCategory"
-//        let header = ["Content-Type":"application/json"]
+//         let header: HTTPHeaders = ["Content-Type":"application/json"]
 //        
 //        print(header)
 //        print(compelteUrl)
 //        
 //        NetworkManager.sharedInstance.enableCertificatePinning()
 //        
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { [self] (response: DataResponse<DiscountCategoryModel>) in
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response { [self] (response: DataResponse<DiscountCategoryModel>) in
 //            
 //            self.hideActivityIndicator()
 //            
@@ -419,14 +419,14 @@
 //        showActivityIndicator()
 //        
 //        let compelteUrl = GlobalConstants.BASE_URL + "getDiscountsBrands"
-//        let header = ["Content-Type":"application/json"]
+//         let header: HTTPHeaders = ["Content-Type":"application/json"]
 //        
 //        print(header)
 //        print(compelteUrl)
 //        
 //        NetworkManager.sharedInstance.enableCertificatePinning()
 //        
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { [self] (response: DataResponse<DiscountsBrandModel>) in
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response { [self] (response: DataResponse<DiscountsBrandModel>) in
 //            
 //            self.hideActivityIndicator()
 //            
@@ -471,14 +471,14 @@
 //        showActivityIndicator()
 //        
 //        let compelteUrl = GlobalConstants.BASE_URL + "getDiscountsCity"
-//        let header = ["Content-Type":"application/json"]
+//         let header: HTTPHeaders = ["Content-Type":"application/json"]
 //        
 //        print(header)
 //        print(compelteUrl)
 //        
 //        NetworkManager.sharedInstance.enableCertificatePinning()
 //        
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { [self] (response: DataResponse<DiscityModel>) in
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response { [self] (response: DataResponse<DiscityModel>) in
 //            
 //            self.hideActivityIndicator()
 //            

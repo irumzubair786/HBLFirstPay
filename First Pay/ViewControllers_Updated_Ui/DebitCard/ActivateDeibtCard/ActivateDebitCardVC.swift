@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 var accountDebitCardId : String?
 class ActivateDebitCardVC: BaseClassVC {
@@ -92,7 +92,7 @@ class ActivateDebitCardVC: BaseClassVC {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -105,11 +105,16 @@ class ActivateDebitCardVC: BaseClassVC {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<GetDebitCardModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            [self] (response: DataResponse<GetDebitCardModel>) in
             
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
             
-            self.getDebitDetailsObj = response.result.value
+//            self.getDebitDetailsObj = response.result.value
             print(self.getDebitDetailsObj)
         
             if response.response?.statusCode == 200 {
@@ -186,7 +191,7 @@ class ActivateDebitCardVC: BaseClassVC {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -199,11 +204,16 @@ class ActivateDebitCardVC: BaseClassVC {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetDebitCardModel>) in
             
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
             
-            self.getDebitDetailsObj = response.result.value
+//            self.getDebitDetailsObj = response.result.value
             print(self.getDebitDetailsObj)
         
             if response.response?.statusCode == 200 {

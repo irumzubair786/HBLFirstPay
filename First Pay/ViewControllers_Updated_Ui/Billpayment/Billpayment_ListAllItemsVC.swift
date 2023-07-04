@@ -8,9 +8,10 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SDWebImage
+import ObjectMapper
 class Billpayment_ListAllItemsVC: BaseClassVC , UISearchBarDelegate{
     var BillComapnyid : Int?
     var utilityBillCompany : String?
@@ -59,19 +60,24 @@ class Billpayment_ListAllItemsVC: BaseClassVC , UISearchBarDelegate{
         
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.BillComapnyid ?? 0)"
        
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<UtilityBillCompaniesModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<UtilityBillCompaniesModel>) in
             
             
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
             
-            self.billCompanyListObj = response.result.value
+//            self.billCompanyListObj = response.result.value
             
             if response.response?.statusCode == 200 {
                 if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {

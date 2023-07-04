@@ -9,7 +9,7 @@
 import UIKit
 import SwiftKeychainWrapper
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 class selectBranchVC: BaseClassVC, UISearchBarDelegate {
     var getBranchesObj : GetAllBranchesModel?
     var arrBranchList : [String]?
@@ -47,18 +47,23 @@ class selectBranchVC: BaseClassVC, UISearchBarDelegate {
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL + "DebitCard/v1/getBranches"
-        let header = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<GetAllBranchesModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<GetAllBranchesModel>) in
             
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.getBranchesObj = Mapper<GetAllBranchesModel>().map(JSONObject: json)
             
-            self.getBranchesObj = response.result.value
+//            self.getBranchesObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.getBranchesObj?.responsecode == 2 || self.getBranchesObj?.responsecode == 1 {

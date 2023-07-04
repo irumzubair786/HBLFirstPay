@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import iOSDropDown
 
@@ -51,19 +51,23 @@ class City_selectionVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate {
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/getAllCities"
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { [self] (response: DataResponse<CitiesList>) in
-     //       Alamofire.request(compelteUrl, headers:header).responseObject { (response: DataResponse<CitiesList>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response { [self]
+//            (response: DataResponse<CitiesList>) in
+     //       Alamofire.request(compelteUrl, headers:header).response { (response: DataResponse<CitiesList>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.cityListObj = Mapper<CitiesList>().map(JSONObject: json)
             
-            self.cityListObj = response.result.value
+//            self.cityListObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.cityListObj?.responsecode == 2 || self.cityListObj?.responsecode == 1 {

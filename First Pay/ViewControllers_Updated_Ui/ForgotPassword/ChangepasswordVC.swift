@@ -9,7 +9,7 @@
 import UIKit
 import PasswordTextField
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
     var genericObj:GenericResponse?
@@ -241,7 +241,7 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
 
         
         print(params)
@@ -250,17 +250,22 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
             
     
-//        Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+//        Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<GenericResponse>) in
         
             
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
             
             if response.response?.statusCode == 200 {
-                
-                self.genericObj = response.result.value
+                self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
+
+//                self.genericObj = response.result.value
                 if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
                     if let message = self.genericObj?.messages{
                         let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")

@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 class Billpayment_MainVC: BaseClassVC {
     var billCompanyObj : BillPaymentCompanies?
     var filteredCompanies = [SingleCompany]()
@@ -71,18 +71,22 @@ class Billpayment_MainVC: BaseClassVC {
         showActivityIndicator()
         
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getParentCompanies"
-        let header = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
 
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<BillPaymentCompanies>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<BillPaymentCompanies>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.billCompanyObj = Mapper<BillPaymentCompanies>().map(JSONObject: json)
             
-            self.billCompanyObj = response.result.value
+//            self.billCompanyObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {

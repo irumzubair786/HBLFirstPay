@@ -8,6 +8,7 @@
 
 import Foundation
 import ObjectMapper
+
 struct login : Mappable {
     var responsecode : Int?
     var data : DataUser?

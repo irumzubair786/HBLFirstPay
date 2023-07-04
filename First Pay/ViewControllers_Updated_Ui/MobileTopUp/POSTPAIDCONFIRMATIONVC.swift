@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     var phoneNumber  : String?
@@ -296,14 +296,21 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(parameters)
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
         print(compelteUrl)
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<FundsTransferApiResponse>) in
+
+            response in
             self.hideActivityIndicator()
-             self.successmodelobj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.successmodelobj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
+            
+//            self.successmodelobj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
                     self.navigatezToConfirmationVC()

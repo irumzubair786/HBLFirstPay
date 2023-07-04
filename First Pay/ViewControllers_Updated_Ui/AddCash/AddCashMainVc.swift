@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class AddCashMainVc: BaseClassVC {
     var cbsAccountsObj : GetCBSAccounts?
@@ -127,7 +127,7 @@ class AddCashMainVc: BaseClassVC {
         let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!]
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
@@ -135,12 +135,15 @@ class AddCashMainVc: BaseClassVC {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetCBSAccounts>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetCBSAccounts>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.cbsAccountsObj = Mapper<GetCBSAccounts>().map(JSONObject: json)
             
-            self.cbsAccountsObj = response.result.value
+//            self.cbsAccountsObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
@@ -188,7 +191,7 @@ class AddCashMainVc: BaseClassVC {
         let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!]
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
@@ -196,12 +199,16 @@ class AddCashMainVc: BaseClassVC {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<getLinkedAccountModel>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            [self] (response: DataResponse<getLinkedAccountModel>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.LinkedAccountsObj = Mapper<getLinkedAccountModel>().map(JSONObject: json)
             
-            self.LinkedAccountsObj = response.result.value
+            
+//            self.LinkedAccountsObj = response.result.value
             if response.response?.statusCode == 200 {
                
                 if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {

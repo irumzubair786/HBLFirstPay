@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import RNCryptor
 import Foundation
@@ -307,17 +307,21 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         print(parameters)
 
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
         print(params)
         print(compelteUrl)
 
         FBEvents.logEvent(title: .Signup_login_attempt)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<mobileRegistrationModel>) in
-
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<mobileRegistrationModel>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.mobileRegistrationObj = Mapper<mobileRegistrationModel>().map(JSONObject: json)
 
-            self.mobileRegistrationObj = response.result.value
+//            self.mobileRegistrationObj = response.result.value
             if response.response?.statusCode == 200 {
                 FBEvents.logEvent(title: .Signup_login_success)
 

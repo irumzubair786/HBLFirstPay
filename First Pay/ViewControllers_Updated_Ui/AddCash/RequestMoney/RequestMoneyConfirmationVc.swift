@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import MessageUI
 class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
@@ -264,7 +264,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
@@ -274,10 +274,16 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
             
+            response in
             self.hideActivityIndicator()
-            self.genResponseObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genResponseObj = Mapper<GenericResponse>().map(JSONObject: json)
+            
+//            self.genResponseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "RequestMoneySuccessfullVc") as! RequestMoneySuccessfullVc

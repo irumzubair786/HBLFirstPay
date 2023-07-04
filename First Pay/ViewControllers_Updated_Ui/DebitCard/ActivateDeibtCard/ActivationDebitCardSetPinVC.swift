@@ -9,7 +9,7 @@
 import UIKit
 import PasswordTextField
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SwiftyRSA
 class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
@@ -178,7 +178,7 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -189,11 +189,15 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genResponse = Mapper<GenericResponse>().map(JSONObject: json)
             
-            self.genResponse = response.result.value
+//            self.genResponse = response.result.value
             print(self.genResponse)
         
             if response.response?.statusCode == 200 {

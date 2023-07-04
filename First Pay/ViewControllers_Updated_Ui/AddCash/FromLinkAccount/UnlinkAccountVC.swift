@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class UnlinkAccountVC: BaseClassVC {
     var flag = "false"
@@ -89,18 +89,21 @@ class UnlinkAccountVC: BaseClassVC {
         let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!,"accountNo":GlobalData.userAcc ?? ""]
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
         
         print(params)
         print(compelteUrl)
         print(parameters)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<GenericResponseModel>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
+//            [self] (response: DataResponse<GenericResponseModel>) in
+            response in
             self.hideActivityIndicator()
-            self.genericResponseObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genericResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+//            self.genericResponseObj = response.result.value
             if response.response?.statusCode == 200 {
             
                 if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {

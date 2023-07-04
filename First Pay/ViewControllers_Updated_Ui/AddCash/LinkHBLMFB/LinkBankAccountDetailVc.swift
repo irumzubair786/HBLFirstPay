@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
     var genericresponseObj : otpVerificationModel?
@@ -156,7 +156,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
@@ -164,12 +164,16 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<otpVerificationModel>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<otpVerificationModel>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genericresponseObj = Mapper<otpVerificationModel>().map(JSONObject: json)
             
-            self.genericresponseObj = response.result.value
+            
+//            self.genericresponseObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.genericresponseObj?.responsecode == 2 || self.genericresponseObj?.responsecode == 1 {
@@ -193,7 +197,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
                     self.showAlertCustomPopup(title: "", message: messsage, iconName: .iconError)
                     
                 }
-                print(response.result.value)
+                print(response.value)
                 print(response.response?.statusCode)
                 
             }

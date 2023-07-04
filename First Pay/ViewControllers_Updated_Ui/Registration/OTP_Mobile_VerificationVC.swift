@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
 import LocalAuthentication
@@ -315,18 +315,25 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
         //
                 print(parameters)
                 print(compelteUrl)
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
 
-            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
+            response in
             self.hideActivityIndicator()
-            self.genRespBaseObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+            
+            
+//            self.genRespBaseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
                     self.labelMessage.isHidden = false
@@ -377,18 +384,25 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
         //
                 print(parameters)
                 print(compelteUrl)
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
 
-            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
+            response in
             self.hideActivityIndicator()
-            self.genRespBaseObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+            
+            
+//            self.genRespBaseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
                     
@@ -446,15 +460,20 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
         print(params)
         print(compelteUrl)
         print("header ",DataManager.instance.AuthToken )
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers: header ).responseObject { [self] (response: DataResponse<mobileVerificationModel>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers: header ).response { [self]
+//            (response: DataResponse<mobileVerificationModel>) in
+            response in
             self.hideActivityIndicator()
-            self.mobileVerificationObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.mobileVerificationObj = Mapper<mobileVerificationModel>().map(JSONObject: json)
+            
+//            self.mobileVerificationObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.mobileVerificationObj?.responsecode == 2 || self.mobileVerificationObj?.responsecode == 1 {
@@ -523,17 +542,21 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             print(parameters)
             
             let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-            let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+             let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
             print(params)
             print(compelteUrl)
             
             FBEvents.logEvent(title: .Signup_login_attempt)
             NetworkManager.sharedInstance.enableCertificatePinning()
-            NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<mobileRegistrationModel>) in
-                
+            NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//                (response: DataResponse<mobileRegistrationModel>) in
+                response in
                 self.hideActivityIndicator()
+                guard let data = response.data else { return }
+                let json = try! JSONSerialization.jsonObject(with: data, options: [])
+                self.mobileRegistrationObj = Mapper<mobileRegistrationModel>().map(JSONObject: json)
                 
-                self.mobileRegistrationObj = response.result.value
+//                self.mobileRegistrationObj = response.result.value
                 if response.response?.statusCode == 200 {
                     FBEvents.logEvent(title: .Signup_login_success)
                     FaceBookEvents.logEvent(title: .Signup_login_success)
