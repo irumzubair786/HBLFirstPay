@@ -26,7 +26,10 @@ class NetworkManagerSUA {
                 validateHost: false
             )
         ]
-        let serverTrustManager = ServerTrustManager(evaluators: evaluators)
+        let serverTrustManager = ServerTrustManager(
+            allHostsMustBeEvaluated: false,
+            evaluators: evaluators
+        )
         let session = Session(serverTrustManager: serverTrustManager)
         
         networkSessionManager = session
