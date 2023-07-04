@@ -21,6 +21,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     var amount :String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideKeyboardWhenTappedAround()
         buttonContinue.isUserInteractionEnabled = false
         amounttextField.delegate = self
         buttonBack.setTitle("", for: .normal)
@@ -43,18 +44,24 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
 //        }
 //
 //    }
-   
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+           if let text = amounttextField.text, !text.isEmpty {
+               amounttextField.text = ""
+           }
+       }
     @objc func changeTextInTextField() {
+//        amounttextField.text = ""
         AmountSepartor()
         let array = amounttextField.text!.reduce(into: [Character]()) { result, letter in
             result.append(letter)
         }
         
         if array.contains(".") {
-            labelAmount.text = amounttextField.text!
+            labelAmount.text = comabalanceLimit
         }
         else {
-            labelAmount.text = "\(Int(amounttextField.text!)?.twoDecimal() ?? "0")"
+//            \(Int(amounttextField.text!)?.twoDecimal() ?? "0")"
+            labelAmount.text = comabalanceLimit
         }
         if amounttextField.text?.count ?? 0 > 0
         {
@@ -62,6 +69,8 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             imageNext.image = image
             imageNext.isUserInteractionEnabled = true
             buttonContinue.isUserInteractionEnabled = true
+            
+            
         }
 //        else if amounttextField.text! == "0"
 //        {
@@ -240,8 +249,17 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         }
         
     }
+    var comabalanceLimit : String?
     func  AmountSepartor()
     {
+        
+        var number = Double(self.amounttextField.text!)
+        var formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+//        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        comabalanceLimit = (formatter.string(from: NSNumber(value: number!)))!
+        
         
 //        var text = amounttextField.text?.getIntegerValue()
 //        if text == "" {
