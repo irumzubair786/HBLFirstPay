@@ -9,10 +9,9 @@ target 'First Pay' do
   pod 'XLPagerTabStrip'
   pod 'IQKeyboardManager', '~> 2.5'
   pod 'KYDrawerController'
+
   pod 'Alamofire'
   pod 'ObjectMapper'
-
-
   pod 'Toaster'#, '~> 2.3'
   pod 'SwiftyJSON'
   pod 'PinCodeTextField'
