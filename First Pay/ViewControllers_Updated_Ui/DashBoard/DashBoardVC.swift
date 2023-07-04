@@ -12,7 +12,7 @@ import Kingfisher
 import CryptoSwift
 import SDWebImage
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SideMenu
 var isfromReactivateCard :Bool?
@@ -273,7 +273,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         // IPA Paramsself    FirstPay.DashBoardVC    0x00007fbba2061000
         let params = ["":""] as [String : Any]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken  ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken  ?? "nil")"]
         
         
         print(params)
@@ -281,12 +281,19 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<HomeModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
+//            (response: DataResponse<HomeModel>) in
+            response in
+            self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
             
-            self.homeObj = response.result.value
+//            self.homeObj = response.result.value
             
             if response.response?.statusCode == 200 {
-                self.homeObj = response.result.value
+                self.homeObj = Mapper<HomeModel>().map(JSONObject: json)
+
+//                self.homeObj = response.result.value
                 if self.homeObj?.responsecode == 2 || self.homeObj?.responsecode == 1 {
                  
                     self.saveInDataManager(index: 0)
@@ -303,7 +310,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
             else {
                 //                self.showAlert(title: "", message: "Something Went Wrong", completion:nil)
-                                print(response.result.value)
+                                print(response.value)
                                 print(response.response?.statusCode)
             }
         }
@@ -468,15 +475,21 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardCheckModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetDebitCardCheckModel>) in
+            response in
             self.hideActivityIndicator()
-            self.checkDebitCardObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.checkDebitCardObj = Mapper<GetDebitCardCheckModel>().map(JSONObject: json)
+            
+//            self.checkDebitCardObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.checkDebitCardObj?.responsecode == 2 || self.checkDebitCardObj?.responsecode == 1 {
                             let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
@@ -535,7 +548,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -546,11 +559,15 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardModel>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetDebitCardModel>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
             
-            self.getDebitDetailsObj = response.result.value
+//            self.getDebitDetailsObj = response.result.value
             print(self.getDebitDetailsObj)
         
             if response.response?.statusCode == 200 {
@@ -657,7 +674,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
               let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
       
       
-              let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+               let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
       
               print(params)
               print(compelteUrl)
@@ -666,11 +683,15 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
               NetworkManager.sharedInstance.enableCertificatePinning()
       
       
-              NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<AvailableLimitsModel>) in
+              NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//                  (response: DataResponse<AvailableLimitsModel>) in
       
+                  response in
                   self.hideActivityIndicator()
-      
-                  self.availableLimitObj = response.result.value
+                  guard let data = response.data else { return }
+                  let json = try! JSONSerialization.jsonObject(with: data, options: [])
+                  self.availableLimitObj = Mapper<AvailableLimitsModel>().map(JSONObject: json)
+//                  self.availableLimitObj = response.result.value
       
                   if response.response?.statusCode == 200 {
       

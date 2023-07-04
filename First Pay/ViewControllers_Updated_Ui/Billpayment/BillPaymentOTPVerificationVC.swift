@@ -11,7 +11,7 @@ import OTPTextField
 import KYDrawerController
 import Toaster
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 
 class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
@@ -197,18 +197,24 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
         //
                 print(parameters)
                 print(compelteUrl)
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
 
-            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
+            response in
             self.hideActivityIndicator()
-            self.genRespBaseObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+            
+//            self.genRespBaseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
      
@@ -256,18 +262,23 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
         //
                 print(parameters)
                 print(compelteUrl)
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
-
-            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
+            response in
             self.hideActivityIndicator()
-            self.genRespBaseObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
+
+//            self.genRespBaseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
                     self.labelmessage.isHidden = false
@@ -319,14 +330,19 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(parameters)
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
         print(compelteUrl)
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<FundsTransferApiResponse>) in
+            response in
             self.hideActivityIndicator()
-             self.successmodelobj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.successmodelobj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
+//             self.successmodelobj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
                     self.move_to_next()

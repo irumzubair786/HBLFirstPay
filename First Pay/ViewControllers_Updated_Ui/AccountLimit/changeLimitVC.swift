@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
 class changeLimitVC: BaseClassVC {
@@ -154,13 +154,13 @@ class changeLimitVC: BaseClassVC {
 //        print(result.apiAttribute2)
 //        
 //        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+//         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
 //        print(params)
 //        print(compelteUrl)
 //        NetworkManager.sharedInstance.enableCertificatePinning()
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<ChangeLimitModel>) in
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<ChangeLimitModel>) in
 //            
-//     //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+//     //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
 //            
 //            self.hideActivityIndicator()
 //            

@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 var debitCardFee : Float?
 var debitCardFeeDeliveryCharges : Float?
@@ -65,15 +65,21 @@ class DebitCardMainVC: BaseClassVC {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
         FBEvents.logEvent(title: .Debit_ordername_attempt)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardCheckModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetDebitCardCheckModel>) in
+            response in
             self.hideActivityIndicator()
-            self.checkDebitCardObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.checkDebitCardObj = Mapper<GetDebitCardCheckModel>().map(JSONObject: json)
+            
+//            self.checkDebitCardObj = response.result.value
             if response.response?.statusCode == 200 {
                 FBEvents.logEvent(title: .Debit_ordername_success)
                 if self.checkDebitCardObj?.responsecode == 2 || self.checkDebitCardObj?.responsecode == 1 {
@@ -110,7 +116,7 @@ class DebitCardMainVC: BaseClassVC {
 //                    self.movetoback()
                 }
                 }
-                print(response.result.value)
+                print(response.value)
                 print(response.response?.statusCode)
 //
             }

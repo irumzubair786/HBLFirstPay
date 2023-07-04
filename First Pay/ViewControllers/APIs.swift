@@ -13,10 +13,29 @@ import SwiftyJSON
 struct APIs {
     static var shared = APIs()
     
-    func sessionManger(timeOut: Int) -> SessionManager {
-        let serverTrustPolicies : [String: ServerTrustPolicy] = ["https://bb.fmfb.pk" : .pinCertificates(certificates: ServerTrustPolicy.certificates(), validateCertificateChain: true, validateHost: true), "insecure.expired-apis.com": .disableEvaluation]
-        let networkSessionManager = SessionManager( serverTrustPolicyManager: ServerTrustPolicyManager(policies:serverTrustPolicies))
-        return networkSessionManager
+    func sessionManger(timeOut: Int) -> Session {
+        
+//        let evaluators: [String: ServerTrustEvaluating] = [
+//            "https://bb.fmfb.pk": PublicKeysTrustEvaluator()
+//        ]
+        let evaluators: [String: ServerTrustEvaluating] = [
+            "https://bb.fmfb.pk": PublicKeysTrustEvaluator(
+                performDefaultValidation: false,
+                validateHost: false
+            )
+        ]
+        let serverTrustManager = ServerTrustManager(
+            allHostsMustBeEvaluated: false,
+            evaluators: evaluators
+        )
+        let session = Session(serverTrustManager: serverTrustManager)
+        
+        return session
+        
+//
+//        let serverTrustPolicies : [String: ServerTrustManager] = ["https://bb.fmfb.pk" : .pinCertificates(certificates: ServerTrustPolicy.certificates(), validateCertificateChain: true, validateHost: true), "insecure.expired-apis.com": .disableEvaluation]
+//        let networkSessionManager = Session( serverTrustPolicyManager: ServerTrustPolicyManager(policies:serverTrustPolicies))
+//        return networkSessionManager
     }
     
     
@@ -121,7 +140,19 @@ struct APIs {
             vc.showActivityIndicator2()
         }
         
-        Alamofire.request(request).responseJSON { response in
+        AF.request(request.url!, method: .post, parameters: params, encoding:JSONEncoding.default)
+                    .responseData { response in
+//           guard let data = response.data else { return }
+//           let json = try? JSON(data:data)
+//           if let acc = json?["Account"].string {
+//             print(acc)
+//           }
+//           if let pass = json?["Password"].string {
+//             print(pass)
+//           }
+//        }
+//
+//        AF.request(request).responseJSON { response in
             print("Response: \(response)")
             if let vc = viewController {
                 vc.hideActivityIndicator2()
@@ -205,7 +236,7 @@ struct APIs {
             vc.showActivityIndicator2()
         }
         
-        Alamofire.request(request).responseJSON { response in
+        AF.request(request).responseJSON { response in
             print("Response: \(response)")
             if let vc = viewController {
                 vc.hideActivityIndicator2()
@@ -320,6 +351,11 @@ struct APIs {
         case acceptFriendInvite = "WalletCreation/v1/acceptFriendInvite"
 
 
+        
+        case login = "FirstPayInfo/v1/login"
+
+        
+        
         
     }
     

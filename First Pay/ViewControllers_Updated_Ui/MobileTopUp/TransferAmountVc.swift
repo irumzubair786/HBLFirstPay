@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SDWebImage
 class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
@@ -235,19 +235,24 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
         print(header)
                 NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<TopUpApiResponse>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<TopUpApiResponse>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.fundsTransSuccessObj = Mapper<TopUpApiResponse>().map(JSONObject: json)
             
-            self.fundsTransSuccessObj = response.result.value
+
+            
+//            self.fundsTransSuccessObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
@@ -262,7 +267,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             else {
                 if let message = self.fundsTransSuccessObj?.messages{
                     self.showAlertCustomPopup(title: "",message: message, iconName: .MismatchNumber)                }
-                print(response.result.value)
+                print(response.value)
                 print(response.response?.statusCode)
             }
         }

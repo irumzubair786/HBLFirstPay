@@ -9,7 +9,7 @@
 import UIKit
 import OTPTextField
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SwiftyRSA
 class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
@@ -253,7 +253,7 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -266,11 +266,15 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         FBEvents.logEvent(title: .Debit_activateotp_attempt)
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genResponse = Mapper<GenericResponse>().map(JSONObject: json)
             
-            self.genResponse = response.result.value
+//            self.genResponse = response.result.value
             print(self.genResponse)
         
             if response.response?.statusCode == 200 {
@@ -353,7 +357,7 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -366,11 +370,16 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genResponse = Mapper<GenericResponse>().map(JSONObject: json)
             
-            self.genResponse = response.result.value
+            
+//            self.genResponse = response.result.value
             print(self.genResponse)
         
             if response.response?.statusCode == 200 {
@@ -429,23 +438,27 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
 
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<OTPserviceModel>) in
-
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            [self] (response: DataResponse<OTPserviceModel>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.UpdateStatusObj = Mapper<OTPserviceModel>().map(JSONObject: json)
             
-            self.UpdateStatusObj = response.result.value
+//            self.UpdateStatusObj = response.result.value
             if response.response?.statusCode == 200 {
                 FBEvents.logEvent(title: .Debit_activate_success)
                 FaceBookEvents.logEvent(title: .Debit_activate_success)
                 if self.UpdateStatusObj?.responsecode == 2 || self.UpdateStatusObj?.responsecode == 1 {
-                    movetoNext()
+                    self.movetoNext()
                 }
                 
                 else {

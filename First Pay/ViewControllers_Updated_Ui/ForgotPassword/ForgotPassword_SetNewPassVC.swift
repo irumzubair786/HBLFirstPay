@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 
 
@@ -315,16 +315,22 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
         
         print(params)
         print(header)
         print(compelteUrl)
         FBEvents.logEvent(title: .Signup_forgotpass_attempt)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponseModel>) in
+            response in
             self.hideActivityIndicator()
-            self.genericResponseObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genericResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+            
+//            self.genericResponseObj = response.result.value
             if response.response?.statusCode == 200 {
                 FBEvents.logEvent(title: .Signup_forgotpass_success)
                 if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {

@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import PasswordTextField
 import RNCryptor
@@ -321,15 +321,21 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
         print(params)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<setLoginPinModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<setLoginPinModel>) in
   
+            response in
             self.hideActivityIndicator()
-            self.setLoginPinObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.setLoginPinObj = Mapper<setLoginPinModel>().map(JSONObject: json)
+            
+//            self.setLoginPinObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
@@ -433,21 +439,29 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     let result = splitString(stringToSplit: base64EncodedString(params: parameters))
 
     let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-       let header = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
     
     
     print(params)
     print(compelteUrl)
     NetworkManager.sharedInstance.enableCertificatePinning()
     
-    NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
-//            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
-           
-        self.loginObj = response.result.value
+    NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//        (response: DataResponse<LoginActionModel>) in
+//            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<LoginActionModel>) in
+        response in
+        self.hideActivityIndicator()
+        guard let data = response.data else { return }
+        let json = try! JSONSerialization.jsonObject(with: data, options: [])
+        self.loginObj = Mapper<LoginActionModel>().map(JSONObject: json)
+        
+//        self.loginObj = response.result.value
 
         if response.response?.statusCode == 200 {
             self.hideActivityIndicator()
-            self.loginObj = response.result.value
+            self.loginObj = Mapper<LoginActionModel>().map(JSONObject: json)
+
+//            self.loginObj = response.result.value
             if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                 if self.loginObj?.userData?.customerHomeScreens?[0].riskProfile == "Y"{
 //                   let createWalletVC = self.storyboard!.instantiateViewController(withIdentifier: "RiskProfileVC") as! RiskProfileVC

@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class Fetcing_OTP_VC: BaseClassVC {
     var mobileRegistrationObj : mobileRegistrationModel?
@@ -107,13 +107,13 @@ class Fetcing_OTP_VC: BaseClassVC {
 //        print(parameters)
 //
 //        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+//         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
 //        print(params)
 //        print(compelteUrl)
 //
 //        NetworkManager.sharedInstance.enableCertificatePinning()
 ////
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<mobileRegistrationModel>) in
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<mobileRegistrationModel>) in
 //
 //            self.hideActivityIndicator()
 //

@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import ContactsUI
 import libPhoneNumber_iOS
@@ -255,17 +255,24 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         let compelteUrl = GlobalConstants.BASE_URL +          "Transactions/v1/getParentTopUpCompanies"
         //getcompanyfromparentid
         //biillinquiry
-        let header = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<BillPaymentCompanies>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<BillPaymentCompanies>) in
+            response in
             self.hideActivityIndicator2()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.billCompanyObj = Mapper<BillPaymentCompanies>().map(JSONObject: json)
+
+            
 //            self.hideActivityIndicator()
-            self.billCompanyObj = response.result.value
+//            self.billCompanyObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
@@ -324,16 +331,21 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
         print(header)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<BillAPiResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<BillAPiResponse>) in
+            response in
             self.hideActivityIndicator()
-            self.billtransactionOBj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
+//            self.billtransactionOBj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC

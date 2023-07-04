@@ -9,7 +9,7 @@
 import UIKit
 import IQDropDownTextField
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import iOSDropDown
 var City_flag = ""
@@ -652,26 +652,32 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
         print(params)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<cnicVerficationModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
+//            [self] (response: DataResponse<cnicVerficationModel>) in
+            response in
             self.hideActivityIndicator()
-            self.cnicVerificationObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.cnicVerificationObj = Mapper<cnicVerficationModel>().map(JSONObject: json)
+            
+//            self.cnicVerificationObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.cnicVerificationObj?.responsecode == 2 || self.cnicVerificationObj?.responsecode == 1 {
-                    if cnicVerificationObj?.data != nil{
+                    if self.cnicVerificationObj?.data != nil{
                         self.View_mothername.isHidden = false
                         self.blurView.isHidden = false
-                        flagMother_nameselected = false
-                        btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
+                        self.flagMother_nameselected = false
+                        self.btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
                         btn_Mname2.setTitle(cnicVerificationObj?.data?.motherNamesList?[1], for: .normal)
                         
-                        btn_Mname3.setTitle(cnicVerificationObj?.data?.motherNamesList?[2], for: .normal)
+                        self.btn_Mname3.setTitle(cnicVerificationObj?.data?.motherNamesList?[2], for: .normal)
                         
-                        btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
+                        self.btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
                     }
                 }
                 else
@@ -798,13 +804,19 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
         print(params)
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponseModel>) in
+            response in
             self.hideActivityIndicator()
-            self.genericObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genericObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+            
+//            self.genericObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {

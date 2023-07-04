@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import MessageUI
 class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
@@ -388,7 +388,7 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
         
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getDisputeTypes"
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
        
         
         print(header)
@@ -396,12 +396,15 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<GetDisputeTypesModel>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<GetDisputeTypesModel>) in
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.disputeTypesObj = Mapper<GetDisputeTypesModel>().map(JSONObject: json)
             
-            self.disputeTypesObj = response.result.value
+//            self.disputeTypesObj = response.result.value
             
             if response.response?.statusCode == 200 {
                 
@@ -458,16 +461,21 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
         print(result.apiAttribute2)
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
 
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
         print(compelteUrl)
         print(header)
 
         NetworkManager.sharedInstance.enableCertificatePinning()
        
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponseModel>) in
+            response in
             self.hideActivityIndicator()
-            self.genResObj = response.result.value
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.genResObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+//            self.genResObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genResObj?.responsecode == 2 || self.genResObj?.responsecode == 1 {
                     self.blurView.isHidden = false
