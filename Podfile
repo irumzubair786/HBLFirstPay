@@ -13,7 +13,6 @@ target 'First Pay' do
   pod 'ObjectMapper'
 
 
-
   pod 'Toaster'#, '~> 2.3'
   pod 'SwiftyJSON'
   pod 'PinCodeTextField'
