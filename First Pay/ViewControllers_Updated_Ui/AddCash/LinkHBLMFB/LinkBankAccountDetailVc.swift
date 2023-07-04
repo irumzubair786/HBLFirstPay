@@ -26,7 +26,8 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imgNext.addGestureRecognizer(tapGestureRecognizer)
         
-        // Do any additional setup after loading the view.
+        self.textFieldMobileNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+
     }
     
     @IBOutlet weak var buttonback: UIButton!

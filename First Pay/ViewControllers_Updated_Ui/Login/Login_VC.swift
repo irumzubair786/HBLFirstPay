@@ -82,7 +82,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
 //#endif
 //
 //>>>>>>> a408e5e (pod update)
->>>>>>> 9c3ef07 (add cash ui fix)
+//>>>>>>> 9c3ef07 (add cash ui fix)
 
         labelOne.text = ""
         labelTwo.text = ""
