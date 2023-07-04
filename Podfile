@@ -9,7 +9,7 @@ target 'First Pay' do
   pod 'XLPagerTabStrip'
   pod 'IQKeyboardManager'
   pod 'KYDrawerController'
-  pod 'Alamofire', '~> 5.5.0'
+  pod 'Alamofire'#, '~> 5.5.0'
 #  pod 'AlamofireObjectMapper'
   pod 'ObjectMapper'
 
