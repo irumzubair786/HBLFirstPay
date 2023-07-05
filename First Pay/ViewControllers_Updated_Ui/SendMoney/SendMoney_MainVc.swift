@@ -42,11 +42,7 @@ class SendMoney_MainVc: UIViewController {
        
         self.present(vc, animated: true)
     }
-    
-    
     @IBAction func Action_HBLMFb_Account(_ sender: UIButton) {
-        
-        
         let storyboard = UIStoryboard(name: "SendMoney_Local_Hblmfb", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "navigatetoHblMFBAccount")
         

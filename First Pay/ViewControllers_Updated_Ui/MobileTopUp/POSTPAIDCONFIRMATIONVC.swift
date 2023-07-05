@@ -16,7 +16,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     var DueDate : String?
     var successmodelobj : FundsTransferApiResponse?
     var status: String?
-    var minValue = 1
+    var minValue = 100
     var maxValue = 10000
     var amount :String?
     override func viewDidLoad() {
@@ -30,7 +30,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         imageNext.addGestureRecognizer(tapGestureRecognizerr)
         updateui()
         imageNext.isUserInteractionEnabled = false
-       
+        amounttextField.isUserInteractionEnabled = true
         self.amounttextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
@@ -65,11 +65,22 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         }
         if amounttextField.text?.count ?? 0 > 0
         {
-            let image = UIImage(named:"]greenarrow")
-            imageNext.image = image
-            imageNext.isUserInteractionEnabled = true
-            buttonContinue.isUserInteractionEnabled = true
-            
+            if Int(amounttextField.text!) ?? 0  < Int((minValue) ?? 0) || Int(amounttextField.text!) ?? 0 > Int((maxValue) ?? 0)
+            {
+                
+                let image = UIImage(named:"grayArrow")
+                imageNext.image = image
+                imageNext.isUserInteractionEnabled = false
+                buttonContinue.isUserInteractionEnabled = false
+                
+            }
+            else
+            {
+                let image = UIImage(named:"]greenarrow")
+                imageNext.image = image
+                imageNext.isUserInteractionEnabled = true
+                buttonContinue.isUserInteractionEnabled = true
+            }
             
         }
 //        else if amounttextField.text! == "0"
@@ -148,6 +159,10 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         }
         if textField == amounttextField
         {
+            return newLength <= 5
+        }
+        if textField == amounttextField
+        {
             let newText = (amounttextField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? ""
             if newText.count == 1 && newText.first == "0" {
                 let image = UIImage(named:"grayArrow")
@@ -169,11 +184,11 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     @IBAction func buttonContinue(_ sender: UIButton) {
         if ((status == "U") || (status == "u") || ((status == "T") || (status == "t")))
         {
-            billPyment()
+            initiateTopUp()
         }
       else if GlobalData.Select_operator_code == "TELNOR02"
         {
-          billPyment()
+          initiateTopUp()
        }
         
         
@@ -182,12 +197,12 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     {
         if ((status == "U") || (status == "u") || ((status == "T") || (status == "t")))
         {
-            billPyment()
+            initiateTopUp()
         }
        
         else if GlobalData.Select_operator_code == "TELNOR02"
           {
-            billPyment()
+            initiateTopUp()
          }
     }
     func updateui()
@@ -215,7 +230,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             
             labelAmount.text =  "\(amount?.floatValue ?? 0)"
             amounttextField.text = "\(amount?.floatValue ?? 0)"
-            amounttextField.isUserInteractionEnabled = false
+//            amounttextField.isUserInteractionEnabled = false
             let image = UIImage(named:"]greenarrow")
             imageNext.image = image
             imageNext.isUserInteractionEnabled = true
@@ -229,7 +244,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     {
         if GlobalData.Select_operator_code == "TELNOR02"
         {
-            amounttextField.isUserInteractionEnabled = true
+//            amounttextField.isUserInteractionEnabled = true
             if amount == ("0.0")
             {
                 let image = UIImage(named:"grayArrow")
@@ -258,7 +273,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         formatter.numberStyle = .decimal
 //        formatter.maximumFractionDigits = 2
         formatter.locale = Locale(identifier: "en_US")
-        comabalanceLimit = (formatter.string(from: NSNumber(value: number!)))!
+        comabalanceLimit = (formatter.string(from: NSNumber(value: number!)))
         
         
 //        var text = amounttextField.text?.getIntegerValue()
@@ -294,7 +309,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
 //
 //        }
     }
-    private func billPyment() {
+    private func initiateTopUp() {
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
@@ -307,7 +322,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             userCnic = ""
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/topUp"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany": GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":labelAmount.text!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otptextField.text!,"addBeneficiary":"","utilityBillCompanyId": GlobalData.Select_operator_id!] as [String : Any]
         
