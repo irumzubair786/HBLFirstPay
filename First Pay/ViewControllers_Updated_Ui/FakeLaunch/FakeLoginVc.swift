@@ -50,6 +50,11 @@ class FakeLoginVc: UIViewController {
         if isfromHomwWithoutCreationAccount == false
         {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
+            vc.moveToSignUp = {
+                DispatchQueue.main.async {
+                    self.moveToSignUp()
+                }
+            }
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
@@ -66,11 +71,14 @@ class FakeLoginVc: UIViewController {
         }
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
+        moveToSignUp()
+    }
+    
+    func moveToSignUp() {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Mobile_VerificationVC") as! Mobile_VerificationVC
         self.navigationController?.pushViewController(vc, animated: true)
-        
-        
     }
+    
     @IBOutlet weak var btnHome: UIButton!
     @IBOutlet weak var btnNotification: UIButton!
     @IBOutlet weak var btnmain: UIButton!

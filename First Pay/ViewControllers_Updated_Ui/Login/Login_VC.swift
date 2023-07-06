@@ -20,7 +20,7 @@ import RNCryptor
 import PasswordTextField
 import CoreLocation
 import OneSignal
-
+import FingerprintSDK
 
 class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var homeObj : HomeModel?
@@ -737,16 +737,16 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
 //                    if self.loginObj?.responseblock == nil {
 
                     if self.loginObj?.responseblock?.responseType?.lowercased() == "L".lowercased() {
+                        lbl_InvalidPassword.isHidden = false
+                        lbl_InvalidPassword.text = message
+                        lbl_InvalidPassword.textColor = .red
+                    }
+                    else if self.loginObj?.responseblock?.responseType?.lowercased() == "P".lowercased() {
                         lbl_InvalidPassword.isHidden = true
                         self.showAlertCustomPopup(title: "", message: message,iconName: .iconError) {_ in
                             self.navigationController?.popViewController(animated: true)
                             self.moveToSignUp!()
                         }
-                    }
-                    else if self.loginObj?.responseblock?.responseType?.lowercased() == "P".lowercased() {
-                        lbl_InvalidPassword.isHidden = false
-                        lbl_InvalidPassword.text = message
-                        lbl_InvalidPassword.textColor = .red
                     }
                     else {
                         lbl_InvalidPassword.isHidden = false
