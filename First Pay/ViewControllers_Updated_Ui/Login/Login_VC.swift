@@ -404,7 +404,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             task.resume()
         }
         //shakeel
-        self.navigateToHome()
+//        self.navigateToHome()
 ////<<<<<<< HEAD
 //<<<<<<< HEAD
 ////
@@ -449,7 +449,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 }
             }
             self.present(vc, animated: true)
-
         }
         else {
             self.navigateToHome()
