@@ -115,7 +115,7 @@ class AlertPopupMessage: UIViewController {
                     "buttonBackGroundColor"] as? UIColor
             }
             if index == 1 {
-                viewButtonOne.isHidden = false
+                viewButtonTwo.isHidden = false
                 
                 labelButtonTwo.text = buttonName["buttonName"] as? String
                 labelButtonTwo.textColor = buttonName["buttonTextColor"] as? UIColor
@@ -123,7 +123,7 @@ class AlertPopupMessage: UIViewController {
                     "buttonBackGroundColor"] as? UIColor
             }
             if index == 2 {
-                viewButtonTwo.isHidden = false
+                viewButtonThree.isHidden = false
                 
                 labelButtonThree.text = buttonName["buttonName"] as? String
                 labelButtonThree.textColor = buttonName["buttonTextColor"] as? UIColor
@@ -131,7 +131,7 @@ class AlertPopupMessage: UIViewController {
                     "buttonBackGroundColor"] as? UIColor
             }
             if index == 3 {
-                viewButtonThree.isHidden = false
+                viewButtonFour.isHidden = false
                 
                 labelButtonFour.text = buttonName["buttonName"] as? String
                 labelButtonFour.textColor = buttonName["buttonTextColor"] as? UIColor
@@ -139,7 +139,7 @@ class AlertPopupMessage: UIViewController {
                     "buttonBackGroundColor"] as? UIColor
             }
             if index == 4 {
-                viewButtonFour.isHidden = false
+                viewButtonFive.isHidden = false
                 
                 labelButtonFive.text = buttonName["buttonName"] as? String
                 labelButtonFive.textColor = buttonName["buttonTextColor"] as? UIColor

@@ -682,9 +682,20 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                     }
                     else if self.loginObj?.responseblock?.responseType?.lowercased() == "P".lowercased() {
                         lbl_InvalidPassword.isHidden = true
-                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconError) {_ in
+                        self.showAlertCustomPopup(title: "Device Authentication", message: message,iconName: .iconError, buttonNames: [
+                            [
+                            "buttonName": "SIGN-IN",
+                            "buttonBackGroundColor": UIColor.clrOrange,
+                            "buttonTextColor": UIColor.white] as [String : Any],
+                            [
+                            "buttonName": "CANCEL",
+                            "buttonBackGroundColor": UIColor.white,
+                            "buttonTextColor": UIColor.clrOrange]
+                        ] as? [[String: AnyObject]]) {buttonName in
                             self.navigationController?.popViewController(animated: false)
-                            self.moveToSignUp!()
+                            if buttonName == "SIGN-IN" {
+                                self.moveToSignUp!()
+                            }
                         }
                     }
                     else {
