@@ -35,6 +35,12 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var topBtnarr =  ["SendMoney", "Mobile Topup", "PayBill","First Option","DebitCard","SeeAll"]
 
     @IBOutlet weak var imgSeeAll: UIImageView!
+    override func viewDidAppear(_ animated: Bool) {
+        changeImageTimerStart()
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        timerChangeBannerImage.invalidate()
+    }
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Homescreen_Landing)
         super.viewDidLoad()
@@ -224,7 +230,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     let pageIndicator = UIPageControl()
     var counter = 0
     var banArray = [UIImage]()
-    var timer = Timer()
+    var timerChangeBannerImage = Timer()
     var banaryyString =  [String]()
     
     @IBOutlet weak var buttonInvite: UIButton!
@@ -239,24 +245,30 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @IBOutlet weak var LblMobNo: UILabel!
     @IBOutlet weak var img: UIImageView!
-   
+
+    func changeImageTimerStart() {
+        timerChangeBannerImage.invalidate()
+        self.timerChangeBannerImage = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
+    }
     @objc func changeImage() {
+        if self.banaryyString.count == 0 {
+            return()
+        }
         
         if counter < self.banaryyString.count {
             
             let index = IndexPath.init(item: counter, section: 0)
             
             let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
+            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
             counter += 1
         } else {
             counter = 0
             let index = IndexPath.init(item: counter, section: 0)
             let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
+            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
             counter = 1
         }
-        
     }
 
     func homeAction() {
@@ -403,15 +415,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                 }
                 print("ban array is",banaryyString)
                 DispatchQueue.main.async {
-                    self.timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
+                    self.changeImageTimerStart()
                 }
-                
             }
-           
-            
-            
         }
-        
     }
     
     @objc func MovetoStatement(tapGestureRecognizer: UITapGestureRecognizer)

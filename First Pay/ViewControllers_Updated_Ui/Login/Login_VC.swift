@@ -683,7 +683,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                     else if self.loginObj?.responseblock?.responseType?.lowercased() == "P".lowercased() {
                         lbl_InvalidPassword.isHidden = true
                         self.showAlertCustomPopup(title: "", message: message,iconName: .iconError) {_ in
-                            self.navigationController?.popViewController(animated: true)
+                            self.navigationController?.popViewController(animated: false)
                             self.moveToSignUp!()
                         }
                     }

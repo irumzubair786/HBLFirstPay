@@ -140,7 +140,7 @@ struct APIs {
             vc.showActivityIndicator2()
         }
         
-        AF.request(request.url!, method: .post, parameters: params, encoding:JSONEncoding.default)
+        AF.request(request.url!, method: .post, parameters: params, encoding:JSONEncoding.default, headers: request.headers)
                     .responseData { response in
 //           guard let data = response.data else { return }
 //           let json = try? JSON(data:data)

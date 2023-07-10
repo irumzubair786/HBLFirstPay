@@ -17,12 +17,16 @@ class FakeLoginVc: UIViewController {
     let pageIndicator = UIPageControl()
     var counter = 0
     var banArray = [UIImage]()
-    var timer = Timer()
+    var timerChangeBannerImage = Timer()
     var banaryyString =  [String]()
+    
+    override func viewDidAppear(_ animated: Bool) {
+        changeImageTimerStart()
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        timerChangeBannerImage.invalidate()
+    }
     override func viewDidLoad() {
-        
-        
-        
         super.viewDidLoad()
         btnHome.setTitle("", for: .normal)
         btnmain.setTitle("", for: .normal)
@@ -32,7 +36,6 @@ class FakeLoginVc: UIViewController {
         buttonLogin.setTitle("", for: .normal)
         updateUI()
         banapi ()
-      
         // Do any additional setup after loading the view.
     }
     
@@ -76,7 +79,7 @@ class FakeLoginVc: UIViewController {
     
     func moveToSignUp() {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Mobile_VerificationVC") as! Mobile_VerificationVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: false)
     }
     
     @IBOutlet weak var btnHome: UIButton!
@@ -127,33 +130,32 @@ class FakeLoginVc: UIViewController {
                 }
                 print("ban array is",banaryyString)
                 DispatchQueue.main.async {
-                    self.timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
+                    self.changeImageTimerStart()
                 }
-                
             }
-           
-            
-            
         }
-        
+    }
+    
+    func changeImageTimerStart() {
+        timerChangeBannerImage.invalidate()
+        self.timerChangeBannerImage = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
     }
     @objc func changeImage() {
-        
+        if self.banaryyString.count == 0 {
+            return()
+        }
         if counter < self.banaryyString.count {
-            
             let index = IndexPath.init(item: counter, section: 0)
             
             let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
+            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
             counter += 1
         } else {
             counter = 0
             let index = IndexPath.init(item: counter, section: 0)
             let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
+            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
             counter = 1
         }
-        
     }
-
 }
