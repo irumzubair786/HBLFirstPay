@@ -55,10 +55,11 @@ class UnverifeidAccountMainVc: BaseClassVC {
         vc.totalYearlyLimitDr = totalYearlyLimitDr
         vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
         self.present(vc, animated: true)
-        
+        UnVerifiedAccountVC
     }
     
     @IBAction func buttonUpgrade(_ sender: UIButton) {
+//        call sdk
         self.showAlertCustomPopup(title: "", message: "Please visit your nearest HBLMfB branch", iconName: .iconSucess, buttonNames: [
             
             ["buttonName": "OK",

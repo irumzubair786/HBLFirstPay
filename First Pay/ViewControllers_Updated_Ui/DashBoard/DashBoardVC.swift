@@ -70,9 +70,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         imgInviteFriend.addGestureRecognizer(tapGestureRecognizrz)
         
         let tapGestureRecognizrzSeeAll = UITapGestureRecognizer(target: self, action: #selector(moveToSeeAll(tapGestureRecognizer:)))
-        imgSeeAll.isUserInteractionEnabled = true
+//        imgSeeAll.isUserInteractionEnabled = true
         imgSeeAll.addGestureRecognizer(tapGestureRecognizrzSeeAll)
-        labelSeeAll.isUserInteractionEnabled = true
+//        labelSeeAll.isUserInteractionEnabled = true
         labelSeeAll.addGestureRecognizer(tapGestureRecognizrzSeeAll)
        
 //        getActiveLoan()
@@ -97,9 +97,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @IBOutlet weak var buttonMobilepakegs: UIButton!
     @IBAction func buttonMobilepakegs(_ sender: UIButton) {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "OtherServices_VC") as! OtherServices_VC
-        self.present(vc, animated: true)
-        self.navigationController?.pushViewController(vc, animated: true)
+//        let vc = storyboard?.instantiateViewController(withIdentifier: "OtherServices_VC") as! OtherServices_VC
+//        self.present(vc, animated: true)
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     func AddCash(){
         let tapGestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(btnAddCash(tapGestureRecognizer:)))
