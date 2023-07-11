@@ -49,7 +49,7 @@ class BaseClassVC: UIViewController {
         self.rootVC = delegate.window?.rootViewController
         DataManager.instance.Longitude = 41.40338
         DataManager.instance.Latitude = 2.17403
-        
+        hideKeyboardWhenTappedAround()
     }
     
     override func didReceiveMemoryWarning() {
