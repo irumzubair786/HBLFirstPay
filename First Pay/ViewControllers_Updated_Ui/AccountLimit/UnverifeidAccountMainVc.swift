@@ -10,6 +10,8 @@ import UIKit
 import SwiftKeychainWrapper
 import Alamofire
 import ObjectMapper
+import FingerprintSDK
+
 class UnverifeidAccountMainVc: BaseClassVC {
     var levelCode :String?
     var totalDailyLimitDr : Int?
@@ -55,17 +57,66 @@ class UnverifeidAccountMainVc: BaseClassVC {
         vc.totalYearlyLimitDr = totalYearlyLimitDr
         vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
         self.present(vc, animated: true)
-        UnVerifiedAccountVC
+//        UnVerifiedAccountVC
     }
     
     @IBAction func buttonUpgrade(_ sender: UIButton) {
 //        call sdk
-        self.showAlertCustomPopup(title: "", message: "Please visit your nearest HBLMfB branch", iconName: .iconSucess, buttonNames: [
-            
-            ["buttonName": "OK",
-            "buttonBackGroundColor": UIColor.clrOrange,
-            "buttonTextColor": UIColor.white]
-        ] as? [[String: AnyObject]])
+        DispatchQueue.main.async {
+            self.fingerPrintVerification()
+        }
+        
+//        self.showAlertCustomPopup(title: "", message: "Please visit your nearest HBLMfB branch", iconName: .iconSucess, buttonNames: [
+//
+//            ["buttonName": "OK",
+//            "buttonBackGroundColor": UIColor.clrOrange,
+//            "buttonTextColor": UIColor.white]
+//        ] as? [[String: AnyObject]])
     }
     
+    func fingerPrintVerification() {
+        //#if targetEnvironment(simulator)
+        //        #else
+        let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
+                                                  hand: .BOTH_HANDS,
+                                                  fingers: .EIGHT_FINGERS,
+                                                  isPackPng: true)
+        let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
+        vc.fingerprintConfig = fingerprintConfig
+        vc.fingerprintResponseDelegate = self
+        self.present(vc, animated: true, completion: nil)
+        //        #endif
+    }
+    
+}
+
+extension UnverifeidAccountMainVc: FingerprintResponseDelegate {
+    
+    func onScanComplete(fingerprintResponse: FingerprintResponse) {
+        //Shakeel ! added
+        if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
+            let vc = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+            DispatchQueue.main.async {
+                self.present(vc, animated: true)
+            }
+            
+//            self.fingerprintPngs = fingerprintResponse.pngList
+//            var fingerprintsList = [Fingerprints2]()
+//            if let fpPNGs = self.fingerprintPngs {
+//                for item in fpPNGs {
+//                    guard let imageString = item.binaryBase64ObjectPNG else { return }
+//                    guard let instance = Fingerprints2(index: "\(item.fingerPositionCode)", template: imageString) else { return }
+//                    fingerprintsList.append(instance)
+//                }
+//            }
+        }else {
+            self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
+                self.dismiss(animated: true)
+            }
+            
+        }
+    }
+    override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+        self.dismiss(animated: true)
+    }
 }

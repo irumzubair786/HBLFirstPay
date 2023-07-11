@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import FingerprintSDK
 
 class UnVerifiedAccountVC: UIViewController {
-   
+    
     var levelCode :String?
     var totalDailyLimitDr : Int?
     var totalMonthlyLimitDr : Int?
@@ -18,7 +19,7 @@ class UnVerifiedAccountVC: UIViewController {
     var totalMonthlyLimitCr : Int?
     var totalYearlyLimitCr : Int?
     var balanceLimit : Int?
-
+    
     var totalDailyLimitDr1 : Int?
     var totalMonthlyLimitDr1 : Int?
     var totalYearlyLimitDr1 : Int?
@@ -35,7 +36,7 @@ class UnVerifiedAccountVC: UIViewController {
     var comatotalDailyLimitCr : String?
     var comatotalMonthlyLimitCr : String?
     var comatotalYearlyLimitCr : String?
-   
+    
     
     var comatotalDailyLimitDr1 : String?
     var comatotalMonthlyLimitDr1 : String?
@@ -64,24 +65,28 @@ class UnVerifiedAccountVC: UIViewController {
         self.dismiss(animated: true)
     }
     @IBAction func buttonUpgrade(_ sender: UIButton) {
-//        call sdk
-//        let vc = storyboard?.instantiateViewController(withIdentifier: "UnverifeidAccountMainVc")
-//        as! UnverifeidAccountMainVc
-//        vc.balanceLimit = balanceLimit
-//        vc.balanceLimit1 = balanceLimit1
-//        vc.totalDailyLimitCr =  totalDailyLimitCr
-//        vc.totalDailyLimitCr1 =  totalDailyLimitCr1
-//        vc.totalMonthlyLimitCr = totalMonthlyLimitCr
-//        vc.totalMonthlyLimitCr1 = totalMonthlyLimitCr1
-//        vc.totalYearlyLimitCr =  totalYearlyLimitCr
-//        vc.totalYearlyLimitCr1 =  totalYearlyLimitCr1
-//        vc.totalDailyLimitDr = totalDailyLimitDr
-//        vc.totalDailyLimitDr1 = totalDailyLimitDr1
-//        vc.totalMonthlyLimitDr =  totalMonthlyLimitDr
-//        vc.totalMonthlyLimitDr1 =  totalMonthlyLimitDr1
-//        vc.totalYearlyLimitDr = totalYearlyLimitDr
-//        vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
-//        self.present(vc, animated: true)
+        //        call sdk
+        DispatchQueue.main.async {
+            self.fingerPrintVerification()
+        }
+        //        let vc = storyboard?.instantiateViewController(withIdentifier: "UnverifeidAccountMainVc")
+        //        as! UnverifeidAccountMainVc
+        //        vc.balanceLimit = balanceLimit
+        //        vc.balanceLimit1 = balanceLimit1
+        //        vc.totalDailyLimitCr =  totalDailyLimitCr
+        //        vc.totalDailyLimitCr1 =  totalDailyLimitCr1
+        //        vc.totalMonthlyLimitCr = totalMonthlyLimitCr
+        //        vc.totalMonthlyLimitCr1 = totalMonthlyLimitCr1
+        //        vc.totalYearlyLimitCr =  totalYearlyLimitCr
+        //        vc.totalYearlyLimitCr1 =  totalYearlyLimitCr1
+        //        vc.totalDailyLimitDr = totalDailyLimitDr
+        //        vc.totalDailyLimitDr1 = totalDailyLimitDr1
+        //        vc.totalMonthlyLimitDr =  totalMonthlyLimitDr
+        //        vc.totalMonthlyLimitDr1 =  totalMonthlyLimitDr1
+        //        vc.totalYearlyLimitDr = totalYearlyLimitDr
+        //        vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
+        //        self.present(vc, animated: true)
+        
     }
     
     @IBOutlet weak var labelBalnaceLimitLevel0: UILabel!
@@ -129,117 +134,160 @@ class UnVerifiedAccountVC: UIViewController {
     }
     
     func CommaSepration()
-      {
-          var number = Double(self.balanceLimit!)
-          var formatter = NumberFormatter()
-          formatter.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          formatter.locale = Locale(identifier: "en_US")
-          comabalanceLimit = (formatter.string(from: NSNumber(value: number)))!
-           
-          
-          let number1 = balanceLimit1
-          let formatters = NumberFormatter()
-          formatters.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          formatters.locale = Locale(identifier: "en_US")
-          comabalanceLimit1 = (formatters.string(from: NSNumber(value: number1!)))
-
-          
-          let number2 = totalDailyLimitCr
-          let formatterr = NumberFormatter()
-          formatterr.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          formatterr.locale = Locale(identifier: "en_US")
-          comatotalDailyLimitCr = (formatterr.string(from: NSNumber(value: number2!)))
-          let number3 = totalDailyLimitCr1
-          let a = NumberFormatter()
-          a.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          a.locale = Locale(identifier: "en_US")
-          comatotalDailyLimitCr1 = (a.string(from: NSNumber(value: number3!)))
-                                    
-                                    
-          let number4 = totalMonthlyLimitCr
-          let b = NumberFormatter()
-          b.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          b.locale = Locale(identifier: "en_US")
+    {
+        var number = Double(self.balanceLimit!)
+        var formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        comabalanceLimit = (formatter.string(from: NSNumber(value: number)))!
+        
+        
+        let number1 = balanceLimit1
+        let formatters = NumberFormatter()
+        formatters.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        formatters.locale = Locale(identifier: "en_US")
+        comabalanceLimit1 = (formatters.string(from: NSNumber(value: number1!)))
+        
+        
+        let number2 = totalDailyLimitCr
+        let formatterr = NumberFormatter()
+        formatterr.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        formatterr.locale = Locale(identifier: "en_US")
+        comatotalDailyLimitCr = (formatterr.string(from: NSNumber(value: number2!)))
+        let number3 = totalDailyLimitCr1
+        let a = NumberFormatter()
+        a.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        a.locale = Locale(identifier: "en_US")
+        comatotalDailyLimitCr1 = (a.string(from: NSNumber(value: number3!)))
+        
+        
+        let number4 = totalMonthlyLimitCr
+        let b = NumberFormatter()
+        b.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        b.locale = Locale(identifier: "en_US")
         comatotalMonthlyLimitCr = (b.string(from: NSNumber(value: number4!)))
-          
-          let number5 = totalMonthlyLimitCr1
-          let c = NumberFormatter()
-          c.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          c.locale = Locale(identifier: "en_US")
-          comatotalMonthlyLimitCr1 = (c.string(from: NSNumber(value: number5!)))
-          
-          let number6 = totalYearlyLimitCr
-          let d = NumberFormatter()
-          d.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          d.locale = Locale(identifier: "en_US")
-          comatotalYearlyLimitCr = (d.string(from: NSNumber(value: number6!)))
-          
-          let number7 = totalYearlyLimitCr1
-          let e = NumberFormatter()
-          e.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          e.locale = Locale(identifier: "en_US")
-          comatotalYearlyLimitCr1 = (e.string(from: NSNumber(value: number7!)))
-          
-          
-          
-          
-          let number8 = totalDailyLimitDr
-          let x = NumberFormatter()
-          x.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          x.locale = Locale(identifier: "en_US")
-          comatotalDailyLimitDr = (x.string(from: NSNumber(value: number8!)))
-          let number9 = totalDailyLimitDr1
-          let y = NumberFormatter()
-          y.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          y.locale = Locale(identifier: "en_US")
-           comatotalDailyLimitDr1 = (y.string(from: NSNumber(value: number9!)))
-          let number10 = totalMonthlyLimitDr
-          let z = NumberFormatter()
-          z.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          z.locale = Locale(identifier: "en_US")
-          comatotalMonthlyLimitDr = (z.string(from: NSNumber(value: number10!)))
-          
-          
-          let num = totalMonthlyLimitDr1
-          let f = NumberFormatter()
-          f.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          f.locale = Locale(identifier: "en_US")
-          comatotalMonthlyLimitDr1 = (f.string(from: NSNumber(value: num!)))
-          
-          
-          
-          let numbe = totalYearlyLimitDr
-          let h = NumberFormatter()
-          h.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          h.locale = Locale(identifier: "en_US")
-      comatotalYearlyLimitDr = (h.string(from: NSNumber(value: numbe!)))
-          
-          
-          
-          let no = totalYearlyLimitDr1
-          let k = NumberFormatter()
-          k.numberStyle = .decimal
-  //        formatter.maximumFractionDigits = 2
-          k.locale = Locale(identifier: "en_US")
-          comatotalYearlyLimitDr1 = (k.string(from: NSNumber(value: no!)))
-          
-          
-          
-          
-          
-      }
+        
+        let number5 = totalMonthlyLimitCr1
+        let c = NumberFormatter()
+        c.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        c.locale = Locale(identifier: "en_US")
+        comatotalMonthlyLimitCr1 = (c.string(from: NSNumber(value: number5!)))
+        
+        let number6 = totalYearlyLimitCr
+        let d = NumberFormatter()
+        d.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        d.locale = Locale(identifier: "en_US")
+        comatotalYearlyLimitCr = (d.string(from: NSNumber(value: number6!)))
+        
+        let number7 = totalYearlyLimitCr1
+        let e = NumberFormatter()
+        e.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        e.locale = Locale(identifier: "en_US")
+        comatotalYearlyLimitCr1 = (e.string(from: NSNumber(value: number7!)))
+        
+        
+        
+        
+        let number8 = totalDailyLimitDr
+        let x = NumberFormatter()
+        x.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        x.locale = Locale(identifier: "en_US")
+        comatotalDailyLimitDr = (x.string(from: NSNumber(value: number8!)))
+        let number9 = totalDailyLimitDr1
+        let y = NumberFormatter()
+        y.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        y.locale = Locale(identifier: "en_US")
+        comatotalDailyLimitDr1 = (y.string(from: NSNumber(value: number9!)))
+        let number10 = totalMonthlyLimitDr
+        let z = NumberFormatter()
+        z.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        z.locale = Locale(identifier: "en_US")
+        comatotalMonthlyLimitDr = (z.string(from: NSNumber(value: number10!)))
+        
+        
+        let num = totalMonthlyLimitDr1
+        let f = NumberFormatter()
+        f.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        f.locale = Locale(identifier: "en_US")
+        comatotalMonthlyLimitDr1 = (f.string(from: NSNumber(value: num!)))
+        
+        
+        
+        let numbe = totalYearlyLimitDr
+        let h = NumberFormatter()
+        h.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        h.locale = Locale(identifier: "en_US")
+        comatotalYearlyLimitDr = (h.string(from: NSNumber(value: numbe!)))
+        
+        
+        
+        let no = totalYearlyLimitDr1
+        let k = NumberFormatter()
+        k.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        k.locale = Locale(identifier: "en_US")
+        comatotalYearlyLimitDr1 = (k.string(from: NSNumber(value: no!)))
+        
+        
+        
+        
+        
+    }
     
+    func fingerPrintVerification() {
+        //#if targetEnvironment(simulator)
+        //        #else
+        let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
+                                                  hand: .BOTH_HANDS,
+                                                  fingers: .EIGHT_FINGERS,
+                                                  isPackPng: true)
+        let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
+        vc.fingerprintConfig = fingerprintConfig
+        vc.fingerprintResponseDelegate = self
+        self.present(vc, animated: true, completion: nil)
+        //        #endif
+    }
+    
+}
+extension UnVerifiedAccountVC: FingerprintResponseDelegate {
+    
+    func onScanComplete(fingerprintResponse: FingerprintResponse) {
+        //Shakeel ! added
+        if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
+            let vc = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+            DispatchQueue.main.async {
+                self.present(vc, animated: true)
+            }
+//            self.fingerprintPngs = fingerprintResponse.pngList
+//            var fingerprintsList = [Fingerprints2]()
+//            if let fpPNGs = self.fingerprintPngs {
+//                for item in fpPNGs {
+//                    guard let imageString = item.binaryBase64ObjectPNG else { return }
+//                    guard let instance = Fingerprints2(index: "\(item.fingerPositionCode)", template: imageString) else { return }
+//                    fingerprintsList.append(instance)
+//                }
+//            }
+        }else {
+            self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
+                self.dismiss(animated: true)
+            }
+            
+        }
+    }
+    override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+        self.dismiss(animated: true)
+    }
 }

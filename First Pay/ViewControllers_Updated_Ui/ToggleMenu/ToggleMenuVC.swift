@@ -16,6 +16,9 @@ import SwiftKeychainWrapper
 import WebKit
 import Alamofire
 import ObjectMapper
+import FingerprintSDK
+
+
 var CheckLanguage = ""
 var ThemeSelection = ""
 var  dateString  : String?
@@ -317,8 +320,10 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     
     private func updateUI(){
         
-        if DataManager.instance.accountLevel == "LEVEL 1"
-        {
+        if DataManager.instance.accountLevel == "LEVEL 0" {
+//            DispatchQueue.main.async {
+//                self.fingerPrintVerification()
+//            }
             let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
             flagLevel0  = true
             flagLevel1  = false
@@ -330,23 +335,23 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                 vc.balanceLimit1 = Int(balnceLimit1)
                 print("balnceLimit",balnceLimit1)
             }
-            
+
             if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
                 vc.totalDailyLimitCr = Int(dailyTotalCr)
             }
             if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
                 vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
             }
-            
-            
+
+
             if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
                 vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
             }
             if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
                 vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
             }
-            
-            
+
+
             if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
                 vc.totalYearlyLimitCr = Int(yearlyTotalCr)
             }
@@ -704,8 +709,19 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         """
     }
 
-    
-   
+    func fingerPrintVerification() {
+        //#if targetEnvironment(simulator)
+        //        #else
+        let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
+                                                  hand: .BOTH_HANDS,
+                                                  fingers: .EIGHT_FINGERS,
+                                                  isPackPng: true)
+        let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
+        vc.fingerprintConfig = fingerprintConfig
+        vc.fingerprintResponseDelegate = self
+        self.present(vc, animated: true, completion: nil)
+        //        #endif
+    }
 }
 
 extension ToggleMenuVC : SideMenuCellDelegate{
@@ -732,14 +748,33 @@ extension ToggleMenuVC : SideMenuCellDelegate{
     }
 }
                 
-                
-                
-                
-                
-                
-                
-                
-        
+extension ToggleMenuVC: FingerprintResponseDelegate {
     
-
-
+    func onScanComplete(fingerprintResponse: FingerprintResponse) {
+        //Shakeel ! added
+        if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
+            let vc = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+            DispatchQueue.main.async {
+                self.present(vc, animated: true)
+            }
+//            self.fingerprintPngs = fingerprintResponse.pngList
+//            var fingerprintsList = [Fingerprints2]()
+//            if let fpPNGs = self.fingerprintPngs {
+//                for item in fpPNGs {
+//                    guard let imageString = item.binaryBase64ObjectPNG else { return }
+//                    guard let instance = Fingerprints2(index: "\(item.fingerPositionCode)", template: imageString) else { return }
+//                    fingerprintsList.append(instance)
+//                }
+//            }
+        }else {
+            self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
+                self.dismiss(animated: true)
+            }
+            
+        }
+    }
+    override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+        self.dismiss(animated: true)
+    }
+}
+  
