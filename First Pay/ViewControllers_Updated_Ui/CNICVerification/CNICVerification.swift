@@ -96,13 +96,20 @@ class CNICVerification: UIViewController {
         var x1 = a.substring(with: 5..<8)
         x1 = x1.replacingOccurrences(of: "\(x1)", with: "XXX")
         concate = "\(maskingCNic)\(x)\(d)\(x1)"
-        var x2 = a.substring(with: 8..<10)
+//        var x2 = a.substring(with: 8..<10)
+//        concate = "\(maskingCNic)\(x)\(d)\(x1)\(x2)"
+//        var x3 = a.substring(with: 10..<12)
+//        x3 = x3.replacingOccurrences(of: "\(x3)", with: "XX")
+//        concate = "\(maskingCNic)\(x)\(d)\(x1)\(x2)\(x3)"
+//        var x4 = a.substring(with: 12..<13)
+//        concate = "\(maskingCNic)\(x)\(d)\(x1)\(x2)\(x3)\(x4)"
+        var x2 = a.substring(with: 5..<7)
         concate = "\(maskingCNic)\(x)\(d)\(x1)\(x2)"
         var x3 = a.substring(with: 10..<12)
         x3 = x3.replacingOccurrences(of: "\(x3)", with: "XX")
         concate = "\(maskingCNic)\(x)\(d)\(x1)\(x2)\(x3)"
         var x4 = a.substring(with: 12..<13)
-        concate = "\(maskingCNic)\(x)\(d)\(x1)\(x2)\(x3)\(x4)"
+        concate = "\(maskingCNic)\(x)\(d)-\(x2)\(x1)\(x3)-\(x4)"
         print("concate",concate)
         maskingCNic = concate
     }

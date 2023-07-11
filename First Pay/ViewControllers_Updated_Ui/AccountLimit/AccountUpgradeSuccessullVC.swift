@@ -25,15 +25,14 @@ class AccountUpgradeSuccessullVC: UIViewController {
     
     @IBOutlet weak var buttonback: UIButton!
     @IBAction func buttonback(_ sender: UIButton) {
+        self.dismiss(animated: true)
     }
     
     
     @IBAction func buttonContinue(_ sender: UIButton) {
-        
-        
+        self.dismiss(animated: true)
     }
     @objc func moveTonext(tapGestureRecognizer: UITapGestureRecognizer) {
-       
-        
+        self.dismiss(animated: true)
     }
 }
