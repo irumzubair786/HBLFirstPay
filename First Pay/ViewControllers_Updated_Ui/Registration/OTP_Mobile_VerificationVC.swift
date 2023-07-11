@@ -31,7 +31,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         lbl_mobileno.text = DataManager.instance.mobNo
-       
+        
         labelMobileNo.text = DataManager.instance.mobNo
         TF_otp.delegate = self
         btnResendOtp.isUserInteractionEnabled = false
@@ -42,16 +42,16 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         //        var a = DataManager.instance.mobNo
         //        a = a.substring(from: 1)
         //        let x = "+92\(a)"
-       
+        
         //        getOneSignalUUIDD()
         getIMEI()
         getIPAddressmac()
         getWiFiAddress()
-//        btnResendotpCall.isUserInteractionEnabled = false
+        //        btnResendotpCall.isUserInteractionEnabled = false
         btn_next_arrow.isUserInteractionEnabled = false
         self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         self.labelMessage.isHidden = true
-//        self.mobileRegistration()
+        //        self.mobileRegistration()
         
     }
     @IBOutlet weak var popupView: UIView!
@@ -194,7 +194,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         } else {
             
             totalSecond -= 1
-
+            
             //            endTimer()
             
         }
@@ -278,7 +278,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             btn_next_arrow.setImage(image, for: .normal)
             btn_next_arrow.isUserInteractionEnabled = false
         }
-     
+        
     }
     
     
@@ -295,8 +295,8 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         }
     }
     func ResendOTP() {
-//        blurView.isHidden = false
-//        popupView.isHidden = false
+        //        blurView.isHidden = false
+        //        popupView.isHidden = false
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
@@ -315,16 +315,16 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
         //
-                print(parameters)
-                print(compelteUrl)
+        print(parameters)
+        print(compelteUrl)
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//            (response: DataResponse<GenericResponse>) in
-
+            //            (response: DataResponse<GenericResponse>) in
+            
             //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
             response in
             self.hideActivityIndicator()
@@ -333,18 +333,18 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
             
             
-//            self.genRespBaseObj = response.result.value
+            //            self.genRespBaseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
                     self.labelMessage.isHidden = false
                     self.labelMessage.text = "OTP will be Resend after 30 Seconds"
-//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                    //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
                         self.labelMessage.isHidden = true
-//                        self.blurView.isHidden = true
-//                        self.popupView.isHidden = true
+                        //                        self.blurView.isHidden = true
+                        //                        self.popupView.isHidden = true
                     }
-//
+                    //
                     
                 }
                 else {
@@ -364,8 +364,8 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         }
     }
     func ResendOTVCall() {
-//        blurView.isHidden = false
-//        popupView.isHidden = false
+        //        blurView.isHidden = false
+        //        popupView.isHidden = false
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
@@ -384,16 +384,16 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
         //
-                print(parameters)
-                print(compelteUrl)
+        print(parameters)
+        print(compelteUrl)
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//            (response: DataResponse<GenericResponse>) in
-
+            //            (response: DataResponse<GenericResponse>) in
+            
             //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
             response in
             self.hideActivityIndicator()
@@ -402,19 +402,19 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
             
             
-//            self.genRespBaseObj = response.result.value
+            //            self.genRespBaseObj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
                     
-//                    self.labelMessage.isHidden = false
-//                    self.labelMessage.text = "OTP Call  will be Resend after 30 Second"
-//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-//                        self.labelMessage.isHidden = true
-////                        self.blurView.isHidden = true
-////                        self.popupView.isHidden = true
-//                    }
-    
+                    //                    self.labelMessage.isHidden = false
+                    //                    self.labelMessage.text = "OTP Call  will be Resend after 30 Second"
+                    //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                    //                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                    //                        self.labelMessage.isHidden = true
+                    ////                        self.blurView.isHidden = true
+                    ////                        self.popupView.isHidden = true
+                    //                    }
+                    
                     
                 }
                 else {
@@ -460,20 +460,20 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
         print(params)
         print(compelteUrl)
         print("header ",DataManager.instance.AuthToken )
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers: header ).response { [self]
-//            (response: DataResponse<mobileVerificationModel>) in
+            //            (response: DataResponse<mobileVerificationModel>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             self.mobileVerificationObj = Mapper<mobileVerificationModel>().map(JSONObject: json)
             
-//            self.mobileVerificationObj = response.result.value
+            //            self.mobileVerificationObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.mobileVerificationObj?.responsecode == 2 || self.mobileVerificationObj?.responsecode == 1 {
@@ -511,7 +511,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
                     if let message = self.mobileVerificationObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
-                                         // Html Parse
+                    // Html Parse
                     
                     if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
                         if title.contains("Request Rejected") {
@@ -522,84 +522,88 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             }
         }
     }
-      func  mobileRegistration() {
-         
-            if !NetworkConnectivity.isConnectedToInternet(){
-                self.showToast(title: "No Internet Available")
-                return
-            }
-            showActivityIndicator()
+    func  mobileRegistration() {
+        
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/mobileRegistration"
+        let a = mobileNo!
+        var mobileNumber = a.replacingOccurrences(of: "-", with: "")
+        mobileNumber = mobileNumber.replacingOccurrences(of: "_", with: "")
+        DataManager.instance.mobNo = mobileNumber
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo":(DataManager.instance.mobNo),"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)"]
+        
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+        print(parameters)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+        print(params)
+        print(compelteUrl)
+        
+        FBEvents.logEvent(title: .Signup_login_attempt)
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+            //                (response: DataResponse<mobileRegistrationModel>) in
+            response in
+            self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            self.mobileRegistrationObj = Mapper<mobileRegistrationModel>().map(JSONObject: json)
             
-            let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/mobileRegistration"
-            let a = mobileNo!
-            var mobileNumber = a.replacingOccurrences(of: "-", with: "")
-            mobileNumber = mobileNumber.replacingOccurrences(of: "_", with: "")
-            DataManager.instance.mobNo = mobileNumber
-            let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo":(DataManager.instance.mobNo),"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)"]
-            
-            let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-            
-            print(parameters)
-            
-            let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-             let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
-            print(params)
-            print(compelteUrl)
-            
-            FBEvents.logEvent(title: .Signup_login_attempt)
-            NetworkManager.sharedInstance.enableCertificatePinning()
-            NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//                (response: DataResponse<mobileRegistrationModel>) in
-                response in
-                self.hideActivityIndicator()
-                guard let data = response.data else { return }
-                let json = try! JSONSerialization.jsonObject(with: data, options: [])
-                self.mobileRegistrationObj = Mapper<mobileRegistrationModel>().map(JSONObject: json)
+            //                self.mobileRegistrationObj = response.result.value
+            if response.response?.statusCode == 200 {
+                FBEvents.logEvent(title: .Signup_login_success)
+                FaceBookEvents.logEvent(title: .Signup_login_success)
                 
-//                self.mobileRegistrationObj = response.result.value
-                if response.response?.statusCode == 200 {
-                    FBEvents.logEvent(title: .Signup_login_success)
-                    FaceBookEvents.logEvent(title: .Signup_login_success)
-
-                    if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
-                        if let accessToken = self.mobileRegistrationObj?.data?.token{
-                            DataManager.instance.AuthToken = accessToken
-                        }
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-//                            self.blurView.isHidden = true
-//                            self.popupView.isHidden = true
-//                        }
-                        
+                if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
+                    if let accessToken = self.mobileRegistrationObj?.data?.token{
+                        DataManager.instance.AuthToken = accessToken
                     }
-                    else {
-                        if let message = self.mobileRegistrationObj?.messages{
-                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                        }
-                        
-                        // Html Parse
-                        
-                        if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                            if title.contains("Request Rejected") {
-                                self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
-                            }
-                        }
-                    }
+                    //                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    //                            self.blurView.isHidden = true
+                    //                            self.popupView.isHidden = true
+                    //                        }
+                    
                 }
                 else {
-                    if let message = self.mobileRegistrationObj?.messages {
-                        FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
-                        FBEvents.logEvent(title: .Signup_login_failure, failureReason: message)
+                    if let message = self.mobileRegistrationObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
-                    else {
-                        self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
+                    
+                    // Html Parse
+                    
+                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                        if title.contains("Request Rejected") {
+                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                        }
                     }
-                    //                print(response.result.value)
-                    //                print(response.response?.statusCode)
                 }
             }
+            else {
+                if let message = self.mobileRegistrationObj?.messages {
+                    FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
+                    FBEvents.logEvent(title: .Signup_login_failure, failureReason: message)
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                }
+                else {
+                    self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
+                }
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
+            }
         }
-        
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+}
 
 
