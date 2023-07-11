@@ -30,9 +30,16 @@ class AccountUpgradeSuccessullVC: UIViewController {
     
     
     @IBAction func buttonContinue(_ sender: UIButton) {
-        self.dismiss(animated: true)
+//        self.dismiss(animated: true)
+        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+        self.present(vc, animated: true)
     }
     @objc func moveTonext(tapGestureRecognizer: UITapGestureRecognizer) {
-        self.dismiss(animated: true)
+//        self.dismiss(animated: true)
+        
+        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+        self.present(vc, animated: true)
     }
 }
