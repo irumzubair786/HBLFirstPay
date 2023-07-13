@@ -16,10 +16,22 @@ let systemVersion = UIDevice.current.systemVersion
 let devicemodel = UIDevice.current.localizedModel
 class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     var mobileRegistrationObj : mobileRegistrationModel?
+    @IBOutlet weak var titleName: UILabel!
+    var isFromLoginScreen = false
+
     let encryptionkey = "65412399991212FF65412399991212FF65412399991212FF"
+    
     override func viewDidLoad(){
         FBEvents.logEvent(title: .Signup_login_landed)
         super.viewDidLoad()
+        if isFromLoginScreen {
+            titleName?.text = "Sign-in"
+            btn_Explore.isHidden = true
+        }
+        else {
+            titleName?.text = "Lets Get Started"
+            btn_Explore.isHidden = false
+        }
         getIMEI()
         getIPAddressmac()
         getWiFiAddress()

@@ -20,6 +20,7 @@ class FakeLoginVc: UIViewController {
     var timerChangeBannerImage = Timer()
     var banaryyString =  [String]()
     
+    @IBOutlet weak var viewGreen: UIView!
     override func viewDidAppear(_ animated: Bool) {
         changeImageTimerStart()
     }
@@ -28,6 +29,9 @@ class FakeLoginVc: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewGreen.layer.cornerRadius = 8
+        
         btnHome.setTitle("", for: .normal)
         btnmain.setTitle("", for: .normal)
         btnQuestion.setTitle("", for: .normal)
@@ -79,6 +83,7 @@ class FakeLoginVc: UIViewController {
     
     func moveToSignUp() {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Mobile_VerificationVC") as! Mobile_VerificationVC
+        vc.isFromLoginScreen = true
         self.navigationController?.pushViewController(vc, animated: false)
     }
     

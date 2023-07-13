@@ -31,7 +31,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var loginObj : login?
     var flag :Bool = false
     var moveToSignUp: (() -> ())!
-    
+    var isFromLoginScreen = true
+
 ////<<<<<<< HEAD
 ////
 ////=======
@@ -67,6 +68,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
 //<<<<<<< HEAD
 //
 //#if targetEnvironment(simulator)

@@ -91,7 +91,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             self.collectionView.reloadData()
         }
     }
-    var minValue = 1
+    var minValue = 100
     var maxValue = 1000
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var btnContinue: UIButton!
@@ -336,6 +336,7 @@ extension TransferAmountVc: UICollectionViewDelegate, UICollectionViewDataSource
         setColorTextField()
     }
     
+   
 }
 class amount
 {

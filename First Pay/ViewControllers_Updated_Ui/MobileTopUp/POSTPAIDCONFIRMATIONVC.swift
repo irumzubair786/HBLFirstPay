@@ -45,10 +45,15 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
 //
 //    }
     func textFieldDidBeginEditing(_ textField: UITextField) {
-           if let text = amounttextField.text, !text.isEmpty {
-               amounttextField.text = ""
-           }
-       }
+        if let text = amounttextField.text, !text.isEmpty {
+            amounttextField.text = ""
+            let image = UIImage(named:"grayArrow")
+            imageNext.image = image
+            imageNext.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+        }
+    }
+    
     @objc func changeTextInTextField() {
 //        amounttextField.text = ""
         AmountSepartor()
