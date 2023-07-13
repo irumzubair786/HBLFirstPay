@@ -70,7 +70,7 @@ class Billpayment_MainVC: BaseClassVC {
         
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getParentCompanies"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/getParentCompanies"
          let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
         
         print(header)

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TOr-vy-eng">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TOr-vy-eng">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,11 +26,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n23-7k-FHX">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="619"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mA-Un-nVA">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="70"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icons8-menu-96" translatesAutoresizingMaskIntoConstraints="NO" id="Ild-aF-psM">
                                         <rect key="frame" x="-14" y="16" width="43" height="29"/>
@@ -77,7 +77,7 @@
                                 <rect key="frame" x="0.0" y="557" width="375" height="110"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Rectangle 663" translatesAutoresizingMaskIntoConstraints="NO" id="J7K-ba-4kC">
-                                        <rect key="frame" x="0.0" y="52" width="375" height="58"/>
+                                        <rect key="frame" x="0.0" y="52" width="375" height="120.5"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SY2-BE-3xy">
                                         <rect key="frame" x="8" y="62" width="26" height="23"/>
@@ -247,7 +247,6 @@
                                     <constraint firstItem="pyM-rB-Vuc" firstAttribute="top" secondItem="f2t-Ll-vHM" secondAttribute="top" constant="15" id="XR8-62-fub"/>
                                     <constraint firstItem="Ol7-YJ-ss3" firstAttribute="top" secondItem="f2t-Ll-vHM" secondAttribute="top" constant="15" id="YS4-Od-eNv"/>
                                     <constraint firstItem="63s-kV-ypC" firstAttribute="centerY" secondItem="dSx-GD-dOf" secondAttribute="centerY" id="ZKr-wc-t9d"/>
-                                    <constraint firstAttribute="bottom" secondItem="J7K-ba-4kC" secondAttribute="bottom" id="aal-wx-gkK"/>
                                     <constraint firstAttribute="height" constant="110" id="ejS-kJ-6bv"/>
                                     <constraint firstAttribute="trailing" secondItem="Ol7-YJ-ss3" secondAttribute="trailing" constant="125" id="hGM-pn-uDT"/>
                                     <constraint firstAttribute="trailing" secondItem="J7K-ba-4kC" secondAttribute="trailing" id="j7S-Jb-dy9"/>
@@ -263,16 +262,16 @@
                         <viewLayoutGuide key="safeArea" id="Jrd-WV-1DK"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Jrd-WV-1DK" firstAttribute="bottom" secondItem="n23-7k-FHX" secondAttribute="bottom" constant="28" id="0V0-JX-KtY"/>
                             <constraint firstItem="1mA-Un-nVA" firstAttribute="top" secondItem="Jrd-WV-1DK" secondAttribute="top" id="DHg-B4-yCw"/>
                             <constraint firstItem="1mA-Un-nVA" firstAttribute="leading" secondItem="yjM-wc-Qd7" secondAttribute="leading" id="EGV-Jg-gBP"/>
                             <constraint firstAttribute="trailing" secondItem="1mA-Un-nVA" secondAttribute="trailing" id="EMi-Yc-KMm"/>
                             <constraint firstItem="f2t-Ll-vHM" firstAttribute="leading" secondItem="Jrd-WV-1DK" secondAttribute="leading" id="Hbx-gQ-XBZ"/>
-                            <constraint firstItem="Jrd-WV-1DK" firstAttribute="bottom" secondItem="n23-7k-FHX" secondAttribute="bottom" id="LmV-4M-tjh"/>
-                            <constraint firstAttribute="bottom" secondItem="f2t-Ll-vHM" secondAttribute="bottom" id="R3k-OZ-FCV"/>
                             <constraint firstItem="n23-7k-FHX" firstAttribute="trailing" secondItem="Jrd-WV-1DK" secondAttribute="trailing" id="U3B-C7-AF9"/>
                             <constraint firstItem="f2t-Ll-vHM" firstAttribute="trailing" secondItem="Jrd-WV-1DK" secondAttribute="trailing" id="Xlf-he-Skc"/>
                             <constraint firstItem="n23-7k-FHX" firstAttribute="leading" secondItem="Jrd-WV-1DK" secondAttribute="leading" id="fac-mD-M8g"/>
                             <constraint firstItem="n23-7k-FHX" firstAttribute="top" secondItem="Jrd-WV-1DK" secondAttribute="top" id="kWJ-hj-7FE"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="f2t-Ll-vHM" secondAttribute="bottom" id="qdX-ji-IAY"/>
                         </constraints>
                     </view>
                     <connections>
@@ -305,11 +304,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XAH-qA-nzb">
-                                <rect key="frame" x="0.0" y="89" width="375" height="578"/>
+                                <rect key="frame" x="0.0" y="109" width="375" height="558"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Kx-1x-WjY" userLabel="TopView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="102"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="102"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G7k-n0-xkw" userLabel="ProfileView">
                                         <rect key="frame" x="23" y="20" width="80" height="80"/>
@@ -375,7 +374,7 @@
                                 </constraints>
                             </view>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgM-3w-YqV">
-                                <rect key="frame" x="340" y="63" width="25" height="25"/>
+                                <rect key="frame" x="340" y="83" width="25" height="25"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="2Hf-VD-xQs"/>
@@ -385,7 +384,7 @@
                                 <state key="normal" backgroundImage="editBtn"/>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="2sN-YR-4Is">
-                                <rect key="frame" x="0.0" y="104" width="375" height="469"/>
+                                <rect key="frame" x="0.0" y="124" width="375" height="449"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SideBarCell" rowHeight="174" id="3IG-64-ZXJ" customClass="SideBarCell" customModule="FirstPay" customModuleProvider="target">

@@ -265,17 +265,17 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         
     }
     var comabalanceLimit : String?
-    func  AmountSepartor()
-    {
-        
-        var number = Double(self.amounttextField.text!)
-        var formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-//        formatter.maximumFractionDigits = 2
-        formatter.locale = Locale(identifier: "en_US")
-        comabalanceLimit = (formatter.string(from: NSNumber(value: number!)))
-        
-        
+    func  AmountSepartor() {
+        if var number = Double(self.amounttextField.text!) {
+            var formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+    //        formatter.maximumFractionDigits = 2
+            formatter.locale = Locale(identifier: "en_US")
+            comabalanceLimit = (formatter.string(from: NSNumber(value: number)))
+        }
+        else {
+            comabalanceLimit = "0"
+        }
 //        var text = amounttextField.text?.getIntegerValue()
 //        if text == "" {
 //            return
@@ -322,7 +322,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
             userCnic = ""
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/topUp"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/topUp"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany": GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":labelAmount.text!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otptextField.text!,"addBeneficiary":"","utilityBillCompanyId": GlobalData.Select_operator_id!] as [String : Any]
         

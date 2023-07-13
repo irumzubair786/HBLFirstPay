@@ -71,7 +71,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
        
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/getCompaniesById/\(self.parentCompanyID ?? 0)"
        
          let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
@@ -135,7 +135,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
        
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/getCompaniesById/\(self.parentCompanyID ?? 0)"
        
          let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         

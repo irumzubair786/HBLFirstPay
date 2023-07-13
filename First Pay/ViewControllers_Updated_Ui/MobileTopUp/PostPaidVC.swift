@@ -252,7 +252,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
 //        showActivityIndicator()
         self.showActivityIndicator2()
 
-        let compelteUrl = GlobalConstants.BASE_URL +          "Transactions/v1/getParentTopUpCompanies"
+        let compelteUrl = GlobalConstants.BASE_URL +          "Transactions/v2/getParentTopUpCompanies"
         //getcompanyfromparentid
         //biillinquiry
          let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
@@ -318,7 +318,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
         showActivityIndicator()
 //        v2
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billInquiry"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billInquiry"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany": GlobalData.Select_operator_code,"utilityConsumerNo":self.tfMobileNo.text!,"accountType": DataManager.instance.accountType!]
         

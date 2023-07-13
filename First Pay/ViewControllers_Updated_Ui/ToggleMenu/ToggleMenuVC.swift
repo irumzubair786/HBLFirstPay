@@ -378,8 +378,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
             }
             self.present(vc, animated: true)
         }
-            else if DataManager.instance.accountLevel == "LEVEL 1"
-            {
+        else if DataManager.instance.accountLevel == "LEVEL 1" {
                 let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
                 flagLevel1  = true
                 flagLevel0  = false
