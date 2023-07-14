@@ -8,6 +8,7 @@
 
 import UIKit
 import FingerprintSDK
+import Alamofire
 
 class UnVerifiedAccountVC: UIViewController {
     
@@ -261,13 +262,39 @@ class UnVerifiedAccountVC: UIViewController {
         //        #endif
     }
     
+    func acccountLevelUpgrade() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+            "fingerindex" : [1,2,3,4,5,6,7,8]
+        ]
+        
+        let apiAttribute3 = [
+            "apiAttribute3" : ["1asdfasdf", "2asdfasdfasf", "3asdfasdfasf"]
+        ]
+        
+        APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: apiAttribute3.toBase64(), viewController: self) { responseData, success, errorMsg in
+            
+//            let model: ModelApplyLoan? = APIs.decodeDataToObject(data: responseData)
+//            self.modelApplyLoan = model
+        }
+    }
+    
 }
 extension UnVerifiedAccountVC: FingerprintResponseDelegate {
     
     func onScanComplete(fingerprintResponse: FingerprintResponse) {
         //Shakeel ! added
         if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
+            
+            
+            acccountLevelUpgrade()
+            
+            return()
             let vc = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+            
             DispatchQueue.main.async {
                 self.present(vc, animated: true)
             }
