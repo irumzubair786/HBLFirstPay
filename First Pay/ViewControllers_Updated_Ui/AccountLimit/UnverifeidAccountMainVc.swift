@@ -10,7 +10,6 @@ import UIKit
 import SwiftKeychainWrapper
 import Alamofire
 import ObjectMapper
-import FingerprintSDK
 
 class UnverifeidAccountMainVc: BaseClassVC {
     var levelCode :String?
@@ -28,6 +27,8 @@ class UnverifeidAccountMainVc: BaseClassVC {
     var totalMonthlyLimitCr1 : Int?
     var totalYearlyLimitCr1 : Int?
     var balanceLimit1 : Int?
+    var fingerPrintVerification: FingerPrintVerification!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,9 +62,10 @@ class UnverifeidAccountMainVc: BaseClassVC {
     }
     
     @IBAction func buttonUpgrade(_ sender: UIButton) {
-//        call sdk
+        // call sdk fingerPrint
+        fingerPrintVerification = FingerPrintVerification()
         DispatchQueue.main.async {
-            self.fingerPrintVerification()
+            self.fingerPrintVerification.fingerPrintVerification(viewController: self)
         }
         
 //        self.showAlertCustomPopup(title: "", message: "Please visit your nearest HBLMfB branch", iconName: .iconSucess, buttonNames: [
@@ -73,50 +75,20 @@ class UnverifeidAccountMainVc: BaseClassVC {
 //            "buttonTextColor": UIColor.white]
 //        ] as? [[String: AnyObject]])
     }
-    
-    func fingerPrintVerification() {
-        //#if targetEnvironment(simulator)
-        //        #else
-        let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
-                                                  hand: .BOTH_HANDS,
-                                                  fingers: .EIGHT_FINGERS,
-                                                  isPackPng: true)
-        let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
-        vc.fingerprintConfig = fingerprintConfig
-        vc.fingerprintResponseDelegate = self
-        self.present(vc, animated: true, completion: nil)
-        //        #endif
-    }
-    
 }
 
-extension UnverifeidAccountMainVc: FingerprintResponseDelegate {
-    
-    func onScanComplete(fingerprintResponse: FingerprintResponse) {
-        //Shakeel ! added
-        if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
-            let vc = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
-            DispatchQueue.main.async {
-                self.present(vc, animated: true)
-            }
-            
-//            self.fingerprintPngs = fingerprintResponse.pngList
-//            var fingerprintsList = [Fingerprints2]()
-//            if let fpPNGs = self.fingerprintPngs {
-//                for item in fpPNGs {
-//                    guard let imageString = item.binaryBase64ObjectPNG else { return }
-//                    guard let instance = Fingerprints2(index: "\(item.fingerPositionCode)", template: imageString) else { return }
-//                    fingerprintsList.append(instance)
-//                }
-//            }
-        }else {
-            self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
-                self.dismiss(animated: true)
-            }
-            
+extension UnverifeidAccountMainVc: FingerPrintVerificationDelegate {
+    func onEightFingerComplition(success: Bool, fingerPrintApiHitCount: Int, apiResponseMessage: String) {
+        if fingerPrintApiHitCount == 8 {
+            self.showAlertCustomPopup(title: "Success", message: apiResponseMessage)
         }
     }
-    override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
-        self.dismiss(animated: true)
+    
+    func onScanComplete(fingerprintsList: [FingerPrintVerification.Fingerprints]?) {
+        if fingerprintsList?.count ?? 0 > 0 {
+            for fingerprint in fingerprintsList! {
+                fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprint)
+            }
+        }
     }
 }

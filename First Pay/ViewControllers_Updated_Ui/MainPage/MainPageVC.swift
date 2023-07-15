@@ -10,6 +10,8 @@ import UIKit
 import Foundation
 import KYDrawerController
 import SideMenu
+import Alamofire
+
 class MainPageVC: BaseClassVC {
     var sideMenu:  UISideMenuNavigationController!
     var selectedTabIndex  = 0
@@ -50,11 +52,11 @@ class MainPageVC: BaseClassVC {
             // yourViewController is not presenting a view controller modally
             present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
         }
-       
-        
-        
-        
-        
+    }
+    var modelExpiredCnicVerification: ModelExpiredCnicVerification? {
+        didSet {
+            
+        }
     }
     
     
@@ -280,8 +282,7 @@ class MainPageVC: BaseClassVC {
     
     
     
-    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
           sideMenuSetup()
 //        if let drawerController = self.parent?.parent as? KYDrawerController {
 //            drawerController.setDrawerState(.opened, animated: true)
@@ -301,6 +302,8 @@ class MainPageVC: BaseClassVC {
         SideMenuManager.default.menuShadowOpacity = 1
         SideMenuManager.default.menuFadeStatusBar = false
     }
+    
+    
 }
  
 extension MainPageVC {
@@ -318,4 +321,47 @@ extension MainPageVC {
         VC.removeFromParentViewController()
     }
     
+}
+extension MainPageVC {
+    // This file was generated from JSON Schema using quicktype, do not modify it directly.
+    // To parse the JSON, add this file to your project and do:
+    
+    // MARK: - ModelGetActiveLoan
+    struct ModelExpiredCnicVerification: Codable {
+        let messages: String
+        let responseblock: Responseblock?
+        let responsecode: Int
+        let data: JSONNull?
+    }
+    
+    // MARK: - Responseblock
+    struct Responseblock: Codable {
+        let responseDescr, heading, responseType, responseCode: String
+        let field: String
+    }
+    // MARK: - Encode/decode helpers
+    class JSONNull: Codable, Hashable {
+        
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+        
+        public var hashValue: Int {
+            return 0
+        }
+        
+        public init() {}
+        
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
+    }
 }

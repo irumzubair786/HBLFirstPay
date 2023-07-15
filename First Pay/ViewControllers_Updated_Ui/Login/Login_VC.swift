@@ -32,22 +32,22 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var flag :Bool = false
     var moveToSignUp: (() -> ())!
     var isFromLoginScreen = true
-
-////<<<<<<< HEAD
-////
-////=======
-////<<<<<<< HEAD
-////
-////=======
-////>>>>>>> a408e5e (pod update)
-//>>>>>>> 9c3ef07 (add cash ui fix)
+    
+    ////<<<<<<< HEAD
+    ////
+    ////=======
+    ////<<<<<<< HEAD
+    ////
+    ////=======
+    ////>>>>>>> a408e5e (pod update)
+    //>>>>>>> 9c3ef07 (add cash ui fix)
     @IBOutlet weak var labelOne: UILabel!
     @IBOutlet weak var labelTwo: UILabel!
     @IBOutlet weak var labelThree: UILabel!
     @IBOutlet weak var labelFour: UILabel!
     @IBOutlet weak var labelFive: UILabel!
     @IBOutlet weak var labelSix: UILabel!
-
+    
     @IBOutlet weak var viewCircleOne: UIView!
     @IBOutlet weak var viewCircleTwo: UIView!
     @IBOutlet weak var viewCircleThree: UIView!
@@ -61,7 +61,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     @IBOutlet weak var viewLineFour: UIView!
     @IBOutlet weak var viewLineFive: UIView!
     @IBOutlet weak var viewLineSix: UIView!
-
+    
     
     override func viewDidDisappear(_ animated: Bool) {
         UITextField.appearance().tintColor = .systemBlue
@@ -70,23 +70,23 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         super.viewDidLoad()
         
         
-//<<<<<<< HEAD
-//
-//#if targetEnvironment(simulator)
-//#else
-//#endif
-//
-//=======
-//<<<<<<< HEAD
-//=======
-//
-//#if targetEnvironment(simulator)
-//#else
-//#endif
-//
-//>>>>>>> a408e5e (pod update)
-//>>>>>>> 9c3ef07 (add cash ui fix)
-
+        //<<<<<<< HEAD
+        //
+        //#if targetEnvironment(simulator)
+        //#else
+        //#endif
+        //
+        //=======
+        //<<<<<<< HEAD
+        //=======
+        //
+        //#if targetEnvironment(simulator)
+        //#else
+        //#endif
+        //
+        //>>>>>>> a408e5e (pod update)
+        //>>>>>>> 9c3ef07 (add cash ui fix)
+        
         labelOne.text = ""
         labelTwo.text = ""
         labelThree.text = ""
@@ -97,7 +97,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         passwordShow(isShow: false)
         UITextField.appearance().tintColor = .clear
         textFieldSetting()
-//        self.showAlertCustomPopup(title: "", message: "",buttonName: ["OK","CANCEL"],viewController: self)
+        //        self.showAlertCustomPopup(title: "", message: "",buttonName: ["OK","CANCEL"],viewController: self)
         lbl_InvalidPassword.isHidden = true
         pinTextField.delegate = self
         show_text.setTitle("", for: .normal)
@@ -112,14 +112,14 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.pinTextField.resignFirstResponder()
             
             if self.pinTextField.text?.count == 6 {
-            UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
-           
+                UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
+                
                 self.pinTextField.resignFirstResponder()
                 self.loginAction()
             }
         }
         self.pinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-      
+        
         
         // Do any additional setup after loading the view.
         
@@ -127,12 +127,12 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     }
     
     func fingerPrintConfigurationSetup() {
-//        let fingerprintConfig = FingerprintConfig(
-//                                mode: .EXPORT_WSQ,
-//                                hand: .BOTH_HANDS,
-//                                fingers: .EIGHT_FINGERS,
-//                                liveness: true,
-//                                isPackPng: false)
+        //        let fingerprintConfig = FingerprintConfig(
+        //                                mode: .EXPORT_WSQ,
+        //                                hand: .BOTH_HANDS,
+        //                                fingers: .EIGHT_FINGERS,
+        //                                liveness: true,
+        //                                isPackPng: false)
     }
     
     @objc func changeTextInTextField() {
@@ -140,8 +140,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         
         if self.pinTextField.text?.count == 6 {
             UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
-//             let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
-//             print("Remover \(removePessi)")
+            //             let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
+            //             print("Remover \(removePessi)")
             
             self.pinTextField.resignFirstResponder()
             self.loginAction()
@@ -209,11 +209,11 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             result.append(letter)
         }
         print(array[0] )
-
-//        labelThree.text = array[0]
-//        labelFour.text = array[0]
-//        labelFive.text = array[0]
-//        labelSix.text = array[0]
+        
+        //        labelThree.text = array[0]
+        //        labelFour.text = array[0]
+        //        labelFive.text = array[0]
+        //        labelSix.text = array[0]
         
         for i in 1...filedNo {
             print(i)
@@ -293,15 +293,15 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     @IBOutlet weak var show_text: UIButton!
     
     @IBAction func Show_Passowrd(_ sender: UIButton) {
-//        flag = true
-//        if flag == false
-//        {
-//            pinTextField.isSecureTextEntry  = true
-//        }
-//        else
-//        {
-//            pinTextField.isSecureTextEntry  = false
-//        }
+        //        flag = true
+        //        if flag == false
+        //        {
+        //            pinTextField.isSecureTextEntry  = true
+        //        }
+        //        else
+        //        {
+        //            pinTextField.isSecureTextEntry  = false
+        //        }
         if show_text.tag == 0 {
             passwordShow(isShow: true)
         }
@@ -406,8 +406,10 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             }
             task.resume()
         }
-        //shakeel
-        //        self.navigateToHome()
+        //shakeel test code
+        self.navigateToHome()
+        return()
+        
         if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "Y" {
             
             let storyboard = UIStoryboard(name: "CNICVerification", bundle: nil)
@@ -561,7 +563,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             self.showToast(title: "No Internet Available")
             return
         }
-       
+        
         
         showActivityIndicator()
         var pessi : String?
@@ -571,7 +573,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/login"
         
         if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
-//            pessi = KeychainWrapper.standard.string(forKey: "userKey")
+            //            pessi = KeychainWrapper.standard.string(forKey: "userKey")
             pessi = UserDefaults.standard.string(forKey: "userKey")
         }
         
@@ -591,7 +593,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         else{
             userCnic = ""
         }
-      
+        
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         //userCnic!
         //    "\(DataManager.instance.userCnic!)
@@ -619,22 +621,22 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         
         // longitude and latitude round off to 4 digits
         
-         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecret]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecret]
         
         
         print(params)
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
-//            (response: DataResponse<login>) in
+            //            (response: DataResponse<login>) in
             //            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<LoginActionModel>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
-//            self.loginObj = Mapper<login>().map(JSONObject: json)
+            //            self.loginObj = Mapper<login>().map(JSONObject: json)
             
-//            self.loginObj = response.result.value
+            //            self.loginObj = response.result.value
             if response.response?.statusCode == 200 {
                 FBEvents.logEvent(title: .Login_success)
                 FaceBookEvents.logEvent(title: .Login_success)
@@ -643,8 +645,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                     UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
                 }
                 self.loginObj = Mapper<login>().map(JSONObject: json)
-
-//                self.loginObj = response.result.value
+                
+                //                self.loginObj = response.result.value
                 if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                     if self.loginObj?.data != nil{
                         
@@ -676,8 +678,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                 }
                 else{
                     let message = self.loginObj?.messages ?? ""
-//                    if self.loginObj?.responseblock == nil {
-
+                    //                    if self.loginObj?.responseblock == nil {
+                    
                     if self.loginObj?.responseblock?.responseType?.lowercased() == "L".lowercased() {
                         lbl_InvalidPassword.isHidden = false
                         lbl_InvalidPassword.text = message
@@ -687,13 +689,13 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                         lbl_InvalidPassword.isHidden = true
                         self.showAlertCustomPopup(title: "Device Authentication", message: message,iconName: .iconError, buttonNames: [
                             [
-                            "buttonName": "SIGN-IN",
-                            "buttonBackGroundColor": UIColor.clrOrange,
-                            "buttonTextColor": UIColor.white] as [String : Any],
+                                "buttonName": "SIGN-IN",
+                                "buttonBackGroundColor": UIColor.clrOrange,
+                                "buttonTextColor": UIColor.white] as [String : Any],
                             [
-                            "buttonName": "CANCEL",
-                            "buttonBackGroundColor": UIColor.white,
-                            "buttonTextColor": UIColor.clrOrange]
+                                "buttonName": "CANCEL",
+                                "buttonBackGroundColor": UIColor.white,
+                                "buttonTextColor": UIColor.clrOrange]
                         ] as? [[String: AnyObject]]) {buttonName in
                             self.navigationController?.popViewController(animated: false)
                             if buttonName == "SIGN-IN" {
