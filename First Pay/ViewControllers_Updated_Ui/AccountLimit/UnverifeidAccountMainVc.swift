@@ -130,15 +130,14 @@ extension  UnverifeidAccountMainVc: FingerprintResponseDelegate {
     func onScanComplete(fingerprintResponse: FingerprintResponse) {
         //Shakeel ! added
         if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
-            
 //            print(fingerprintResponse.response)
 //            print(fingerprintResponse.response)
-            
             fingerprintPngs = fingerprintResponse.pngList
             var fingerprintsList = [FingerPrintVerification.Fingerprints]()
             
             var tempFingerPrintDictionary = [[String:Any]]()
-            var tempFingerPrintDictionary2 = [[String:Any]]()
+            //for testing
+//            var tempFingerPrintDictionary2 = [[String:Any]]()
 
             if let fpPNGs = fingerprintPngs {
                 for item in fpPNGs {
@@ -150,30 +149,31 @@ extension  UnverifeidAccountMainVc: FingerprintResponseDelegate {
                          "fingerTemplate":imageString,
                          "templateType":"WSQ"]
                     )
-                    tempFingerPrintDictionary2.append(
-                        ["fingerIndex":item.fingerPositionCode,
-                         "fingerTemplate":item.fingerPositionCode,
-                         "templateType":"WSQ"]
-                    )
+                    //for testing
+//                    tempFingerPrintDictionary2.append(
+//                        ["fingerIndex":item.fingerPositionCode,
+//                         "fingerTemplate":item.fingerPositionCode,
+//                         "templateType":"WSQ"]
+//                    )
 //                    fingerprintsList.append(instance)
                 }
             }
 //            print(fingerprintsList)
 //            print(fingerprintsList)
 //            print(fingerprintsList)
-            
-            let jsonDataaa = try! JSONSerialization.data(withJSONObject: tempFingerPrintDictionary2 as Any, options: .prettyPrinted)
-            let decoded = try! JSONSerialization.jsonObject(with: jsonDataaa, options: [])
-
-            print(decoded)
-            print(decoded)
-           let params = [
-                "apiAttribute1":"result.apiAttribute1",
-                "apiAttribute2":"result.apiAttribute2",
-                "channelId":"\(DataManager.instance.channelID)",
-                "apiAttribute3":decoded
-            ]
-            print(params)
+            //for testing
+//            let jsonDataaa = try! JSONSerialization.data(withJSONObject: tempFingerPrintDictionary2 as Any, options: .prettyPrinted)
+//            let decoded = try! JSONSerialization.jsonObject(with: jsonDataaa, options: [])
+//
+//            print(decoded)
+//            print(decoded)
+//           let params = [
+//                "apiAttribute1":"result.apiAttribute1",
+//                "apiAttribute2":"result.apiAttribute2",
+//                "channelId":"\(DataManager.instance.channelID)",
+//                "apiAttribute3":decoded
+//            ]
+//            print(params)
 
             self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
            // self.delegate.onScanComplete(fingerprintsList: fingerprintsList)
@@ -199,7 +199,6 @@ extension  UnverifeidAccountMainVc: FingerprintResponseDelegate {
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            //"fingerindex" : fingerprints.index
         ]
 
     //    let apiAttribute3 = [

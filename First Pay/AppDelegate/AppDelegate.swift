@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         IQKeyboardManager.shared().isEnabled = true
         
-        UserDefaults.standard.setValue("1430150995593", forKey: "userCnic")
+//        UserDefaults.standard.setValue("1430150995593", forKey: "userCnic")
         if !UserDefaults.standard.bool(forKey: "firstTimeLaunchOccurred"){
             KeychainWrapper.standard.removeAllKeys()
 //            print("\(KeychainWrapper.standard.removeAllKeys())")

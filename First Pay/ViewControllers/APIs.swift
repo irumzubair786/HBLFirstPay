@@ -225,11 +225,8 @@ struct APIs {
         catch let error {
             print(error)
         }
-        
-        
         let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
-
         let completeUrl = APIPath.baseUrl + apiName.rawValue
         
         let url = URL(string: completeUrl)!
@@ -240,10 +237,9 @@ struct APIs {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        var tempHeader = ""
         var token  = ""
         if apiName == .updateAccountStatus {
-            //                    token = DataManager.instance.loginResponseToken ?? ""
+//            token = DataManager.instance.loginResponseToken ?? ""
             token = DataManager.instance.accessToken ?? ""
         }
         else if headerWithToken != nil {
