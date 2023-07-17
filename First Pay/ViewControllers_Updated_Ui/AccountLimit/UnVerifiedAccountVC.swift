@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import FingerprintSDK
 
 class UnVerifiedAccountVC: UIViewController {
     
@@ -256,9 +257,10 @@ extension UnVerifiedAccountVC: FingerPrintVerificationDelegate {
     
     func onScanComplete(fingerprintsList: [FingerPrintVerification.Fingerprints]?) {
         if fingerprintsList?.count ?? 0 > 0 {
-            for fingerprint in fingerprintsList! {
-                fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprint)
-            }
+//            for fingerprint in fingerprintsList! {
+//                fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprint)
+//            }
+            fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprintsList!)
         }
     }
 }

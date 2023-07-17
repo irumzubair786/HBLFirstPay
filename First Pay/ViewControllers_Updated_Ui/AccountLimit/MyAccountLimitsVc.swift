@@ -310,7 +310,6 @@ class MyAccountLimitsVc: BaseClassVC {
             print("response",model)
             self.modelGetAccount = model
         }
-        
     }
 }
 

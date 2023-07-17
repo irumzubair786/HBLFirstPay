@@ -27,7 +27,7 @@ var isfromPOSOFF: Bool?
 var isfromDisableService : Bool?
 var isfromServiceOTpVerification : Bool?
 var isfromOTPHblmfb : Bool?
-class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataSource{
+class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var homeObj : HomeModel?
     var banObj : GenericResponse?
     var getDebitDetailsObj : GetDebitCardModel?
@@ -113,6 +113,14 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         self.present(vc, animated: true)
     }
     
+ 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let itemsInRow = 4
+        let width = collectionView.bounds.width - 10
+        let cellWidth = width / CGFloat(itemsInRow)
+        return CGSize(width: cellWidth, height: 130)
+    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return topBtnarr.count
     }

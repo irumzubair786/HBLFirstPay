@@ -202,16 +202,30 @@ struct APIs {
         }
     }
     
-    static func postAPIForFingerPrint(apiName: APIs.name, parameters: [String: Any], apiAttribute3: String?, headerWithToken: String? = nil , headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    static func postAPIForFingerPrint(apiName: APIs.name, parameters: [String: Any], apiAttribute3: [[String:Any]]?, headerWithToken: String? = nil , headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         
         let baseClass = BaseClassVC()
+        
         let result = (baseClass.splitString(stringToSplit: baseClass.base64EncodedString(params: parameters)))
-        var params = [
-            "apiAttribute1":result.apiAttribute1,
-            "apiAttribute2":result.apiAttribute2,
-            "channelId":"\(DataManager.instance.channelID)",
-            "apiAttribute3":apiAttribute3
-        ]
+//        var tempJson = [String:AnyObject]()
+        var params = [String : Any]()
+        do {
+            let jsonDataaa = try! JSONSerialization.data(withJSONObject: apiAttribute3 as Any, options: .prettyPrinted)
+//            tempJson = try! JSONSerialization.jsonObject(with: jsonDataaa, options: []) as? [String:AnyObject] ?? [:]
+            let decoded = try! JSONSerialization.jsonObject(with: jsonDataaa, options: [])
+//            print(decoded)
+//            print(tempJson)
+            params = [
+                "apiAttribute1":result.apiAttribute1,
+                "apiAttribute2":result.apiAttribute2,
+                "channelId":"\(DataManager.instance.channelID)",
+                "apiAttribute3":decoded
+            ]
+        }
+        catch let error {
+            print(error)
+        }
+        
         
         let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
@@ -228,17 +242,17 @@ struct APIs {
         
         var tempHeader = ""
         var token  = ""
-                if apiName == .updateAccountStatus {
-//                    token = DataManager.instance.loginResponseToken ?? ""
-                    token = DataManager.instance.accessToken ?? ""
-                }
-                else if headerWithToken != nil {
-                    token = headerWithToken!
-                }
-                else {
-                    token = "\(DataManager.instance.accessToken ?? "")"
-                }
-                request.addValue(token, forHTTPHeaderField: "Authorization")
+        if apiName == .updateAccountStatus {
+            //                    token = DataManager.instance.loginResponseToken ?? ""
+            token = DataManager.instance.accessToken ?? ""
+        }
+        else if headerWithToken != nil {
+            token = headerWithToken!
+        }
+        else {
+            token = "\(DataManager.instance.accessToken ?? "")"
+        }
+        request.addValue(token, forHTTPHeaderField: "Authorization")
 //
         
         print("Url: \(completeUrl)")

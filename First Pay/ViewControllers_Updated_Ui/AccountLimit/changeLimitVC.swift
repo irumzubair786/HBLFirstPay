@@ -23,16 +23,23 @@ class changeLimitVC: BaseClassVC {
     var AmounttType: String?
     
     
+    @IBOutlet weak var viewBackground: UIView!
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.view.drawBackgroundBlur(withTag: 999)
+        self.viewBackground.roundCorners(corners: [.topLeft, .topRight], radius: 30)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        blurView.alpha = 0.7
+
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        blurView.isUserInteractionEnabled = true
-        blurView.addGestureRecognizer(tapGestureRecognizer)
+        self.view.addGestureRecognizer(tapGestureRecognizer)
         print("limit Type",LimitType)
         print("AmountType",AmounttType)
-       labelminamount.text
 //        print("ReceivinglimitType",ReceivingLimitType)
 //        Slider()
         // Do any additional setup after loading the view.
@@ -43,15 +50,18 @@ class changeLimitVC: BaseClassVC {
     @IBOutlet weak var labelminamount: UILabel!
     @IBOutlet weak var labelAmount: UILabel!
     @IBOutlet weak var labelname: UILabel!
-    @IBOutlet weak var blurView: UIVisualEffectView!
+//    @IBOutlet weak var blurView: UIVisualEffectView!
    
-    func updateUI()
-    {
+    func updateUI() {
         labelname.text  = "Change \(daily!) Limit"
-        labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "") ?? "")"
+        labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "Rs.") ?? "")"
         
-        labelminamount.text = "\(dailyminValue?.replacingOccurrences(of: "Consumed Rs.", with: "") ?? "")"
-        labelMaxamount.text = "\(dailymaxValue?.replacingOccurrences(of: "Total Rs.", with: "") ?? "")"
+        let minimumAmount = (Double("\(dailyminValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
+        let maximumAmount = (Double("\(dailymaxValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
+
+        labelminamount.text = "Rs. \(minimumAmount)"
+        labelMaxamount.text = "Rs. \(maximumAmount)"
+        
         convertdailyminValue = Int(labelminamount.text!)
         convertdailymaxValue = Int(labelMaxamount.text!)
         print("convertdailyminValue",convertdailyminValue as Any)
@@ -68,20 +78,18 @@ class changeLimitVC: BaseClassVC {
     }
 
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
-
-        self.dismiss(animated: true)
+        self.view.backgroundColor = .clear
+        self.view.viewWithTag(999)?.removeFromSuperview()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.dismiss(animated: true)
+        }
     }
     @IBAction func Action_Slider(_ sender: UISlider) {
         let value = sender.value
         let val = Int(value)
         
         labelAmount.text = "\(value)"
-        
-        
-        
-        
     }
-    
     
     @IBAction func buttonContinue(_ sender: UIButton) {
        
@@ -95,26 +103,21 @@ class changeLimitVC: BaseClassVC {
         let parameters: Parameters = [
             "channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"imei":DataManager.instance.imei!,"amountType": AmounttType ?? "", "amount": labelAmount.text!, "limitType": LimitType ?? ""]
         print("parametres",Parameters.self)
-            
-            
+        
+        
         
         APIs.postAPI(apiName: .changeAcctLimits, parameters: parameters, viewController: self) {
             responseData, success, errorMsg in
-    
             
-                let model : ChangeLimitModel? = APIs.decodeDataToObject(data: responseData)
-                print("response",model)
-                self.modelGetAccount = model
-            }
-        
-        
-        
-        
+            
+            let model : ChangeLimitModel? = APIs.decodeDataToObject(data: responseData)
+            //                print("response",model)
+            self.modelGetAccount = model
+        }
     }
-    var modelGetAccount : ChangeLimitModel?
-    {
+    
+    var modelGetAccount : ChangeLimitModel? {
         didSet{
-            
             if self.modelGetAccount?.responsecode == 1  {
                 self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSucess)
             }
@@ -122,9 +125,7 @@ class changeLimitVC: BaseClassVC {
                 //MARK: - Loan Failed Successfully
                 self.showAlertCustomPopup(title: "Error!", message: modelGetAccount?.messages ?? "", iconName: .iconError) 
             }
-            
         }
-        
     }
 //    private func changeAcctLimits() {
 //        

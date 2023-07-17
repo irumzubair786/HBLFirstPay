@@ -335,7 +335,7 @@ class BaseClassVC: UIViewController {
     
     public  func  popUpLogout(){
    
-        let consentAlert = UIAlertController(title: "Alert", message: "Do you want to Logout?", preferredStyle: UIAlertControllerStyle.alert)
+        let consentAlert = UIAlertController(title: "", message: "Do you want to sign out from FirstPay Application?", preferredStyle: UIAlertControllerStyle.alert)
         
         consentAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
 //            firsttimenanoloan = "false"
@@ -348,7 +348,7 @@ class BaseClassVC: UIViewController {
 //            print("Handle Ok logic here")
         }))
             
-        consentAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+        consentAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
 //            print("Handle Cancel Logic here")
             self.dismiss(animated: true, completion:nil)
         }))

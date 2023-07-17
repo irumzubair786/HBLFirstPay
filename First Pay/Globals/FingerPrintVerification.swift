@@ -48,14 +48,14 @@ class FingerPrintVerification {
         viewController.present(vc, animated: true, completion: nil)
         //        #endif
     }
-
-    func acccountLevelUpgrade(fingerprints: Fingerprints) {
+//    FingerPrintVerification.Fingerprints
+    func acccountLevelUpgrade(fingerprints: [Fingerprints]) {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            "fingerindex" : fingerprints.index
+            //"fingerindex" : fingerprints.index
         ]
 
     //    let apiAttribute3 = [
@@ -63,23 +63,23 @@ class FingerPrintVerification {
     //    ]
     //    print(parameters)
         
-        APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints.template, viewController: viewController) {
-            responseData, success, errorMsg in
-            
-            print(responseData)
-            print(success)
-            print(errorMsg)
-            do {
-                let json: Any? = try JSONSerialization.jsonObject(with: (responseData ?? Data()), options: [.fragmentsAllowed])
-                print(json)
-            }
-            catch let error {
-                print(error)
-            }
-
-            let model: ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelFingerPrintResponse = model
-        }
+//        APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: viewController) {
+//            responseData, success, errorMsg in
+//            
+//            print(responseData)
+//            print(success)
+//            print(errorMsg)
+//            do {
+//                let json: Any? = try JSONSerialization.jsonObject(with: (responseData ?? Data()), options: [.fragmentsAllowed])
+//                print(json)
+//            }
+//            catch let error {
+//                print(error)
+//            }
+//
+//            let model: ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
+//            self.modelFingerPrintResponse = model
+//        }
     }
 }
 
@@ -96,7 +96,7 @@ extension  FingerPrintVerification: FingerprintResponseDelegate {
             if let fpPNGs = fingerprintPngs {
                 for item in fpPNGs {
                     guard let imageString = item.binaryBase64ObjectPNG else { return }
-                    guard let instance = Fingerprints(index: "\(item.fingerPositionCode)", template: imageString) else { return }
+                    guard let instance = Fingerprints(fingerIndex: "\(item.fingerPositionCode)", fingerTemplate: imageString) else { return }
                     fingerprintsList.append(instance)
                 }
             }
@@ -131,12 +131,14 @@ extension FingerPrintVerification {
     }
 
     struct Fingerprints: Codable {
-        var index: String
-        var template: String
-        
-        init?(index: String, template: String) {
-            self.index = index
-            self.template = template
+        var fingerIndex: String
+        var fingerTemplate: String
+        var templateType: String
+
+        init?(fingerIndex: String, fingerTemplate: String) {
+            self.fingerIndex = fingerIndex
+            self.fingerTemplate = fingerTemplate
+            self.templateType = ""
         }
     }
 }
