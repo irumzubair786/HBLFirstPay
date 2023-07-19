@@ -33,14 +33,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var moveToSignUp: (() -> ())!
     var isFromLoginScreen = true
     
-    ////<<<<<<< HEAD
-    ////
-    ////=======
-    ////<<<<<<< HEAD
-    ////
-    ////=======
-    ////>>>>>>> a408e5e (pod update)
-    //>>>>>>> 9c3ef07 (add cash ui fix)
     @IBOutlet weak var labelOne: UILabel!
     @IBOutlet weak var labelTwo: UILabel!
     @IBOutlet weak var labelThree: UILabel!

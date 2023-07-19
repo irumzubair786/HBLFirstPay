@@ -59,7 +59,7 @@ class FakeLoginVc: UIViewController {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
             vc.moveToSignUp = {
                 DispatchQueue.main.async {
-                    self.moveToSignUp()
+                    self.moveToSignUp(isFromDeviceAuthentication: true)
                 }
             }
             self.navigationController?.pushViewController(vc, animated: true)
@@ -81,9 +81,9 @@ class FakeLoginVc: UIViewController {
         moveToSignUp()
     }
     
-    func moveToSignUp() {
+    func moveToSignUp(isFromDeviceAuthentication: Bool? = false) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Mobile_VerificationVC") as! Mobile_VerificationVC
-        vc.isFromLoginScreen = true
+        vc.isFromLoginScreen = isFromDeviceAuthentication!
         self.navigationController?.pushViewController(vc, animated: false)
     }
     
