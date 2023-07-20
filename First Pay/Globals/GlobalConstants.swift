@@ -8,10 +8,12 @@
 import Foundation
 class GlobalConstants {
     // Live
-//    public static let BASE_URL = "https://bb.hblmfb.com/"
+    public static let BASE_URL = "https://bb.hblmfb.com/"
     // Stagging
-  public static let BASE_URL = "http://bbuat.hblmfb.com/"
+//  public static let BASE_URL = "http://bbuat.hblmfb.com/"
 }
+
+
  
         class GlobalOTPTypes {
         public static let OTP_CASH_OUT = "B"                                                 //CASH OUT

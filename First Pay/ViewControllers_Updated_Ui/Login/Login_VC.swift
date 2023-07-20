@@ -556,7 +556,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             return
         }
         
-        
         showActivityIndicator()
         var pessi : String?
         var userCnic : String?
@@ -601,7 +600,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         //        GlobalData.lat = DataManager.instance.Latitude
         //        GlobalData.long = DataManager.instance.Longitude
         print(parameters)
-        
         let result = splitString(stringToSplit: base64EncodedString(params: parameters))
         //        print(parameters)
         //        print(result.apiAttribute1)
@@ -614,8 +612,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         // longitude and latitude round off to 4 digits
         
         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecret]
-        
-        
         print(params)
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
@@ -853,7 +849,6 @@ extension Login_VC: PinCodeTextFieldDelegate {
 //                          DataManager.BalanceDate  = encryptedstring
 //
 //                          return encryptedstring
-//
 //
 //                      }
 //    func CurrentBalanceencrypy(plaintext : String , password : String) -> String
