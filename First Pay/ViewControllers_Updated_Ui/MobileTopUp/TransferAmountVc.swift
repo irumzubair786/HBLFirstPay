@@ -34,13 +34,48 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
 
         // Do any additional setup after loading the view.
     }
-    
+  
     @objc func changeTextInTextField() {
         for i in  myarr {
             i.isSeleccted = false
         }
         setColorTextField(isFromChangeChar: true)
+        if amountTextField.text?.count ?? 0 > 000
+        {
+            if Int(amountTextField.text!.getIntegerValue()) ?? 0  < (minValue)  || Int(amountTextField.text!.getIntegerValue()) ?? 0 > (maxValue)
+            {
+                let image = UIImage(named:"grayArrow")
+                img_next_arrow.image = image
+                img_next_arrow.isUserInteractionEnabled = false
+                btnContinue.isUserInteractionEnabled = false
+                btn.isUserInteractionEnabled = false
+                
+            }
+            else
+            {
+                let image = UIImage(named:"]greenarrow")
+                img_next_arrow.image = image
+                img_next_arrow.isUserInteractionEnabled = true
+                btnContinue.isUserInteractionEnabled = true
+                btn.isUserInteractionEnabled = true
+                lblAmountLimit.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+    
+                amountTextField.textColor = UIColor.clrGreen
+                self.collectionView.reloadData()
+                
+            }
+        }
+            else  if amountTextField.text?.count == 0
+            {
+                let image = UIImage(named:"grayArrow")
+                img_next_arrow.image = image
+                img_next_arrow.isUserInteractionEnabled = false
+                btnContinue.isUserInteractionEnabled = false
+                btn.isUserInteractionEnabled = false
+            }
+   
     }
+    
 
     func setColorTextField(isFromChangeChar: Bool? = false) {
         if myarr.count > 0 {
@@ -91,8 +126,9 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             self.collectionView.reloadData()
         }
     }
+//    hhhh
     var minValue = 100
-    var maxValue = 1000
+    var maxValue = 10000
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var btnContinue: UIButton!
     @IBOutlet weak var amountTextField: UITextField!
@@ -160,7 +196,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         let a = cell.btnAmount.currentTitle
         let x = a?.substring(from: 3)
         amountTextField.text = x
-        
+//        change
         cell.btnAmount.setImage(setimg, for: .normal)
         btnContinue.isUserInteractionEnabled = true
         btn.isUserInteractionEnabled = true
@@ -170,9 +206,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         lblAmountLimit.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
         self.collectionView.reloadData()
     }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        changeTextInTextField()
-    }
+   
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == amountTextField
          {
@@ -190,14 +224,14 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         let newLength:Int = (textField.text?.count)! + string.count - range.length
      
         if textField == amountTextField{
-            return newLength <= 5
+            return newLength <= 6
             
 //            lbl1.textColor = UIColor.green
         }
         if textField == amountTextField{
-            return newLength <= 5
+            return newLength <= 6
         }
-        return newLength <= 5
+        return newLength <= 6
         
     
 }
