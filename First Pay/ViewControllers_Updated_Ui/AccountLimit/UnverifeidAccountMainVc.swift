@@ -107,24 +107,23 @@ class UnverifeidAccountMainVc: BaseClassVC {
     }
 }
 
-extension UnverifeidAccountMainVc: FingerPrintVerificationDelegate {
-    func onEightFingerComplition(success: Bool, fingerPrintApiHitCount: Int, apiResponseMessage: String) {
-        if fingerPrintApiHitCount == 8 {
-            self.showAlertCustomPopup(title: "Success", message: apiResponseMessage)
-        }
-    }
-    
-    func onScanComplete(fingerprintsList: [FingerPrintVerification.Fingerprints]?) {
-        if fingerprintsList?.count ?? 0 > 0 {
-//            for fingerprint in fingerprintsList! {
-//                fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprint)
-//            }
-            fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprintsList!)
-        }
-    }
-
-}
-
+//extension UnverifeidAccountMainVc: FingerPrintVerificationDelegate {
+//    func onEightFingerComplition(success: Bool, fingerPrintApiHitCount: Int, apiResponseMessage: String) {
+//        if fingerPrintApiHitCount == 8 {
+//            self.showAlertCustomPopup(title: "Success", message: apiResponseMessage)
+//        }
+//    }
+//    
+//    func onScanComplete(fingerprintsList: [FingerPrintVerification.Fingerprints]?) {
+//        if fingerprintsList?.count ?? 0 > 0 {
+////            for fingerprint in fingerprintsList! {
+////                fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprint)
+////            }
+//            fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprintsList!)
+//        }
+//    }
+//
+//}
 
 extension  UnverifeidAccountMainVc: FingerprintResponseDelegate {
     func onScanComplete(fingerprintResponse: FingerprintResponse) {
@@ -231,6 +230,4 @@ extension  UnverifeidAccountMainVc: FingerprintResponseDelegate {
         let messages: String
         let responseblock: JSONNull?
     }
-
 }
-

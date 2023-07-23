@@ -399,8 +399,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             task.resume()
         }
         //shakeel test code
-        self.navigateToHome()
-        return()
+//        self.navigateToHome()
+//        return()
         
         if self.loginObj?.data?.customerHomeScreens?.first?.accountDiscrepant ?? "" == "Y" {
             

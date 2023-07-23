@@ -12,6 +12,8 @@ import ObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
 class changeLimitVC: BaseClassVC {
+    
+    @IBOutlet weak var buttonDismiss: UIButton!
     var genResponseObj : ChangeLimitModel?
     var daily :String?
     var dailyAmount :String?
@@ -37,7 +39,7 @@ class changeLimitVC: BaseClassVC {
 
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        self.view.addGestureRecognizer(tapGestureRecognizer)
+        //self.view.addGestureRecognizer(tapGestureRecognizer)
         print("limit Type",LimitType)
         print("AmountType",AmounttType)
 //        print("ReceivinglimitType",ReceivingLimitType)
@@ -45,6 +47,7 @@ class changeLimitVC: BaseClassVC {
         // Do any additional setup after loading the view.
     }
     
+    @IBOutlet weak var imgvArrow: UIImageView!
     @IBOutlet weak var slider: CustomSlider!
     @IBOutlet weak var labelMaxamount: UILabel!
     @IBOutlet weak var labelminamount: UILabel!
@@ -53,6 +56,7 @@ class changeLimitVC: BaseClassVC {
 //    @IBOutlet weak var blurView: UIVisualEffectView!
    
     func updateUI() {
+        
         labelname.text  = "Change \(daily!) Limit"
         labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "Rs.") ?? "")"
         
@@ -62,22 +66,35 @@ class changeLimitVC: BaseClassVC {
         labelminamount.text = "Rs. \(minimumAmount)"
         labelMaxamount.text = "Rs. \(maximumAmount)"
         
-        convertdailyminValue = Int(labelminamount.text!)
-        convertdailymaxValue = Int(labelMaxamount.text!)
+        convertdailyminValue = Int(minimumAmount.getIntegerValue())
+        convertdailymaxValue = Int(maximumAmount.getIntegerValue())
+        if maximumAmount == "0" {
+            convertdailymaxValue = 200000
+        }
         print("convertdailyminValue",convertdailyminValue as Any)
         print("convertdailymaxValue",convertdailymaxValue as Any)
-//        slider.minimumValue = Float((labelminamount.text! as NSString).intValue)
-//
-//        slider.maximumValue = Float((labelMaxamount.text! as NSString).intValue)
-        let a = labelminamount.text?.replacingOccurrences(of: ",", with: "")
-        let b =  labelMaxamount.text?.replacingOccurrences(of: ",", with: "")
-        slider.minimumValue =  (a! as NSString).floatValue
-        slider.maximumValue =     (b! as NSString).floatValue
+//        slider.minimumValue = Float(convertdailyminValue ?? 0)
+        slider.minimumValue = 0
+        slider.maximumValue = Float(convertdailymaxValue ?? 0)
+        slider.value = Float(convertdailyminValue ?? 0)
+        if daily!.lowercased() == "daily " {
+            slider.minimumTrackTintColor = .systemYellow
+        }
+        else if daily!.lowercased() == "monthly " {
+            slider.minimumTrackTintColor = .clrGreen
+        }
+        else if daily!.lowercased() == "yearly " {
+            slider.minimumTrackTintColor = .clrOrange
+        }
+
         print("slider minvalue",slider.minimumValue)
         print("slider maximumValue",slider.maximumValue)
     }
 
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
+        
+    }
+    @IBAction func buttonDismiss(_ sender: Any) {
         self.view.backgroundColor = .clear
         self.view.viewWithTag(999)?.removeFromSuperview()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -88,13 +105,14 @@ class changeLimitVC: BaseClassVC {
         let value = sender.value
         let val = Int(value)
         
-        labelAmount.text = "\(value)"
+        labelAmount.text = "\(Int(value) ?? 0)"
+        imgvArrow.image = UIImage(named: "]greenarrow")
     }
     
     @IBAction func buttonContinue(_ sender: UIButton) {
-       
-        apicall()
-        
+        if imgvArrow.image == UIImage(named: "]greenarrow") {
+            apicall()
+        }
     }
     
     func apicall()

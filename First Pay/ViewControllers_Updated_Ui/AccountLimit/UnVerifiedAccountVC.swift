@@ -11,7 +11,8 @@ import Alamofire
 import FingerprintSDK
 
 class UnVerifiedAccountVC: UIViewController {
-    
+    var fingerprintPngs : [Png]?
+
     var levelCode :String?
     var totalDailyLimitDr : Int?
     var totalMonthlyLimitDr : Int?
@@ -47,7 +48,18 @@ class UnVerifiedAccountVC: UIViewController {
     var comatotalYearlyLimitCr1 : String?
     var fingerPrintVerification: FingerPrintVerification!
 
-    
+    var modelFingerPrintResponse: ModelFingerPrintResponse? {
+        didSet {
+            print(modelFingerPrintResponse)
+            if modelFingerPrintResponse?.responsecode == 1 {
+//                delegate.onEightFingerComplition(success: true, fingerPrintApiHitCount: fingerPrintApiHitCount, apiResponseMessage: modelFingerPrintResponse?.messages ?? "No Message from API")
+                
+                self.showAlertCustomPopup(title: "Sucess", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+                    
+                }
+            }
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
@@ -248,19 +260,128 @@ class UnVerifiedAccountVC: UIViewController {
 }
 
 
-extension UnVerifiedAccountVC: FingerPrintVerificationDelegate {
-    func onEightFingerComplition(success: Bool, fingerPrintApiHitCount: Int, apiResponseMessage: String) {
-        if fingerPrintApiHitCount == 8 {
-            self.showAlertCustomPopup(title: "Success", message: apiResponseMessage)
+//extension UnVerifiedAccountVC: FingerPrintVerificationDelegate {
+//    func onEightFingerComplition(success: Bool, fingerPrintApiHitCount: Int, apiResponseMessage: String) {
+//        if fingerPrintApiHitCount == 8 {
+//            self.showAlertCustomPopup(title: "Success", message: apiResponseMessage)
+//        }
+//    }
+//    
+//    func onScanComplete(fingerprintsList: [FingerPrintVerification.Fingerprints]?) {
+//        if fingerprintsList?.count ?? 0 > 0 {
+////            for fingerprint in fingerprintsList! {
+////                fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprint)
+////            }
+//            fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprintsList!)
+//        }
+//    }
+//}
+
+extension  UnVerifiedAccountVC: FingerprintResponseDelegate {
+    func onScanComplete(fingerprintResponse: FingerprintResponse) {
+        //Shakeel ! added
+        if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
+//            print(fingerprintResponse.response)
+//            print(fingerprintResponse.response)
+            fingerprintPngs = fingerprintResponse.pngList
+            var fingerprintsList = [FingerPrintVerification.Fingerprints]()
+            
+            var tempFingerPrintDictionary = [[String:Any]]()
+            //for testing
+//            var tempFingerPrintDictionary2 = [[String:Any]]()
+
+            if let fpPNGs = fingerprintPngs {
+                for item in fpPNGs {
+                    guard let imageString = item.binaryBase64ObjectPNG else { return }
+                    guard let instance = FingerPrintVerification.Fingerprints(fingerIndex: "\(item.fingerPositionCode)", fingerTemplate: imageString) else { return }
+                   
+                    tempFingerPrintDictionary.append(
+                        ["fingerIndex":item.fingerPositionCode,
+                         "fingerTemplate":imageString,
+                         "templateType":"WSQ"]
+                    )
+                    //for testing
+//                    tempFingerPrintDictionary2.append(
+//                        ["fingerIndex":item.fingerPositionCode,
+//                         "fingerTemplate":item.fingerPositionCode,
+//                         "templateType":"WSQ"]
+//                    )
+//                    fingerprintsList.append(instance)
+                }
+            }
+//            print(fingerprintsList)
+//            print(fingerprintsList)
+//            print(fingerprintsList)
+            //for testing
+//            let jsonDataaa = try! JSONSerialization.data(withJSONObject: tempFingerPrintDictionary2 as Any, options: .prettyPrinted)
+//            let decoded = try! JSONSerialization.jsonObject(with: jsonDataaa, options: [])
+//
+//            print(decoded)
+//            print(decoded)
+//           let params = [
+//                "apiAttribute1":"result.apiAttribute1",
+//                "apiAttribute2":"result.apiAttribute2",
+//                "channelId":"\(DataManager.instance.channelID)",
+//                "apiAttribute3":decoded
+//            ]
+//            print(params)
+
+            self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
+           // self.delegate.onScanComplete(fingerprintsList: fingerprintsList)
+//            if fingerprintsList.count > 0 {
+//                for fingerprint in fingerprintsList {
+//                    acccountLevelUpgrade(fingerprints: fingerprint)
+//                }
+//            }
+        }else {
+            self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
+                self.dismiss(animated: true)
+            }
         }
     }
     
-    func onScanComplete(fingerprintsList: [FingerPrintVerification.Fingerprints]?) {
-        if fingerprintsList?.count ?? 0 > 0 {
-//            for fingerprint in fingerprintsList! {
-//                fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprint)
-//            }
-            fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprintsList!)
+    override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+        self.dismiss(animated: true)
+    }
+    
+    func acccountLevelUpgrade(fingerprints: [[String:Any]]) {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+        ]
+
+    //    let apiAttribute3 = [
+    //        "apiAttribute3" : fingerprints.template
+    //    ]
+    //    print(parameters)
+        
+        APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: self) {
+            responseData, success, errorMsg in
+            
+            print(responseData)
+            print(success)
+            print(errorMsg)
+            do {
+                let json: Any? = try JSONSerialization.jsonObject(with: (responseData ?? Data()), options: [.fragmentsAllowed])
+                print(json)
+            }
+            catch let error {
+                print(error)
+            }
+
+            let model: ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelFingerPrintResponse = model
         }
     }
+    
+    struct ModelFingerPrintResponse: Codable {
+        let responsecode: Int
+        let data: JSONNull?
+        let messages: String
+        let responseblock: JSONNull?
+    }
+
 }
+
