@@ -287,9 +287,6 @@ extension  UnVerifiedAccountVC: FingerprintResponseDelegate {
             var fingerprintsList = [FingerPrintVerification.Fingerprints]()
             
             var tempFingerPrintDictionary = [[String:Any]]()
-            //for testing
-//            var tempFingerPrintDictionary2 = [[String:Any]]()
-
             if let fpPNGs = fingerprintPngs {
                 for item in fpPNGs {
                     guard let imageString = item.binaryBase64ObjectPNG else { return }
@@ -300,39 +297,9 @@ extension  UnVerifiedAccountVC: FingerprintResponseDelegate {
                          "fingerTemplate":imageString,
                          "templateType":"WSQ"]
                     )
-                    //for testing
-//                    tempFingerPrintDictionary2.append(
-//                        ["fingerIndex":item.fingerPositionCode,
-//                         "fingerTemplate":item.fingerPositionCode,
-//                         "templateType":"WSQ"]
-//                    )
-//                    fingerprintsList.append(instance)
                 }
             }
-//            print(fingerprintsList)
-//            print(fingerprintsList)
-//            print(fingerprintsList)
-            //for testing
-//            let jsonDataaa = try! JSONSerialization.data(withJSONObject: tempFingerPrintDictionary2 as Any, options: .prettyPrinted)
-//            let decoded = try! JSONSerialization.jsonObject(with: jsonDataaa, options: [])
-//
-//            print(decoded)
-//            print(decoded)
-//           let params = [
-//                "apiAttribute1":"result.apiAttribute1",
-//                "apiAttribute2":"result.apiAttribute2",
-//                "channelId":"\(DataManager.instance.channelID)",
-//                "apiAttribute3":decoded
-//            ]
-//            print(params)
-
             self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
-           // self.delegate.onScanComplete(fingerprintsList: fingerprintsList)
-//            if fingerprintsList.count > 0 {
-//                for fingerprint in fingerprintsList {
-//                    acccountLevelUpgrade(fingerprints: fingerprint)
-//                }
-//            }
         }else {
             self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
                 self.dismiss(animated: true)

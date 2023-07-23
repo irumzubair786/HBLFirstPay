@@ -20,7 +20,6 @@ import RNCryptor
 import PasswordTextField
 import CoreLocation
 import OneSignal
-import FingerprintSDK
 
 class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var homeObj : HomeModel?
@@ -116,15 +115,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         // Do any additional setup after loading the view.
         
         
-    }
-    
-    func fingerPrintConfigurationSetup() {
-        //        let fingerprintConfig = FingerprintConfig(
-        //                                mode: .EXPORT_WSQ,
-        //                                hand: .BOTH_HANDS,
-        //                                fingers: .EIGHT_FINGERS,
-        //                                liveness: true,
-        //                                isPackPng: false)
     }
     
     @objc func changeTextInTextField() {
@@ -341,8 +331,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     
     
     @IBAction func loginActionviaTouchID(_ sender: UIButton) {
-        fingerPrintConfigurationSetup()
-        return()
         if KeychainWrapper.standard.bool(forKey: "enableTouchID") == true  {
             self.authenticateUserViaTouchID()
             viaBio = true

@@ -35,9 +35,9 @@ class FingerPrintVerification {
     func fingerPrintVerification(viewController: UIViewController) {
         //#if targetEnvironment(simulator)
         //        #else
-        fingerPrintApiHitCount = 0
-        self.viewController = viewController
-        self.delegate = viewController as? FingerPrintVerificationDelegate
+//        fingerPrintApiHitCount = 0
+//        self.viewController = viewController
+//        self.delegate = viewController as? FingerPrintVerificationDelegate
         let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
                                                   hand: .BOTH_HANDS,
                                                   fingers: .EIGHT_FINGERS,
