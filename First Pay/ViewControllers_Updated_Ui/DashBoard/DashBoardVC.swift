@@ -15,6 +15,8 @@ import Alamofire
 import ObjectMapper
 import SwiftKeychainWrapper
 import SideMenu
+import FingerprintSDK
+
 var isfromReactivateCard :Bool?
 var isFromDeactivate : Bool?
 var isFromChangePin : Bool?
@@ -33,6 +35,26 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var getDebitDetailsObj : GetDebitCardModel?
     var availableLimitObj: AvailableLimitsModel?
     var topBtnarr =  ["SendMoney", "Mobile Topup", "PayBill","First Option","DebitCard","SeeAll"]
+    var fingerPrintVerification: FingerPrintVerification!
+    var fingerprintPngs : [Png]?
+
+    var modelFingerPrintResponse: ModelFingerPrintResponse? {
+        didSet {
+            print(modelFingerPrintResponse)
+            if modelFingerPrintResponse?.responsecode == 1 {
+                self.showAlertCustomPopup(title: "Sucess", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+                    self.present(vc, animated: true)
+                }
+            }
+            else {
+                self.showAlertCustomPopup(title: "Error", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+                    
+                }
+            }
+        }
+    }
 
     @IBOutlet weak var imgSeeAll: UIImageView!
     override func viewDidAppear(_ animated: Bool) {
@@ -159,17 +181,16 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
        
         else if tag == 3 {
             FBEvents.logEvent(title: .Homescreen_getloan_click)
-            if DataManager.instance.accountLevel == "LEVEL 0"
-            {
+            if DataManager.instance.accountLevel == "LEVEL 0" {
 //               call sdk
+                fingerPrintVerification = FingerPrintVerification()
+                DispatchQueue.main.async {
+                    self.fingerPrintVerification.fingerPrintVerification(viewController: self)
+                }
             }
-           else
-            {
+           else {
                getActiveLoan()
             }
-            
-            
-            
 //            self.navigationController?.pushViewController(vc, animated: true)
         }
         else if tag == 4 {
@@ -852,12 +873,77 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             self.present(vc, animated: true)
         }
     }
-    
 //class end
 }
-    
-    
 
+extension DashBoardVC: FingerprintResponseDelegate {
+    func onScanComplete(fingerprintResponse: FingerprintResponse) {
+        //Shakeel ! added
+        if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
+            fingerprintPngs = fingerprintResponse.pngList
+            var fingerprintsList = [FingerPrintVerification.Fingerprints]()
+            
+            var tempFingerPrintDictionary = [[String:Any]]()
+            if let fpPNGs = fingerprintPngs {
+                for item in fpPNGs {
+                    guard let imageString = item.binaryBase64ObjectPNG else { return }
+                    guard let instance = FingerPrintVerification.Fingerprints(fingerIndex: "\(item.fingerPositionCode)", fingerTemplate: imageString) else { return }
+                   
+                    tempFingerPrintDictionary.append(
+                        ["fingerIndex":item.fingerPositionCode,
+                         "fingerTemplate":imageString,
+                         "templateType":"WSQ"]
+                    )
+                }
+            }
+            self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
+        }else {
+            self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
+                self.dismiss(animated: true)
+            }
+        }
+    }
     
+    override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+        self.dismiss(animated: true)
+    }
     
+    func acccountLevelUpgrade(fingerprints: [[String:Any]]) {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+        ]
 
+    //    let apiAttribute3 = [
+    //        "apiAttribute3" : fingerprints.template
+    //    ]
+    //    print(parameters)
+        
+        APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: self) {
+            responseData, success, errorMsg in
+            
+            print(responseData)
+            print(success)
+            print(errorMsg)
+            do {
+                let json: Any? = try JSONSerialization.jsonObject(with: (responseData ?? Data()), options: [.fragmentsAllowed])
+                print(json)
+            }
+            catch let error {
+                print(error)
+            }
+
+            let model: ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelFingerPrintResponse = model
+        }
+    }
+    
+    struct ModelFingerPrintResponse: Codable {
+        let responsecode: Int
+        let data: JSONNull?
+        let messages: String
+        let responseblock: JSONNull?
+    }
+}

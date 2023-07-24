@@ -52,9 +52,14 @@ class UnVerifiedAccountVC: UIViewController {
         didSet {
             print(modelFingerPrintResponse)
             if modelFingerPrintResponse?.responsecode == 1 {
-//                delegate.onEightFingerComplition(success: true, fingerPrintApiHitCount: fingerPrintApiHitCount, apiResponseMessage: modelFingerPrintResponse?.messages ?? "No Message from API")
-                
                 self.showAlertCustomPopup(title: "Sucess", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+                    self.present(vc, animated: true)
+                }
+            }
+            else {
+                self.showAlertCustomPopup(title: "Error", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
                     
                 }
             }
