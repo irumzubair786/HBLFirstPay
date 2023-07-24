@@ -42,11 +42,12 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         didSet {
             print(modelFingerPrintResponse)
             if modelFingerPrintResponse?.responsecode == 1 {
-                self.showAlertCustomPopup(title: "Sucess", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
-                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-                    self.present(vc, animated: true)
-                }
+                
+//            self.showAlertCustomPopup(title: "Sucess", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+//                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+//                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+//                    self.present(vc, animated: true)
+//                }
             }
             else {
                 self.showAlertCustomPopup(title: "Error", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
@@ -185,7 +186,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 //               call sdk
                 fingerPrintVerification = FingerPrintVerification()
                 DispatchQueue.main.async {
-                    self.fingerPrintVerification.fingerPrintVerification(viewController: self)
+                    self.fingerPrintVerification(viewController: self)
                 }
             }
            else {
@@ -766,7 +767,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         
         if DataManager.instance.accountLevel == "LEVEL 0" {
             FBEvents.logEvent(title: .Homescreen_Myaccount_click)
-
+            
             let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
             if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                 vc.balanceLimit = Int(balnceLimit)
@@ -815,7 +816,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
             self.present(vc, animated: true)
         }
-
+        
         else if DataManager.instance.accountLevel == "LEVEL 1" {
             FBEvents.logEvent(title: .Homescreen_Myaccount_click)
             let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
@@ -873,6 +874,22 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             self.present(vc, animated: true)
         }
     }
+        func fingerPrintVerification(viewController: UIViewController) {
+            //#if targetEnvironment(simulator)
+            //        #else
+
+            let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
+                                                      hand: .BOTH_HANDS,
+                                                      fingers: .EIGHT_FINGERS,
+                                                      isPackPng: true)
+            let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
+            vc.fingerprintConfig = fingerprintConfig
+            vc.fingerprintResponseDelegate = viewController as? FingerprintResponseDelegate
+            viewController.present(vc, animated: true, completion: nil)
+            //        #endif
+        }
+    
+    
 //class end
 }
 
@@ -899,7 +916,7 @@ extension DashBoardVC: FingerprintResponseDelegate {
             self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
         }else {
             self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
-                self.dismiss(animated: true)
+//                self.dismiss(animated: true)
             }
         }
     }

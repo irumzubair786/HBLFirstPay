@@ -188,7 +188,7 @@ extension UnverifeidAccountMainVc: FingerprintResponseDelegate {
 //            }
         }else {
             self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
-                self.dismiss(animated: true)
+//                self.dismiss(animated: true)
             }
         }
     }

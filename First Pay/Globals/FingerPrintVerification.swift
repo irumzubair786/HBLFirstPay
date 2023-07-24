@@ -25,10 +25,10 @@ class FingerPrintVerification {
     var modelFingerPrintResponse: ModelFingerPrintResponse? {
         didSet {
             print(modelFingerPrintResponse)
-            if modelFingerPrintResponse?.responsecode == 1 {
-                fingerPrintApiHitCount += 1
-                delegate.onEightFingerComplition(success: true, fingerPrintApiHitCount: fingerPrintApiHitCount, apiResponseMessage: modelFingerPrintResponse?.messages ?? "No Message from API")
-            }
+//            if modelFingerPrintResponse?.responsecode == 1 {
+//                fingerPrintApiHitCount += 1
+//                delegate.onEightFingerComplition(success: true, fingerPrintApiHitCount: fingerPrintApiHitCount, apiResponseMessage: modelFingerPrintResponse?.messages ?? "No Message from API")
+//            }
         }
     }
     
@@ -104,7 +104,7 @@ extension  FingerPrintVerification: FingerprintResponseDelegate {
             print(fingerprintsList)
             print(fingerprintsList)
             
-            self.delegate.onScanComplete(fingerprintsList: fingerprintsList)
+//            self.delegate.onScanComplete(fingerprintsList: fingerprintsList)
 //            if fingerprintsList.count > 0 {
 //                for fingerprint in fingerprintsList {
 //                    acccountLevelUpgrade(fingerprints: fingerprint)

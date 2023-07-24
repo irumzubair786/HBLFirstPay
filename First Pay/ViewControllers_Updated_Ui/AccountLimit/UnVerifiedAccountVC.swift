@@ -307,7 +307,7 @@ extension  UnVerifiedAccountVC: FingerprintResponseDelegate {
             self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
         }else {
             self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
-                self.dismiss(animated: true)
+//                self.dismiss(animated: true)
             }
         }
     }

@@ -79,7 +79,11 @@ class AddCashMainVc: BaseClassVC {
     
     @IBAction func buttonGetLoan(_ sender: UIButton) {
         if DataManager.instance.accountLevel == "LEVEL 0" {
-            //               call sdk
+        //   call sdk
+            fingerPrintVerification = FingerPrintVerification()
+            DispatchQueue.main.async {
+                self.fingerPrintVerification.fingerPrintVerification(viewController: self)
+            }
         }
         else {
             getActiveLoan()
@@ -285,7 +289,7 @@ extension AddCashMainVc: FingerprintResponseDelegate {
             self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
         }else {
             self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
-                self.dismiss(animated: true)
+//                self.dismiss(animated: true)
             }
         }
     }
