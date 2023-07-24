@@ -156,10 +156,20 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
            
             self.present(vc, animated: true)
         }
-
+       
         else if tag == 3 {
             FBEvents.logEvent(title: .Homescreen_getloan_click)
-            getActiveLoan()
+            if DataManager.instance.accountLevel == "LEVEL 0"
+            {
+//               call sdk
+            }
+           else
+            {
+               getActiveLoan()
+            }
+            
+            
+            
 //            self.navigationController?.pushViewController(vc, animated: true)
         }
         else if tag == 4 {
@@ -384,6 +394,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         if self.homeObj?.userData?[index].levelDescr == "LEVEL 1"
         {
             imgLevel.isHidden = false
+//            level check
             DataManager.instance.accountLevel = "LEVEL 1"
             imgLevel.image = UIImage(named: "Verified 24x")
         }

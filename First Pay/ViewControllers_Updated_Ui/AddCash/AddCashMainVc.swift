@@ -55,7 +55,16 @@ class AddCashMainVc: BaseClassVC {
     @IBOutlet weak var buttonGetLoan: UIButton!
     
     @IBAction func buttonGetLoan(_ sender: UIButton) {
-        getActiveLoan()
+        
+        if DataManager.instance.accountLevel == "LEVEL 0"
+        {
+//               call sdk
+        }
+       else
+        {
+           getActiveLoan()
+        }
+   
     }
     
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
