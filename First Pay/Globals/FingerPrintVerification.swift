@@ -125,9 +125,16 @@ extension FingerPrintVerification {
     // MARK: - ModelFingerPrintResponse
     struct ModelFingerPrintResponse: Codable {
         let responsecode: Int
-        let data: JSONNull?
+        let data: DataClass
         let messages: String
         let responseblock: JSONNull?
+    }
+    
+    // MARK: - DataClass
+    struct DataClass: Codable {
+        let response: Int
+        let message: String
+        let data: [String: Int?]
     }
 
     struct Fingerprints: Codable {

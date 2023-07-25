@@ -29,7 +29,7 @@ class CNICVerification: UIViewController {
         didSet {
             cnicErrorLabel.isHidden = true
             if modelExpiredCnicVerification?.responsecode == 1 {
-                self.showAlertCustomPopup(title: "Congratulations!\nVerification Successfull", message: modelExpiredCnicVerification?.messages, iconName: .iconSucess) {_ in
+                self.showAlertCustomPopup(title: "Congratulations!\nVerification Successfull", message: modelExpiredCnicVerification?.messages, iconName: .iconSuccess) {_ in
                     self.dismiss(animated: true)
                     self.successFullNICVerification?(true)
                 }

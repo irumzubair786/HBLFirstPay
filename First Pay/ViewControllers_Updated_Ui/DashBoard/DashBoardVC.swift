@@ -38,15 +38,14 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var fingerPrintVerification: FingerPrintVerification!
     var fingerprintPngs : [Png]?
 
-    var modelFingerPrintResponse: ModelFingerPrintResponse? {
+    var modelFingerPrintResponse: FingerPrintVerification.ModelFingerPrintResponse? {
         didSet {
             print(modelFingerPrintResponse)
             if modelFingerPrintResponse?.responsecode == 1 {
-                
-            self.showAlertCustomPopup(title: "Sucess", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
-                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-                    self.present(vc, animated: true)
+            self.showAlertCustomPopup(title: "Success", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+//                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+//                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+//                    self.present(vc, animated: true)
                 }
             }
             else {
@@ -184,50 +183,50 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             FBEvents.logEvent(title: .Homescreen_getloan_click)
             if DataManager.instance.accountLevel == "LEVEL 0" {
 //               call sdk
-                let decode = [[
-                    "fingerIndex" : 2,
-                    "fingerTemplate" : 2,
-                    "templateType" : "hbb"
-                ],
-                [
-                    "fingerIndex" : 3,
-                    "fingerTemplate" : 3,
-                    "templateType" : "bb"
-                ],
-                [
-                    "fingerIndex" : 4,
-                    "fingerTemplate" : 4,
-                    "templateType" : "oo"
-                ],
-                [
-                    "fingerIndex" : 5,
-                   "fingerTemplate" : 5,
-                    "templateType" : "gg"
-                ],
-                [
-                    "fingerIndex" : 7,
-                    "fingerTemplate" : 7,
-                    "templateType" : "hh"
-                ],
-                [
-                    "fingerIndex" : 8,
-                    "fingerTemplate" : 8,
-                    "templateType" : "hjg"
-                ],
-                [
-                    "fingerIndex" : 9,
-                    "fingerTemplate" : 9,
-                    "templateType" : "jj"
-                ],
-                [
-                    "fingerIndex" : 10,
-                    "fingerTemplate" : 10,
-                    "templateType" : "nn"
-                ]]
-                
-                
-                self.acccountLevelUpgrade(fingerprints: decode)
-                return
+//                let decode = [[
+//                    "fingerIndex" : 2,
+//                    "fingerTemplate" : 2,
+//                    "templateType" : "hbb"
+//                ],
+//                [
+//                    "fingerIndex" : 3,
+//                    "fingerTemplate" : 3,
+//                    "templateType" : "bb"
+//                ],
+//                [
+//                    "fingerIndex" : 4,
+//                    "fingerTemplate" : 4,
+//                    "templateType" : "oo"
+//                ],
+//                [
+//                    "fingerIndex" : 5,
+//                   "fingerTemplate" : 5,
+//                    "templateType" : "gg"
+//                ],
+//                [
+//                    "fingerIndex" : 7,
+//                    "fingerTemplate" : 7,
+//                    "templateType" : "hh"
+//                ],
+//                [
+//                    "fingerIndex" : 8,
+//                    "fingerTemplate" : 8,
+//                    "templateType" : "hjg"
+//                ],
+//                [
+//                    "fingerIndex" : 9,
+//                    "fingerTemplate" : 9,
+//                    "templateType" : "jj"
+//                ],
+//                [
+//                    "fingerIndex" : 10,
+//                    "fingerTemplate" : 10,
+//                    "templateType" : "nn"
+//                ]]
+//
+//
+//                self.acccountLevelUpgrade(fingerprints: decode)
+//                return
                 fingerPrintVerification = FingerPrintVerification()
                 DispatchQueue.main.async {
                     self.fingerPrintVerification(viewController: self)
@@ -996,15 +995,13 @@ extension DashBoardVC: FingerprintResponseDelegate {
                 print(error)
             }
 
-            let model: ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
+            let model: FingerPrintVerification.ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
+            print(model)
+            print(model)
             self.modelFingerPrintResponse = model
         }
     }
     
-    struct ModelFingerPrintResponse: Codable {
-        let responsecode: Int
-        let data: JSONNull?
-        let messages: String
-        let responseblock: JSONNull?
-    }
+    
+
 }

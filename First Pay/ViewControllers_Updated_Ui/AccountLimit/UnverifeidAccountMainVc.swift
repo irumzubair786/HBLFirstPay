@@ -32,7 +32,7 @@ class UnverifeidAccountMainVc: BaseClassVC {
     var totalYearlyLimitCr1 : Int?
     var balanceLimit1 : Int?
     var fingerPrintVerification: FingerPrintVerification!
-    var modelFingerPrintResponse: ModelFingerPrintResponse? {
+    var modelFingerPrintResponse: FingerPrintVerification.ModelFingerPrintResponse? {
         didSet {
             print(modelFingerPrintResponse)
             if modelFingerPrintResponse?.responsecode == 1 {
@@ -224,15 +224,8 @@ extension UnverifeidAccountMainVc: FingerprintResponseDelegate {
                 print(error)
             }
 
-            let model: ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
+            let model: FingerPrintVerification.ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelFingerPrintResponse = model
         }
-    }
-    
-    struct ModelFingerPrintResponse: Codable {
-        let responsecode: Int
-        let data: JSONNull?
-        let messages: String
-        let responseblock: JSONNull?
     }
 }

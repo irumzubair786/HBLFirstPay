@@ -137,7 +137,7 @@ class changeLimitVC: BaseClassVC {
     var modelGetAccount : ChangeLimitModel? {
         didSet{
             if self.modelGetAccount?.responsecode == 1  {
-                self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSucess)
+                self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSuccess)
             }
             else {
                 //MARK: - Loan Failed Successfully

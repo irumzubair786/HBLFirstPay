@@ -48,7 +48,7 @@ class UnVerifiedAccountVC: UIViewController {
     var comatotalYearlyLimitCr1 : String?
     var fingerPrintVerification: FingerPrintVerification!
 
-    var modelFingerPrintResponse: ModelFingerPrintResponse? {
+    var modelFingerPrintResponse: FingerPrintVerification.ModelFingerPrintResponse? {
         didSet {
             print(modelFingerPrintResponse)
             if modelFingerPrintResponse?.responsecode == 1 {
@@ -343,17 +343,9 @@ extension  UnVerifiedAccountVC: FingerprintResponseDelegate {
                 print(error)
             }
 
-            let model: ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
+            let model: FingerPrintVerification.ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelFingerPrintResponse = model
         }
     }
-    
-    struct ModelFingerPrintResponse: Codable {
-        let responsecode: Int
-        let data: JSONNull?
-        let messages: String
-        let responseblock: JSONNull?
-    }
-
 }
 

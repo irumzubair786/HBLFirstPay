@@ -822,7 +822,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                 if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
                     if let message = self.genericObj?.messages {
                         //MARK: - Shakeel Need to add Complition in alertCustomPopup for further action
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSucess) {_ in 
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSuccess) {_ in 
                             //                        if message == "Customer Registered successfully"
                             //                        if self.genericObj?.data != nil{
                             
@@ -862,7 +862,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
                 }
                 else{
                     if let message = self.genericObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSucess)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSuccess)
                     }
                     
                 }
