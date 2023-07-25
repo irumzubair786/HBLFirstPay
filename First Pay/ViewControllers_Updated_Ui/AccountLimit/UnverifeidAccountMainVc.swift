@@ -36,7 +36,7 @@ class UnverifeidAccountMainVc: BaseClassVC {
         didSet {
             print(modelFingerPrintResponse)
             if modelFingerPrintResponse?.responsecode == 1 {
-                self.showAlertCustomPopup(title: "Sucess", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+                self.showAlertCustomPopup(title: "Success", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
                     let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
                     let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
                     self.present(vc, animated: true)

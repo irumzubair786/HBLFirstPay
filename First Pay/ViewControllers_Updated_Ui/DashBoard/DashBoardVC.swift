@@ -43,11 +43,11 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             print(modelFingerPrintResponse)
             if modelFingerPrintResponse?.responsecode == 1 {
                 
-//            self.showAlertCustomPopup(title: "Sucess", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
-//                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-//                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-//                    self.present(vc, animated: true)
-//                }
+            self.showAlertCustomPopup(title: "Sucess", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+                    self.present(vc, animated: true)
+                }
             }
             else {
                 self.showAlertCustomPopup(title: "Error", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
@@ -184,6 +184,50 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             FBEvents.logEvent(title: .Homescreen_getloan_click)
             if DataManager.instance.accountLevel == "LEVEL 0" {
 //               call sdk
+                let decode = [[
+                    "fingerIndex" : 2,
+                    "fingerTemplate" : 2,
+                    "templateType" : "hbb"
+                ],
+                [
+                    "fingerIndex" : 3,
+                    "fingerTemplate" : 3,
+                    "templateType" : "bb"
+                ],
+                [
+                    "fingerIndex" : 4,
+                    "fingerTemplate" : 4,
+                    "templateType" : "oo"
+                ],
+                [
+                    "fingerIndex" : 5,
+                   "fingerTemplate" : 5,
+                    "templateType" : "gg"
+                ],
+                [
+                    "fingerIndex" : 7,
+                    "fingerTemplate" : 7,
+                    "templateType" : "hh"
+                ],
+                [
+                    "fingerIndex" : 8,
+                    "fingerTemplate" : 8,
+                    "templateType" : "hjg"
+                ],
+                [
+                    "fingerIndex" : 9,
+                    "fingerTemplate" : 9,
+                    "templateType" : "jj"
+                ],
+                [
+                    "fingerIndex" : 10,
+                    "fingerTemplate" : 10,
+                    "templateType" : "nn"
+                ]]
+                
+                
+                self.acccountLevelUpgrade(fingerprints: decode)
+                return
                 fingerPrintVerification = FingerPrintVerification()
                 DispatchQueue.main.async {
                     self.fingerPrintVerification(viewController: self)
@@ -416,8 +460,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         if self.homeObj?.userData?[index].levelDescr == "LEVEL 1"
         {
             imgLevel.isHidden = false
-//            level check
-            DataManager.instance.accountLevel = "LEVEL 1"
+//            please change level here.... level 0 replace by level 1
+            DataManager.instance.accountLevel = "LEVEL 0"
             imgLevel.image = UIImage(named: "Verified 24x")
         }
         else

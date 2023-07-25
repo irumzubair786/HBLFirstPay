@@ -215,6 +215,7 @@ struct APIs {
             let decoded = try! JSONSerialization.jsonObject(with: jsonDataaa, options: [])
 //            print(decoded)
 //            print(tempJson)
+            
             params = [
                 "apiAttribute1":result.apiAttribute1,
                 "apiAttribute2":result.apiAttribute2,
