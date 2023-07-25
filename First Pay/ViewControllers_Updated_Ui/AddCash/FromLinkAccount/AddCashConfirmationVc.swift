@@ -15,7 +15,7 @@ class AddCashConfirmationVc: BaseClassVC {
     var accounttilte : String?
     var accontNo : String?
     var bankName :String?
-    var TotalAmount : String?
+    var TotalAmount : Float?
     var FirstPayNo : String?
     var transactionApiResponseObj : FTApiResponse?
    
@@ -67,8 +67,8 @@ class AddCashConfirmationVc: BaseClassVC {
         labelAccountNo.text = accontNo
         labelBankName.text = bankName
         labelFirstPayNo.text = FirstPayNo
-        labelTotalTransationAmount.text = TotalAmount
-        amounttextfield.text = TotalAmount
+        labelTotalTransationAmount.text = "\(TotalAmount ?? 0)"
+        amounttextfield.text = "\(TotalAmount ?? 0)"
     }
     private func initiateAddCashFT() {
         
@@ -111,6 +111,7 @@ class AddCashConfirmationVc: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
+  
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
 //            self.transactionApiResponseObj = response.result.value

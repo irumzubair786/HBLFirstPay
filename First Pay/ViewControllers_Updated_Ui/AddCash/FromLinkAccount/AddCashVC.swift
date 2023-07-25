@@ -30,8 +30,8 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
     
         // Do any additional setup after loading the view.
     }
-   var minimumValue = "1"
-    var maximumValue = "25000"
+   var minimumValue = 1
+    var maximumValue = 25000
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
@@ -49,7 +49,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         vc.accounttilte = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
         vc.bankName = self.LinkedAccountsObj?.data?[0].branchName
         vc.FirstPayNo = self.LinkedAccountsObj?.data?[0].mobileNo
-        vc.TotalAmount = self.textFieldAmount.text!
+        vc.TotalAmount = Float(self.textFieldAmount.text!)
         self.navigationController?.pushViewController(vc, animated: true
         )
 
@@ -62,7 +62,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         vc.accounttilte = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
         vc.bankName = self.LinkedAccountsObj?.data?[0].branchName
         vc.FirstPayNo = self.LinkedAccountsObj?.data?[0].mobileNo
-        vc.TotalAmount = self.textFieldAmount.text!
+        vc.TotalAmount = Float(self.textFieldAmount.text!)
         self.navigationController?.pushViewController(vc, animated: true
         )
     }
@@ -82,64 +82,113 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         
     }
     @objc func changeTextInTextField() {
-        if (textFieldAmount?.text! ?? "") ?? "" < minimumValue
+        if textFieldAmount.text?.count ?? 0 > 0
         {
-            let image = UIImage(named:"grayArrow")
-            img_Next.image = image
-            img_Next.isUserInteractionEnabled = false
-            buttonContinue.isUserInteractionEnabled = false
-            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
-            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
-        }
-       else if (textFieldAmount?.text! ?? "") ?? "" > (maximumValue)
-        {
-            let image = UIImage(named:"grayArrow")
-            img_Next.image = image
-            img_Next.isUserInteractionEnabled = false
-            buttonContinue.isUserInteractionEnabled = false
-            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
-            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
-        }
-        else
-        {
+            if Int(textFieldAmount.text!) ?? 0  < Int((minimumValue) ?? 0) || Int(textFieldAmount.text!) ?? 0 > Int((maximumValue) ?? 0)
+            {
+                
+                let image = UIImage(named:"grayArrow")
+                img_Next.image = image
+                img_Next.isUserInteractionEnabled = false
+                buttonContinue.isUserInteractionEnabled = false
+                labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+                textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
+                
+            }
+            else
+            {
+                
+                let image = UIImage(named:"]greenarrow")
+                img_Next.image = image
+                img_Next.isUserInteractionEnabled = true
+                buttonContinue.isUserInteractionEnabled = true
+                labelAlert.textColor = UIColor.orange
+                textFieldAmount.textColor = UIColor.gray            }
             
-            let image = UIImage(named:"]greenarrow")
-            img_Next.image = image
-            img_Next.isUserInteractionEnabled = true
-            buttonContinue.isUserInteractionEnabled = true
-            labelAlert.textColor = UIColor.orange
-            textFieldAmount.textColor = UIColor.gray
         }
+        else  if textFieldAmount.text?.count == 0
+        {
+            let image = UIImage(named:"grayArrow")
+            img_Next.image = image
+            img_Next.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//        if (textFieldAmount?.text! ?? "") ?? "" < minimumValue
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            img_Next.image = image
+//            img_Next.isUserInteractionEnabled = false
+//            buttonContinue.isUserInteractionEnabled = false
+//            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+//            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
+//        }
+//       else if (textFieldAmount?.text! ?? "") ?? "" > (maximumValue)
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            img_Next.image = image
+//            img_Next.isUserInteractionEnabled = false
+//            buttonContinue.isUserInteractionEnabled = false
+//            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+//            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
+//        }
+//        else
+//        {
+//
+//            let image = UIImage(named:"]greenarrow")
+//            img_Next.image = image
+//            img_Next.isUserInteractionEnabled = true
+//            buttonContinue.isUserInteractionEnabled = true
+//            labelAlert.textColor = UIColor.orange
+//            textFieldAmount.textColor = UIColor.gray
+//        }
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        if (textFieldAmount?.text! ?? "") ?? "" < minimumValue
-        {
-            let image = UIImage(named:"grayArrow")
-            img_Next.image = image
-            img_Next.isUserInteractionEnabled = false
-            buttonContinue.isUserInteractionEnabled = false
-            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
-            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
-        }
-        if (textFieldAmount?.text! ?? "") ?? "" > (maximumValue)
-        {
-            let image = UIImage(named:"grayArrow")
-            img_Next.image = image
-            img_Next.isUserInteractionEnabled = false
-            buttonContinue.isUserInteractionEnabled = false
-            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
-            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
-        }
-        else
-        {
-            let image = UIImage(named:"]greenarrow")
-            img_Next.image = image
-            img_Next.isUserInteractionEnabled = true
-            buttonContinue.isUserInteractionEnabled = true
-            labelAlert.textColor = UIColor.orange
-            textFieldAmount.textColor = UIColor.gray
-        }
+//        if (textFieldAmount?.text! ?? "") ?? "" < minimumValue
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            img_Next.image = image
+//            img_Next.isUserInteractionEnabled = false
+//            buttonContinue.isUserInteractionEnabled = false
+//            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+//            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
+//        }
+//        if (textFieldAmount?.text! ?? "") ?? "" > (maximumValue)
+//        {
+//            let image = UIImage(named:"grayArrow")
+//            img_Next.image = image
+//            img_Next.isUserInteractionEnabled = false
+//            buttonContinue.isUserInteractionEnabled = false
+//            labelAlert.textColor = UIColor(hexValue: 0xFF3932)
+//            textFieldAmount.textColor = UIColor(hexValue: 0xFF3932)
+//        }
+//        else
+//        {
+//            let image = UIImage(named:"]greenarrow")
+//            img_Next.image = image
+//            img_Next.isUserInteractionEnabled = true
+//            buttonContinue.isUserInteractionEnabled = true
+//            labelAlert.textColor = UIColor.orange
+//            textFieldAmount.textColor = UIColor.gray
+//        }
     
 
 }
@@ -289,7 +338,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
                             vc.accounttilte = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
                             vc.bankName = self.LinkedAccountsObj?.data?[0].branchName
                             vc.FirstPayNo = self.LinkedAccountsObj?.data?[0].mobileNo
-                            vc.TotalAmount = self.textFieldAmount.text!
+                            vc.TotalAmount = Float(self.textFieldAmount.text!)
                             self.navigationController?.pushViewController(vc, animated: true
                             )
                             

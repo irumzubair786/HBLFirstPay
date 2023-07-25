@@ -23,7 +23,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     var Fetch_MobNo : String?
     var genResponseObj : GenericResponseModel?
     var fundsTransSuccessObj: FundsTransferApiResponse?
-    var TotalAmount : String?
+    var TotalAmount : Float?
     var userAccountNo : String?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -350,7 +350,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransactionSuccessfullVc") as! TransactionSuccessfullVc
     
-        vc.transactionAmount = TotalAmount
+        vc.transactionAmount = "\(TotalAmount ?? 0)"
         vc.transactionId = fundsTransSuccessObj?.data?.authIdResponse
         vc.transactionType = "Add Cash Linked Account"
 //        changes

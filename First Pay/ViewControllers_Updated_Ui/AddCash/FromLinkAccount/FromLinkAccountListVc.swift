@@ -141,7 +141,7 @@ extension FromLinkAccountListVc :UITableViewDelegate, UITableViewDataSource {
     
       let tag =  indexPath.row
       let cell = tableView.cellForRow(at: IndexPath(row: tag, section: 0)) as! cellFromLinkedAccountListVc
-        let vc = self.storyboard!.instantiateViewController(withIdentifier: "  AddCashVC") as!   AddCashVC
+        let vc = self.storyboard!.instantiateViewController(withIdentifier: "AddCashVC") as!   AddCashVC
         self.navigationController?.pushViewController(vc, animated: true)
         
 
