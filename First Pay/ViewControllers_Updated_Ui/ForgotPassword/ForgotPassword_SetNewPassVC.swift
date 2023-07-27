@@ -22,6 +22,8 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         cnicTextField.delegate = self
         mobileNumberTextField.delegate = self
         lbl_InvalidCnic.isHidden = true
+        cnicTextField.placeholder = "3740516XXXXX5"
+
         lblInvalidMobileNo.text = "Invalid Mobile Number.Please enter correct number."
         lblInvalidMobileNo.isHidden = true
 //        btn_next.isUserInteractionEnabled = false
@@ -29,21 +31,21 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
 //        IMG_NEXT_ARROW.isUserInteractionEnabled = false
         IMG_NEXT_ARROW.addGestureRecognizer(tapGestureRecognizerr)
-        mobileNumberTextField.mode = .localNumber
+//        mobileNumberTextField.mode = .localNumber
 //        cnicTextField.mode = .cnic
 //
         self.mobileNumberTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingDidEnd)
         
-//        self.cnicTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingChanged)
+        self.cnicTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingChanged)
         
         
     }
     var phoneArr = ["0301","0302","0303","0304","0305","0306","0307","0308","0309","0310","0311", "0312","0313","0314","0315","0316","0317","0318","0319","0320","0321","0322","0323","0324","0325","0331","0332","0333","0334","0335","0336","0340","0341","0342","0343","0344","0345","0346","0347","0348","0349","0355"]
     
-    @IBOutlet weak var mobileNumberTextField: NumberTextField!
+    @IBOutlet weak var mobileNumberTextField: UITextField!
     @IBOutlet weak var Main_view: UIView!
     @IBOutlet weak var lbl_InvalidCnic: UILabel!
-    @IBOutlet weak var cnicTextField: NumberTextField!
+    @IBOutlet weak var cnicTextField: UITextField!
     
     @IBOutlet weak var IMG_NEXT_ARROW: UIImageView!
     @IBOutlet weak var lblInvalidMobileNo: UILabel!
@@ -52,7 +54,23 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
-    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let newLength = (textField.text?.count)! + string.count - range.length
+        
+        
+        if textField == mobileNumberTextField{
+          
+            return newLength <= 11
+        }
+        
+        else {
+            cnicTextField.isUserInteractionEnabled = true
+            return newLength <= 13
+            
+        }
+        
+    }
     
     
     
@@ -230,17 +248,14 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     }
 
     @objc func changeTextInTextField() {
-        if mobileNumberTextField.text?.count ?? 0 < 12
+        if mobileNumberTextField.text?.count ?? 0 < 11
         {
             lblInvalidMobileNo.isHidden = false
             lblInvalidMobileNo.text = "Invalid Mobile Number.Please enter correct number."
             btn_next.isUserInteractionEnabled = false
             let image = UIImage(named: "grayArrow")
             IMG_NEXT_ARROW.image = image
-//
-            
         }
-       
         else
         {
             lblInvalidMobileNo.isHidden = true
@@ -250,7 +265,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     @objc func changeTextInTextField2() {
         let a = cnicTextField.text?.replacingOccurrences(of: "-", with: "")
         
-        if (cnicTextField.text?.count ?? 0) == 15
+        if (cnicTextField.text?.count ?? 0) == 13
         {
             let image = UIImage(named: "]greenarrow")
             IMG_NEXT_ARROW.image = image
@@ -260,7 +275,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
             lblInvalidMobileNo.isHidden = true
  
         }
-        else if (cnicTextField.text?.count ?? 0) != 15
+        else if (cnicTextField.text?.count ?? 0) != 13 ||  mobileNumberTextField.text?.count ?? 0 < 11
         {
             lbl_InvalidCnic.isHidden = false
             lbl_InvalidCnic.text = "Invalid Cnic"
@@ -377,19 +392,66 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     
     
 }
-extension ForgotPassword_SetNewPassVC{
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        if textField == mobileNumberTextField
-//        {
-//            if range.lowerBound <= 11{
+//extension ForgotPassword_SetNewPassVC{
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+////        if textField == mobileNumberTextField
+////        {
+////            if range.lowerBound <= 11{
+////                if string.isBackspace{
+////                    if textField.text?.count == 6{
+////                        textField.text?.removeLast(1)
+////
+////                    }
+////
+////                    btn_next.backgroundColor = .gray
+////                    btn_next.isUserInteractionEnabled = false
+////
+////                    return true
+////                }
+////                else{
+////
+////                    guard string.isNumeric(string: textField.text! as NSString, range: range) else { return false }
+////
+////                    //  insert 03 as prefix
+////                    if textField.text?.count == 0{
+////
+////                        return (string == "0")
+////                    }
+////
+////                    if textField.text?.count == 1{
+////
+////                        return (string == "3")
+////                    }
+////
+////                    //  insert space after 03xx
+////                    if textField.text?.count == 4{
+////                        DispatchQueue.main.async {
+////                            textField.text! += "-"+string
+////                        }
+////                    }
+////                    let field = "\(textField.text ?? "")\(string)"
+////
+//////                    btn_next.isUserInteractionEnabled = field.count == 12 ? true : false
+//////                    btn_next.backgroundColor = field.count == 12 ? .green : .gray
+////                    return true
+////                }
+////
+////            }
+////            return false
+////        }
+////        //  will limit characters
+////        else
+////        {
+//            if range.lowerBound <= 14{
 //                if string.isBackspace{
-//                    if textField.text?.count == 6{
-//                        textField.text?.removeLast(1)
-//
-//                    }
-//
-//                    btn_next.backgroundColor = .gray
-//                    btn_next.isUserInteractionEnabled = false
+//                    if textField.text?.count == 15{ textField.text?.removeLast(1) }
+//                    if textField.text?.count == 7{ textField.text?.removeLast(1) }
+////
+////                    lbl_InvalidCnic.isHidden = false
+////                    lbl_InvalidCnic.text = "Invalid Cnic"
+////                    btn_next.isUserInteractionEnabled = false
+////                    let image = UIImage(named: "grayArrow")
+////                    IMG_NEXT_ARROW.image = image
 //
 //                    return true
 //                }
@@ -397,92 +459,45 @@ extension ForgotPassword_SetNewPassVC{
 //
 //                    guard string.isNumeric(string: textField.text! as NSString, range: range) else { return false }
 //
-//                    //  insert 03 as prefix
-//                    if textField.text?.count == 0{
-//
-//                        return (string == "0")
-//                    }
-//
-//                    if textField.text?.count == 1{
-//
-//                        return (string == "3")
-//                    }
-//
 //                    //  insert space after 03xx
-//                    if textField.text?.count == 4{
+//                    if textField.text?.count == 5{
 //                        DispatchQueue.main.async {
 //                            textField.text! += "-"+string
+//                        }
+//                    }else if textField.text?.count == 13{
+//                        DispatchQueue.main.async {
+//                            textField.text! += "-"+string
+//
 //                        }
 //                    }
 //                    let field = "\(textField.text ?? "")\(string)"
 //
-////                    btn_next.isUserInteractionEnabled = field.count == 12 ? true : false
-////                    btn_next.backgroundColor = field.count == 12 ? .green : .gray
+//
+//                    if field.count == 14
+//                    {
+//                        let image = UIImage(named: "]greenarrow")
+//                        IMG_NEXT_ARROW.image = image
+//            //                btn_next.setImage(image, for: .normal)
+//                        btn_next.isUserInteractionEnabled = true
+//                        lbl_InvalidCnic.isHidden = true
+//                        lblInvalidMobileNo.isHidden = true
+//                    }
+//                    else
+//
+//                    {
+//                        lbl_InvalidCnic.isHidden = false
+//                        lbl_InvalidCnic.text = "Invalid Cnic"
+//                        btn_next.isUserInteractionEnabled = false
+//                        let image = UIImage(named: "grayArrow")
+//                        IMG_NEXT_ARROW.image = image
+//                    }
+//
 //                    return true
 //                }
 //
 //            }
 //            return false
-//        }
-//        //  will limit characters
-//        else
-//        {
-            if range.lowerBound <= 14{
-                if string.isBackspace{
-                    if textField.text?.count == 15{ textField.text?.removeLast(1) }
-                    if textField.text?.count == 7{ textField.text?.removeLast(1) }
+////        }
 //
-//                    lbl_InvalidCnic.isHidden = false
-//                    lbl_InvalidCnic.text = "Invalid Cnic"
-//                    btn_next.isUserInteractionEnabled = false
-//                    let image = UIImage(named: "grayArrow")
-//                    IMG_NEXT_ARROW.image = image
-                    
-                    return true
-                }
-                else{
-                    
-                    guard string.isNumeric(string: textField.text! as NSString, range: range) else { return false }
-                    
-                    //  insert space after 03xx
-                    if textField.text?.count == 5{
-                        DispatchQueue.main.async {
-                            textField.text! += "-"+string
-                        }
-                    }else if textField.text?.count == 13{
-                        DispatchQueue.main.async {
-                            textField.text! += "-"+string
-                            
-                        }
-                    }
-                    let field = "\(textField.text ?? "")\(string)"
-                   
-                    
-                    if field.count == 14
-                    {
-                        let image = UIImage(named: "]greenarrow")
-                        IMG_NEXT_ARROW.image = image
-            //                btn_next.setImage(image, for: .normal)
-                        btn_next.isUserInteractionEnabled = true
-                        lbl_InvalidCnic.isHidden = true
-                        lblInvalidMobileNo.isHidden = true
-                    }
-                    else
-                        
-                    {
-                        lbl_InvalidCnic.isHidden = false
-                        lbl_InvalidCnic.text = "Invalid Cnic"
-                        btn_next.isUserInteractionEnabled = false
-                        let image = UIImage(named: "grayArrow")
-                        IMG_NEXT_ARROW.image = image
-                    }
-                   
-                    return true
-                }
-                
-            }
-            return false
-//        }
-        
-    }
-}
+//    }
+//}

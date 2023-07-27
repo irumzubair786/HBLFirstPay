@@ -38,6 +38,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         TF_IssueDate.placeholder = "  DD/MM/YYYY"
+        TF_CnicNo.placeholder = "3740516XXXXX5"
         print("fetch city", get_Seclected_City)
         TF_CnicNo.delegate = self
         TF_CityList.delegate = self
@@ -46,8 +47,8 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         labelInvalidIssuedate.isHidden = true
         lbl_InvalidCnic.isHidden = true
         blurView.backgroundColor = UIColor.gray
-        dismissKeyboard()
-        TF_CnicNo.mode = .cnic
+//        dismissKeyboard()
+//        TF_CnicNo.mode = .cnic
         //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         blurView.alpha = 0.6
         blurView.isHidden = true
@@ -161,7 +162,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     @IBOutlet weak var lbl_CreateNewWallet: UILabel!
     @IBOutlet weak var lbl_Cnic_issuedate: UILabel!
     @IBOutlet weak var lbl_CniccardNumber: UILabel!
-    @IBOutlet weak var TF_CnicNo: NumberTextField!
+    @IBOutlet weak var TF_CnicNo: UITextField!
     @IBOutlet weak var lbl_InvalidCnic: UILabel!
     @IBOutlet weak var TF_IssueDate: UITextField!
     @IBOutlet weak var TF_CityList: UITextField!
