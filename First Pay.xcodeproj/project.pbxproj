@@ -251,6 +251,8 @@
 		18E0611429E831E400EB8986 /* CalendarCurrentDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18E0611229E831E400EB8986 /* CalendarCurrentDateCell.xib */; };
 		18E0611729E831F000EB8986 /* CalendarDefaultDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E0611529E831F000EB8986 /* CalendarDefaultDateCell.swift */; };
 		18E0611829E831F000EB8986 /* CalendarDefaultDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18E0611629E831F000EB8986 /* CalendarDefaultDateCell.xib */; };
+		18E3852E2A7432BF00BBA6B6 /* AddressUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E3852D2A7432BF00BBA6B6 /* AddressUpdate.swift */; };
+		18E385302A7432DC00BBA6B6 /* AddressUpdate.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18E3852F2A7432DC00BBA6B6 /* AddressUpdate.storyboard */; };
 		18E4C36E296FE811009BF8FF /* WalletToWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E4C36D296FE811009BF8FF /* WalletToWalletVC.swift */; };
 		18E4C37029701FD4009BF8FF /* MoneyTransfer_ReasonVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E4C36F29701FD3009BF8FF /* MoneyTransfer_ReasonVC.swift */; };
 		18E4C3722970205B009BF8FF /* cellMoneyTransfer_ReasonVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E4C3712970205B009BF8FF /* cellMoneyTransfer_ReasonVC.swift */; };
@@ -740,6 +742,8 @@
 		18E0611229E831E400EB8986 /* CalendarCurrentDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarCurrentDateCell.xib; sourceTree = "<group>"; };
 		18E0611529E831F000EB8986 /* CalendarDefaultDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDefaultDateCell.swift; sourceTree = "<group>"; };
 		18E0611629E831F000EB8986 /* CalendarDefaultDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarDefaultDateCell.xib; sourceTree = "<group>"; };
+		18E3852D2A7432BF00BBA6B6 /* AddressUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressUpdate.swift; sourceTree = "<group>"; };
+		18E3852F2A7432DC00BBA6B6 /* AddressUpdate.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddressUpdate.storyboard; sourceTree = "<group>"; };
 		18E4C36D296FE811009BF8FF /* WalletToWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToWalletVC.swift; sourceTree = "<group>"; };
 		18E4C36F29701FD3009BF8FF /* MoneyTransfer_ReasonVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyTransfer_ReasonVC.swift; sourceTree = "<group>"; };
 		18E4C3712970205B009BF8FF /* cellMoneyTransfer_ReasonVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellMoneyTransfer_ReasonVC.swift; sourceTree = "<group>"; };
@@ -1760,6 +1764,7 @@
 		18D130D42941E00E000C396E /* ViewControllers_Updated_Ui */ = {
 			isa = PBXGroup;
 			children = (
+				18E3852C2A7432AB00BBA6B6 /* UpdateAddress */,
 				18695C242A42E88300AE61A0 /* Mobile Packages */,
 				1871091B2A265F60002BE7EE /* CNICVerification */,
 				18527D4A29F1087700DD5D16 /* genericModel */,
@@ -1857,6 +1862,15 @@
 				18E0610E29E831D600EB8986 /* CalendarLoanDateCell.xib */,
 			);
 			path = CalendarLoanDateCell;
+			sourceTree = "<group>";
+		};
+		18E3852C2A7432AB00BBA6B6 /* UpdateAddress */ = {
+			isa = PBXGroup;
+			children = (
+				18E3852D2A7432BF00BBA6B6 /* AddressUpdate.swift */,
+				18E3852F2A7432DC00BBA6B6 /* AddressUpdate.storyboard */,
+			);
+			path = UpdateAddress;
 			sourceTree = "<group>";
 		};
 		18E661A329DB4C0700106A28 /* NanoLoanSuccessful */ = {
@@ -2389,6 +2403,7 @@
 				185855122955E45000E6F374 /* TabBar.storyboard in Resources */,
 				A2AF20F724C985450040F502 /* BottomViewVC.xib in Resources */,
 				3530B7582844D3BB00786A34 /* Book Me-Terms and Conditions - Updated.pdf in Resources */,
+				18E385302A7432DC00BBA6B6 /* AddressUpdate.storyboard in Resources */,
 				35B07C4A28F3E09900114BD0 /* tcUrdu.html in Resources */,
 				18F854642A2DE91D00FF374F /* GoogleService-Info.plist in Resources */,
 				182AD15E2A038E300057BADF /* ATMLocator.storyboard in Resources */,
@@ -2879,6 +2894,7 @@
 				1842A7A129543D7300153CE9 /* cellBillPayment.swift in Sources */,
 				A26CBBA924C6CEEF00C790B5 /* InstalmentDetailsTableViewCell.swift in Sources */,
 				A217829022002789005A4135 /* UtilityBillPaymentSuccessModel.swift in Sources */,
+				18E3852E2A7432BF00BBA6B6 /* AddressUpdate.swift in Sources */,
 				184104E8296D8BF30034E5EB /* SendMoney_MainVc.swift in Sources */,
 				1858FBF129CB08220007875A /* FromLinkAccountListVc.swift in Sources */,
 				1858FBFE29CB716B0007875A /* DelinkSuccessfullVC.swift in Sources */,
@@ -3085,7 +3101,7 @@
 				CODE_SIGN_ENTITLEMENTS = "First Pay/First Pay.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=*]" = YP6FSM85P6;
 				ENABLE_BITCODE = NO;
@@ -3130,7 +3146,7 @@
 				CODE_SIGN_ENTITLEMENTS = "First Pay/First Pay.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = YP6FSM85P6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
