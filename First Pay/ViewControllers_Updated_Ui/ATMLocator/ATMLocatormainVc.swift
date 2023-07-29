@@ -258,8 +258,6 @@ class ATMLocatormainVc: UIViewController {
     }
 }
 
-
-
 func drawMarker(labelText: String, imageName: String, coordinate2D: CLLocationCoordinate2D) -> GMSMarker {
     let marker = GMSMarker()
     marker.position = coordinate2D
