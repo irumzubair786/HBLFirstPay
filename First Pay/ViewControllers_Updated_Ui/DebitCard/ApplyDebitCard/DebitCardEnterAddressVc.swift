@@ -38,7 +38,7 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
     
     
     func placeHolderForTextView() {
-        NotificationCenter.default.addObserver(self, selector: #selector(textChanged), name: UITextView.NSNotification.Name.UITextViewTextDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(textChanged), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
 
         textView.delegate = self
                 placeholderLabel = UILabel()
