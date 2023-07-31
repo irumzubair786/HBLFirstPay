@@ -61,9 +61,11 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
         
         if textView.text.count < 20 {
             imageViewForwardButton.image = UIImage(named: "forwardButtonGray")
+            imageViewForwardButton.tag = 0
         }
         else if textView.text.count > 19 {
             imageViewForwardButton.image = UIImage(named: "forwardButtonGreenIcon")
+            imageViewForwardButton.tag = 1
             if textView.text.count > 90 {
                 textView.text.removeLast()
             }
@@ -141,6 +143,9 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
     
 
     @IBAction func buttonContinue(_ sender: UIButton) {
+        if imageViewForwardButton.tag == 0 {
+            return
+        }
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardPostalAddressConfirmationVC") as!  DebitCardPostalAddressConfirmationVC
         vc.fullUserName = self.fullUserName!
         vc.address = self.textView.text!
