@@ -173,6 +173,7 @@ class MyAccountLimitsVc: BaseClassVC {
         self.dismiss(animated: true)
     }
     @IBAction func buttonUpgrade(_ sender: UIButton) {
+        FBEvents.logEvent(title: .Upgrade_Account_Level_Path2)
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "UnverifeidAccountMainVc") as! UnverifeidAccountMainVc
         vc.balanceLimit = balanceLimit
         vc.balanceLimit1 = balanceLimit1

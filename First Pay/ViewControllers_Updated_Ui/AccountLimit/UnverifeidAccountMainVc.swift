@@ -82,6 +82,7 @@ class UnverifeidAccountMainVc: BaseClassVC {
     }
     
     @IBAction func buttonUpgrade(_ sender: UIButton) {
+        FBEvents.logEvent(title: .BioMetric_Sccanining)
         // call sdk fingerPrint
         fingerPrintVerification = FingerPrintVerification()
         DispatchQueue.main.async {

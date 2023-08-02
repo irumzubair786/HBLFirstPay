@@ -85,6 +85,8 @@ class UnVerifiedAccountVC: UIViewController {
     }
     
     @IBAction func buttonUpgrade(_ sender: UIButton) {
+        FBEvents.logEvent(title: .Upgrade_Account_Level)
+        
         // call sdk fingerPrint
         fingerPrintVerification = FingerPrintVerification()
         DispatchQueue.main.async {

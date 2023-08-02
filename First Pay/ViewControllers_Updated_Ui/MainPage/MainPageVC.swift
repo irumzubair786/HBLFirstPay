@@ -45,13 +45,16 @@ class MainPageVC: BaseClassVC {
         let storyBoard = UIStoryboard(name: Storyboard.TabBar.rawValue, bundle: Bundle.main)
         let vc = storyBoard.instantiateViewController(withIdentifier: "ToggleMenuVC") as! ToggleMenuVC
         
-        self.navigationController?.pushViewController(vc, animated: true)
+       
         if let presentedViewController = self.presentedViewController {
+
             // yourViewController is currently presenting a view controller modally
         } else {
             // yourViewController is not presenting a view controller modally
+            
             present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
         }
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     var modelExpiredCnicVerification: ModelExpiredCnicVerification? {
         didSet {
@@ -290,7 +293,7 @@ class MainPageVC: BaseClassVC {
     }
   
     
-    
+//    sideMenu
     private func sideMenuSetup(){
         self.sideMenu = storyboard!.instantiateViewController(withIdentifier: "sideMenu") as? UISideMenuNavigationController
         SideMenuManager.default.menuLeftNavigationController = sideMenu

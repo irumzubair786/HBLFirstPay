@@ -78,6 +78,8 @@ class AddCashMainVc: BaseClassVC {
     @IBOutlet weak var buttonGetLoan: UIButton!
     
     @IBAction func buttonGetLoan(_ sender: UIButton) {
+        FBEvents.logEvent(title: .Upgrade_Account_Level_NanoLoan)
+        
         if DataManager.instance.accountLevel == "LEVEL 0" {
         //   call sdk
             fingerPrintVerification = FingerPrintVerification()

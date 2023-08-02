@@ -17,7 +17,6 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
     var reasonsObj : GetReasonsModel?
     var transactionApiResponseObj : FTApiResponse?
     var LinkedAccountsObj : getLinkedAccountModel?
-
     override func viewDidLoad() {
         super.viewDidLoad()   
         getLinkAccounts()
@@ -30,7 +29,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
     
         // Do any additional setup after loading the view.
     }
-   var minimumValue = 1
+    var minimumValue = 1
     var maximumValue = 25000
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
@@ -361,9 +360,4 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
-    
-    
-    
-    
-
 }

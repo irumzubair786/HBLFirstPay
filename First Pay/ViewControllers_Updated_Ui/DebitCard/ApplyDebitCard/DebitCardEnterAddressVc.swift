@@ -131,7 +131,6 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var viewBackGroundNextButton: UIView!
 
     @IBOutlet weak var imageViewForwardButton: UIImageView!
-
     @IBOutlet weak var viewBackGroundTextView: UIView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var labelCount: UILabel!
@@ -140,8 +139,6 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
     @IBAction func ButtonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-    
-
     @IBAction func buttonContinue(_ sender: UIButton) {
         if imageViewForwardButton.tag == 0 {
             return
@@ -150,11 +147,8 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
         vc.fullUserName = self.fullUserName!
         vc.address = self.textView.text!
         self.navigationController?.pushViewController(vc, animated: true)
-
     }
-    
-    
-    
+
 }
 extension DebitCardEnterAddressVc : UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {

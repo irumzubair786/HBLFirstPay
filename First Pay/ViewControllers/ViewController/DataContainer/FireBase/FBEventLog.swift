@@ -220,8 +220,17 @@ struct FBEvents {
         case Loans_repaybenefits_click
         case Loans_history_landing
         case Loans_historyrepay_click
-        
         case Transactions_active
+        
+//       Account Limits
+        case Upgrade_Account_Level
+        case Upgrade_Account_Level_Path2
+        case Upgrade_Account_Level_NanoLoan
+        case BioMetric_Sccanining
+        case BioMetric_Sccanining_Successful
+        
+        
+        
         
 //        =======
         enum name: String {

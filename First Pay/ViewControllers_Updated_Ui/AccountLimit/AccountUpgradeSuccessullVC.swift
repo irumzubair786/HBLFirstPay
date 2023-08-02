@@ -31,6 +31,7 @@ class AccountUpgradeSuccessullVC: UIViewController {
     
     @IBAction func buttonContinue(_ sender: UIButton) {
 //        self.dismiss(animated: true)
+        FBEvents.logEvent(title: .BioMetric_Sccanining_Successful)
         let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
         self.present(vc, animated: true)
