@@ -21,16 +21,16 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
         viewBackGroundNextButton.circle()
         viewBackGroundTextView.radius(radius: 12, color: UIColor.clrGreen)
         placeHolderForTextView()
-//        ButtonBack.setTitle("", for: .normal)
-//        buttonEdit.setTitle("", for: .normal)
-//        textFieldAddress.delegate  = self
-//        buttonContinue.isUserInteractionEnabled = false
-
-//        imageNextArrow.isUserInteractionEnabled = false
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(moveToNext(tapGestureRecognizer:)))
-//        imageNextArrow.isUserInteractionEnabled = true
-//        imageNextArrow.addGestureRecognizer(tapGesture)
-//        labelName.text = fullUserName
+        //        ButtonBack.setTitle("", for: .normal)
+        //        buttonEdit.setTitle("", for: .normal)
+        //        textFieldAddress.delegate  = self
+        //        buttonContinue.isUserInteractionEnabled = false
+        
+        //        imageNextArrow.isUserInteractionEnabled = false
+        //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(moveToNext(tapGestureRecognizer:)))
+        //        imageNextArrow.isUserInteractionEnabled = true
+        //        imageNextArrow.addGestureRecognizer(tapGesture)
+        //        labelName.text = fullUserName
         
         
         // Do any additional setup after loading the view.
@@ -38,32 +38,33 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
     
     
     func placeHolderForTextView() {
+        NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(textChanged), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
-
+        
         textView.delegate = self
-                placeholderLabel = UILabel()
-                placeholderLabel.text = "Ho. 568, St. 17, Near Bilal Mosque, G-10/1 Islamabad"
-                placeholderLabel.font = .italicSystemFont(ofSize: (textView.font?.pointSize)!)
-                placeholderLabel.sizeToFit()
-                textView.addSubview(placeholderLabel)
-                placeholderLabel.frame.origin = CGPoint(x: 8, y: (textView.font?.pointSize)! / 2)
-                placeholderLabel.textColor = .tertiaryLabel
-                placeholderLabel.isHidden = !textView.text.isEmpty
-
+        placeholderLabel = UILabel()
+        placeholderLabel.text = "Ho. 568, St. 17, Near Bilal Mosque, G-10/1 Islamabad"
+        placeholderLabel.font = .italicSystemFont(ofSize: (textView.font?.pointSize)!)
+        placeholderLabel.sizeToFit()
+        textView.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 8, y: (textView.font?.pointSize)! / 2)
+        placeholderLabel.textColor = .tertiaryLabel
+        placeholderLabel.isHidden = !textView.text.isEmpty
+        
         labelAddresHInt.attributedText = attributedText(label: labelAddresHInt, withString: labelAddresHInt.text!, boldString: "Address Must Include:", boldStringColor: UIColor.clrOrange)
         
         labelAddressSample.attributedText = attributedText(label: labelAddressSample, withString: labelAddressSample.text!, boldString: "Sample Address:", boldStringColor: UIColor.clrLightGray)
         
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 12, bottom: 4, right: 12)
-
+        
     }
     @objc func textChanged() {
         
-        if textView.text.count < 20 {
+        if textView.text.count < 1 {
             imageViewForwardButton.image = UIImage(named: "forwardButtonGray")
             imageViewForwardButton.tag = 0
         }
-        else if textView.text.count > 19 {
+        else if textView.text.count > 0 {
             imageViewForwardButton.image = UIImage(named: "forwardButtonGreenIcon")
             imageViewForwardButton.tag = 1
             if textView.text.count > 90 {
@@ -82,8 +83,8 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
         let labelWidth = label.frame.size.width
         let myStyle = NSMutableParagraphStyle()
         myStyle.tabStops = [NSTextTab(textAlignment: .left, location: 0.0, options: [:]),
-          NSTextTab(textAlignment: .right, location: labelWidth, options: [:])]
-
+                            NSTextTab(textAlignment: .right, location: labelWidth, options: [:])]
+        
         let attributedString = NSMutableAttributedString(
             string: completeString,
             attributes: [NSAttributedString.Key.font: font])
@@ -99,37 +100,37 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
         return attributedString
     }
     
-//    @objc func moveToNext(tapGestureRecognizer: UITapGestureRecognizer)
-//    {
-//
-//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardPostalAddressConfirmationVC") as!  DebitCardPostalAddressConfirmationVC
-//        vc.fullUserName = self.fullUserName!
-//        vc.address = self.textFieldAddress.text!
-//        self.navigationController?.pushViewController(vc, animated: true)
-//
-//
-//
-//    }
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        if textFieldAddress.text?.count != 0
-//        {
-//            buttonContinue.isUserInteractionEnabled = true
-//            imageNextArrow.image = UIImage(named: "]greenarrow")
-//            imageNextArrow.isUserInteractionEnabled = true
-//            Address  = textFieldAddress.text
-//
-//        }
-//        else
-//        {
-//            buttonContinue.isUserInteractionEnabled = false
-//            imageNextArrow.image = UIImage(named: "grayArrow")
-//            imageNextArrow.isUserInteractionEnabled = false
-//        }
-//    }
-
+    //    @objc func moveToNext(tapGestureRecognizer: UITapGestureRecognizer)
+    //    {
+    //
+    //        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardPostalAddressConfirmationVC") as!  DebitCardPostalAddressConfirmationVC
+    //        vc.fullUserName = self.fullUserName!
+    //        vc.address = self.textFieldAddress.text!
+    //        self.navigationController?.pushViewController(vc, animated: true)
+    //
+    //
+    //
+    //    }
+    //    func textFieldDidEndEditing(_ textField: UITextField) {
+    //        if textFieldAddress.text?.count != 0
+    //        {
+    //            buttonContinue.isUserInteractionEnabled = true
+    //            imageNextArrow.image = UIImage(named: "]greenarrow")
+    //            imageNextArrow.isUserInteractionEnabled = true
+    //            Address  = textFieldAddress.text
+    //
+    //        }
+    //        else
+    //        {
+    //            buttonContinue.isUserInteractionEnabled = false
+    //            imageNextArrow.image = UIImage(named: "grayArrow")
+    //            imageNextArrow.isUserInteractionEnabled = false
+    //        }
+    //    }
+    
     @IBOutlet weak var buttonNext: UIButton!
     @IBOutlet weak var viewBackGroundNextButton: UIView!
-
+    
     @IBOutlet weak var imageViewForwardButton: UIImageView!
     @IBOutlet weak var viewBackGroundTextView: UIView!
     @IBOutlet weak var textView: UITextView!
@@ -140,7 +141,10 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     @IBAction func buttonContinue(_ sender: UIButton) {
-        if imageViewForwardButton.tag == 0 {
+        if textView.text.count < 20 {
+            self.showAlertCustomPopup(title: "Address too Short", message: "Please enter accurate and detailed mailing address for delivery", iconName: .iconError) { _ in
+                
+            }
             return
         }
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardPostalAddressConfirmationVC") as!  DebitCardPostalAddressConfirmationVC
@@ -148,7 +152,6 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
         vc.address = self.textView.text!
         self.navigationController?.pushViewController(vc, animated: true)
     }
-
 }
 extension DebitCardEnterAddressVc : UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
