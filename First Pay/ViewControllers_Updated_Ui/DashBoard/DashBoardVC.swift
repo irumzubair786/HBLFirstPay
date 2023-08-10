@@ -279,6 +279,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
         }
     }
+   
+
     func getActiveLoan() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         

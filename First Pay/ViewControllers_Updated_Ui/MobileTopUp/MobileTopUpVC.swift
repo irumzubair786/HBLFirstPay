@@ -437,6 +437,7 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         
         showActivityIndicator()
         //        v2
+//        change here
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billInquiry"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany": GlobalData.Select_operator_code,"utilityConsumerNo":self.Tf_mobileNumber.text!,"accountType": DataManager.instance.accountType!]

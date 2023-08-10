@@ -31,20 +31,34 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
         print("get parentCompanyID", parentCompanyID!)
       
         tableView.rowHeight = 90
-        getCompanies()
-//       if  GlobalData.topup == "Prepaid"
-//        {
-//           getCompanies()
-//       }
-//        else
-//        {
-//            getCompaniesPostPaid(id: parentCompanyID)
-//        }
+//        getCompanies()
+       if  GlobalData.topup == "Prepaid"
+        {
+           getCompanies()
+       }
+        else
+        {
+            getCompaniesPostPaid(id: parentCompanyID)
+        }
+    
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoStatement(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizerr)
         
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool){
+        
+        
+        
+        if  GlobalData.topup == "Prepaid"
+         {
+            getCompanies()
+        }
+         else
+         {
+             getCompaniesPostPaid(id: parentCompanyID)
+         }
     }
     @IBOutlet weak var blurView: UIImageView!
     
@@ -71,7 +85,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
        
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/getCompaniesById/\(self.parentCompanyID ?? 0)"
        
          let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
@@ -135,7 +149,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
        
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/getCompaniesById/\(self.parentCompanyID ?? 0)"
        
          let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
