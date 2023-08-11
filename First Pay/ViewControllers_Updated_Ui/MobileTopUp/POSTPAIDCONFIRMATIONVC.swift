@@ -379,7 +379,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         vc.amount = "\(labelAmount.text!)"
         vc.phoneNumber = phoneNumber
         self.present(vc, animated: true)
-        self.navigationController?.pushViewController(vc, animated: false)
+//        self.navigationController?.pushViewController(vc, animated: false)
     }
     
 }

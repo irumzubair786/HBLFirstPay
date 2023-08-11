@@ -67,11 +67,22 @@ class TransferAmountSuccessfulVC: BaseClassVC {
            
     }
     
-    
+    func dismissRootViewController() {
+            if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+                rootViewController.dismiss(animated: true, completion: nil)
+            }
+        }
+
     @IBAction func Action_Cancel(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-        self.present(vc, animated: true)
+        dismissRootViewController()
+//        DispatchQueue.main.async {
+//            self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+//        }
+        
+        
+//        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+//        self.present(vc, animated: true)
        
         
     }

@@ -25,13 +25,17 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     var returnData: (() -> ())!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         FBEvents.logEvent(title: .Easyload_category_selection)
         FaceBookEvents.logEvent(title: .Easyload_category_selection)
         
         print("get parentCompanyID", parentCompanyID!)
-      
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.reloadData()
         tableView.rowHeight = 90
-//        getCompanies()
+//          getCompanies()
        if  GlobalData.topup == "Prepaid"
         {
            getCompanies()
@@ -49,7 +53,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     }
     override func viewWillAppear(_ animated: Bool){
         
-        
+        getCompanies()
         
         if  GlobalData.topup == "Prepaid"
          {
@@ -170,6 +174,8 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
             
             if response.response?.statusCode == 200 {
                 if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
+                    
+                   
                     if let companies = self.billCompanyListObj?.companies {
                         self.comapniesList = companies
                         self.dummyarr = self.billCompanyListObj?.stringCompaniesList
@@ -185,8 +191,7 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
                         self.getOperator.append(temp)
                     }
                     
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
+                    
                     self.tableView.reloadData()
                 }
                 else {

@@ -108,6 +108,7 @@ class TransferAmountConfirmationVc: BaseClassVC {
         print(params)
         print(compelteUrl)
         print(header)
+        print(parameters)
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
 //            (response: DataResponse<FundsTransferApiResponse>) in
@@ -149,11 +150,9 @@ class TransferAmountConfirmationVc: BaseClassVC {
         vc.amount = amount!
         vc.Trascationid = successmodelobj?.data?.authIdResponse
         vc.TransactionDate = successmodelobj?.data?.transDate
-        
-        
-        self.present(vc, animated: true)
-//        self.navigationController!.pushViewController(vc, animated: true)
-     
+                self.present(vc, animated: true)
+//        self.navigationController?.pushViewController(vc, animated: true)
+//
     
     }
     

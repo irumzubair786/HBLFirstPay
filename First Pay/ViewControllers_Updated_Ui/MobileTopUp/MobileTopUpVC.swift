@@ -476,7 +476,8 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
                     //                    vc.DueDate = DueDate ?? ""
                     //                    vc.status = status ?? ""
                     vc.amount = (self.billtransactionOBj?.data?.actualDueAmount)
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    self.present(vc, animated: true)
+//                    self.navigationController?.pushViewController(vc, animated: true)
                     
                 }
                 else {
