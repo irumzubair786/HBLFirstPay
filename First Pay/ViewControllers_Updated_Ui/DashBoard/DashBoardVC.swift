@@ -462,7 +462,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         {
             imgLevel.isHidden = false
 //            please change level here.... level 0 replace by level 1
-            DataManager.instance.accountLevel = "LEVEL 0"
+            DataManager.instance.accountLevel = "LEVEL 1"
             imgLevel.image = UIImage(named: "Verified 24x")
         }
         else
