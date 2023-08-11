@@ -74,7 +74,10 @@ class TransferAmountSuccessfulVC: BaseClassVC {
         }
 
     @IBAction func Action_Cancel(_ sender: UIButton) {
-        dismissRootViewController()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+        }
+//        dismissRootViewController()
 //        DispatchQueue.main.async {
 //            self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
 //        }

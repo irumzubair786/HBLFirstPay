@@ -53,21 +53,41 @@ class changeLimitVC: BaseClassVC {
     @IBOutlet weak var labelminamount: UILabel!
     @IBOutlet weak var labelAmount: UILabel!
     @IBOutlet weak var labelname: UILabel!
+    var maximumAmount : String?
 //    @IBOutlet weak var blurView: UIVisualEffectView!
-   
+    var maxValue : Float?
+    func CommaSeprationSection1()
+    {
+//        updateUI()
+       
+        var number = maxValue
+        var formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        maximumAmount = (formatter.string(from: NSNumber(value: number ?? 0)))!
+        print("successfuly DailyTotalLimit1", maximumAmount)
+        labelMaxamount.text = "Rs. \(maximumAmount!)"
+    }
+    
+    
+    
     func updateUI() {
         
         labelname.text  = "Change \(daily!) Limit"
         labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "Rs.") ?? "")"
         
         let minimumAmount = (Double("\(dailyminValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
-        let maximumAmount = (Double("\(dailymaxValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
-
-        labelminamount.text = "Rs. \(minimumAmount)"
-        labelMaxamount.text = "Rs. \(maximumAmount)"
         
+        
+//       maximumAmount = (Double("\(dailymaxValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
+        maximumAmount =  dailymaxValue
+        maxValue = Float(maximumAmount!)
+        labelminamount.text = "Rs. \(minimumAmount)"
+       
+        CommaSeprationSection1()
         convertdailyminValue = Int(minimumAmount.getIntegerValue())
-        convertdailymaxValue = Int(maximumAmount.getIntegerValue())
+        convertdailymaxValue = Int(maximumAmount?.getIntegerValue() ?? "")
         if maximumAmount == "0" {
             convertdailymaxValue = 200000
         }
@@ -137,7 +157,22 @@ class changeLimitVC: BaseClassVC {
     var modelGetAccount : ChangeLimitModel? {
         didSet{
             if self.modelGetAccount?.responsecode == 1  {
-                self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSuccess)
+                self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSuccess,buttonNames: [
+                    
+                                ["buttonName": "OK",
+                                "buttonBackGroundColor": UIColor.clrOrange,
+                                "buttonTextColor": UIColor.white]
+                            ] as? [[String: AnyObject]])
+                 
+//               move to dashboard
+//                self.dismiss(animated: true)
+                DispatchQueue.main.async {
+                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+                }
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+//                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+//                }
+      
             }
             else {
                 //MARK: - Loan Failed Successfully
