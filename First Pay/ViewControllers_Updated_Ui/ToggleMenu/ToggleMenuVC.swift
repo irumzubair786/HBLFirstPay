@@ -47,6 +47,12 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
 //        df.dateFormat = "yyyy-MM-dd"
 //        dateString = df.string(from: date)
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
+    }
+    
+    @objc func dismissViewController() {
+        dismiss(animated: true)
     }
     @objc private func batteryLevelChanged(
     ){

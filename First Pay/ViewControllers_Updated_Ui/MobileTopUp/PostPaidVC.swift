@@ -40,22 +40,25 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         NotificationCenter.default.removeObserver(self)
         
         NotificationCenter.default.addObserver(self, selector:#selector(showSelectedDataPostpaid), name: Notification.Name("showSelectedDataPostpaid"),object: nil)
+        
+        
+        NotificationCenter.default.addObserver(self, selector:#selector(removeFieldsPostpaid), name: Notification.Name("removeFieldsPostpaid"),object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
+    }
     
+    @objc func dismissViewController() {
+        self.dismiss(animated: true)
+    }
     
-    NotificationCenter.default.addObserver(self, selector:#selector(removeFieldsPostpaid), name: Notification.Name("removeFieldsPostpaid"),object: nil)
-}
-    
-    
-
-@objc func removeFieldsPostpaid() {
-    tfMobileNo.text = ""
-    textFieldOperator.text = ""
-    changeTextInTextField()
-}
+    @objc func removeFieldsPostpaid() {
+        tfMobileNo.text = ""
+        textFieldOperator.text = ""
+        changeTextInTextField()
+    }
     @objc func showSelectedDataPostpaid() {
         textFieldOperator.text = GlobalData.Selected_operator
         if textFieldOperator.text?.count != 0 &&  tfMobileNo.text?.count == 11{
-       
+            
             let image = UIImage(named:"]greenarrow")
             imgnextarrow.image = image
             imgnextarrow.isUserInteractionEnabled = true
@@ -68,22 +71,22 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
             buttonContinue.isUserInteractionEnabled = false
         }
         
-//        if tfMobileNo.text?.count == 11
-//        {
-//            textFieldOperator.text = GlobalData.Selected_operator
-//            let image = UIImage(named:"]greenarrow")
-//            imgnextarrow.image = image
-//            imgnextarrow.isUserInteractionEnabled = true
-//            buttonContinue.isUserInteractionEnabled = true
-//        }
-//        else
-//        {
-//            let image = UIImage(named:"grayArrow")
-//            imgnextarrow.image = image
-//            imgnextarrow.isUserInteractionEnabled = false
-//            buttonContinue.isUserInteractionEnabled = false
-//
-//        }
+        //        if tfMobileNo.text?.count == 11
+        //        {
+        //            textFieldOperator.text = GlobalData.Selected_operator
+        //            let image = UIImage(named:"]greenarrow")
+        //            imgnextarrow.image = image
+        //            imgnextarrow.isUserInteractionEnabled = true
+        //            buttonContinue.isUserInteractionEnabled = true
+        //        }
+        //        else
+        //        {
+        //            let image = UIImage(named:"grayArrow")
+        //            imgnextarrow.image = image
+        //            imgnextarrow.isUserInteractionEnabled = false
+        //            buttonContinue.isUserInteractionEnabled = false
+        //
+        //        }
     }
     func submitButtonEnable() {
         if tfMobileNo.text?.count == 11
@@ -135,25 +138,25 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         
         
-//        if TfmobileNumber.text?.count != 0
-//        {
-//            textFieldOperator.text = GlobalData.Selected_operator
-//            let image = UIImage(named:"]greenarrow")
-//            imgnextarrow.image = image
-//            imgnextarrow.isUserInteractionEnabled = true
-//            buttonContinue.isUserInteractionEnabled = true
-//        }
-//        else
-//        {
-//            let image = UIImage(named:"grayArrow")
-//            imgnextarrow.image = image
-//            imgnextarrow.isUserInteractionEnabled = false
-//            buttonContinue.isUserInteractionEnabled = false
-//        }
+        //        if TfmobileNumber.text?.count != 0
+        //        {
+        //            textFieldOperator.text = GlobalData.Selected_operator
+        //            let image = UIImage(named:"]greenarrow")
+        //            imgnextarrow.image = image
+        //            imgnextarrow.isUserInteractionEnabled = true
+        //            buttonContinue.isUserInteractionEnabled = true
+        //        }
+        //        else
+        //        {
+        //            let image = UIImage(named:"grayArrow")
+        //            imgnextarrow.image = image
+        //            imgnextarrow.isUserInteractionEnabled = false
+        //            buttonContinue.isUserInteractionEnabled = false
+        //        }
         
     }
     
-   
+    
     @objc func changeTextInTextField() {
         if tfMobileNo.text?.count  != 11
         {
@@ -175,9 +178,9 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         print("end editing")
     }
     @IBAction func TfmobileNumber(_ sender: UITextField) {
-//        if tfMobileNo.text! == "" {
-//            return()
-//        }
+        //        if tfMobileNo.text! == "" {
+        //            return()
+        //        }
         if parentCompanyID == nil
         {
             topUpParentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId ?? 0
@@ -199,9 +202,9 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var tfMobileNo: UITextField!
     @IBOutlet weak var buttonDropDown: UIButton!
     @IBAction func buttonDropDown(_ sender: UIButton) {
-//        if tfMobileNo.text! == "" {
-//            return()
-//        }
+        //        if tfMobileNo.text! == "" {
+        //            return()
+        //        }
         if parentCompanyID == nil
         {
             topUpParentCompanyID = billCompanyObj?.companies?[1].ubpCompaniesId ?? 0
@@ -215,7 +218,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
     }
     @IBAction func buttonContactList(_ sender: UIButton) {
-       
+        
         self.present(contactPicker, animated: true, completion: nil)
         
     }
@@ -249,13 +252,13 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
             return
         }
         
-//        showActivityIndicator()
+        //        showActivityIndicator()
         self.showActivityIndicator2()
-
+        
         let compelteUrl = GlobalConstants.BASE_URL +          "Transactions/v2/getParentTopUpCompanies"
         //getcompanyfromparentid
         //biillinquiry
-         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
@@ -263,16 +266,16 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
-//            (response: DataResponse<BillPaymentCompanies>) in
+            //            (response: DataResponse<BillPaymentCompanies>) in
             response in
             self.hideActivityIndicator2()
             guard let data = response.data else { return }
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             self.billCompanyObj = Mapper<BillPaymentCompanies>().map(JSONObject: json)
-
             
-//            self.hideActivityIndicator()
-//            self.billCompanyObj = response.result.value
+            
+            //            self.hideActivityIndicator()
+            //            self.billCompanyObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
@@ -317,7 +320,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         }
         
         showActivityIndicator()
-//        v2
+        //        v2
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billInquiry"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany": GlobalData.Select_operator_code,"utilityConsumerNo":self.tfMobileNo.text!,"accountType": DataManager.instance.accountType!]
@@ -331,7 +334,7 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
@@ -339,13 +342,13 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//            (response: DataResponse<BillAPiResponse>) in
+            //            (response: DataResponse<BillAPiResponse>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
-//            self.billtransactionOBj = response.result.value
+            //            self.billtransactionOBj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
@@ -355,25 +358,25 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
                     //                    vc.DueDate = DueDate ?? ""
                     //                    vc.status = status ?? ""
                     let Amount = self.billtransactionOBj?.data?.actualDueAmount
-                   if  GlobalData.Select_operator_code == "TELNOR02"
+                    if  GlobalData.Select_operator_code == "TELNOR02"
                     {
-                         if Amount != nil
-                         {
-                             vc.amount = Amount
-                             
-                         }
-                         else
-                         {
-                             vc.amount = "0"
-                           
-                         }
-                   }
-                
-                 else
+                        if Amount != nil
+                        {
+                            vc.amount = Amount
+                            
+                        }
+                        else
+                        {
+                            vc.amount = "0"
+                            
+                        }
+                    }
+                    
+                    else
                     {
-                     vc.amount = Amount
-                 }
-                   
+                        vc.amount = Amount
+                    }
+                    
                     self.present(vc, animated: true)
                     //                    self.navigationController?.pushViewController(vc, animated: true)
                     
@@ -420,9 +423,9 @@ extension PostPaidVC: CNContactPickerDelegate {
         }
         
         if phoneNumberCount > 0 {
-//            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
+            //            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
             self.tfMobileNo.text = contact.phoneNumbers[0].value.stringValue.getIntegerValue()
-       var tempMobileNo =  self.tfMobileNo.text?.replacingOccurrences(of: "+92", with: "0")
+            var tempMobileNo =  self.tfMobileNo.text?.replacingOccurrences(of: "+92", with: "0")
             var a = tempMobileNo?.substring(to: 2)
             if a == "92"
             {
@@ -438,7 +441,7 @@ extension PostPaidVC: CNContactPickerDelegate {
             for i in 0...phoneNumberCount-1 {
                 let phoneAction = UIAlertAction(title: contact.phoneNumbers[i].value.stringValue, style: .default, handler: {
                     alert -> Void in
-//                    self.setNumberFromContact(contactNumber: contact.phoneNumbers[i].value.stringValue)
+                    //                    self.setNumberFromContact(contactNumber: contact.phoneNumbers[i].value.stringValue)
                 })
                 alertController.addAction(phoneAction)
             }

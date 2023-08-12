@@ -13,19 +13,25 @@ import SwiftKeychainWrapper
 import ObjectMapper
 
 class TransferAmountConfirmationVc: BaseClassVC {
- 
+    
     var successmodelobj : FundsTransferApiResponse?
     var amount :String?
     var phoneNumber  : String?
     
-  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         back.setTitle("", for: .normal)
         nextBtn.setTitle("", for: .normal)
         updateUi()
-        
         // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
+    }
+    
+    @objc func dismissViewController() {
+        dismiss(animated: true)
     }
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var lblReason: UILabel!
@@ -55,15 +61,13 @@ class TransferAmountConfirmationVc: BaseClassVC {
     
     @IBOutlet weak var back: UIButton!
     @IBAction func Action_back(_ sender: UIButton) {
-        self.dismiss(animated: true)
-//        self.navigationController?.popViewController(animated: true)
-        
+        dismissViewController()
     }
     
     
     @IBAction func Continue(_ sender: UIButton) {
         payTopUp()
-//
+        //
         
         
         
@@ -95,7 +99,7 @@ class TransferAmountConfirmationVc: BaseClassVC {
             userCnic = ""
         }
         showActivityIndicator()
-//        v2
+        //        v2
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany":GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":self.amount!.getIntegerValue(),"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":"","addBeneficiary":"","utilityBillCompanyId":GlobalData.Select_operator_id ?? ""] as [String : Any]
@@ -111,18 +115,18 @@ class TransferAmountConfirmationVc: BaseClassVC {
         print(parameters)
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//            (response: DataResponse<FundsTransferApiResponse>) in
+            //            (response: DataResponse<FundsTransferApiResponse>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             self.successmodelobj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
             
-//             self.successmodelobj = response.result.value
+            //             self.successmodelobj = response.result.value
             if response.response?.statusCode == 200 {
                 if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
                     self.navigateToSuccessVC()
-//                    self.tablleview?.reloadData()
+                    //                    self.tablleview?.reloadData()
                 }
                 else {
                     if let message = self.successmodelobj?.messages{
@@ -135,25 +139,25 @@ class TransferAmountConfirmationVc: BaseClassVC {
                 if let message = self.successmodelobj?.messages{
                     self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                 }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
             }
         }
     }
-//    --------------
+    //    --------------
     
     
     private func navigateToSuccessVC(){
-           
-           let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountSuccessfulVC") as! TransferAmountSuccessfulVC
+        
+        let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountSuccessfulVC") as! TransferAmountSuccessfulVC
         vc.phoneNumber = phoneNumber
         vc.amount = amount!
         vc.Trascationid = successmodelobj?.data?.authIdResponse
         vc.TransactionDate = successmodelobj?.data?.transDate
-                self.present(vc, animated: true)
-//        self.navigationController?.pushViewController(vc, animated: true)
-//
-    
+        self.present(vc, animated: true)
+        //        self.navigationController?.pushViewController(vc, animated: true)
+        //
+        
     }
     
     

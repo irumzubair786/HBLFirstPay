@@ -55,6 +55,12 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector:#selector(showSelectedDataPrePaid), name: Notification.Name("showSelectedDataPrePaid"),object: nil)
         
         NotificationCenter.default.addObserver(self, selector:#selector(removeFieldsPrepaid), name: Notification.Name("removeFieldsPrepaid"),object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
+    }
+    
+    @objc func dismissViewController() {
+        self.dismiss(animated: true)
     }
     
     @objc func removeFieldsPrepaid() {
@@ -271,9 +277,6 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
     
     @IBAction func Action_back(_ sender: UIButton) {
         self.dismiss(animated: true)
-        
-        //        let  myDict = [ "name": "DashBoardVC"]
-        //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
     }
     
     @IBAction func ShowContactList(_ sender: UIButton) {

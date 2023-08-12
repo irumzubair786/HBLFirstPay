@@ -48,6 +48,12 @@ class MyAccountLimitsVc: BaseClassVC {
         tableView.rowHeight = 110
         checkLevel()
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
+    }
+    
+    @objc func dismissViewController() {
+        dismiss(animated: true)
     }
     
     @IBOutlet weak var imageCheckLevel: UIImageView!

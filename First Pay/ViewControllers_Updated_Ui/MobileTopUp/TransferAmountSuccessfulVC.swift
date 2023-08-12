@@ -24,6 +24,13 @@ class TransferAmountSuccessfulVC: BaseClassVC {
         btnShare.setTitle("", for: .normal)
         updateui()
         // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
+    }
+    
+    @objc func dismissViewController() {
+        dismiss(animated: true)
     }
     
     @IBOutlet weak var lblMainTitle: UILabel!
@@ -48,10 +55,10 @@ class TransferAmountSuccessfulVC: BaseClassVC {
     
     
     @IBAction func Action_DownLoad(_ sender: UIButton) {
-
-                mainView.snapshotView(afterScreenUpdates: true)
-                image = mainView.convertToImage()
-                print(image)
+        
+        mainView.snapshotView(afterScreenUpdates: true)
+        image = mainView.convertToImage()
+        print(image)
         UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
         showToast(title: "Photo Saved Succussfully!")
     }
@@ -59,34 +66,33 @@ class TransferAmountSuccessfulVC: BaseClassVC {
     
     @IBAction func Action_Share(_ sender: UIButton) {
         let image =  mainView.convertToImage()
-            
+        
         let imageShare = [ image ]
-            let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view
-            self.present(activityViewController, animated: true, completion: nil)
-           
+        let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
+        
     }
     
     func dismissRootViewController() {
-            if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
-                rootViewController.dismiss(animated: true, completion: nil)
-            }
-        }
-
+        
+        NotificationCenter.default.post(name: Notification.Name("dismissViewController"), object: nil)
+    }
+    
     @IBAction func Action_Cancel(_ sender: UIButton) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
-        }
-//        dismissRootViewController()
-//        DispatchQueue.main.async {
-//            self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
-//        }
+        //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+        //            self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+        //        }
+        dismissRootViewController()
+        //        DispatchQueue.main.async {
+        //            self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+        //        }
         
         
-//        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-//        self.present(vc, animated: true)
-       
+        //        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+        //        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+        //        self.present(vc, animated: true)
+        
         
     }
     
@@ -97,7 +103,7 @@ class TransferAmountSuccessfulVC: BaseClassVC {
         lblTransationId.text = Trascationid
         lblSendTo.text = phoneNumber
         lblSendBy.text = "FirstPay Account\(DataManager.instance.accountNo!)"
-      
+        
         if GlobalData.topup == "P O S T P A I D"
         {
             lblTransactionType.text = "Mobile Load Postpaid"
@@ -105,22 +111,20 @@ class TransferAmountSuccessfulVC: BaseClassVC {
         else{
             lblTransactionType.text = "Mobile Load Prepaid"
         }
-       
+        
         lblOperator.text = GlobalData.Selected_operator
         lblDateTime.text = TransactionDate
         
     }
-    
-
 }
 
 
 
 extension UIView {
-   func convertToImage() -> UIImage {
-       let renderer = UIGraphicsImageRenderer(bounds: bounds)
-       return renderer.image { rendererContext in
-           layer.render(in: rendererContext.cgContext)
-       }
-   }
+    func convertToImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
 }

@@ -33,8 +33,13 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         self.amountTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
 
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
     }
   
+    @objc func dismissViewController() {
+        self.dismiss(animated: true)
+    }
     @objc func changeTextInTextField() {
         for i in  myarr {
             i.isSeleccted = false
@@ -140,9 +145,8 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     @IBOutlet weak var collectionView: UICollectionView!
     @IBAction func Action_back(_ sender: UIButton) {
         dismiss(animated: true)
-//        self.dismiss(animated: true)
-//        self.navigationController?.popViewController(animated: true)
     }
+    
     @IBAction func Action_Continue(_ sender: UIButton) {
         initiateTopUp()
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
@@ -237,7 +241,6 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
 }
     
     private func initiateTopUp() {
-        
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return

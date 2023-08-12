@@ -45,6 +45,12 @@ class changeLimitVC: BaseClassVC {
 //        print("ReceivinglimitType",ReceivingLimitType)
 //        Slider()
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
+    }
+    
+    @objc func dismissViewController() {
+        dismiss(animated: true)
     }
     
     @IBOutlet weak var imgvArrow: UIImageView!
@@ -162,12 +168,15 @@ class changeLimitVC: BaseClassVC {
                                 ["buttonName": "OK",
                                 "buttonBackGroundColor": UIColor.clrOrange,
                                 "buttonTextColor": UIColor.white]
-                            ] as? [[String: AnyObject]])
+                ] as? [[String: AnyObject]]) { _ in
+                    NotificationCenter.default.post(name: Notification.Name("dismissViewController"), object: nil)
+                }
                  
 //               move to dashboard
 //                self.dismiss(animated: true)
                 DispatchQueue.main.async {
-                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+//                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+                    
                 }
 //                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
 //                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
