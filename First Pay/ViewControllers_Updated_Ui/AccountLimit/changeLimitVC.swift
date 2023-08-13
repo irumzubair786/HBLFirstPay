@@ -159,10 +159,9 @@ class changeLimitVC: BaseClassVC {
         didSet{
             if self.modelGetAccount?.responsecode == 1  {
                 self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSuccess,buttonNames: [
-                    
                                 ["buttonName": "OK",
                                 "buttonBackGroundColor": UIColor.clrOrange,
-                                "buttonTextColor": UIColor.white]
+                                 "buttonTextColor": UIColor.white] as [String : Any]
                 ] as? [[String: AnyObject]]) { _ in
                     self.updateRecordInMyAccountLimitVc?()
                     self.dismiss(animated: true)

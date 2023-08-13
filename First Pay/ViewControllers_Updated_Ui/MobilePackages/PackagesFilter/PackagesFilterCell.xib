@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="B4V-N1-pFK" customClass="PackagesFilterCell" customModule="HBLFMB" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="103" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="103" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fHa-mH-EG4">
+                        <rect key="frame" x="0.0" y="0.0" width="103" height="50"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jj5-rH-2LJ">
+                                <rect key="frame" x="20" y="0.0" width="63" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.56078431370000004" green="0.57254901960000004" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Jj5-rH-2LJ" secondAttribute="bottom" id="2Ut-Yu-azv"/>
+                            <constraint firstAttribute="trailing" secondItem="Jj5-rH-2LJ" secondAttribute="trailing" constant="20" id="Pgb-mz-EQW"/>
+                            <constraint firstItem="Jj5-rH-2LJ" firstAttribute="top" secondItem="fHa-mH-EG4" secondAttribute="top" id="XBI-o8-P0p"/>
+                            <constraint firstItem="Jj5-rH-2LJ" firstAttribute="leading" secondItem="fHa-mH-EG4" secondAttribute="leading" constant="20" id="d8J-z5-hDe"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="y7h-H8-GUm"/>
+            <constraints>
+                <constraint firstItem="fHa-mH-EG4" firstAttribute="leading" secondItem="B4V-N1-pFK" secondAttribute="leading" id="7Sq-uT-dw8"/>
+                <constraint firstAttribute="trailing" secondItem="fHa-mH-EG4" secondAttribute="trailing" id="BAv-Mh-pH0"/>
+                <constraint firstAttribute="bottom" secondItem="fHa-mH-EG4" secondAttribute="bottom" id="Shp-tX-0Mr"/>
+                <constraint firstItem="fHa-mH-EG4" firstAttribute="top" secondItem="B4V-N1-pFK" secondAttribute="top" id="cjT-Vh-X08"/>
+            </constraints>
+            <size key="customSize" width="103" height="50"/>
+            <connections>
+                <outlet property="labelName" destination="Jj5-rH-2LJ" id="8E7-mv-Dih"/>
+                <outlet property="viewBackGround" destination="fHa-mH-EG4" id="Mqk-N4-YBe"/>
+            </connections>
+            <point key="canvasLocation" x="100" y="19.718309859154932"/>
+        </collectionViewCell>
+    </objects>
+</document>

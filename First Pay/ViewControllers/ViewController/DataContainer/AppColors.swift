@@ -13,7 +13,8 @@ extension UIColor {
     static let _375D73 = UIColor(hexString: "375D73")
     static let _171D4B = UIColor(hexString: "171D4B")
     
-    
+    static let clrLightGraySelectionBackGround = UIColor(hexString: "F6F6F6")
+
     static let clrLightGrayCalendar = UIColor(hexString: "8F92A1")
 
     static let clrLightGray = UIColor(hexString: "BDBDBD")
