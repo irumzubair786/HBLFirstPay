@@ -35,24 +35,17 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60
-         getcnic()
+        getcnic()
         lblAccountTitle.text = DataManager.instance.accountTitle
         lblAccountNumber.text = DataManager.instance.accountNo
         lblEmail.text = ""
         NotificationCenter.default.removeObserver(self)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(batteryLevelChanged), name: Notification.Name("batteryLevelChanged"), object: nil)
-//        let date = Date()
-//        let df = DateFormatter()
-//        df.dateFormat = "yyyy-MM-dd"
-//        dateString = df.string(from: date)
+        //        let date = Date()
+        //        let df = DateFormatter()
+        //        df.dateFormat = "yyyy-MM-dd"
+        //        dateString = df.string(from: date)
         // Do any additional setup after loading the view.
-        NotificationCenter.default.removeObserver(self)
-        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
-    }
-    
-    @objc func dismissViewController() {
-        dismiss(animated: true)
     }
     @objc private func batteryLevelChanged(
     ){

@@ -23,6 +23,7 @@ class changeLimitVC: BaseClassVC {
     var convertdailymaxValue: Int?
     var LimitType : String?
     var AmounttType: String?
+    var updateRecordInMyAccountLimitVc: (() -> ())!
     
     
     @IBOutlet weak var viewBackground: UIView!
@@ -36,21 +37,15 @@ class changeLimitVC: BaseClassVC {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         //self.view.addGestureRecognizer(tapGestureRecognizer)
         print("limit Type",LimitType)
         print("AmountType",AmounttType)
-//        print("ReceivinglimitType",ReceivingLimitType)
-//        Slider()
+        //        print("ReceivinglimitType",ReceivingLimitType)
+        //        Slider()
         // Do any additional setup after loading the view.
-        NotificationCenter.default.removeObserver(self)
-        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
-    }
-    
-    @objc func dismissViewController() {
-        dismiss(animated: true)
     }
     
     @IBOutlet weak var imgvArrow: UIImageView!
@@ -169,11 +164,12 @@ class changeLimitVC: BaseClassVC {
                                 "buttonBackGroundColor": UIColor.clrOrange,
                                 "buttonTextColor": UIColor.white]
                 ] as? [[String: AnyObject]]) { _ in
-                    NotificationCenter.default.post(name: Notification.Name("dismissViewController"), object: nil)
+                    self.updateRecordInMyAccountLimitVc?()
+                    self.dismiss(animated: true)
                 }
                  
 //               move to dashboard
-//                self.dismiss(animated: true)
+//
                 DispatchQueue.main.async {
 //                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
                     
