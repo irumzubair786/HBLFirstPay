@@ -16,6 +16,7 @@ class MobilePackages: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
+    @IBOutlet weak var buttonBack: UIButton!
     
     @IBOutlet weak var buttonOne: UIButton!
     @IBOutlet weak var buttonTwo: UIButton!
@@ -43,7 +44,9 @@ class MobilePackages: UIViewController {
         // Do any additional setup after loading the view.
         getBundleDetails()
     }
-    
+    @IBAction func buttonBack(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
     @IBAction func buttonSetting(_ sender: UIButton) {
     }
     @IBAction func buttonOne(_ sender: UIButton) {
