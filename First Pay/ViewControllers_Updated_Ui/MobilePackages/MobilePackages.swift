@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class MobilePackages: UIViewController {
     @IBOutlet weak var viewOne: UIView!
@@ -40,6 +41,7 @@ class MobilePackages: UIViewController {
         collectionView.reloadData()
         print(arrayNames)
         // Do any additional setup after loading the view.
+        getBundleDetails()
     }
     
     @IBAction func buttonSetting(_ sender: UIButton) {
@@ -74,16 +76,47 @@ class MobilePackages: UIViewController {
             button.tag = 1
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func getBundleDetails() {
+        APIs.getAPI(apiName: .getBundleDetails, parameters: nil) { responseData, success, errorMsg in
+            
+            print(responseData)
+            print(success)
+            print(errorMsg)
+//            let model: ModelATMLocation? = APIs.decodeDataToObject(data: responseData)
+//            self.modelATMLocation = model
+        }
     }
-    */
-
+    
+    //For Testing api prefilled data
+//    {
+//        "cnic" : "3740584305117",
+//        "lat" : "33.3612251",
+//        "lng" : "72.26226",
+//        "imei" : "0E8E953712DC4164A1CC221675CEBE81",
+//        "mobileNo" : "03445823336",
+//        "bundleKey" : "502333",
+//        "bundleId" : "5",
+//        "channelId" : "3"
+//    }
+    
+    func getLoanCharges() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+            "lat" : "1000",
+            "lng" : "1000",
+            "mobileNo" : "03445823336",
+            "bundleKey" : "502333",
+            "bundleId" : "5"
+        ]
+        
+        APIs.postAPI(apiName: .getLoanCharges, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+//            let model: ModelGetLoanCharges? = APIs.decodeDataToObject(data: responseData)
+//            self.modelGetLoanCharges = model
+        }
+    }
 }
 
 extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
