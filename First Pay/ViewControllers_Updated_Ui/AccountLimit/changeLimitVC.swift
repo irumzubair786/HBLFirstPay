@@ -11,8 +11,18 @@ import Alamofire
 import ObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
+
+protocol DissmissDelegate{
+    func updatescreen(value: String?, tag :Int?,section:Int?)
+    
+}
+
+
 class changeLimitVC: BaseClassVC {
     
+    var delegate : DissmissDelegate?
+    var tag: Int?
+    var section: Int?
     @IBOutlet weak var buttonDismiss: UIButton!
     var genResponseObj : ChangeLimitModel?
     var daily :String?
@@ -23,7 +33,6 @@ class changeLimitVC: BaseClassVC {
     var convertdailymaxValue: Int?
     var LimitType : String?
     var AmounttType: String?
-    var updateRecordInMyAccountLimitVc: (() -> ())!
     
     
     @IBOutlet weak var viewBackground: UIView!
@@ -37,14 +46,14 @@ class changeLimitVC: BaseClassVC {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         //self.view.addGestureRecognizer(tapGestureRecognizer)
         print("limit Type",LimitType)
         print("AmountType",AmounttType)
-        //        print("ReceivinglimitType",ReceivingLimitType)
-        //        Slider()
+//        print("ReceivinglimitType",ReceivingLimitType)
+//        Slider()
         // Do any additional setup after loading the view.
     }
     
@@ -70,9 +79,7 @@ class changeLimitVC: BaseClassVC {
         print("successfuly DailyTotalLimit1", maximumAmount)
         labelMaxamount.text = "Rs. \(maximumAmount!)"
     }
-    
-    
-    
+  
     func updateUI() {
         
         labelname.text  = "Change \(daily!) Limit"
@@ -115,12 +122,20 @@ class changeLimitVC: BaseClassVC {
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
         
     }
+    
     @IBAction func buttonDismiss(_ sender: Any) {
+//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+//        self.present(vc, animated: true)
+//        self.dismiss(animated: true)
         self.view.backgroundColor = .clear
         self.view.viewWithTag(999)?.removeFromSuperview()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.delegate?.updatescreen(value:  self.labelAmount.text, tag: self.tag, section: self.section)
             self.dismiss(animated: true)
+            
         }
+        
+        
     }
     @IBAction func Action_Slider(_ sender: UISlider) {
         let value = sender.value
@@ -159,20 +174,20 @@ class changeLimitVC: BaseClassVC {
         didSet{
             if self.modelGetAccount?.responsecode == 1  {
                 self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSuccess,buttonNames: [
+                    
                                 ["buttonName": "OK",
                                 "buttonBackGroundColor": UIColor.clrOrange,
-                                 "buttonTextColor": UIColor.white] as [String : Any]
-                ] as? [[String: AnyObject]]) { _ in
-                    self.updateRecordInMyAccountLimitVc?()
-                    self.dismiss(animated: true)
-                }
+                                "buttonTextColor": UIColor.white]
+                            ] as? [[String: AnyObject]])
+                
+              
+
                  
 //               move to dashboard
-//
-                DispatchQueue.main.async {
+//                self.dismiss(animated: true)
+//                DispatchQueue.main.async {
 //                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
-                    
-                }
+//                }
 //                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
 //                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
 //                }
@@ -180,21 +195,21 @@ class changeLimitVC: BaseClassVC {
             }
             else {
                 //MARK: - Loan Failed Successfully
-                self.showAlertCustomPopup(title: "Error!", message: modelGetAccount?.messages ?? "", iconName: .iconError) 
+                self.showAlertCustomPopup(title: "Error!", message: modelGetAccount?.messages ?? "", iconName: .iconError)
             }
         }
     }
 //    private func changeAcctLimits() {
-//        
+//
 //        if !NetworkConnectivity.isConnectedToInternet(){
 //            self.showToast(title: "No Internet Available")
 //            return
 //        }
 //        showActivityIndicator()
-//     
+//
 //
 //        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/changeAcctLimitst"
-//        
+//
 //        var userCnic : String?
 //        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
 //            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
@@ -204,26 +219,26 @@ class changeLimitVC: BaseClassVC {
 //        }
 //        userCnic = UserDefaults.standard.string(forKey: "userCnic")
 //        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"imei":DataManager.instance.imei!,"amountType": AmounttType ?? "", "amount": labelAmount.text!, "limitType": LimitType ?? ""] as [String : Any]
-//        
+//
 //        print(parameters)
 //        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-//        
+//
 //        print(result.apiAttribute1)
 //        print(result.apiAttribute2)
-//        
+//
 //        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
 //         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
 //        print(params)
 //        print(compelteUrl)
 //        NetworkManager.sharedInstance.enableCertificatePinning()
 //        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<ChangeLimitModel>) in
-//            
+//
 //     //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
-//            
+//
 //            self.hideActivityIndicator()
-//            
+//
 //            self.genResponseObj = response.result.value
-//            
+//
 //            if response.response?.statusCode == 200 {
 //                if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
 ////
@@ -231,7 +246,7 @@ class changeLimitVC: BaseClassVC {
 ////                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
 ////                    self.present(vc, animated: true)
 //                }
-//                
+//
 //                else {
 //                    if let message = self.genResponseObj?.messages {
 //                        UtilManager.showAlertMessage(message: message, viewController: self)
@@ -248,7 +263,7 @@ class changeLimitVC: BaseClassVC {
 //                }
 ////                print(response.result.value)
 ////                print(response.response?.statusCode)
-//                
+//
 //            }
 //        }
 //    }
@@ -272,3 +287,4 @@ extension String {
         return (self as NSString).floatValue
     }
 }
+

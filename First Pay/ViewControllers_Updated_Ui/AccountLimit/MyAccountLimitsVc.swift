@@ -35,7 +35,9 @@ class MyAccountLimitsVc: BaseClassVC {
     
     var DailyTotalLimit1 : String?
     var MonthlyLimit1 : String?
+    var ValueDelegate: String?
     var YearlyLimit1 : String?
+    var valuecase1delgate : String?
     //    var availableLimitObj : GetAccLimits2?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,10 +50,6 @@ class MyAccountLimitsVc: BaseClassVC {
         tableView.rowHeight = 110
         checkLevel()
         // Do any additional setup after loading the view.
-    }
-    
-    @objc func dismissViewController() {
-        dismiss(animated: true)
     }
     
     @IBOutlet weak var imageCheckLevel: UIImageView!
@@ -169,12 +167,18 @@ class MyAccountLimitsVc: BaseClassVC {
         var pers  = calculateValue(total: Int(totalyYearlyLimit ?? 0),userValue: Int(ConsumedYearlyLimit ?? 0))
         
         myCustomArray.append(a(name: "Yearly ", limit: "Consumed Rs.\(modelGetAccount?.data?.yearlyConsumed! ?? 0)", colour: UIColor(hexString: "#F19434", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.yearlyDRRemaining ?? 0)",totalAmount: "Total Rs.\(YearlyLimit!)", percentage: Float(pers),limitType: "Y",amountType: "D", LimitLevelSending: Float(modelGetAccount?.data?.yearlyLevelDebitLimit ?? 0)))
-        
-        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        apicall()
     }
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
+//        using delegate
+//        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+//        self.present(vc, animated: true)
         self.dismiss(animated: true)
+        
     }
     @IBAction func buttonUpgrade(_ sender: UIButton) {
         FBEvents.logEvent(title: .Upgrade_Account_Level_Path2)
@@ -270,9 +274,9 @@ class MyAccountLimitsVc: BaseClassVC {
         vc.LimitType = cell.labelLimitType.text
         vc.AmounttType = cell.labelAmountType.text
         //        vc.ReceivingLimitType = cell.labelReceivingType.text
-        vc.updateRecordInMyAccountLimitVc = {
-            self.apicall()
-        }
+        vc.delegate = self
+        vc.tag = tag
+        vc.section = section
         self.present(vc, animated: true)
         
     }
@@ -283,11 +287,13 @@ class MyAccountLimitsVc: BaseClassVC {
         didSet{
             if self.modelGetAccount?.responsecode == 1  {
                 
-                self.tableView.reloadData()
-                self.tableView.delegate = self
-                self.tableView.dataSource = self
+               
+                
                 self.appendVlaluesToArray()
                 self.appenddata()
+                self.tableView.delegate = self
+                self.tableView.dataSource = self
+                self.tableView.reloadData()
                 
             }
             else {
@@ -319,9 +325,48 @@ class MyAccountLimitsVc: BaseClassVC {
             self.modelGetAccount = model
         }
     }
+    func comaBreak()
+    {
+       
+    }
+   
 }
 
+extension MyAccountLimitsVc: DissmissDelegate
+{
+    func updatescreen(value: String?, tag: Int?,section: Int?) {
+        print("delegate call",value,"tag", tag)
+        switch section{
+        case 0:
+            let number = Double(value ?? "")
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            //        formatter.maximumFractionDigits = 2
+            formatter.locale = Locale(identifier: "en_US")
+            ValueDelegate = (formatter.string(from: NSNumber(value: number ?? 0)))!
+            myCustomArray[tag ?? 0].totalAmount = ValueDelegate
+            tableView.reloadData()
+        case 1:
+            
+            let number = Double(value ?? "")
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            //        formatter.maximumFractionDigits = 2
+            formatter.locale = Locale(identifier: "en_US")
+            valuecase1delgate = (formatter.string(from: NSNumber(value: number ?? 0)))!
+            receivingArr[tag ?? 0].totalAmount = valuecase1delgate
+            tableView.reloadData()
+        default:
+            break
+        }
+//           apicall()
+       
+        
+    }
 
+    
+    
+}
 extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -355,6 +400,7 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
             cell.progressbar.progressViewStyle = .bar
             cell.progressbar.trackTintColor = UIColor(hexString: "#F2F6F9", alpha: 1)
             cell.labelRemaining.text = myCustomArray[indexPath.row].remaainig
+//            yy
             cell.labelTotalAmount.text = myCustomArray[indexPath.row].totalAmount
             cell.progressbar.cornerRadius = 5
             cell.buttonEdit.tag = indexPath.row
@@ -449,3 +495,4 @@ class receiving
         self.LimitLevelReceiving = Float(LimitLevelReceiving)
     }
 }
+
