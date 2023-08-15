@@ -85,8 +85,21 @@ class MobilePackages: UIViewController {
             print(responseData)
             print(success)
             print(errorMsg)
-//            let model: ModelATMLocation? = APIs.decodeDataToObject(data: responseData)
-//            self.modelATMLocation = model
+            let model: ModelGetBundleDetails? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetBundleDetails = model
+        }
+    }
+    
+    var modelGetBundleDetails: ModelGetBundleDetails? {
+        didSet {
+            if modelGetBundleDetails?.responsecode == 1 {
+                
+            }
+            else {
+                self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
+                    
+                }
+            }
         }
     }
     
@@ -200,4 +213,114 @@ extension UILabel {
 
         self.attributedText = attributedText
     }
+}
+
+
+extension MobilePackages {
+    // MARK: - ModelGetBundleDetails
+    struct ModelGetBundleDetails: Codable {
+        let responseblock: JSONNull?
+        let responsecode: Int
+        let data: [Datum]
+        let messages: String
+    }
+
+    // MARK: - Datum
+    struct Datum: Codable {
+        let disabledIcon: String
+        let bundleDetails: [BundleDetail]
+        let companyName, enabledIcon: String
+        let bundleFilters: [BundleFilter]
+        let recordCount: Int
+    }
+
+    // MARK: - BundleDetail
+    struct BundleDetail: Codable {
+        let bundleKey, bundleResources: String
+        let bundleType: BundleType
+        let bundleResourceOffnet, bundleResourceOnnet: JSONNull?
+        let bundleResourceSMS: String?
+        let bundleSelfSubscription: JSONNull?
+        let bundleName: String
+        let bundleDiscountPrice: Int
+        let bundleValidityType: BundleValidityType?
+        let bundleDiscountPercentage, ubpBundleFilterID: Int
+        let bundleSequence: JSONNull?
+        let bundleValidity: BundleValidity
+        let bundleResourceData: String?
+        let ubpBundleID: Int
+        let bundleDefaultPrice: Double
+
+        enum CodingKeys: String, CodingKey {
+            case bundleKey, bundleResources, bundleType, bundleResourceOffnet, bundleResourceOnnet
+            case bundleResourceSMS = "bundleResourceSms"
+            case bundleSelfSubscription, bundleName, bundleDiscountPrice, bundleValidityType, bundleDiscountPercentage
+            case ubpBundleFilterID = "ubpBundleFilterId"
+            case bundleSequence, bundleValidity, bundleResourceData
+            case ubpBundleID = "ubpBundleId"
+            case bundleDefaultPrice
+        }
+    }
+
+    enum BundleType: String, Codable {
+        case data = "Data"
+        case ec = "EC"
+        case hybrid = "Hybrid"
+        case lbc = "LBC"
+        case voice = "Voice"
+    }
+
+    enum BundleValidity: String, Codable {
+        case bundleValidity30Days = "30 days"
+        case the1Day = "1 Day"
+        case the30Days = "30 Days"
+        case the3Days = "3 Days"
+        case the60Days = "60 Days"
+        case the7Days = "7 Days"
+    }
+
+    enum BundleValidityType: String, Codable {
+        case d = "D"
+        case m = "M"
+        case w = "W"
+    }
+
+    // MARK: - BundleFilter
+    struct BundleFilter: Codable {
+        let filterName: String
+        let ubpBundleFilterID: Int
+
+        enum CodingKeys: String, CodingKey {
+            case filterName
+            case ubpBundleFilterID = "ubpBundleFilterId"
+        }
+    }
+
+    // MARK: - Encode/decode helpers
+
+    class JSONNull: Codable, Hashable {
+
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+
+        public var hashValue: Int {
+            return 0
+        }
+
+        public init() {}
+
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
+    }
+
 }
