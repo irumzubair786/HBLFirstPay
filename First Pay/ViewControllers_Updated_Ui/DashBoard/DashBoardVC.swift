@@ -525,7 +525,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         self.present(vc, animated: true)
         //        self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     @objc func moveToSeeAll(tapGestureRecognizer: UITapGestureRecognizer) {
 //        FBEvents.logEvent(title: .Homescreen_seeall_click)
 //        let vc = storyboard?.instantiateViewController(withIdentifier: "OtherServices_VC") as! OtherServices_VC
@@ -533,7 +532,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 //        self.navigationController?.pushViewController(vc, animated: true)
        
     }
-    
     @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer) {
         getAvailableLimits()
     }

@@ -23,6 +23,7 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     var dueDate :String?
     var consumerNumber : String?
     var amountpaid : String?
+    var otpReq : String?
     override func viewDidLoad() {
         super.viewDidLoad()
        
@@ -53,19 +54,29 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     @IBOutlet weak var imageNextArrow: UIImageView!
     @IBOutlet weak var buttonNext: UIButton!
     @IBAction func buttonNext(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPaymentOTPVerificationVC") as! BillPaymentOTPVerificationVC
-      
-        vc.consumerNumber = consumerNumber!
-        vc.amount = TextfieldAmount.text!
-        vc.refferenceNumber = refferenceNumber
-        vc.company = company
-        vc.billingMonth = billingMonth
-        vc.amountDue = amountDue
-        vc.dueDate = dueDate
-        vc.totalAmount = TextfieldAmount.text!
-        self.navigationController?.pushViewController(vc, animated: true)
         
-//        billPyment()
+        if otpReq == "Y"
+        {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPaymentOTPVerificationVC") as! BillPaymentOTPVerificationVC
+          
+            vc.consumerNumber = consumerNumber!
+            vc.amount = TextfieldAmount.text!
+            vc.refferenceNumber = refferenceNumber
+            vc.company = company
+            vc.billingMonth = billingMonth
+            vc.amountDue = amountDue
+            vc.dueDate = dueDate
+            vc.totalAmount = TextfieldAmount.text!
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else
+        {
+            billPyment()
+        }
+        
+
+        
+//
         
     }
     @IBAction func Action_Back(_ sender: UIButton) {

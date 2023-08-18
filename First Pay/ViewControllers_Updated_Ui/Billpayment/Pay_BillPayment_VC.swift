@@ -16,6 +16,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
     var BillComapnyid : Int?
     var billtransactionOBj : BillAPiResponse?
     var utilityBillCompany:String?
+    var otpReq : String?
     override func viewDidLoad() {
         FBEvents.logEvent(title: .PayBills_successrecept_landing)
         FaceBookEvents.logEvent(title: .PayBills_successrecept_landing)
@@ -201,6 +202,8 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
                 vc.amountDue = self.billtransactionOBj?.data?.actualDueAmount
                 vc.dueDate = self.billtransactionOBj?.data?.paymentDueDate
                 let statusCheck = self.billtransactionOBj?.data?.billStatus
+                vc.otpReq = self.billtransactionOBj?.data?.oTPREQ
+                print("otp req value",vc.otpReq)
                 if statusCheck == "P"
                 {
                     vc.status = "Paid"
@@ -237,7 +240,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
             }
             return newLength <= 18
         }
-        return newLength <= 18
+        return newLength <= 11
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
