@@ -29,6 +29,19 @@ class MobilePackages: UIViewController {
 
     var selectedCell: Int!
     var arrayNames = ["ios", "Android", "Apple", "Nokia Phone", "One Plus Phone"]
+    
+    var modelGetBundleDetails: ModelGetBundleDetails? {
+        didSet {
+            if modelGetBundleDetails?.responsecode == 1 {
+                
+            }
+            else {
+                self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
+                    
+                }
+            }
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         selectedButton(view: nil, button: buttonOne)
@@ -43,6 +56,7 @@ class MobilePackages: UIViewController {
         print(arrayNames)
         // Do any additional setup after loading the view.
         getBundleDetails()
+        bundleSubscription()
     }
     @IBAction func buttonBack(_ sender: Any) {
         self.dismiss(animated: true)
@@ -90,18 +104,7 @@ class MobilePackages: UIViewController {
         }
     }
     
-    var modelGetBundleDetails: ModelGetBundleDetails? {
-        didSet {
-            if modelGetBundleDetails?.responsecode == 1 {
-                
-            }
-            else {
-                self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
-                    
-                }
-            }
-        }
-    }
+    
     
     //For Testing api prefilled data
 //    {
@@ -115,7 +118,7 @@ class MobilePackages: UIViewController {
 //        "channelId" : "3"
 //    }
     
-    func getLoanCharges() {
+    func bundleSubscription() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
             "cnic" : userCnic!,
@@ -123,12 +126,15 @@ class MobilePackages: UIViewController {
             "channelId" : "\(DataManager.instance.channelID)",
             "lat" : "1000",
             "lng" : "1000",
-            "mobileNo" : "03445823336",
+            "mobileNo" : DataManager.instance.mobile_number ?? "", //"03445823336",
             "bundleKey" : "502333",
             "bundleId" : "5"
         ]
         
-        APIs.postAPI(apiName: .getLoanCharges, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .bundleSubscription, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            print(responseData)
+            print(success)
+            print(errorMsg)
 //            let model: ModelGetLoanCharges? = APIs.decodeDataToObject(data: responseData)
 //            self.modelGetLoanCharges = model
         }
