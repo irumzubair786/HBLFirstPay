@@ -138,19 +138,8 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
 //
 //
 //        }
-        
-        
-        
-        
-        
+      
     }
-    
-    
-    
-    
-    
-    
-    
-    
+     
     
 }
