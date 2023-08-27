@@ -20,6 +20,7 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
     var setLoginPinObj : setLoginPinModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+        enterPinTextField.becomeFirstResponder()
         Alert_view.isHidden = true
 //        lbl4.isHidden = true
         blur_view.alpha = 0.4

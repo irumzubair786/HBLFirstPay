@@ -31,7 +31,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         lbl_mobileno.text = DataManager.instance.mobNo
-        
+        TF_otp.becomeFirstResponder()
         labelMobileNo.text = DataManager.instance.mobNo
         TF_otp.delegate = self
         btnResendOtp.isUserInteractionEnabled = false

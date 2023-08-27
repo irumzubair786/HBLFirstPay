@@ -24,6 +24,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     override func viewDidLoad(){
         FBEvents.logEvent(title: .Signup_login_landed)
         super.viewDidLoad()
+        TF_Mobileno.becomeFirstResponder()
         if isFromLoginScreen {
             titleName?.text = "Sign-in"
             btn_Explore.isHidden = true
@@ -46,7 +47,14 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
        
     }
         
-//
+//    @objc func changeNumberInTextField() {
+//    let text = textFieldNumber.text!.replacingOccurrences(of: "+92-", with: "")
+//    if textFieldNumber.text?.count == 1 && text == "0" {
+//        textFieldNumber.text = nil
+//        return
+//    }
+//    textFieldNumber.text = format(with: "+92-XXX-XXXXXXX", phone: text)
+//}
     @objc func keyboardWillShow(_ notification: Notification) {
         // Hide your button here
         btnContinue.isHidden = false
@@ -295,7 +303,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
            }
         
     }
-
+    var mobileNumber : String?
     private func  mobileRegistration() {
 
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -308,9 +316,10 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         }
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/mobileRegistration"
         let a = TF_Mobileno.text!
-       
-        var mobileNumber = a.replacingOccurrences(of: "-", with: "")
-        mobileNumber = mobileNumber.replacingOccurrences(of: "_", with: "")
+        mobileNumber = a.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0")
+        
+//        "mobileNo": textFieldNumber.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0"),
+      
         DataManager.instance.mobNo = mobileNumber
         let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo":(DataManager.instance.mobNo),"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)"]
 
@@ -343,7 +352,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
                     }
                     let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
                     OTPVerifyVC.mobileNo = self.TF_Mobileno.text!
-                    DataManager.instance.mobNo =  self.TF_Mobileno.text!
+                    DataManager.instance.mobNo =  mobileNumber!
                     self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
 
 

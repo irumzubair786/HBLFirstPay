@@ -19,6 +19,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Signup_forgotpass_landed)
         super.viewDidLoad()
+        cnicTextField.becomeFirstResponder()
         cnicTextField.delegate = self
         mobileNumberTextField.delegate = self
         lbl_InvalidCnic.isHidden = true
@@ -248,6 +249,14 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     }
 
     @objc func changeTextInTextField() {
+        
+        let text = mobileNumberTextField.text!.replacingOccurrences(of: "+92-", with: "")
+          if mobileNumberTextField.text?.count == 1 && text == "0" {
+              mobileNumberTextField.text = nil
+              return
+          }
+        mobileNumberTextField.text = format(with: "+92-XXX-XXXXXXX", phone: text)
+        
         if mobileNumberTextField.text?.count ?? 0 < 11
         {
             lblInvalidMobileNo.isHidden = false
@@ -286,7 +295,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         
         
     }
-  
+    var mobileNumber: String?
     private func verifyCustResetPass() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -312,9 +321,9 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         
         let a = mobileNumberTextField.text!
         
-        var mobileNumber = a.replacingOccurrences(of: "-", with: "")
+        mobileNumber = a.replacingOccurrences(of: "-", with: "")
         mobileNumber = mobileNumber.replacingOccurrences(of: "_", with: "")
-        
+        mobileNumber = mobileNumber.replacingOccurrences(of: "+92", with: "0")
         let b = cnicTextField.text!
         var cnicNumber = b.replacingOccurrences(of: "-", with: "")
         cnicNumber = cnicNumber.replacingOccurrences(of: "_", with: "")

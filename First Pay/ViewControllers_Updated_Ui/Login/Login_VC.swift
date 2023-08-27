@@ -59,7 +59,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        pinTextField.becomeFirstResponder()
         
         //<<<<<<< HEAD
         //

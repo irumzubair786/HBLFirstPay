@@ -37,6 +37,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        TF_CnicNo.becomeFirstResponder()
         TF_IssueDate.placeholder = "  DD/MM/YYYY"
         TF_CnicNo.placeholder = "3740516XXXXX5"
         print("fetch city", get_Seclected_City)

@@ -14,6 +14,7 @@ class Fetcing_OTP_VC: BaseClassVC {
     var mobileRegistrationObj : mobileRegistrationModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         lblPhoneNo.text = DataManager.instance.mobNo
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let OTPVerifyVC = self.storyboard?.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
