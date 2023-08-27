@@ -8029,6 +8029,14 @@ other charges) from accounts maintained by the borrower at the Bank.
                                     <constraint firstItem="alr-eH-A6r" firstAttribute="leading" secondItem="Brq-Zd-7Ks" secondAttribute="leading" id="qod-aY-bPs"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ECg-jY-jug">
+                                <rect key="frame" x="0.0" y="213" width="414" height="687"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="buttonLogin:" destination="Dv3-ee-XSy" eventType="touchUpInside" id="RZd-ho-WfN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="dGh-ok-UYg"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -8038,8 +8046,12 @@ other charges) from accounts maintained by the borrower at the Bank.
                             <constraint firstItem="zRc-3F-rro" firstAttribute="top" secondItem="dGh-ok-UYg" secondAttribute="top" id="KyL-EP-6ig"/>
                             <constraint firstItem="Brq-Zd-7Ks" firstAttribute="leading" secondItem="zRc-3F-rro" secondAttribute="leading" id="O5E-ap-unI"/>
                             <constraint firstItem="Brq-Zd-7Ks" firstAttribute="trailing" secondItem="zRc-3F-rro" secondAttribute="trailing" id="PrH-Db-VXN"/>
+                            <constraint firstItem="ECg-jY-jug" firstAttribute="top" secondItem="dGh-ok-UYg" secondAttribute="top" constant="169" id="QBQ-Eu-Vig"/>
+                            <constraint firstItem="ECg-jY-jug" firstAttribute="trailing" secondItem="dGh-ok-UYg" secondAttribute="trailing" id="SJX-Pu-WVd"/>
                             <constraint firstItem="zRc-3F-rro" firstAttribute="trailing" secondItem="dGh-ok-UYg" secondAttribute="trailing" id="jMo-0B-yg7"/>
                             <constraint firstItem="Brq-Zd-7Ks" firstAttribute="top" secondItem="zRc-3F-rro" secondAttribute="bottom" constant="8" symbolic="YES" id="kx8-Pt-pvz"/>
+                            <constraint firstItem="ECg-jY-jug" firstAttribute="leading" secondItem="dGh-ok-UYg" secondAttribute="leading" id="t7c-Uz-Hzh"/>
+                            <constraint firstAttribute="bottom" secondItem="ECg-jY-jug" secondAttribute="bottom" id="tog-5w-tc5"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="tbc-h2-mME"/>
@@ -8051,6 +8063,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                         <outlet property="btnQuestion" destination="CYj-Ci-E0S" id="jRp-ql-LtP"/>
                         <outlet property="btnmain" destination="k9S-1u-zZH" id="8cf-Kc-cBg"/>
                         <outlet property="buttonLogin" destination="2ma-cw-xBj" id="NOF-yJ-jfe"/>
+                        <outlet property="buttonLoginAll" destination="ECg-jY-jug" id="HPF-39-yy0"/>
                         <outlet property="imageLogin" destination="H1x-7e-ZEP" id="HDG-Rq-C1O"/>
                         <outlet property="img" destination="nJv-wE-0Eb" id="8mj-eZ-9Ny"/>
                         <outlet property="labelLoginorSignUp" destination="fxG-o2-HDm" id="ceh-ZK-ga0"/>
@@ -8059,7 +8072,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="30G-5M-Vae" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5387" y="-1390"/>
+            <point key="canvasLocation" x="-5388.4057971014499" y="-1390.1785714285713"/>
         </scene>
     </scenes>
     <designables>

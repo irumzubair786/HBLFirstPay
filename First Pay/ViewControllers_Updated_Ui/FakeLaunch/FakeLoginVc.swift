@@ -29,7 +29,7 @@ class FakeLoginVc: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        buttonLoginAll.setTitle("", for: .normal)
         viewGreen.layer.cornerRadius = 8
         
         btnHome.setTitle("", for: .normal)
@@ -48,6 +48,7 @@ class FakeLoginVc: UIViewController {
     
     @IBOutlet weak var buttonLogin: UIButton!
     
+    @IBOutlet weak var buttonLoginAll: UIButton!
     @IBOutlet weak var imageLogin: UIImageView!
     @IBAction func buttonLogin(_ sender: UIButton) {
 //        self.showAlertCustomPopup() { button in
