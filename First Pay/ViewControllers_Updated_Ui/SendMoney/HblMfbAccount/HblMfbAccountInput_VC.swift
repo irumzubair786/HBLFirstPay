@@ -148,7 +148,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
             return
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/getFtTransPurpose"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getFtTransPurpose"
          let header: HTTPHeaders = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
@@ -196,7 +196,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
         }
 //        let compelteUrl = GlobalConstants.BASE_URL + "initiateLocalFT"
 //        v2
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/initiateLocalFT"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateLocalFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":tfAccountNo.text!,"amount":self.amountTextfield.text!,"transPurpose":"0350","accountType": DataManager.instance.accountType!] as [String : Any]
         print(parameters)

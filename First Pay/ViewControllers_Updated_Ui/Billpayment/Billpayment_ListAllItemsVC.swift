@@ -58,7 +58,7 @@ class Billpayment_ListAllItemsVC: BaseClassVC , UISearchBarDelegate{
         
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/getCompaniesById/\(self.BillComapnyid ?? 0)"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.BillComapnyid ?? 0)"
        
         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         

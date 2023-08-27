@@ -295,7 +295,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         showActivityIndicator()
 
 //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferLocal"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/addCashFT"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/addCashFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":GlobalData.userAcc!,"amount":TotalAmount!,"transPurpose":"miscellaneous","accountTitle": DataManager.instance.accountTitle!,"transactionType":"PULL","otp":otptextField.text!] as [String : Any]
  

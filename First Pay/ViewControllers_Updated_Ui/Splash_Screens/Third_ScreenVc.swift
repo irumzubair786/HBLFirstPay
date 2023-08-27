@@ -24,7 +24,7 @@ class Third_ScreenVc: UIViewController {
     @objc func handleLeftSwipe(_ gestureRecognizer: UISwipeGestureRecognizer) {
         guard let alreadylogin =  UserDefaults.standard.string(forKey: "AlreadyRegistered")
         else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "FakeLoginVc") as! FakeLoginVc
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Mobile_VerificationVC") as! Mobile_VerificationVC
             isfromHomwWithoutCreationAccount = true
             self.navigationController?.pushViewController(vc, animated: true)
             return

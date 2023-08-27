@@ -175,7 +175,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
             return
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/getFtTransPurpose"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getFtTransPurpose"
          let header: HTTPHeaders = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
@@ -230,7 +230,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         }
         
 //            let compelteUrl = GlobalConstants.BASE_URL + "initiateIbft"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/initiateIbft"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateIbft"
         
 //v2
     userCnic = UserDefaults.standard.string(forKey: "userCnic")

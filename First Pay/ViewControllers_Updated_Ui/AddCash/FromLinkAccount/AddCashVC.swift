@@ -298,7 +298,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         else{
             userCnic = ""
         }
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/initiateAddCashFT"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateAddCashFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":DataManager.instance.accountNo!,"amount":self.textFieldAmount.text!] as [String : Any]
         print(parameters)
