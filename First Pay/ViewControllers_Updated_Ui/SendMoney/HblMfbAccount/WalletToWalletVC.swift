@@ -135,14 +135,12 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
                 
                     lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
                     imgnextarrow.image = UIImage(named: "grayArrow")
-                   lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+                  
                     imgnextarrow.isUserInteractionEnabled = false
                
             }
             else
             {
-                
-               
                 let image = UIImage(named:"]greenarrow")
                 imgnextarrow.image = image
                 let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
@@ -164,7 +162,6 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         {
             lblAlertAmount.textColor = .gray
             imgnextarrow.image = UIImage(named: "grayArrow")
-            lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
             imgnextarrow.isUserInteractionEnabled = false
         }
 
@@ -173,7 +170,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
             if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0  > Int((maxvalu) ?? 0)
                 
             {
-                lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
+                lblAlertAmount.textColor = UIColor.gray
                 imgnextarrow.image = UIImage(named: "grayArrow")
                 
                 imgnextarrow.isUserInteractionEnabled = false

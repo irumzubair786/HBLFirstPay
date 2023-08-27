@@ -30,7 +30,6 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         super.viewDidLoad()
         print("GlobalData.money_Reason",  number)
         back.setTitle("", for: .normal)
-        otpTextField.becomeFirstResponder()
         //        btn_Next.isUserInteractionEnabled = false
         otpTextField.delegate = self
         btndropdown.setTitle("", for: .normal)
@@ -58,8 +57,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var back: UIButton!
     @IBOutlet weak var lblMainTitle: UILabel!
     @IBOutlet weak var lblAccName: UILabel!
-    var minvalu  = 1
-    var maxvalu = 10000
+    
     @IBOutlet weak var lblAlertAmount: UILabel!
     @IBOutlet weak var amountTextField: UITextField!
     @IBOutlet weak var lblMobno: UILabel!
@@ -78,8 +76,8 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var PurposeTf: UITextField!
     @IBOutlet weak var btn_Next: UIButton!
     @IBAction func Action_back(_ sender: UIButton) {
-        self.dismiss(animated: true)
-        
+//       self.dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     var comabalanceLimit : String?
@@ -113,11 +111,13 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         }
         
         CommaSepration()
-        if OTPREQ == "N"
-        {
-            otpTextField.isHidden = true
-        }
-        
+//        if OTPREQ == "N"
+//        {
+//            otpTextField.isHidden = true
+//            img_next_arrow.image = UIImage(named: "]greenarrow")
+//            btn_Next.isUserInteractionEnabled = true
+//        }
+//
         amountTextField.text = "Rs \(comabalanceLimit!)"
         totalAmount.text = "Rs \(comabalanceLimit!)"
         if  isfromFirstPayWallet == true{
@@ -196,13 +196,13 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         if isFromReason == true{
             PurposeTf.text = GlobalData.money_Reason
-            if OTPREQ == "N"
-            {
-                img_next_arrow.image = UIImage(named: "]greenarrow")
-                
-                btn_Next.isUserInteractionEnabled = true
-                
-            }
+//            if OTPREQ == "N"
+//            {
+//                img_next_arrow.image = UIImage(named: "]greenarrow")
+//                
+//                btn_Next.isUserInteractionEnabled = true
+//                
+//            }
         }
         else{
             

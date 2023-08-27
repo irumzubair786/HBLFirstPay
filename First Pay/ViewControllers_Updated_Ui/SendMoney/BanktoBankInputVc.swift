@@ -364,64 +364,64 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
             }
         }
     }
-}
 
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//
-//
-//        if amountTextField?.text?.count ?? 0 < 0 || selectWallettf?.text?.count == 0 || walletNumberTf?.text?.count == 0
-//        {
-//           img_next.image = UIImage(named: "grayArrow")
-//            img_next.isUserInteractionEnabled = false
-//            lblAlert.textColor =  UIColor(hexValue: 0xFF3932)
-//            img_next.isUserInteractionEnabled = false
-//            btn_continue.isUserInteractionEnabled = false
-//        }
-//
-//       if textField == amountTextField
-//        {
-//           if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0 > Int((maxvalu) ?? 0)
-//
-//                    {
-//                        lblAlert.textColor = .gray
-//                        img_next.image = UIImage(named: "grayArrow")
-//                        img_next.isUserInteractionEnabled = false
-//                      lblAlert.textColor =  UIColor(hexValue: 0xFF3932)
-//                        btn_continue.isUserInteractionEnabled = false
-//
-//                    }
-//           else
-//           {
-//               let image = UIImage(named:"]greenarrow")
-//               img_next.image = image
-//               let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-//               img_next.isUserInteractionEnabled = true
-//               img_next.addGestureRecognizer(tapGestureRecognizerrr)
-//               lblAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//               btn_continue.isUserInteractionEnabled = true
-//
-//           }
-//
-//        }
-//
-//        else if amountTextField?.text?.count != 0 && selectWallettf.text?.count != 0 && walletNumberTf?.text?.count != 0
-//        {
-//
-//            let image = UIImage(named:"]greenarrow")
-//            img_next.image = image
-//            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-//            img_next.isUserInteractionEnabled = true
-//            img_next.addGestureRecognizer(tapGestureRecognizerrr)
-//            lblAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//            btn_continue.isUserInteractionEnabled = true
-//
-//
-//        }
-//            }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+
+
+        if amountTextField?.text?.count ?? 0 < 0 || selectWallettf?.text?.count == 0 || walletNumberTf?.text?.count == 0
+        {
+           img_next.image = UIImage(named: "grayArrow")
+            img_next.isUserInteractionEnabled = false
+            lblAlert.textColor =  UIColor(hexValue: 0xFF3932)
+            img_next.isUserInteractionEnabled = false
+            btn_continue.isUserInteractionEnabled = false
+        }
+
+       if textField == amountTextField
+        {
+           if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0 > Int((maxvalu) ?? 0)
+
+                    {
+                        lblAlert.textColor = .gray
+                        img_next.image = UIImage(named: "grayArrow")
+                        img_next.isUserInteractionEnabled = false
+               lblAlert.textColor =  UIColor.gray
+                        btn_continue.isUserInteractionEnabled = false
+
+                    }
+           else
+           {
+               let image = UIImage(named:"]greenarrow")
+               img_next.image = image
+               let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+               img_next.isUserInteractionEnabled = true
+               img_next.addGestureRecognizer(tapGestureRecognizerrr)
+               lblAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+               btn_continue.isUserInteractionEnabled = true
+
+           }
+
+        }
+
+        else if amountTextField?.text?.count != 0 && selectWallettf.text?.count != 0 && walletNumberTf?.text?.count != 0
+        {
+
+            let image = UIImage(named:"]greenarrow")
+            img_next.image = image
+            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+            img_next.isUserInteractionEnabled = true
+            img_next.addGestureRecognizer(tapGestureRecognizerrr)
+            lblAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+            btn_continue.isUserInteractionEnabled = true
+
+
+        }
+    }
 
    
     
-    
+}
     
 
 extension BanktoBankInputVc: CNContactPickerDelegate {
