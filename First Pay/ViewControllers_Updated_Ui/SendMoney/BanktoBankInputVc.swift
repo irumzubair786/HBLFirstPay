@@ -31,9 +31,10 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         amountTextField.delegate = self
         lblWalletName.text  = ""
         btn_continue.isUserInteractionEnabled = false
-//        amountTextField.isUserInteractionEnabled = false
-//        getReasonsForTrans()
+        //        amountTextField.isUserInteractionEnabled = false
+        //        getReasonsForTrans()
         UpdateUi()
+        self.amountTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
     
@@ -73,9 +74,9 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
     
     @IBOutlet weak var lblWalletName: UILabel!
     override func viewWillAppear(_ animated: Bool) {
- 
+        
         selectWallettf.text =  GlobalData.Selected_bank
-   
+        
         
     }
     func clearAll()
@@ -106,8 +107,8 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
     
     @IBAction func seelctWallet(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "SelectWalletVC") as! SelectWalletVC
-
-//            self.present(vc, animated: true)
+        
+        //            self.present(vc, animated: true)
         self.navigationController?.pushViewController(vc, animated: false)
     }
     
@@ -120,8 +121,8 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
     
     @IBAction func Action_continue(_ sender: UIButton) {
         initiateIBFT()
-     
-   }
+        
+    }
     
     @IBAction func Purpose(_ sender: UIButton) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "MoneyTransfer_ReasonVC") as! MoneyTransfer_ReasonVC
@@ -139,7 +140,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
     @objc func PopUpHide(tapGestureRecognizer: UITapGestureRecognizer)
     {
         initiateIBFT()
-//       
+        //
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -160,14 +161,14 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         {
             return newLength <= 6
         }
-       
+        
         return newLength <= 24
         amountTextField.isUserInteractionEnabled = true
-       
-     
+        
+        
         
     }
-
+    
     private func getReasonsForTrans() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -176,7 +177,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         }
         showActivityIndicator()
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getFtTransPurpose"
-         let header: HTTPHeaders = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
@@ -184,21 +185,21 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
-//            (response: DataResponse<GetReasonsModel>) in
+            //            (response: DataResponse<GetReasonsModel>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
-
+            
             if response.response?.statusCode == 200 {
-//                self.reasonsObj = response.result.value
+                //                self.reasonsObj = response.result.value
                 self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
-
+                
                 if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
-                   
-//                    self.reasonsList = self.reasonsObj!.stringReasons
-//                    self.purposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
-//                    GlobalData.money_Reason = self.purposeTf.text ?? ""
+                    
+                    //                    self.reasonsList = self.reasonsObj!.stringReasons
+                    //                    self.purposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
+                    //                    GlobalData.money_Reason = self.purposeTf.text ?? ""
                     
                 }
                 
@@ -229,11 +230,11 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
             userCnic = ""
         }
         
-//            let compelteUrl = GlobalConstants.BASE_URL + "initiateIbft"
+        //            let compelteUrl = GlobalConstants.BASE_URL + "initiateIbft"
         let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateIbft"
         
-//v2
-    userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        //v2
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
         
         
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":self.walletNumberTf.text!,"accountIMD":GlobalData.Selected_bank_code,"amount":self.amountTextField.text!,"transPurpose":"0350","accountType":DataManager.instance.accountType!] as [String : Any]
@@ -246,7 +247,7 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
@@ -254,35 +255,35 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//            (response: DataResponse<FTApiResponse>) in
+            //            (response: DataResponse<FTApiResponse>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
             
-//            self.transactionApiResponseObj = response.result.value
+            //            self.transactionApiResponseObj = response.result.value
             if response.response?.statusCode == 200 {
                 
                 if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
-//                    if self.transactionApiResponseObj?.data?.oTPREQ == "Y"
-//                    {
-                        if isfromBanktoBank == true{
-                            self.navigateToConfirmation()
-                        }
-                        else
-                        {
-                            self.movetonext()
-                        }
-//                    }
-                   
+                    //                    if self.transactionApiResponseObj?.data?.oTPREQ == "Y"
+                    //                    {
+                    if isfromBanktoBank == true{
+                        self.navigateToConfirmation()
+                    }
+                    else
+                    {
+                        self.movetonext()
+                    }
+                    //                    }
                     
-//
+                    
+                    //
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-//                        self.showDefaultAlert(title: "", message: message)
+                        //                        self.showDefaultAlert(title: "", message: message)
                     }
                 }
             }
@@ -290,8 +291,8 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
                 if let message = self.transactionApiResponseObj?.messages{
                     self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                 }
-//                    print(response.result.value)
-//                    print(response.response?.statusCode)
+                //                    print(response.result.value)
+                //                    print(response.response?.statusCode)
             }
         }
     }
@@ -302,102 +303,127 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
         
         
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
-              vc.number = walletNumberTf.text!
-          vc.ToaccountTitle = transactionApiResponseObj?.data?.accountTitle!
-            vc.bankname = selectWallettf.text!
-              vc.amount = amountTextField.text!
+        vc.number = walletNumberTf.text!
+        vc.ToaccountTitle = transactionApiResponseObj?.data?.accountTitle!
+        vc.bankname = selectWallettf.text!
+        vc.amount = amountTextField.text!
         vc.OTPREQ = transactionApiResponseObj?.data?.oTPREQ!
         GlobalData.money_Reason = "Miscellaneous Payments"
         vc.harcodePurpose = "Miscellaneous Payments"
         GlobalData.moneyTransferReasocCode = "0350"
-              isfromFirstPayWallet = false
-              isfromHblMbfAccount = false
-               isfromBanktoBank = false
-               isfromOtherLocalBank = true
+        isfromFirstPayWallet = false
+        isfromHblMbfAccount = false
+        isfromBanktoBank = false
+        isfromOtherLocalBank = true
         self.navigationController?.pushViewController(vc, animated: true)
-
+        
     }
     
     
     private func movetonext(){
-//        des
+        //        des
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
-              vc.number = walletNumberTf.text!
-              vc.amount = amountTextField.text!
+        vc.number = walletNumberTf.text!
+        vc.amount = amountTextField.text!
         vc.ToaccountTitle = transactionApiResponseObj?.data?.accountTitle!
-              isfromFirstPayWallet = false
-              isfromHblMbfAccount = false
-               isfromBanktoBank = true
+        isfromFirstPayWallet = false
+        isfromHblMbfAccount = false
+        isfromBanktoBank = true
         vc.bankname = selectWallettf.text!
         vc.OTPREQ = transactionApiResponseObj?.data?.oTPREQ!
-       
+        
         GlobalData.money_Reason = "Miscellaneous Payments"
         vc.harcodePurpose = "Miscellaneous Payments"
         GlobalData.moneyTransferReasocCode = "0350"
         self.navigationController?.pushViewController(vc, animated: true)
-
+        
     }
     
-  
-    
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-    
-        if amountTextField?.text?.count ?? 0 < 0 || selectWallettf?.text?.count == 0 || walletNumberTf?.text?.count == 0
+    @objc func changeTextInTextField() {
+        if amountTextField.text?.count ?? 0 > 0
         {
-           img_next.image = UIImage(named: "grayArrow")
-            img_next.isUserInteractionEnabled = false
-            lblAlert.textColor =  UIColor(hexValue: 0xFF3932)
-            img_next.isUserInteractionEnabled = false
-            btn_continue.isUserInteractionEnabled = false
-        }
-        
-       if textField == amountTextField
-        {
-           if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0 > Int((maxvalu) ?? 0)
-
-                    {
-                        lblAlert.textColor = .gray
-                        img_next.image = UIImage(named: "grayArrow")
-                        img_next.isUserInteractionEnabled = false
-                      lblAlert.textColor =  UIColor(hexValue: 0xFF3932)
-                        btn_continue.isUserInteractionEnabled = false
-
-                    }
-           else
-           {
-               let image = UIImage(named:"]greenarrow")
-               img_next.image = image
-               let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-               img_next.isUserInteractionEnabled = true
-               img_next.addGestureRecognizer(tapGestureRecognizerrr)
-               lblAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-               btn_continue.isUserInteractionEnabled = true
-               
-           }
-    
-        }
-       
-        else if amountTextField?.text?.count != 0 && selectWallettf.text?.count != 0 && walletNumberTf?.text?.count != 0
-        {
-            
-            let image = UIImage(named:"]greenarrow")
-            img_next.image = image
-            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-            img_next.isUserInteractionEnabled = true
-            img_next.addGestureRecognizer(tapGestureRecognizerrr)
-            lblAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-            btn_continue.isUserInteractionEnabled = true
-
-            
-        }
+            if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0 > Int((maxvalu) ?? 0)
+            {
+                
+                img_next.image = UIImage(named: "grayArrow")
+                img_next.isUserInteractionEnabled = false
+                lblAlert.textColor =  UIColor(hexValue: 0xFF3932)
+                img_next.isUserInteractionEnabled = false
+                btn_continue.isUserInteractionEnabled = false
+                
             }
+            else
+            {
+                let image = UIImage(named:"]greenarrow")
+                img_next.image = image
+                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+                img_next.isUserInteractionEnabled = true
+                img_next.addGestureRecognizer(tapGestureRecognizerrr)
+                lblAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+                btn_continue.isUserInteractionEnabled = true
+            }
+        }
+    }
+}
+
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//
+//
+//        if amountTextField?.text?.count ?? 0 < 0 || selectWallettf?.text?.count == 0 || walletNumberTf?.text?.count == 0
+//        {
+//           img_next.image = UIImage(named: "grayArrow")
+//            img_next.isUserInteractionEnabled = false
+//            lblAlert.textColor =  UIColor(hexValue: 0xFF3932)
+//            img_next.isUserInteractionEnabled = false
+//            btn_continue.isUserInteractionEnabled = false
+//        }
+//
+//       if textField == amountTextField
+//        {
+//           if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0 > Int((maxvalu) ?? 0)
+//
+//                    {
+//                        lblAlert.textColor = .gray
+//                        img_next.image = UIImage(named: "grayArrow")
+//                        img_next.isUserInteractionEnabled = false
+//                      lblAlert.textColor =  UIColor(hexValue: 0xFF3932)
+//                        btn_continue.isUserInteractionEnabled = false
+//
+//                    }
+//           else
+//           {
+//               let image = UIImage(named:"]greenarrow")
+//               img_next.image = image
+//               let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//               img_next.isUserInteractionEnabled = true
+//               img_next.addGestureRecognizer(tapGestureRecognizerrr)
+//               lblAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//               btn_continue.isUserInteractionEnabled = true
+//
+//           }
+//
+//        }
+//
+//        else if amountTextField?.text?.count != 0 && selectWallettf.text?.count != 0 && walletNumberTf?.text?.count != 0
+//        {
+//
+//            let image = UIImage(named:"]greenarrow")
+//            img_next.image = image
+//            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//            img_next.isUserInteractionEnabled = true
+//            img_next.addGestureRecognizer(tapGestureRecognizerrr)
+//            lblAlert.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//            btn_continue.isUserInteractionEnabled = true
+//
+//
+//        }
+//            }
 
    
     
     
     
-}
+
 extension BanktoBankInputVc: CNContactPickerDelegate {
 
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {

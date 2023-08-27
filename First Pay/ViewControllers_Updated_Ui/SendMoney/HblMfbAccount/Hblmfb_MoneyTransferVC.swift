@@ -30,6 +30,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         super.viewDidLoad()
         print("GlobalData.money_Reason",  number)
         back.setTitle("", for: .normal)
+        otpTextField.becomeFirstResponder()
         //        btn_Next.isUserInteractionEnabled = false
         otpTextField.delegate = self
         btndropdown.setTitle("", for: .normal)
@@ -45,6 +46,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         
         otpTextField.isHidden = true
         
+        // Do any additional
         //        otpView.isHidden = true
         
         
@@ -166,8 +168,6 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
             var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_bank_logo ?? "")"
             let url = URL(string:concateString)
             bankLogo.sd_setImage(with: url)
-            
-            
             
         }
         else{

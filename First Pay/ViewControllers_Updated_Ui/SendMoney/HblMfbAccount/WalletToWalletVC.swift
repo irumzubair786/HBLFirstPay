@@ -19,6 +19,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
     var reasonsObj : GetReasonsModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+        tfAccountNo.becomeFirstResponder()
         back.setTitle("", for: .normal)
         btnContactList.setTitle("", for: .normal)
         amountTextField.delegate = self
@@ -30,6 +31,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         btnPurposeField.isUserInteractionEnabled = false
         btnDropdwonPurpose.isUserInteractionEnabled = false
         getReasonsForTrans()
+        self.amountTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -124,29 +126,19 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
     }
 
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    @objc func changeTextInTextField() {
         
-        if amountTextField?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
+        if amountTextField.text?.count ?? 0 > 0
         {
-            lblAlertAmount.textColor = .gray
-            imgnextarrow.image = UIImage(named: "grayArrow")
-            lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-            imgnextarrow.isUserInteractionEnabled = false
-        }
-        
-        else  if textField == amountTextField
-        {
-                    if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0  > Int((maxvalu) ?? 0)
-
-                    {
-                        lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
-                        imgnextarrow.image = UIImage(named: "grayArrow")
-                       lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-                        imgnextarrow.isUserInteractionEnabled = false
-//
-
-                    }
-        
+            if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0  > Int((maxvalu) ?? 0)
+            {
+                
+                lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
+                imgnextarrow.image = UIImage(named: "grayArrow")
+               lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+                imgnextarrow.isUserInteractionEnabled = false
+                
+            }
             else
             {
                 let image = UIImage(named:"]greenarrow")
@@ -158,32 +150,72 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
                 self.btn_next.isUserInteractionEnabled = true
             }
             
-
-            
         }
-
-        
-        
-        
-        
-        else if amountTextField?.text?.count != 0 && tfAccountNo.text?.count != 0
-        {
-            
-            let image = UIImage(named:"]greenarrow")
-            imgnextarrow.image = image
-            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-            imgnextarrow.isUserInteractionEnabled = true
-            imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
-            lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-            self.btn_next.isUserInteractionEnabled = true
-        }
-        
-        
-        
-        
-        
-        
     }
+    
+    
+    
+    
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//
+//        if amountTextField?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
+//        {
+//            lblAlertAmount.textColor = .gray
+//            imgnextarrow.image = UIImage(named: "grayArrow")
+//            lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+//            imgnextarrow.isUserInteractionEnabled = false
+//        }
+//
+//        else  if textField == amountTextField
+//        {
+//                    if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0  > Int((maxvalu) ?? 0)
+//
+//                    {
+//                        lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
+//                        imgnextarrow.image = UIImage(named: "grayArrow")
+//                       lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
+//                        imgnextarrow.isUserInteractionEnabled = false
+////
+//
+//                    }
+//
+//            else
+//            {
+//                let image = UIImage(named:"]greenarrow")
+//                imgnextarrow.image = image
+//                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//                imgnextarrow.isUserInteractionEnabled = true
+//                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+//                lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//                self.btn_next.isUserInteractionEnabled = true
+//            }
+//
+//
+//
+//        }
+//
+//
+//
+//
+//
+//        else if amountTextField?.text?.count != 0 && tfAccountNo.text?.count != 0
+//        {
+//
+//            let image = UIImage(named:"]greenarrow")
+//            imgnextarrow.image = image
+//            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//            imgnextarrow.isUserInteractionEnabled = true
+//            imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+//            lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//            self.btn_next.isUserInteractionEnabled = true
+//        }
+//
+//
+//
+//
+//
+//
+//    }
     
     @objc func PopUpHide(tapGestureRecognizer: UITapGestureRecognizer)
     {

@@ -62,8 +62,13 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     
     @objc func changeTextInTextField() {
         print("end editing")
-       
-        if self.TF_Mobileno.text!.count != 11
+        let text = TF_Mobileno.text!.replacingOccurrences(of: "+92-", with: "")
+            if TF_Mobileno.text?.count == 1 && text == "0" {
+                TF_Mobileno.text = nil
+                return
+            }
+        TF_Mobileno.text = format(with: "+92-XXX-XXXXXXX", phone: text)
+        if self.TF_Mobileno.text!.count != 15
         {
             self.lblinvalid.isHidden = false
 //            self.lblinvalid.text = "Invalid Phone Number."
@@ -80,6 +85,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         self.lblinvalid.isHidden = true
         let image = UIImage(named:"]greenarrow")
         self.btn_next_arrow.setImage(image, for: .normal)
+    
         self.btnContinue.isUserInteractionEnabled = true
         self.btn_next_arrow.isUserInteractionEnabled = true
     }
@@ -88,7 +94,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     
     @objc func validateMobileNumber() {
             if let mobileNumber = TF_Mobileno.text {
-                if mobileNumber.count  < 11 {
+                if mobileNumber.count  < 15 {
                     lblinvalid.isHidden = false
 //                    lblinvalid.text = "Mobile number should be at least 11 digits"
                     let image = UIImage(named:"grayArrow")
@@ -105,7 +111,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         }
     private func textFieldDidEndEditing(_ textField: NumberTextField) {
  
-        if TF_Mobileno.text?.count != 11
+        if TF_Mobileno.text?.count != 15
             {
 
                 TF_Mobileno .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
@@ -264,11 +270,11 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
 
         if textField == TF_Mobileno {
 
-            return newLength <= 11 // Bool
+            return newLength <= 15 // Bool
         }
         else {
 
-            return newLength <= 11
+            return newLength <= 15
         }
     }
     
@@ -316,11 +322,11 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         }
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/mobileRegistration"
         let a = TF_Mobileno.text!
-        mobileNumber = a.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0")
+        mobileNumber = a.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0")
         
 //        "mobileNo": textFieldNumber.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0"),
       
-        DataManager.instance.mobNo = mobileNumber
+        DataManager.instance.mobNo = mobileNumber!
         let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo":(DataManager.instance.mobNo),"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)"]
 
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
@@ -352,7 +358,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
                     }
                     let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
                     OTPVerifyVC.mobileNo = self.TF_Mobileno.text!
-                    DataManager.instance.mobNo =  mobileNumber!
+                    DataManager.instance.mobNo =  self.mobileNumber!
                     self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
 
 

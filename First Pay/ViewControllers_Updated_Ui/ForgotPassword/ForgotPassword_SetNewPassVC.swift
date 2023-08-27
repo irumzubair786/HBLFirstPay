@@ -62,7 +62,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         
         if textField == mobileNumberTextField{
           
-            return newLength <= 11
+            return newLength <= 15
         }
         
         else {
@@ -70,6 +70,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
             return newLength <= 13
             
         }
+        
         
     }
     
@@ -100,7 +101,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     
     @IBAction func textfieldCnic(_ sender: UITextField) {
     
-        if mobileNumberTextField.text?.count ?? 0 < 11
+        if mobileNumberTextField.text?.count ?? 0 < 15
         {
             lblInvalidMobileNo.isHidden = false
             lblInvalidMobileNo.text = "Invalid Mobile Number"
@@ -201,7 +202,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
 //        let getFirstDigit = mobileNumberTextField?.text?.substring(to: 1)
 //        print("getFirstDigit done ",getFirstDigit )
 
-        if mobileNumberTextField.text?.count ?? 0 < 11
+        if mobileNumberTextField.text?.count ?? 0 < 15
         {
             lblInvalidMobileNo.isHidden = false
             lblInvalidMobileNo.text = "Invalid Mobile Number.Please enter correct number."
@@ -257,7 +258,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
           }
         mobileNumberTextField.text = format(with: "+92-XXX-XXXXXXX", phone: text)
         
-        if mobileNumberTextField.text?.count ?? 0 < 11
+        if mobileNumberTextField.text?.count ?? 0 < 15
         {
             lblInvalidMobileNo.isHidden = false
             lblInvalidMobileNo.text = "Invalid Mobile Number.Please enter correct number."
@@ -284,7 +285,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
             lblInvalidMobileNo.isHidden = true
  
         }
-        else if (cnicTextField.text?.count ?? 0) != 13 ||  mobileNumberTextField.text?.count ?? 0 < 11
+        else if (cnicTextField.text?.count ?? 0) != 13 ||  mobileNumberTextField.text?.count ?? 0 < 15
         {
             lbl_InvalidCnic.isHidden = false
             lbl_InvalidCnic.text = "Invalid Cnic"
@@ -322,12 +323,12 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         let a = mobileNumberTextField.text!
         
         mobileNumber = a.replacingOccurrences(of: "-", with: "")
-        mobileNumber = mobileNumber.replacingOccurrences(of: "_", with: "")
-        mobileNumber = mobileNumber.replacingOccurrences(of: "+92", with: "0")
+        mobileNumber = mobileNumber?.replacingOccurrences(of: "_", with: "")
+        mobileNumber = mobileNumber?.replacingOccurrences(of: "+92", with: "0")
         let b = cnicTextField.text!
         var cnicNumber = b.replacingOccurrences(of: "-", with: "")
         cnicNumber = cnicNumber.replacingOccurrences(of: "_", with: "")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":cnicNumber,"mobileNo":(mobileNumber),"imeiNo":DataManager.instance.imei!,"appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel] as [String : Any]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":cnicNumber,"mobileNo":(mobileNumber!),"imeiNo":DataManager.instance.imei!,"appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel] as [String : Any]
         //51
         
         print(parameters)
@@ -359,7 +360,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
                 FBEvents.logEvent(title: .Signup_forgotpass_success)
                 if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
                     let vc = self.storyboard!.instantiateViewController(withIdentifier: "ForgotPassword_OTPVerificationVC") as! ForgotPassword_OTPVerificationVC
-                                        vc.Fetch_MobNo = mobileNumber
+                    vc.Fetch_MobNo = self.mobileNumber
                     vc.fetchCnic = self.cnicTextField.text!
                     DataManager.instance.userCnic = cnicNumber
                     self.navigationController!.pushViewController(vc, animated: true)

@@ -32,11 +32,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mA-Un-nVA">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icons8-menu-96" translatesAutoresizingMaskIntoConstraints="NO" id="Ild-aF-psM">
-                                        <rect key="frame" x="-14" y="16" width="43" height="29"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icons8-menu-96" translatesAutoresizingMaskIntoConstraints="NO" id="Ild-aF-psM">
+                                        <rect key="frame" x="-39" y="0.0" width="43" height="37"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="29" id="p51-MK-zfz"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="37" id="min-ud-hv2"/>
+                                            <constraint firstAttribute="height" constant="37" id="p51-MK-zfz"/>
+                                            <constraint firstAttribute="width" constant="43" id="qc3-Xa-XId"/>
                                         </constraints>
                                     </imageView>
                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon feather-search" translatesAutoresizingMaskIntoConstraints="NO" id="B1F-1X-mKw">
@@ -61,13 +63,13 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="T8w-8G-VTi" secondAttribute="bottom" id="4p1-oU-ZPX"/>
-                                    <constraint firstItem="Ild-aF-psM" firstAttribute="centerY" secondItem="1mA-Un-nVA" secondAttribute="centerY" constant="-4.5" id="Ac0-gt-k2O"/>
+                                    <constraint firstItem="Ild-aF-psM" firstAttribute="centerY" secondItem="1mA-Un-nVA" secondAttribute="centerY" constant="-16.5" id="Ac0-gt-k2O"/>
                                     <constraint firstAttribute="trailing" secondItem="B1F-1X-mKw" secondAttribute="trailing" constant="15" id="CVT-1j-v3i"/>
                                     <constraint firstItem="yYN-h5-SZ2" firstAttribute="centerX" secondItem="1mA-Un-nVA" secondAttribute="centerX" id="JQ3-bj-zPb"/>
                                     <constraint firstItem="T8w-8G-VTi" firstAttribute="top" secondItem="1mA-Un-nVA" secondAttribute="top" id="XCZ-fo-xo6"/>
                                     <constraint firstAttribute="trailing" secondItem="T8w-8G-VTi" secondAttribute="trailing" id="Xcq-2C-kWJ"/>
                                     <constraint firstAttribute="height" constant="70" id="bfV-gN-IJk"/>
-                                    <constraint firstItem="Ild-aF-psM" firstAttribute="leading" secondItem="1mA-Un-nVA" secondAttribute="leading" constant="-14" id="pE1-gO-bPT"/>
+                                    <constraint firstItem="Ild-aF-psM" firstAttribute="leading" secondItem="1mA-Un-nVA" secondAttribute="leading" constant="-39" id="pE1-gO-bPT"/>
                                     <constraint firstItem="yYN-h5-SZ2" firstAttribute="centerY" secondItem="1mA-Un-nVA" secondAttribute="centerY" id="uE5-eJ-hsg"/>
                                     <constraint firstItem="B1F-1X-mKw" firstAttribute="centerY" secondItem="1mA-Un-nVA" secondAttribute="centerY" id="wN0-WK-sfL"/>
                                     <constraint firstItem="T8w-8G-VTi" firstAttribute="leading" secondItem="1mA-Un-nVA" secondAttribute="leading" id="yCP-4B-2x0"/>
@@ -200,7 +202,7 @@
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="9"/>
+                                                <real key="value" value="13"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
@@ -538,7 +540,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="BranchLocator" width="55" height="55"/>
+        <image name="BranchLocator" width="72" height="89"/>
         <image name="Coming Soon" width="11801" height="2825"/>
         <image name="Group 871-1" width="80" height="19"/>
         <image name="Icon feather-search" width="28" height="28"/>
@@ -549,7 +551,7 @@
         <image name="barcode 1" width="20" height="20"/>
         <image name="editBtn" width="22" height="22"/>
         <image name="homeicon" width="22" height="22"/>
-        <image name="icons8-menu-96" width="96" height="96"/>
+        <image name="icons8-menu-96" width="150" height="150"/>
         <image name="promotions copy" width="89" height="89"/>
         <image name="sidemenuprofile" width="176" height="176"/>
         <image name="user 2" width="72" height="73"/>

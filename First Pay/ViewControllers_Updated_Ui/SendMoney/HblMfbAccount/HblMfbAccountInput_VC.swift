@@ -20,6 +20,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
     var reasonsList : [String]?
     override func viewDidLoad() {
         super.viewDidLoad()
+        tfAccountNo.becomeFirstResponder()
         back.setTitle("", for: .normal)
         btnPurposeField.setTitle("", for: .normal)
         lblAlertAmount.textColor = .gray
@@ -29,6 +30,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
         amountTextfield.addTarget(self, action: #selector(changeAmountInTextField), for: .editingChanged)
         amountTextfield.delegate = self
         getReasonsForTrans()
+       
         // Do any additional setup after loading the view.
     }
     
@@ -79,7 +81,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
     }
     
         @objc func changeAmountInTextField() {
-            
+       
             if amountTextfield?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
             {
                 imgnextarrow.image = UIImage(named: "grayArrow")
