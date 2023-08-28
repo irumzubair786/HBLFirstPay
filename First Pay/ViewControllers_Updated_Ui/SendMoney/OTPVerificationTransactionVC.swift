@@ -41,6 +41,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         IMG_NEXT_ARROW.isUserInteractionEnabled = true
         IMG_NEXT_ARROW.addGestureRecognizer(tapGestureRecognizerr)
+        self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
     
@@ -140,9 +141,20 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         return newLength <= 4
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        let image  = UIImage(named: "]greenarrow")
-        IMG_NEXT_ARROW.image = image
-        btnVerify.isUserInteractionEnabled = true
+        
+        
+        if TF_otp.text?.count == 4
+        {
+            let image  = UIImage(named: "]greenarrow")
+            IMG_NEXT_ARROW.image = image
+            btnVerify.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named:"grayArrow")
+            IMG_NEXT_ARROW.image = image
+            btnVerify.isUserInteractionEnabled = false
+        }
         
     }
     @objc func changeTextInTextField() {
@@ -374,7 +386,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
 //                        self.showToast(title: message)
                         
                     }
@@ -382,7 +394,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             }
             else {
                 if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)                }
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
 //                print(response.result.value)
 //                print(response.response?.statusCode)
             }

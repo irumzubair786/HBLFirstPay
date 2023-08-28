@@ -279,6 +279,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         let emptyimage = UIImage(named: "Rectangle")
         
         btn_Mname1.setBackgroundImage(image, for: .normal)
+        btn_Mname1.cornerRadius = 20
         btn_Mname1.setTitleColor(.white, for: .normal)
         btn_Mname2.setBackgroundImage(emptyimage, for: .normal)
         btn_Mname3.setBackgroundImage(emptyimage, for: .normal)
@@ -296,6 +297,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         let image = UIImage(named: "Rectangle Orange")
         let emptyimage = UIImage(named: "Rectangle")
         btn_Mname2.setBackgroundImage(image, for: .normal)
+        btn_Mname2.cornerRadius = 20
         btn_Mname2.setTitleColor(.white, for: .normal)
         btn_Mname1.setBackgroundImage(emptyimage, for: .normal)
         btn_Mname3.setBackgroundImage(emptyimage, for: .normal)
@@ -313,6 +315,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         let emptyimage = UIImage(named: "Rectangle")
         
         btn_Mname3.setBackgroundImage(image, for: .normal)
+        btn_Mname3.cornerRadius = 20
         btn_Mname3.setTitleColor(.white, for: .normal)
         btn_Mname1.setBackgroundImage(emptyimage, for: .normal)
         btn_Mname2.setBackgroundImage(emptyimage, for: .normal)
@@ -329,8 +332,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         
         let image = UIImage(named: "Rectangle Orange")
         let emptyimage = UIImage(named: "Rectangle")
-        
+       
         btn_Mname4.setBackgroundImage(image, for: .normal)
+        btn_Mname4.cornerRadius = 20
         btn_Mname4.setTitleColor(.white, for: .normal)
         btn_Mname1.setBackgroundImage(emptyimage, for: .normal)
         btn_Mname2.setBackgroundImage(emptyimage, for: .normal)

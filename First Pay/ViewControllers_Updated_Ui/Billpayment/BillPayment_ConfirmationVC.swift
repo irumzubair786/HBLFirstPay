@@ -36,16 +36,14 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imageNextArrow.isUserInteractionEnabled = true
         imageNextArrow.addGestureRecognizer(tapGestureRecognizerr)
-
+        
         // Do any additional setup after loading the view.
     }
     
    
     @IBOutlet weak var TextfieldAmount: UITextField!
-    
     @IBOutlet weak var lbl_Status: UILabel!
     @IBOutlet weak var otpTextField: UITextField!
-   
     @IBOutlet weak var lblDate: UILabel!
     @IBOutlet weak var lblAmount: UILabel!
     @IBOutlet weak var Lbl_BiilingMonth: UILabel!
