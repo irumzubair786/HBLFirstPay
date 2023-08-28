@@ -44,7 +44,7 @@ class Billpayment_MainVC: BaseClassVC {
       
         self.BillcompanyID =  self.billCompanyObj?.companies?[tag].ubpCompaniesId
         GlobalData.SelectedCompanyname = self.billCompanyObj?.companies?[tag].name
-        GlobalData.SelectedCompanydecr = self.billCompanyObj?.companies?[tag].descr
+//        GlobalData.SelectedCompanydecr = self.billCompanyObj?.companies?[tag].descr
         print("u selected company id", self.BillcompanyID)
          let vc = self.storyboard!.instantiateViewController(withIdentifier: "Billpayment_ListAllItemsVC") as! Billpayment_ListAllItemsVC
         vc.BillComapnyid = BillcompanyID!
@@ -185,11 +185,13 @@ extension Billpayment_MainVC : UITableViewDelegate, UITableViewDataSource
             cell.img.image = UIImage(named: "1bill")
 
         }
+        cell.btnNextAll.tag = indexPath.row
+        cell.btnNextAll.setTitle("", for: .normal)
         cell.btn_Next.tag = indexPath.row
         cell.btn.setTitle(aCompany.name, for: .normal)
         cell.btn_Next.setTitle("", for: .normal)
         cell.btn_Next.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
-
+        cell.btnNextAll.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
        
         
         

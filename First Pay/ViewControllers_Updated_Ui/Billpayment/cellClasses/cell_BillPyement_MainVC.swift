@@ -24,6 +24,7 @@ class cell_BillPyement_MainVC: UITableViewCell {
     
     @IBOutlet weak var btn_Next: UIButton!
     
+    @IBOutlet weak var btnNextAll: UIButton!
     @IBOutlet weak var btn: UIButton!
     
     @IBOutlet weak var img: UIImageView!

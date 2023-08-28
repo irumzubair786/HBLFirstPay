@@ -26,16 +26,21 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     var otpReq : String?
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        lblTitle.text =  GlobalData.SelectedCompanyname
         TextfieldAmount.delegate = self
         otpTextField.delegate = self
-        imageNextArrow.isUserInteractionEnabled = true
         buttonNext.isUserInteractionEnabled = true
          UpdateUi()
         back.setTitle("", for: .normal)
+        self.TextfieldAmount.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        imageNextArrow.isUserInteractionEnabled = true
+        imageNextArrow.addGestureRecognizer(tapGestureRecognizerr)
+
         // Do any additional setup after loading the view.
     }
     
+   
     @IBOutlet weak var TextfieldAmount: UITextField!
     
     @IBOutlet weak var lbl_Status: UILabel!
@@ -48,7 +53,7 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     @IBOutlet weak var lblRefferenceNo: UILabel!
     @IBOutlet weak var lb_consumer_name: UILabel!
     @IBOutlet weak var bank_logo: UIImageView!
-    @IBOutlet weak var lblMainTitle: UILabel!
+    @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var back: UIButton!
     
     @IBOutlet weak var imageNextArrow: UIImageView!
@@ -58,7 +63,7 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
         if otpReq == "Y"
         {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPaymentOTPVerificationVC") as! BillPaymentOTPVerificationVC
-          
+            
             vc.consumerNumber = consumerNumber!
             vc.amount = TextfieldAmount.text!
             vc.refferenceNumber = refferenceNumber
@@ -73,12 +78,30 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
         {
             billPyment()
         }
-        
-
-        
-//
-        
     }
+        
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+        {
+            if otpReq == "Y"
+            {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPaymentOTPVerificationVC") as! BillPaymentOTPVerificationVC
+              
+                vc.consumerNumber = consumerNumber!
+                vc.amount = TextfieldAmount.text!
+                vc.refferenceNumber = refferenceNumber
+                vc.company = company
+                vc.billingMonth = billingMonth
+                vc.amountDue = amountDue
+                vc.dueDate = dueDate
+                vc.totalAmount = TextfieldAmount.text!
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            else
+            {
+                billPyment()
+            }
+        }
+ 
     @IBAction func Action_Back(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
         
@@ -190,6 +213,7 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
         return newLength <= 10
         
     }
+   
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if TextfieldAmount.text?.count != 0 && otpTextField.text?.count == 4
@@ -206,6 +230,25 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
             buttonNext.isUserInteractionEnabled = false
         }
         
+        
+    }
+    
+    
+    @objc func changeTextInTextField() {
+        
+        if TextfieldAmount.text?.count != 0 && otpTextField.text?.count == 4
+        {
+            imageNextArrow.image = UIImage(named: "]greenarrow")
+            imageNextArrow.isUserInteractionEnabled = true
+            buttonNext.isUserInteractionEnabled = true
+        }
+        else
+        {
+//            let image = UIImage(named:"grayArrow")
+            imageNextArrow.image = UIImage(named: "grayArrow")
+            imageNextArrow.isUserInteractionEnabled = false
+            buttonNext.isUserInteractionEnabled = false
+        }
         
     }
 }

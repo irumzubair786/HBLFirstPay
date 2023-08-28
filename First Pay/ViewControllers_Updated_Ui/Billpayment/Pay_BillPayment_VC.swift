@@ -25,7 +25,8 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         back.setTitle("", for: .normal)
 //        btn_Continue.setTitle("", for: .normal)
         lblMainTitle.text = GlobalData.SelectedCompanyname ?? ""
-        lbl_SubTitle.text = GlobalData.SelectedCompanydecr ?? ""
+        lbl_SubTitle.text = GlobalData.SelectedCompanyname ?? ""
+        
         lblTitle.text = "Refference / Consumer Number"
         btn_Continue.isUserInteractionEnabled = false
         btn_img_next.setTitle("", for: .normal)
@@ -35,6 +36,8 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizerr)
+        self.enterconsumerNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+//
         // Do any additional setup after loading the view.
     }
     
@@ -93,7 +96,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         showActivityIndicator()
         
   //      let compelteUrl = GlobalConstants.BASE_URL + "billInquiry"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billInquiry"
+        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v2/billInquiry"
         
 //        v2
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
@@ -150,51 +153,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         private func navigateToDetailsVC(code:String){
             
             if let imdComp = self.billtransactionOBj?.data?.utilityCompanyId{
-                
-                
-//            if imdComp == "CC01BILL" || imdComp == "IN01BILL" || imdComp == "TP01BILL" || imdComp == "CAREEM01"{
-//
-//                let utilityBillPayOneBillConfirmVC = self.storyboard!.instantiateViewController(withIdentifier: "BillPayment_ConfirmationVC") as!
-//                BillPayment_ConfirmationVC
-////                if isFromQuickPay {
-////                    utilityBillPayOneBillConfirmVC.companyName = self.mainTitle
-////                }
-////                else {
-////                    utilityBillPayOneBillConfirmVC.companyName = self.sourceCompany
-////                }
-//                utilityBillPayOneBillConfirmVC.accountTitle = self.billtransactionOBj?.data?.subscriberName
-//                utilityBillPayOneBillConfirmVC.dueDate = self.billtransactionOBj?.data?.paymentDueDate
-//                utilityBillPayOneBillConfirmVC.totalAmountl = self.billtransactionOBj?.data?.totalAmountPayableWithinDueDate
-//                utilityBillPayOneBillConfirmVC.paidAmount = self.billtransactionOBj?.data?.actualDueAmount
-//    //            utilityBillPayOneBillConfirmVC.remainingAmount = self.billPaymentInquiryObj?.data?.remainingAmount
-//                utilityBillPayOneBillConfirmVC.amountAfterDD = self.billtransactionOBj?.data?.totalAmountPayableAfterDueDate
-//    //            utilityBillPayOneBillConfirmVC.remAmountAftrDD = self.billPaymentInquiryObj?.data?.remAmountAftrDD
-//                utilityBillPayOneBillConfirmVC.status = self.billtransactionOBj?.data?.billStatus
-//                utilityBillPayOneBillConfirmVC.companyName = GlobalData.SelectedCompanyname!
-//                utilityBillPayOneBillConfirmVC.utilityBillCompany = self.billtransactionOBj?.data?.utilityCompanyId
-//                utilityBillPayOneBillConfirmVC.otpReq = self.billtransactionOBj?.data?.oTPREQ
-//                utilityBillPayOneBillConfirmVC.utilityConsumerNo = self.enterconsumerNo.text!
-//                utilityBillPayOneBillConfirmVC.utilityCompanyID = self.billtransactionOBj?.data?.utilityCompanyId
-//                utilityBillPayOneBillConfirmVC.utilityBillCompanyId = Int(GlobalData.Selected_Company_code!)
-//
-//                print(utilityBillPayOneBillConfirmVC.accountTitle as Any)
-//                print("duedate",utilityBillPayOneBillConfirmVC.dueDate!)
-//                print(utilityBillPayOneBillConfirmVC.totalAmountl!)
-//                print(utilityBillPayOneBillConfirmVC.paidAmount!)
-//                print(utilityBillPayOneBillConfirmVC.remainingAmount!)
-//                print(utilityBillPayOneBillConfirmVC.amountAfterDD! as Any)
-//                print(utilityBillPayOneBillConfirmVC.remAmountAftrDD as Any)
-//                print(utilityBillPayOneBillConfirmVC.status as Any)
-//                print(utilityBillPayOneBillConfirmVC.companyName as Any)
-//                print(utilityBillPayOneBillConfirmVC.utilityBillCompany as Any)
-//                print(utilityBillPayOneBillConfirmVC.otpReq as Any)
-//                print(utilityBillPayOneBillConfirmVC.utilityConsumerNo!)
-//                print(utilityBillPayOneBillConfirmVC.utilityCompanyID!)
-//                print(utilityBillPayOneBillConfirmVC.utilityBillCompanyId!)
-//                self.navigationController!.pushViewController(utilityBillPayOneBillConfirmVC, animated: true)
-//            }
-//            else{
-                
+ 
                 let vc = self.storyboard!.instantiateViewController(withIdentifier: "BillPayment_ConfirmationVC") as! BillPayment_ConfirmationVC
                 vc.refferenceNumber = self.billtransactionOBj?.data?.transactionLogId
                 vc.company = GlobalData.Selected_bil_Company
@@ -210,7 +169,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
                 }
                 else
                 {
-                    vc.status = "Un Paid"
+                    vc.status = "Unpaid"
                 }
                 
                 vc.consumerNumber = enterconsumerNo.text!
@@ -240,11 +199,25 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
             }
             return newLength <= 18
         }
-        return newLength <= 11
+        return newLength <= 18
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if enterconsumerNo.text?.count != 0
+        {
+            let image = UIImage(named: "]greenarrow")
+            img_next.image = image
+            btn_Continue.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named: "grayArrow")
+            img_next.image = image
+            btn_Continue.isUserInteractionEnabled = false
+        }
+    }
+    @objc func changeTextInTextField() {
+        if enterconsumerNo.text?.count == 11 || enterconsumerNo.text?.count == 18
         {
             let image = UIImage(named: "]greenarrow")
             img_next.image = image
