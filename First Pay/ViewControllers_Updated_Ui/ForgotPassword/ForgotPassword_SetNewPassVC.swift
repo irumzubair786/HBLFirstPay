@@ -16,6 +16,11 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     let systemVersion = UIDevice.current.systemVersion
     let devicemodel = UIDevice.current.localizedModel
     var genericResponseObj : GenericResponseModel?
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UITextField.appearance().tintColor = .systemBlue
+    }
+    
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Signup_forgotpass_landed)
         super.viewDidLoad()

@@ -52,10 +52,13 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     @IBOutlet weak var viewLineFour: UIView!
     @IBOutlet weak var viewLineFive: UIView!
     @IBOutlet weak var viewLineSix: UIView!
-    
-    
+   
     override func viewDidDisappear(_ animated: Bool) {
         UITextField.appearance().tintColor = .systemBlue
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        UITextField.appearance().tintColor = .clear
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +89,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         labelSix.text = ""
         
         passwordShow(isShow: false)
-        UITextField.appearance().tintColor = .clear
+
         textFieldSetting()
         //        self.showAlertCustomPopup(title: "", message: "",buttonName: ["OK","CANCEL"],viewController: self)
         lbl_InvalidPassword.isHidden = true
