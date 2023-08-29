@@ -19,7 +19,13 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     var minValue = 100
     var maxValue = 10000
     var amount :String?
+    
+    @IBOutlet weak var viewBackGroundAmount: UIView!
+
+    
     override func viewDidLoad() {
+        viewBackGroundAmount.layer.cornerRadius = 20
+        viewBackGroundAmount.clipsToBounds = true
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
         buttonContinue.isUserInteractionEnabled = false

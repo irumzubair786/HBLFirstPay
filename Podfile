@@ -50,7 +50,7 @@ target 'First Pay' do
   pod 'IQDropDownTextField', '~> 3.0.1'
   #pod 'iOSDropDown'
   pod 'PasswordTextField', '~> 1.2'
-  pod 'OneSignalXCFramework', '>= 3.0.0', '< 4.0'
+  pod 'OneSignalXCFramework'#, '>= 3.0.0', '< 4.0'
   #  pod 'PinCodeInputView'
   pod 'OTPTextField', '~> 1.1'
   #pod 'CryptoSwift', '~> 1.6.0'

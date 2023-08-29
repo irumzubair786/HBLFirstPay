@@ -13,6 +13,13 @@ import SwiftKeychainWrapper
 import ContactsUI
 import libPhoneNumber_iOS
 class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
+    
+    @IBOutlet weak var viewApplyButton: UIView! {
+        didSet {
+            viewApplyButton.circle()
+        }
+    }
+
     private let contactPicker = CNContactPickerViewController()
     var flag :Bool = false
     var parentCompanyID : Int?
@@ -32,7 +39,6 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         //        Tf_mobileNumber.text = "03404601050"
         super.viewDidLoad()
         getBillPaymentCompanies()
-        
         imgPostpaid.isHidden = true
         Tf_mobileNumber.delegate = self
         btnContinue.isUserInteractionEnabled = false

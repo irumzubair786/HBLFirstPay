@@ -14,13 +14,16 @@ import ObjectMapper
 
 class TransferAmountConfirmationVc: BaseClassVC {
     
+    @IBOutlet weak var imageViewGray: UIImageView!
     var successmodelobj : FundsTransferApiResponse?
     var amount :String?
     var phoneNumber  : String?
     
+    @IBOutlet weak var viewBackgroundButton: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewBackgroundButton.circle()
         back.setTitle("", for: .normal)
         nextBtn.setTitle("", for: .normal)
         updateUi()

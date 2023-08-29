@@ -13,6 +13,12 @@ import SwiftKeychainWrapper
 import ContactsUI
 import libPhoneNumber_iOS
 class PostPaidVC: BaseClassVC, UITextFieldDelegate {
+    
+    @IBOutlet weak var viewApplyButton: UIView! {
+        didSet {
+            viewApplyButton.circle()
+        }
+    }
     private let contactPicker = CNContactPickerViewController()
     var parentCompanyID : Int?
     var companyID : String?
