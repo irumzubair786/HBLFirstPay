@@ -35,6 +35,17 @@ extension UIColor {
     static let clrLightRedWithOccupacy05 = UIColor(hexString: "EE6266", alpha: 0.05)
 
     
+    
+    //Biometric Verification Screen Colors
+    
+    static let clrNavigationBarBVS = UIColor(hexString: "171E2C")
+    static let clrGreenBVS = UIColor(hexString: "00CC96")
+    static let clrNextButtonBackGroundBVS = UIColor(hexString: "F19434")
+
+    
+    
+    
+    
 
 
     

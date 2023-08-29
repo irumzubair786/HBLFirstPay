@@ -84,6 +84,7 @@ class UnverifeidAccountMainVc: BaseClassVC {
     @IBAction func buttonUpgrade(_ sender: UIButton) {
         FBEvents.logEvent(title: .BioMetric_Sccanining)
         // call sdk fingerPrint
+        
         fingerPrintVerification = FingerPrintVerification()
         DispatchQueue.main.async {
             self.fingerPrintVerification(viewController: self)
@@ -101,11 +102,47 @@ class UnverifeidAccountMainVc: BaseClassVC {
         //#if targetEnvironment(simulator)
         //        #else
 
+        
+        let customUI = CustomUI(
+            topBarBackgroundImage: nil,
+            topBarColor: UIColor.white,
+            topBarTextColor: .clrBlack,
+            containerBackgroundColor: UIColor.white,
+            scannerOverlayColor: .green,
+            scannerOverlayTextColor: UIColor.white,
+            instructionTextColor: UIColor.white,
+            buttonsBackgroundColor: .clrBlack,
+            buttonsTextColor: UIColor.white,
+            imagesColor: UIColor.white,
+            isFullWidthButtons: true,
+            guidanceScreenButtonText: "NEXT",
+            guidanceScreenText: "User Demo",
+            guidanceScreenAnimationFilePath: nil,
+            showGuidanceScreen: true)
+
+        let customDialog = CustomDialog(
+            dialogImageBackgroundColor: UIColor.white,
+            dialogImageForegroundColor: .green,
+            dialogBackgroundColor: UIColor.white,
+            dialogTitleColor: .systemBlue,
+            dialogMessageColor: UIColor.black,
+            dialogButtonTextColor: UIColor.white,
+            dialogButtonBackgroundColor: .orange)
+        
+        let uiConfig = UIConfig(
+            splashScreenLoaderIndicatorColor: UIColor.white,
+            splashScreenText: "Please wait",
+            splashScreenTextColor: UIColor.white,
+            customUI: customUI,
+            customDialog: customDialog,
+            customFontFamily: nil)
+        
         let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
                                                   hand: .BOTH_HANDS,
                                                   fingers: .EIGHT_FINGERS,
-                                                  isPackPng: true)
+                                                  isPackPng: true, uiConfig: <#T##UIConfig#>)
         let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
+        
         vc.fingerprintConfig = fingerprintConfig
         vc.fingerprintResponseDelegate = viewController as? FingerprintResponseDelegate
         viewController.present(vc, animated: true, completion: nil)
