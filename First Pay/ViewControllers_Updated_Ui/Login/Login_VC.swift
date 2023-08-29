@@ -548,13 +548,13 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     func loginAction() {
         
 
-        fingerPrintVerification = FingerPrintVerification()
-        DispatchQueue.main.async {
-            self.fingerPrintVerification(viewController: self)
-        }
-        
-        
-        return()
+//        fingerPrintVerification = FingerPrintVerification()
+//        DispatchQueue.main.async {
+//            self.fingerPrintVerification(viewController: self)
+//        }
+//        
+//        
+//        return()
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
@@ -743,7 +743,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         //#if targetEnvironment(simulator)
         //        #else
 
-        
         let customUI = CustomUI(
             topBarBackgroundImage: nil,
             topBarColor: .clrNavigationBarBVS,
@@ -765,8 +764,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             dialogImageBackgroundColor: UIColor.white,
             dialogImageForegroundColor: .green,
             dialogBackgroundColor: UIColor.white,
-            dialogTitleColor: .systemBlue,
-            dialogMessageColor: UIColor.black,
+            dialogTitleColor: .clrGreenBVS,
+            dialogMessageColor: .clrBlack,
             dialogButtonTextColor: UIColor.white,
             dialogButtonBackgroundColor: .orange)
         

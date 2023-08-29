@@ -921,11 +921,46 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             //#if targetEnvironment(simulator)
             //        #else
 
+            let customUI = CustomUI(
+                topBarBackgroundImage: nil,
+                topBarColor: .clrNavigationBarBVS,
+                topBarTextColor: .white,
+                containerBackgroundColor: UIColor.white,
+                scannerOverlayColor: UIColor.clrGreenBVS,
+                scannerOverlayTextColor: UIColor.white,
+                instructionTextColor: UIColor.white,
+                buttonsBackgroundColor: .clrNextButtonBackGroundBVS,
+                buttonsTextColor: UIColor.white,
+                imagesColor: .clrGreenBVS,
+                isFullWidthButtons: true,
+                guidanceScreenButtonText: "NEXT",
+                guidanceScreenText: "User Demo",
+                guidanceScreenAnimationFilePath: nil,
+                showGuidanceScreen: true)
+
+            let customDialog = CustomDialog(
+                dialogImageBackgroundColor: UIColor.white,
+                dialogImageForegroundColor: .green,
+                dialogBackgroundColor: UIColor.white,
+                dialogTitleColor: .clrGreenBVS,
+                dialogMessageColor: .clrBlack,
+                dialogButtonTextColor: UIColor.white,
+                dialogButtonBackgroundColor: .orange)
+            
+            let uiConfig = UIConfig(
+                splashScreenLoaderIndicatorColor: .clrBlack,
+                splashScreenText: "Please wait",
+                splashScreenTextColor: UIColor.white,
+                customUI: customUI,
+                customDialog: customDialog,
+                customFontFamily: nil)
+            
             let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
                                                       hand: .BOTH_HANDS,
                                                       fingers: .EIGHT_FINGERS,
-                                                      isPackPng: true)
+                                                      isPackPng: true, uiConfig: uiConfig)
             let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
+            
             vc.fingerprintConfig = fingerprintConfig
             vc.fingerprintResponseDelegate = viewController as? FingerprintResponseDelegate
             viewController.present(vc, animated: true, completion: nil)

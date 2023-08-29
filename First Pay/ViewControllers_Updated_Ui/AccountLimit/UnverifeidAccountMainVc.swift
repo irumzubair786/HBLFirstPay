@@ -102,18 +102,17 @@ class UnverifeidAccountMainVc: BaseClassVC {
         //#if targetEnvironment(simulator)
         //        #else
 
-        
         let customUI = CustomUI(
             topBarBackgroundImage: nil,
-            topBarColor: UIColor.white,
-            topBarTextColor: .clrBlack,
+            topBarColor: .clrNavigationBarBVS,
+            topBarTextColor: .white,
             containerBackgroundColor: UIColor.white,
-            scannerOverlayColor: .green,
+            scannerOverlayColor: UIColor.clrGreenBVS,
             scannerOverlayTextColor: UIColor.white,
             instructionTextColor: UIColor.white,
-            buttonsBackgroundColor: .clrBlack,
+            buttonsBackgroundColor: .clrNextButtonBackGroundBVS,
             buttonsTextColor: UIColor.white,
-            imagesColor: UIColor.white,
+            imagesColor: .clrGreenBVS,
             isFullWidthButtons: true,
             guidanceScreenButtonText: "NEXT",
             guidanceScreenText: "User Demo",
@@ -124,13 +123,13 @@ class UnverifeidAccountMainVc: BaseClassVC {
             dialogImageBackgroundColor: UIColor.white,
             dialogImageForegroundColor: .green,
             dialogBackgroundColor: UIColor.white,
-            dialogTitleColor: .systemBlue,
-            dialogMessageColor: UIColor.black,
+            dialogTitleColor: .clrGreenBVS,
+            dialogMessageColor: .clrBlack,
             dialogButtonTextColor: UIColor.white,
             dialogButtonBackgroundColor: .orange)
         
         let uiConfig = UIConfig(
-            splashScreenLoaderIndicatorColor: UIColor.white,
+            splashScreenLoaderIndicatorColor: .clrBlack,
             splashScreenText: "Please wait",
             splashScreenTextColor: UIColor.white,
             customUI: customUI,
@@ -140,7 +139,7 @@ class UnverifeidAccountMainVc: BaseClassVC {
         let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
                                                   hand: .BOTH_HANDS,
                                                   fingers: .EIGHT_FINGERS,
-                                                  isPackPng: true, uiConfig: <#T##UIConfig#>)
+                                                  isPackPng: true, uiConfig: uiConfig)
         let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
         
         vc.fingerprintConfig = fingerprintConfig
