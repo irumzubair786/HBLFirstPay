@@ -12,6 +12,7 @@ import ObjectMapper
 import SwiftKeychainWrapper
 import SDWebImage
 class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
+    @IBOutlet weak var viewBackGroundButton: UIView!
     var arrAmount = ["Rs.100","Rs.250","Rs.500","Rs.1000"]
     var IsSelectedAmount = true
     var selectedAmount:String?
@@ -20,13 +21,13 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     var phoneNumber  : String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewBackGroundButton.circle()
         collectionView.delegate = self
         collectionView.dataSource = self
         btnContinue.isUserInteractionEnabled = false
         amountTextField.delegate = self
         backbtn.setTitle("", for: .normal)
-        btn.setTitle("", for: .normal)
-        btn.isUserInteractionEnabled = false
+        
         img_next_arrow.isUserInteractionEnabled = false
         appendArray()
         updateui()
@@ -53,7 +54,6 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
                 img_next_arrow.image = image
                 img_next_arrow.isUserInteractionEnabled = false
                 btnContinue.isUserInteractionEnabled = false
-                btn.isUserInteractionEnabled = false
                 
             }
             else
@@ -62,7 +62,6 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
                 img_next_arrow.image = image
                 img_next_arrow.isUserInteractionEnabled = true
                 btnContinue.isUserInteractionEnabled = true
-                btn.isUserInteractionEnabled = true
                 lblAmountLimit.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
     
                 amountTextField.textColor = UIColor.clrGreen
@@ -76,7 +75,6 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
                 img_next_arrow.image = image
                 img_next_arrow.isUserInteractionEnabled = false
                 btnContinue.isUserInteractionEnabled = false
-                btn.isUserInteractionEnabled = false
             }
    
     }
@@ -116,14 +114,12 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
                     img_next_arrow.image = image
                     img_next_arrow.isUserInteractionEnabled = true
                     btnContinue.isUserInteractionEnabled = true
-                    btn.isUserInteractionEnabled = true
                 }
                 else {
                     let image = UIImage(named:"grayArrow")
                     img_next_arrow.image = image
                     img_next_arrow.isUserInteractionEnabled = false
                     btnContinue.isUserInteractionEnabled = false
-                    btn.isUserInteractionEnabled = false
                 }
             }
         }
@@ -188,7 +184,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         for i in  myarr{
             i.isSeleccted = false
         }
-        
+        cell.btnAmount.circle()
         self.myarr[tag].isSeleccted = true
         cell.btnAmount.setTitleColor(.white, for: .normal)
         ///set title color here to white
@@ -203,7 +199,6 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
 //        change
         cell.btnAmount.setImage(setimg, for: .normal)
         btnContinue.isUserInteractionEnabled = true
-        btn.isUserInteractionEnabled = true
         let image = UIImage(named:"]greenarrow")
         img_next_arrow.image = image
         img_next_arrow.isUserInteractionEnabled = true
