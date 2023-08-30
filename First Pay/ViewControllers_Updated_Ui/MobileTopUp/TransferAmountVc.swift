@@ -12,6 +12,7 @@ import ObjectMapper
 import SwiftKeychainWrapper
 import SDWebImage
 class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
+    @IBOutlet weak var viewBackGroungEnterAmount: UIImageView!
     @IBOutlet weak var viewBackGroundButton: UIView!
     var arrAmount = ["Rs.100","Rs.250","Rs.500","Rs.1000"]
     var IsSelectedAmount = true
@@ -21,6 +22,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
     var phoneNumber  : String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewBackGroungEnterAmount.radius(radius: 20)
         viewBackGroundButton.circle()
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -185,19 +187,19 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             i.isSeleccted = false
         }
         cell.btnAmount.circle()
+        cell.btnAmount.borderWidth = 1
+        cell.btnAmount.borderColor = .clrLightGray
         self.myarr[tag].isSeleccted = true
         cell.btnAmount.setTitleColor(.white, for: .normal)
         ///set title color here to white
         let setimg = UIImage(named: "")
         cell.btnAmount.backgroundColor = UIColor(hexString: "CC6801")
         //        cell.backView.backgroundColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-        cell.btnAmount.borderColor = UIColor.clear
         //        cell.btnAmount.borderColor = .clear
         let a = cell.btnAmount.currentTitle
         let x = a?.substring(from: 3)
         amountTextField.text = x
 //        change
-        cell.btnAmount.setImage(setimg, for: .normal)
         btnContinue.isUserInteractionEnabled = true
         let image = UIImage(named:"]greenarrow")
         img_next_arrow.image = image
@@ -334,23 +336,13 @@ extension TransferAmountVc: UICollectionViewDelegate, UICollectionViewDataSource
         if(myarr[indexPath.row].isSeleccted == true)
         {
             cell.btnAmount.setTitleColor(.white, for: .normal)
-            ///
-         
             cell.btnAmount.backgroundColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
             cell.btnAmount.borderColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-            cell.btnAmount.cornerRadius = 12
-            let setimg = UIImage(named: "")
-            cell.btnAmount.setImage(setimg, for: .normal)
         }
         else
         {
             cell.btnAmount.setTitleColor(.black, for: .normal)
             cell.btnAmount.backgroundColor = .clear
-          
-            cell.backView.backgroundColor = .clear
-            let setimg = UIImage(named: "")
-            cell.btnAmount.setImage(setimg, for: .normal)
-        
         }
         
         
@@ -358,6 +350,9 @@ extension TransferAmountVc: UICollectionViewDelegate, UICollectionViewDataSource
         cell.btnAmount.setTitle(myarr[indexPath.row].valueamount, for: .normal)
         cell.btnAmount.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
   
+        cell.btnAmount.circle()
+        cell.btnAmount.borderWidth = 1
+        cell.btnAmount.borderColor = .clrLightGray
         return cell
 
     }
