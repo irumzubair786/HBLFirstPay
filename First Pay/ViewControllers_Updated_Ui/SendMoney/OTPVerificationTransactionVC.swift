@@ -350,7 +350,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
 
 
 //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferIbft"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferIbft"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/fundsTransferIbft"
 //v2
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"accountNo":number!,"accountIMD":GlobalData.Selected_bank_code,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"benificiaryIBAN":DataManager.instance.accountNo!,"otp": TF_otp.text ?? "","accountType":DataManager.instance.accountType!]

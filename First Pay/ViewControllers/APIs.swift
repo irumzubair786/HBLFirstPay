@@ -472,8 +472,8 @@ struct APIs {
         case getInvitorFriendsList = "WalletCreation/v1/getInvitorFriendsList"
         case acceptFriendInvite = "WalletCreation/v1/acceptFriendInvite"
 
-        case getBundleDetails = "Transactions/v1/getBundleDetails"
-        case bundleSubscription = "Transactions/v1/bundleSubscription"
+        case getBundleDetails = "Transactions/v2/getBundleDetails"
+        case bundleSubscription = "Transactions/v2/bundleSubscription"
         
         case login = "FirstPayInfo/v1/login"
         case acccountLevelUpgrade = "FirstPayInfo/v1/acccountLevelUpgrade"

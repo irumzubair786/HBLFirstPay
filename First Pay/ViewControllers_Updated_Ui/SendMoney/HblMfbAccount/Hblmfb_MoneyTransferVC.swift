@@ -322,7 +322,7 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         
         //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferLocal"
         //        v2
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferLocal"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/fundsTransferLocal"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":number!,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"beneficiaryName":"","beneficiaryMobile":
                             "","beneficiaryEmail":"","addBeneficiary":"N","otp":otpTextField.text ?? "","requestMoneyId":requestMoneyId!,"accountType":DataManager.instance.accountType!] as [String : Any]

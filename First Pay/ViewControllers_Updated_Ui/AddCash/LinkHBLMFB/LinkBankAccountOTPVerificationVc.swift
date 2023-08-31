@@ -12,6 +12,9 @@ import Alamofire
 import ObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
+
+
+var transactionV1or2 = "Transactions/v2"
 class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     var totalSecond = 60
     var ForTransactionConsent:Bool = false
@@ -295,7 +298,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         showActivityIndicator()
 
 //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferLocal"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/addCashFT"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/addCashFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":GlobalData.userAcc!,"amount":TotalAmount!,"transPurpose":"miscellaneous","accountTitle": DataManager.instance.accountTitle!,"transactionType":"PULL","otp":otptextField.text!] as [String : Any]
  

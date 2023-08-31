@@ -256,7 +256,7 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
         
         
 //        let compelteUrl = GlobalConstants.BASE_URL + "topUp"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/topUp"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/topUp"
         
        
         userCnic = UserDefaults.standard.string(forKey: "userCnic")

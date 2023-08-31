@@ -45,7 +45,7 @@ class MoneyTransfer_ReasonVC: BaseClassVC {
             return
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getFtTransPurpose"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/getFtTransPurpose"
          let header: HTTPHeaders = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)

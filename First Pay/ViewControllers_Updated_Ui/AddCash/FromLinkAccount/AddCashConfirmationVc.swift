@@ -87,7 +87,7 @@ class AddCashConfirmationVc: BaseClassVC {
         else{
             userCnic = ""
         }
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateAddCashFT"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/initiateAddCashFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":DataManager.instance.accountNo!,"amount":TotalAmount!] as [String : Any]
         print(parameters)
