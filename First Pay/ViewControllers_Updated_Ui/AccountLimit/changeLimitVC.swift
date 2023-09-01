@@ -33,7 +33,7 @@ class changeLimitVC: BaseClassVC {
     var convertdailymaxValue: Int?
     var LimitType : String?
     var AmounttType: String?
-    
+    var refreshScreen: (()->())!
     
     @IBOutlet weak var viewBackground: UIView!
     
@@ -174,14 +174,13 @@ class changeLimitVC: BaseClassVC {
         didSet{
             if self.modelGetAccount?.responsecode == 1  {
                 self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSuccess,buttonNames: [
-                    
                                 ["buttonName": "OK",
                                 "buttonBackGroundColor": UIColor.clrOrange,
                                 "buttonTextColor": UIColor.white]
-                            ] as? [[String: AnyObject]])
-                
-              
-
+                            ] as? [[String: AnyObject]]) { _ in
+                                self.refreshScreen()
+                                self.dismiss(animated: true)
+                            }
                  
 //               move to dashboard
 //                self.dismiss(animated: true)

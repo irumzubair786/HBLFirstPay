@@ -14,7 +14,7 @@ import PinCodeTextField
 import SwiftKeychainWrapper
 
 
-var transactionV1or2 = "Transactions/v2"
+var transactionV1or2 = "Transactions/v1"
 class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     var totalSecond = 60
     var ForTransactionConsent:Bool = false

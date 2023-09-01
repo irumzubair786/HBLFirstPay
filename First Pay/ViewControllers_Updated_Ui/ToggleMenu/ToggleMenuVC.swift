@@ -210,7 +210,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         {
             
             let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
-         
+            vc.modalPresentationStyle = .fullScreen
           vc.forHTML = true
             vc.forFaqs = true
             vc.forTerms = false

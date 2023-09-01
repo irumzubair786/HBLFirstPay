@@ -169,7 +169,7 @@ class MyAccountLimitsVc: BaseClassVC {
         myCustomArray.append(a(name: "Yearly ", limit: "Consumed Rs.\(modelGetAccount?.data?.yearlyConsumed! ?? 0)", colour: UIColor(hexString: "#F19434", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.yearlyDRRemaining ?? 0)",totalAmount: "Total Rs.\(YearlyLimit!)", percentage: Float(pers),limitType: "Y",amountType: "D", LimitLevelSending: Float(modelGetAccount?.data?.yearlyLevelDebitLimit ?? 0)))
     }
     override func viewWillAppear(_ animated: Bool) {
-        apicall()
+
     }
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
@@ -277,6 +277,9 @@ class MyAccountLimitsVc: BaseClassVC {
         vc.delegate = self
         vc.tag = tag
         vc.section = section
+        vc.refreshScreen = {
+            self.apicall()
+        }
         self.present(vc, animated: true)
         
     }
@@ -286,26 +289,20 @@ class MyAccountLimitsVc: BaseClassVC {
     {
         didSet{
             if self.modelGetAccount?.responsecode == 1  {
-                
-               
-                
+                myCustomArray.removeAll()
+                receivingArr.removeAll()
                 self.appendVlaluesToArray()
                 self.appenddata()
                 self.tableView.delegate = self
                 self.tableView.dataSource = self
                 self.tableView.reloadData()
-                
             }
             else {
                 //MARK: - Loan Failed Successfully
                 self.showAlertCustomPopup(title: "Error!", message: modelGetAccount?.messages ?? "", iconName: .iconError)
             }
-            
-            
         }
     }
-    
-    
     
     func apicall()
     {
@@ -360,8 +357,6 @@ extension MyAccountLimitsVc: DissmissDelegate
             break
         }
 //           apicall()
-       
-        
     }
 
     

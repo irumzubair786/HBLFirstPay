@@ -12,7 +12,10 @@ import libPhoneNumber_iOS
 import XLPagerTabStrip
 
 class InviteFriendsAddNumber: UIViewController {
-
+    
+    @IBAction func buttonHideKeyBoard(_ sender: Any) {
+        self.view.endEditing(true)
+    }
     @IBOutlet weak var buttonSendInvite: UIButton!
     @IBOutlet weak var buttonContact: UIButton!
     @IBOutlet weak var buttonBack: UIButton!
@@ -26,6 +29,7 @@ class InviteFriendsAddNumber: UIViewController {
         super.viewDidLoad()
         viewButtonSendInvite.circle()
         textFieldNumber.addTarget(self, action: #selector(changeNumberInTextField), for: .editingChanged)
+        textFieldNumber.delegate = self
     }
     @IBAction func buttonBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
@@ -78,6 +82,12 @@ class InviteFriendsAddNumber: UIViewController {
         textFieldNumber.text = format(with: "+92-XXX-XXXXXXX", phone: text)
     }
 
+}
+
+extension InviteFriendsAddNumber: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+    }
 }
 
 extension InviteFriendsAddNumber: CNContactPickerDelegate {

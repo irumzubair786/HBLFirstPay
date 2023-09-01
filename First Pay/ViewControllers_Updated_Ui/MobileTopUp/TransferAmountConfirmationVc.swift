@@ -90,6 +90,9 @@ class TransferAmountConfirmationVc: BaseClassVC {
     
     
     private func payTopUp() {
+//        shakeel test
+//        navigateToSuccessVC()
+//        return
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return

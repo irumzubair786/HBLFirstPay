@@ -268,6 +268,7 @@ extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionViewCategory .dequeueReusableCell(withReuseIdentifier: "cellCategory", for: indexPath) as! cellCategory
+        cell.btnCategory.circle()
         if(myarr[indexPath.row].isSeleccted == true){
             cell.btnCategory.setTitleColor(.white, for: .normal)  ///set title color here to white
             cell.btnCategory.backgroundColor = UIColor(hexValue: 0xF19434)

@@ -18,13 +18,19 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
     var forDebitCardRequest : Bool = false
     var forFaqs : Bool = false
     var forAwaaz : Bool = false
-    @IBOutlet var webViewOutlet: UIWebView!
+    @IBOutlet var webViewOutlet: WKWebView!
     @IBOutlet weak var lblMainTitle: UILabel!
     
+    override func viewDidAppear(_ animated: Bool) {
+        webViewOutlet.reload()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        webViewOutlet.delegate = self
-        self.showActivityIndicator()
+//        webViewOutlet.delegate = self
+//        self.showActivityIndicator()
+        
+        webViewOutlet.scrollView.isScrollEnabled = true
+        webViewOutlet.scrollView.isUserInteractionEnabled = true
         if forHTML == false {
             self.webViewMethod()
         }
@@ -43,9 +49,9 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
     func webViewMethod(){
         if forAwaaz {
             self.hideActivityIndicator()
-            webViewOutlet.loadRequest(URLRequest(url: URL(string: fileURL)!))
+            webViewOutlet.load(URLRequest(url: URL(string: fileURL)!))
         }
-        webViewOutlet.loadRequest(URLRequest(url: URL(string: fileURL ?? "")!))
+        webViewOutlet.load(URLRequest(url: URL(string: fileURL)!))
 //        let url: URL! = URL(string: "https://isbclub.webddocsystems.com/index.php/api/RulesAndRegulations")
 //        webViewOutlet.load(URLRequest(url: fileURL))
         
@@ -61,17 +67,28 @@ class WebView_VC: BaseClassVC, UIWebViewDelegate {
         if forFaqs{
             
             self.lblMainTitle.text = "F A Q s"
-            let localfilePath = Bundle.main.url(forResource: "BBFAQs", withExtension: "pdf")
-            let myRequest = URLRequest(url:localfilePath!)
-            webViewOutlet.loadRequest(myRequest)
+            let localfilePath = Bundle.main.url(forResource: "BBFAQs", withExtension: "pdf")!
+            let myRequest = URLRequest(url:localfilePath)
+            webViewOutlet.load(myRequest)
             print("FAQs")
+            if let pdfUrl = Bundle.main.url(forResource: "BBFAQs", withExtension: "pdf", subdirectory: nil, localization: nil)  {
+                do {
+                    let data = try Data(contentsOf: pdfUrl)
+//                    webViewOutlet.load(data, mimeType: "application/pdf", characterEncodingName:"", baseURL: pdfUrl)
+//                    webViewOutlet.loadHTMLString("", baseURL: pdfUrl)
+                    print("pdf file loading...")
+                }
+                catch {
+                    // catch errors here
+                }
+            }
         }
         else if forTerms {
             
             self.lblMainTitle.text = "T E R M S  &  C O N D I T I O N S"
             let localfilePath = Bundle.main.url(forResource: "BB", withExtension: "pdf")
             let myRequest = URLRequest(url:localfilePath!)
-            self.webViewOutlet.loadRequest(myRequest)
+            self.webViewOutlet.load(myRequest)
             print("Terms")
 //            let consentAlert = UIAlertController(title: "Terms & Conditions", message: "Select Lanaguage", preferredStyle: UIAlertControllerStyle.alert)
 //

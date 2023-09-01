@@ -40,8 +40,9 @@ class InviteAFriends: UIViewController {
     
     var modelinvitedFriendsList: ModelinvitedFriendsList? {
         didSet {
-            print(modelinvitedFriendsList)
+//            print(modelinvitedFriendsList)
             labelCompaignText.text = modelinvitedFriendsList?.data?.campaignText ?? ""
+//            labelCompaignText.isHidden = modelinvitedFriendsList?.data?.campaignText ?? "" == ""
             labelTotalEarning.text = "\(Int(modelinvitedFriendsList?.data?.totalEarnings ?? "0")?.twoDecimal() ?? "0.00")"
             tableView.reloadData()
         }
@@ -98,6 +99,13 @@ class InviteAFriends: UIViewController {
         self.dismiss(animated: true)
     }
     @IBAction func buttonViewTerms(_ sender: Any) {
+        let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
+        vc.modalPresentationStyle = .fullScreen
+
+        vc.forHTML = true
+        vc.forFaqs = true
+        vc.forTerms = false
+        self.present(vc, animated: true)
     }
     @IBAction func buttonInviteFriend(_ sender: Any) {
         let vc = UIStoryboard.init(name: "InviteFriends", bundle: nil).instantiateViewController(withIdentifier: "InviteFriendsAddNumber") as! InviteFriendsAddNumber
