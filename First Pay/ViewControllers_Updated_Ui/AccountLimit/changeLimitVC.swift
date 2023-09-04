@@ -40,6 +40,7 @@ class changeLimitVC: BaseClassVC {
     override func viewDidAppear(_ animated: Bool) {
         self.view.drawBackgroundBlur(withTag: 999)
         self.viewBackground.roundCorners(corners: [.topLeft, .topRight], radius: 30)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             
         }
@@ -49,6 +50,7 @@ class changeLimitVC: BaseClassVC {
 
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+        viewBackground.dropShadow1()
         //self.view.addGestureRecognizer(tapGestureRecognizer)
         print("limit Type",LimitType)
         print("AmountType",AmounttType)

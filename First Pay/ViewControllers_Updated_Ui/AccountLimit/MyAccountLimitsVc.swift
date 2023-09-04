@@ -434,6 +434,9 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
         switch section {
         case 0:
             return "Sending Limits"
+           
+            
+            
         case 1:
             return "Receiving Limits"
         default:

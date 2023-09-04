@@ -36,6 +36,7 @@ target 'First Pay' do
   pod 'SDWebImage', '~> 4.3'
   pod 'Kingfisher', '~> 4.0'
   pod 'GoogleMaps'
+  pod 'gRPC-Core'
   
   #  pod "FacebookCore"#, '~> 14.0.0'
   #  pod "FacebookLogin"#, '~> 14.0.0'

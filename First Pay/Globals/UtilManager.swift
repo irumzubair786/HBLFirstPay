@@ -20,7 +20,7 @@ import Toaster
 import JHTAlertController
 import MBProgressHUD
 import Toast_Swift
-
+import FingerprintSDK
 struct UtilManager {
 
     static var hud:MBProgressHUD = MBProgressHUD()

@@ -36,8 +36,6 @@ func checkIdEnable()
         checkIdEnable()
     }
     @IBAction func butttonEnableFaceid(_ sender: UISwitch) {
-        
-         
         if butttonEnableFaceid.isOn  == false{
             
             viewdisble.isHidden = false
@@ -48,6 +46,7 @@ func checkIdEnable()
             guard let  FirsTimeLogin = UserDefaults.standard.string(forKey:  "enableTouchID")else
             {
                 viewdisble.isHidden = true
+                viewdisble.shadowColor = UIColor.gray
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "BioMetricLoginVc") as! BioMetricLoginVc
               
                 self.present(vc, animated: true)

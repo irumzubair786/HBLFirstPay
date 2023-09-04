@@ -41,11 +41,17 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
     
     
     @IBAction func buttonOk(_ sender: UIButton) {
+        self.dismiss(animated: true)
+        
+//        let webVC = self.storyboard?.instantiateViewController(withIdentifier:"loginMethodsVc") as! loginMethodsVc
+////            self.navigationController?.pushViewController(webVC, animated: true)
+//        self.present(webVC, animated: true)
+        
             //crash resolve here...
-                   let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-                   let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-   
-                   self.present(vc, animated: true)
+//                   let storyboard = UIStoryboard(name: "TabBar", bundle: nil)iss
+//                   let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+//
+//                   self.present(vc, animated: true)
                
     }
     //MARK: - WebViewDelegate
