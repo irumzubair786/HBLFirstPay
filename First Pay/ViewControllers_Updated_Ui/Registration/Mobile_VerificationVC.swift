@@ -24,12 +24,14 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     override func viewDidLoad(){
         FBEvents.logEvent(title: .Signup_login_landed)
         super.viewDidLoad()
-        TF_Mobileno.becomeFirstResponder()
         if isFromLoginScreen {
             titleName?.text = "Sign-in"
             btn_Explore.isHidden = true
+            
+
         }
         else {
+            TF_Mobileno.becomeFirstResponder()
             titleName?.text = "Lets Get Started"
             btn_Explore.isHidden = false
         }
