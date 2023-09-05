@@ -24,9 +24,10 @@ class selectBranchVC: BaseClassVC, UISearchBarDelegate {
         getBranches()
         searchBar.delegate = self
         tableView.rowHeight = 80
+        backView.dropShadow1()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        blurView.isUserInteractionEnabled = true
-        blurView.addGestureRecognizer(tapGestureRecognizer)
+        backView.isUserInteractionEnabled = true
+        backView.addGestureRecognizer(tapGestureRecognizer)
         // Do any additional setup after loading the view.
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
@@ -34,7 +35,10 @@ class selectBranchVC: BaseClassVC, UISearchBarDelegate {
        
         self.navigationController?.popViewController(animated: false)
     }
-    @IBOutlet weak var blurView: UIImageView!
+  
+    
+    @IBOutlet weak var backView: UIView!
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     func getBranches() {
@@ -117,6 +121,7 @@ extension selectBranchVC: UITableViewDelegate, UITableViewDataSource
         let aRequest = filteredData?[indexPath.row]
         aCell.labelBranchName.text = aRequest
         aCell.labelBranchName.textColor = UIColor(hexValue: 0x00CC96)
+        
         return aCell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

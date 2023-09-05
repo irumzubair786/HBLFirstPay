@@ -24,9 +24,10 @@ class DebitCardNameSelectionVC: BaseClassVC {
     
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Debit_ordername_landing)
-
         super.viewDidLoad()
-        blurView.alpha = 0.8
+        backView.dropShadow1()
+        
+       
         print("get userName", fullUserName)
         buttonContinue.isUserInteractionEnabled = false
         imgNextArrow.isUserInteractionEnabled = false
@@ -47,6 +48,7 @@ class DebitCardNameSelectionVC: BaseClassVC {
         load()
     }
    
+    @IBOutlet weak var backView: UIView!
     func load(){
         for i in arrNameList ?? []{
             var temp = abc()
@@ -77,11 +79,12 @@ class DebitCardNameSelectionVC: BaseClassVC {
         collectionView
             .setCollectionViewLayout(layout, animated: true)
     }
+   
     @IBOutlet weak var labelCount: UILabel!
     @IBOutlet weak var labelName: UILabel!
     var selectedName = ""
-    @IBOutlet weak var blurView: UIVisualEffectView!
     @IBOutlet weak var imgNextArrow: UIImageView!
+    @IBOutlet weak var blurView: UIImageView!
     @IBOutlet weak var buttonContinue: UIButton!
     @objc func Movetoback(tapGestureRecognizer: UITapGestureRecognizer)
     {
