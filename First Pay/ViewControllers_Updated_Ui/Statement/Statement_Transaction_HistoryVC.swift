@@ -260,6 +260,12 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
     }
   
     @IBAction func Show(_ sender: UIButton) {
+        if ToDateTextfiled.text == "" {
+            
+        }
+        if fromDateTextfield.text == "" {
+            
+        }
         getMiniStatement()
     }
     @IBAction func back(_ sender: UIButton) {
@@ -278,6 +284,9 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
     }
     
     @IBAction func Action_download(_ sender: UIButton) {
+        if self.myStatementObj?.ministatement?.count == 0 {
+            return()
+        }
         screenshot()
     }
     // MARK: - API Call
@@ -339,7 +348,9 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         
         let a = fromDateTextfield.text?.replacingOccurrences(of: "/", with: "-")
         let stringFrom = self.formattedDateFromString(dateString: a!, withFormat: "yyyy-MM-dd")
+//        let stringFrom = a
         let b = ToDateTextfiled?.text?.replacingOccurrences(of: "/", with: "-")
+//        let stringTo = b
         let stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
         print("fromdate ", stringFrom)
         print("fromto ", stringTo)
@@ -398,7 +409,6 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
 }
 extension Statement_Transaction_HistoryVC {
     func screenshot() -> UIImage{
-        
         var image = UIImage();
         UIGraphicsBeginImageContextWithOptions(self.tableView.contentSize, false, UIScreen.main.scale)
         // save initial values
