@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 class abc{
     var name = ""
     var isSelected = false
@@ -20,10 +21,12 @@ class DebitCardNameSelectionVC: BaseClassVC {
     var nameSelected:[String] = []
     var arry = [abc]()
 //    var arrNameList = ["Muhammad", "Arshad", "Khawaj", "Bhatti", "Khan"]
+    
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Debit_ordername_landing)
 
         super.viewDidLoad()
+        blurView.alpha = 0.8
         print("get userName", fullUserName)
         buttonContinue.isUserInteractionEnabled = false
         imgNextArrow.isUserInteractionEnabled = false
@@ -74,36 +77,31 @@ class DebitCardNameSelectionVC: BaseClassVC {
         collectionView
             .setCollectionViewLayout(layout, animated: true)
     }
-    
     @IBOutlet weak var labelCount: UILabel!
-    
     @IBOutlet weak var labelName: UILabel!
     var selectedName = ""
-    
     @IBOutlet weak var blurView: UIVisualEffectView!
-   
     @IBOutlet weak var imgNextArrow: UIImageView!
-    
     @IBOutlet weak var buttonContinue: UIButton!
     @objc func Movetoback(tapGestureRecognizer: UITapGestureRecognizer)
     {
         self.navigationController?.popViewController(animated: false)
     }
+    
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer) {
         FBEvents.logEvent(title: .Debit_orderdeliverypostal_click)
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardAddressVC") as!  DebitCardAddressVC
         vc.fullUserName = fullUserName!
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: false)
     }
-
     @IBOutlet weak var collectionView: UICollectionView!
-   
     @IBAction func buttonContinue(_ sender: UIButton) {
         FBEvents.logEvent(title: .Debit_orderdeliverypostal_click)
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardAddressVC") as!  DebitCardAddressVC
         vc.fullUserName = fullUserName!
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
 //
 }
 extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
@@ -113,25 +111,27 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
         return CGSize(width: arry[indexPath.item].name.size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18)]).width + 30, height: 35)
        }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arry.count 
+        return arry.count
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellDebitCardNameSelection", for: indexPath) as! cellDebitCardNameSelection
-        cell.backView.borderColor = UIColor.gray
-
+//        cell.backView.borderColor = UIColor.gray
+        cell.backView.radiusLineDashedStroke(color: .gray)
+        cell.backView.cornerRadius = 12
         cell.labelName.text = arry[indexPath.row].name
         if arry[indexPath.row].isSelected == false {
             cell.backView.backgroundColor = .white
-            cell.backView.borderColor = .gray
+//            cell.backView.borderColor = .gray
             cell.labelName.textColor = .gray
         }
+        
         else {
             cell.backView.backgroundColor = UIColor(hexValue: 0xF19434)
-            cell.backView.borderColor = UIColor(hexValue: 0xF19434)
+            cell.backView.radiusLineDashedStroke(color: .clrOrange)
+            
+//            cell.backView.borderColor = UIColor(hexValue: 0xF19434)
             cell.labelName.textColor = .white
         }
-        
         cell.buttonName.tag = indexPath.row
         cell.buttonName.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
         DispatchQueue.main.async {
@@ -139,22 +139,23 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
         }
         return cell
     }
+    
     @objc func buttonpress(_ sender:UIButton) {
         collectionView.scrollsToTop = false
         
         // disbtn.backgroundColor = UIColor.red
         let cell = collectionView.cellForItem(at: IndexPath(row: sender.tag, section: 0))
         as! cellDebitCardNameSelection
-        
+    
         cell.backView.borderColor = .clear
         selectedIndex = sender.tag
         if selectedIndex == sender.tag {
             if cell.backView.backgroundColor == UIColor.white {
                 arry[sender.tag].isSelected = true
                 let a = UIImage(named: "")
-                cell.backView.backgroundColor = UIColor(hexValue: 0xF19434)
+                cell.backView.backgroundColor = UIColor(hexValue: 0xF19434 )
                 cell.backView.borderColor = UIColor(hexValue: 0xF19434)
-                //                cell.backView.cornerRadius = 12
+//                  cell.backView.cornerRadius = 12
                 // otherbtn.setTitleColor(.red, for: .normal)
                 let val = cell.labelName.text!
                 for id in (arry) {
@@ -168,7 +169,9 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
             else if cell.backView.backgroundColor == UIColor(hexValue: 0xF19434) {
                 arry[sender.tag].isSelected = false
                 cell.backView.backgroundColor = UIColor.clear
-                cell.backView.borderColor = UIColor.gray
+                
+//                cell.backView.radiusLineDashedStroke(color: .gray)
+//                cell.backView.borderColor = UIColor.gray
                 let v = cell.labelName.text!
                 for a in (arry) {
                     if v == a.name {
