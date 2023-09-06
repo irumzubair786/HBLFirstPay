@@ -41,8 +41,8 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         
         aCell.lblAmount.text = " Rs.\(aStatement?.txnAmt! ?? 0)"
         if aStatement?.amountType == "C"{
-            
-//            aCell.lblAmount.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+            //            aCell.lblType.text = "Credit"
+            aCell.lblAmount.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
             aCell.img.image = #imageLiteral(resourceName: "Arrow Icon-1")
             aCell.lblbankName.text = aStatement?.sourceBank
             //            self.miniStatementObj?.ministatement?[0].sourceBank
@@ -50,7 +50,7 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         }
         else if aStatement?.amountType == "D" {
             //            aCell.lblType.text = "Debit"
-//            aCell.lblAmount.textColor = #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1)
+            aCell.lblAmount.textColor = #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1)
             aCell.img.image = #imageLiteral(resourceName: "Arrow Icon")
             aCell.lblbankName.text = aStatement?.sourceBank
             
@@ -158,7 +158,7 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         btnDownLoad.setTitle("", for: .normal)
         btnBack.setTitle("", for: .normal)
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("disputeButtonPressed"), object: nil)
-        tableView.rowHeight = 95
+        tableView.rowHeight = 109
         getMiniStatementwithoutDates()
         btnShow.setTitle("", for: .normal)
         
@@ -347,34 +347,19 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         }
         
         let a = fromDateTextfield.text?.replacingOccurrences(of: "/", with: "-")
-//<<<<<<< HEAD
-//        let stringFrom = self.formattedDateFromString(dateString: a!, withFormat: "yyyy-MM-dd")
-////        let stringFrom = a
-//        let b = ToDateTextfiled?.text?.replacingOccurrences(of: "/", with: "-")
-////        let stringTo = b
-//        let stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
-//        print("fromdate ", stringFrom)
-//        print("fromto ", stringTo)
-//=======
-        var stringFrom = self.formattedDateFromString(dateString: a!, withFormat: "yyyy-MM-dd")
-        stringFrom = "\(stringFrom!) 00:00:01"
-        
+        let stringFrom = self.formattedDateFromString(dateString: a!, withFormat: "yyyy-MM-dd")
+//        let stringFrom = a
         let b = ToDateTextfiled?.text?.replacingOccurrences(of: "/", with: "-")
-        var stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
-        stringTo = "\(stringTo!) 23:59:59"
-        print("fromdate ", stringFrom!)
-        print("fromto ", stringTo!)
-//>>>>>>> c5f6ff7 (Transaction History issue fixed)
+//        let stringTo = b
+        let stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
+        print("fromdate ", stringFrom)
+        print("fromto ", stringTo)
         showActivityIndicator()
         var userCnic : String?
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/miniStatement"
-//        //        2020-05-10 23:59:59
+        //        2020-05-10 23:59:59
         let parameters = ["channelId":"\(DataManager.instance.channelID)","fromDate": stringFrom ?? "" + " 00:00:01","toDate": stringTo ?? ""  + " 23:59:59","accountType": DataManager.instance.accountType!,"cnic":userCnic!, "imeiNo":DataManager.instance.imei!]
-        
-//        let parameters = ["channelId":"\(DataManager.instance.channelID)","fromDate": stringTo ?? "" + " 00:00:01","toDate": stringFrom ?? ""  + " 23:59:59","accountType": DataManager.instance.accountType!,"cnic":userCnic!, "imeiNo":DataManager.instance.imei!]
-        
-        
         //        let parameters = ["" : ""]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
