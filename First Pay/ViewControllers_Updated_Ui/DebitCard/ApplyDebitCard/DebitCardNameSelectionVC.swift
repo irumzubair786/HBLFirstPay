@@ -119,28 +119,24 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellDebitCardNameSelection", for: indexPath) as! cellDebitCardNameSelection
 //        cell.backView.borderColor = UIColor.gray
-        cell.backView.radiusLineDashedStroke(color: .gray)
+        cell.backView.radiusLineDashedStroke(color: .gray, radius: cell.backView.frame.height / 2)
         cell.backView.radius(color: UIColor.clrGray, borderWidth: 1)
         cell.backView.circle()
 
         cell.labelName.text = arry[indexPath.row].name
         if arry[indexPath.row].isSelected == false {
             cell.backView.backgroundColor = .white
-//            cell.backView.borderColor = .gray
-            cell.labelName.textColor = .gray
+            cell.labelName.textColor = .clrGray
         }
-        
         else {
             cell.backView.backgroundColor = UIColor(hexValue: 0xF19434)
-            cell.backView.radiusLineDashedStroke(color: .clrOrange)
-            
-//            cell.backView.borderColor = UIColor(hexValue: 0xF19434)
+            cell.backView.radiusLineDashedStroke(color: .clrOrange, radius: cell.backView.frame.height / 2)
             cell.labelName.textColor = .white
         }
         cell.buttonName.tag = indexPath.row
         cell.buttonName.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
         DispatchQueue.main.async {
-            cell.backView.circle()
+            //cell.backView.circle()
         }
         return cell
     }
