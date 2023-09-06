@@ -118,26 +118,31 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellDebitCardNameSelection", for: indexPath) as! cellDebitCardNameSelection
-//        cell.backView.borderColor = UIColor.gray
-        cell.backView.radiusLineDashedStroke(radius: cell.backView.frame.height / 2, color: .gray)
-        cell.backView.radius(color: UIColor.clrGray, borderWidth: 1)
-        cell.backView.circle()
 
         cell.labelName.text = arry[indexPath.row].name
+        
+        cell.backView.borderColor = .clear
+        cell.backView.borderWidth = 0
         if arry[indexPath.row].isSelected == false {
-            cell.backView.backgroundColor = .white
-            cell.labelName.textColor = .clrGray
+            DispatchQueue.main.async {
+                cell.backView.backgroundColor = .white
+                cell.labelName.textColor = .clrGray
+                cell.backView.radiusLineDashedStroke(radius: cell.backView.frame.height / 2, color: .gray)
+            }
         }
         else {
-            cell.backView.backgroundColor = UIColor(hexValue: 0xF19434)
-            cell.backView.radiusLineDashedStroke(radius: cell.backView.frame.height / 2, color: .clrOrange)
-            cell.labelName.textColor = .white
+
+            DispatchQueue.main.async {
+                cell.backView.backgroundColor = .clrOrange
+                cell.backView.circle()
+                cell.labelName.textColor = .white
+            }
         }
         cell.buttonName.tag = indexPath.row
         cell.buttonName.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
-        DispatchQueue.main.async {
-            //cell.backView.circle()
-        }
+        cell.contentView.borderColor = .clear
+        cell.contentView.borderWidth = 0
+
         return cell
     }
     
@@ -148,16 +153,11 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
         let cell = collectionView.cellForItem(at: IndexPath(row: sender.tag, section: 0))
         as! cellDebitCardNameSelection
     
-        cell.backView.borderColor = .clear
         selectedIndex = sender.tag
         if selectedIndex == sender.tag {
             if cell.backView.backgroundColor == UIColor.white {
                 arry[sender.tag].isSelected = true
                 let a = UIImage(named: "")
-                cell.backView.backgroundColor = UIColor(hexValue: 0xF19434 )
-                cell.backView.borderColor = UIColor(hexValue: 0xF19434)
-//                  cell.backView.cornerRadius = 12
-                // otherbtn.setTitleColor(.red, for: .normal)
                 let val = cell.labelName.text!
                 for id in (arry) {
                     if val == id.name {
@@ -169,10 +169,7 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
             }
             else if cell.backView.backgroundColor == UIColor(hexValue: 0xF19434) {
                 arry[sender.tag].isSelected = false
-                cell.backView.backgroundColor = UIColor.clear
-                
-//                cell.backView.radiusLineDashedStroke(color: .gray)
-//                cell.backView.borderColor = UIColor.gray
+       
                 let v = cell.labelName.text!
                 for a in (arry) {
                     if v == a.name {
@@ -186,7 +183,6 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
             }
         }
         
-        collectionView.reloadData()
         self.labelName.text = ""
         for name in myarray {
             self.labelName.text = "\(self.labelName.text ?? "")\(" ")\(name)"
@@ -208,7 +204,6 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
             imgNextArrow.isUserInteractionEnabled = true
             let image = UIImage(named:"]greenarrow")
             imgNextArrow.image = image
-            //                    cell.backView.cornerRadius = 12
             self.collectionView.reloadData()
         }
         print(myarray)

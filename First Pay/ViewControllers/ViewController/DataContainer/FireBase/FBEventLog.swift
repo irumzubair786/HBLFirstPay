@@ -8,7 +8,7 @@
 
 import Foundation
 import FirebaseAnalytics
-import FacebookCore
+import FBSDKCoreKit
 
 struct FBEvents {    
     static func logEvent(title: FBEvents.name, failureReason: String? = nil) {

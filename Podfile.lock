@@ -637,6 +637,16 @@ PODS:
     - BoringSSL-GRPC/Interface (= 0.0.24)
   - BoringSSL-GRPC/Interface (0.0.24)
   - CryptoSwift (1.6.0)
+  - FBAEMKit (16.1.3):
+    - FBSDKCoreKit_Basics (= 16.1.3)
+  - FBSDKCoreKit (16.1.3):
+    - FBAEMKit (= 16.1.3)
+    - FBSDKCoreKit_Basics (= 16.1.3)
+  - FBSDKCoreKit_Basics (16.1.3)
+  - FBSDKLoginKit (16.1.3):
+    - FBSDKCoreKit (= 16.1.3)
+  - FBSDKShareKit (16.1.3):
+    - FBSDKCoreKit (= 16.1.3)
   - FirebaseAnalytics (10.14.0):
     - FirebaseAnalytics/AdIdSupport (= 10.14.0)
     - FirebaseCore (~> 10.0)
@@ -846,6 +856,9 @@ DEPENDENCIES:
   - Alamofire
   - ALBusSeatView
   - CryptoSwift (~> 1.6.0)
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
   - FirebaseAnalytics
   - FirebaseAuth
   - FirebaseFirestore
@@ -886,6 +899,11 @@ SPEC REPOS:
     - ALBusSeatView
     - BoringSSL-GRPC
     - CryptoSwift
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - FirebaseAnalytics
     - FirebaseAppCheckInterop
     - FirebaseAuth
@@ -937,6 +955,11 @@ SPEC CHECKSUMS:
   ALBusSeatView: 5416cf8e3d0d8d993da5f726f92cbb425463efd2
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   CryptoSwift: 562f8eceb40e80796fffc668b0cad9313284cfa6
+  FBAEMKit: af2972f39bb0f3f7c45998f435b007833c32ffb2
+  FBSDKCoreKit: 19e2e18b3be578d7a51fed8fdd8c152bef0b9511
+  FBSDKCoreKit_Basics: dd9826ce3c9fd9f8cdf8dbbd0ef0a53e6c0c9e7e
+  FBSDKLoginKit: c395c63a1a6cf4a8a1e6103fd94b8c46329ee81c
+  FBSDKShareKit: de5c291ad414ec07048ab09bae1b1b74b3ed92fe
   FirebaseAnalytics: 5c6d58814afa4db82cf7fdbc02b0b0e2fa3d43ff
   FirebaseAppCheckInterop: c87f1d5421c852413dd936b2b2340b21e62501a0
   FirebaseAuth: bd1ae3d28beb83bfe9247e50eb82688b683dd770
@@ -982,6 +1005,6 @@ SPEC CHECKSUMS:
   Toaster: c3473963c78e8cabbf6ea6f11ad0fdaae6f54987
   XLPagerTabStrip: 27f3bfe23c53b4251c6481b06b1c289458a3fc1d
 
-PODFILE CHECKSUM: 45bc4204017fd58c89ef43a95b243107bad48d33
+PODFILE CHECKSUM: e083377dfec6be96ed8f68876f5c9a5759f061bb
 
 COCOAPODS: 1.12.1

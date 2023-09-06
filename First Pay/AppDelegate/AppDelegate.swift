@@ -13,8 +13,7 @@ import Siren
 import IQKeyboardManager
 import FirebaseCore
 import GoogleMaps
-import FacebookCore
-
+import FBSDKCoreKit
 
 let googleApiKey = "AIzaSyBM0HKZjq1TyOBA1HjVW2Wdhx1YfPJpJ3I" //MyAccountKey
 

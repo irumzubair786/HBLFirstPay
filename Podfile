@@ -38,10 +38,13 @@ target 'First Pay' do
   pod 'GoogleMaps'
   pod 'gRPC-Core'
   
-  #  pod "FacebookCore"#, '~> 14.0.0'
-  #  pod "FacebookLogin"#, '~> 14.0.0'
-  #  pod "FacebookShare"#, '~> 14.0.0'
-  #pod "FacebookGamingServices"#, '~> 14.0.0'
+#  pod "FacebookCore"#, '~> 14.0.0'
+#  pod "FacebookLogin"#, '~> 14.0.0'
+#  pod "FacebookShare"#, '~> 14.0.0'
+#  pod "FacebookGamingServices"#, '~> 14.0.0'
+pod 'FBSDKCoreKit'
+pod 'FBSDKLoginKit'
+pod 'FBSDKShareKit'
   
   #pod 'GoogleMLKit/BarcodeScanning'
   #pod 'GoogleMLKit/TextRecognition'
