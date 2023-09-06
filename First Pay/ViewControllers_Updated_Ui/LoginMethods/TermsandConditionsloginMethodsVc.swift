@@ -11,11 +11,7 @@ import WebKit
 import SwiftKeychainWrapper
 class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
     public var fileURL:String?
-    
-    
-    
     @IBOutlet weak var buttonOk: UIButton!
-   
     @IBOutlet weak var blurView: UIImageView!
     @IBOutlet var webViewOutlet: UIWebView!
     override func viewDidLoad() {
@@ -42,6 +38,9 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
     
     @IBAction func buttonOk(_ sender: UIButton) {
         self.dismiss(animated: true)
+
+        NotificationCenter.default.post(name: Notification.Name("dissmissViewController"), object: nil)
+       
         
 //        let webVC = self.storyboard?.instantiateViewController(withIdentifier:"loginMethodsVc") as! loginMethodsVc
 ////            self.navigationController?.pushViewController(webVC, animated: true)
@@ -76,10 +75,9 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
         blurView.isHidden = false
         self.showToast(title: "Successfully Activated")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-
-            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-            self.present(vc, animated: true)
+//            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+//            let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+//            self.present(vc, animated: true)
         }
     }
     

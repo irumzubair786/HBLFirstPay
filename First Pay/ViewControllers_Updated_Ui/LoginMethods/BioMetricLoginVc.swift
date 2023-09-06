@@ -17,6 +17,13 @@ class BioMetricLoginVc: UIViewController {
         buttonThumb.setTitle("", for: .normal)
         termsAccepted = false
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController), name: Notification.Name("dissmissViewController"),object: nil)
+    }
+    
+    @objc func dissmissViewController() {
+        self.dismiss(animated: true)
+        NotificationCenter.default.post(name: Notification.Name("dissmissViewController2"), object: nil)
     }
     
     @IBAction func buttonTermsAndConditions(_ sender: UIButton) {

@@ -18,6 +18,14 @@ class loginMethodsVc: BaseClassVC {
         viewdisble.isHidden = true
         checkIdEnable()
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController2), name: Notification.Name("dissmissViewController2"),object: nil)
+    }
+    
+    @objc func dissmissViewController2() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.dismiss(animated: true)
+        }
     }
     
 func checkIdEnable()
