@@ -119,7 +119,7 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellDebitCardNameSelection", for: indexPath) as! cellDebitCardNameSelection
 //        cell.backView.borderColor = UIColor.gray
-        cell.backView.radiusLineDashedStroke(color: .gray, radius: cell.backView.frame.height / 2)
+        cell.backView.radiusLineDashedStroke(radius: cell.backView.frame.height / 2, color: .gray)
         cell.backView.radius(color: UIColor.clrGray, borderWidth: 1)
         cell.backView.circle()
 
@@ -130,7 +130,7 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
         }
         else {
             cell.backView.backgroundColor = UIColor(hexValue: 0xF19434)
-            cell.backView.radiusLineDashedStroke(color: .clrOrange, radius: cell.backView.frame.height / 2)
+            cell.backView.radiusLineDashedStroke(radius: cell.backView.frame.height / 2, color: .clrOrange)
             cell.labelName.textColor = .white
         }
         cell.buttonName.tag = indexPath.row
