@@ -52,13 +52,7 @@ func checkIdEnable()
                 self.present(vc, animated: true)
                 return
             }
-            
-            
         }
-           
-            
-            
-        
         
     }
     
