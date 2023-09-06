@@ -120,7 +120,9 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellDebitCardNameSelection", for: indexPath) as! cellDebitCardNameSelection
 //        cell.backView.borderColor = UIColor.gray
         cell.backView.radiusLineDashedStroke(color: .gray)
-        cell.backView.cornerRadius = 12
+        cell.backView.radius(color: UIColor.clrGray, borderWidth: 1)
+        cell.backView.circle()
+
         cell.labelName.text = arry[indexPath.row].name
         if arry[indexPath.row].isSelected == false {
             cell.backView.backgroundColor = .white

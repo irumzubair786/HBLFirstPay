@@ -117,7 +117,7 @@
                                             <action selector="ActionCancel:" destination="Xtz-71-9ft" eventType="touchUpInside" id="OkG-Np-Dzp"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Recipt" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8OX-1W-Bey">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Reciept" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8OX-1W-Bey">
                                         <rect key="frame" x="50" y="115" width="275" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="Kep-yd-4aj"/>
@@ -1275,7 +1275,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iDV-rV-lsN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="82.608695652173921" y="81.696428571428569"/>
+            <point key="canvasLocation" x="-55" y="81"/>
         </scene>
         <!--Statement ReportVC-->
         <scene sceneID="XPo-QF-cGD">
@@ -1285,6 +1285,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3lU-P4-qxy">
+                                <rect key="frame" x="57" y="350" width="300" height="300"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="1up-on-cii"/>
+                                    <constraint firstAttribute="height" constant="300" id="Hnh-Rt-NwA"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="gray">
+                                    <backgroundConfiguration key="background" image="Group 427320751"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="Action_HidePopup:" destination="Bul-jF-Jw2" eventType="touchUpInside" id="Cqs-A4-C1t"/>
+                                    <action selector="Action_HidePopup:" destination="HsU-Ve-zJJ" eventType="touchUpInside" id="UTi-6R-rpa"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Statementbackground" translatesAutoresizingMaskIntoConstraints="NO" id="Gbz-MN-7VY">
+                                <rect key="frame" x="0.0" y="20" width="414" height="980"/>
+                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="80a-Vh-TpD">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="1000"/>
                             </imageView>
@@ -1643,25 +1662,6 @@
                                     <constraint firstAttribute="trailing" secondItem="U2w-t3-BJP" secondAttribute="trailing" constant="31" id="zwv-TA-qx8"/>
                                 </constraints>
                             </scrollView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Statementbackground" translatesAutoresizingMaskIntoConstraints="NO" id="Gbz-MN-7VY">
-                                <rect key="frame" x="0.0" y="20" width="414" height="980"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3lU-P4-qxy">
-                                <rect key="frame" x="57" y="350" width="300" height="300"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="1up-on-cii"/>
-                                    <constraint firstAttribute="height" constant="300" id="Hnh-Rt-NwA"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray">
-                                    <backgroundConfiguration key="background" image="Group 427320751"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="Action_HidePopup:" destination="Bul-jF-Jw2" eventType="touchUpInside" id="Cqs-A4-C1t"/>
-                                    <action selector="Action_HidePopup:" destination="HsU-Ve-zJJ" eventType="touchUpInside" id="UTi-6R-rpa"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="55v-3Z-r7T"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
