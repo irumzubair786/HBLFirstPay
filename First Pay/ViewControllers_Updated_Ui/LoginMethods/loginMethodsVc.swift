@@ -93,7 +93,7 @@ func checkIdEnable()
         self.showToast(title: "Successfully Deactivated")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            
+            self.dismiss(animated: true)
 //            let vc = self.storyboard?.instantiateViewController(withIdentifier: "sideMenu") as? sideMenu
 //            self.navigationController?.pushViewController(vc!, animated: true)
 //                        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
