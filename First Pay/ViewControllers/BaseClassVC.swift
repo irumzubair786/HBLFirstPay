@@ -409,6 +409,14 @@ class BaseClassVC: UIViewController {
         let storyBoard = UIStoryboard(name: storyBoardName,bundle: nil)
        
         delegate.window?.rootViewController = storyBoard.instantiateInitialViewController()
+        
+//        test case
+//        let vc = storyBoard.instantiateViewController(withIdentifier: "Login_VC")
+//        self.navigationController?.pushViewController(vc, animated: true)
+//        self.present(vc, animated: true)
+        
+        
+        
 //        languageCode = UserDefaults.standard.string(forKey: "language-Code") ?? ""
     }
     

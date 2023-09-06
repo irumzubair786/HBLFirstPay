@@ -48,8 +48,8 @@ class Third_ScreenVc: UIViewController {
             self.navigationController?.pushViewController(vc, animated: true)
             return
         }
-        
-        let New_User_ProfileVC = self.storyboard!.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
+//        testcase
+        let New_User_ProfileVC = self.storyboard!.instantiateViewController(withIdentifier: "FakeLoginVc") as! FakeLoginVc
         isfromHomwWithoutCreationAccount = false
         UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
         
