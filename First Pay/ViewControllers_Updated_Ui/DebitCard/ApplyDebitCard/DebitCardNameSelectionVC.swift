@@ -131,7 +131,6 @@ extension DebitCardNameSelectionVC : UICollectionViewDelegate, UICollectionViewD
             }
         }
         else {
-
             DispatchQueue.main.async {
                 cell.backView.backgroundColor = .clrOrange
                 cell.backView.borderColor = .clrOrange
