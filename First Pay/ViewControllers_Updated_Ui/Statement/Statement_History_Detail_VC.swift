@@ -29,7 +29,7 @@ class Statement_History_Detail_VC: BaseClassVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
-        btnshare.setTitle("", for: .normal)
+//        btnshare.setTitle("", for: .normal)
         btndownload.setTitle("", for: .normal)
         btnreport.setTitle("", for: .normal)
         btnCancel.setTitle("", for: .normal)
@@ -49,7 +49,7 @@ class Statement_History_Detail_VC: BaseClassVC {
     @IBOutlet weak var ViewShare: UIView!
     @IBOutlet weak var btnCancel: UIButton!
 
-    @IBOutlet weak var btnshare: UIButton!
+  
     @IBOutlet weak var imgview: UIView!
     @IBOutlet weak var btndownload: UIButton!
     @IBOutlet weak var btnreport: UIButton!
@@ -221,6 +221,7 @@ class Statement_History_Detail_VC: BaseClassVC {
         imgview.snapshotView(afterScreenUpdates: true)
         image = imgview.convertToImage()
         print(image)
+        showToast(title: "Photo Saved Successfully!")
        UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
 
    }
