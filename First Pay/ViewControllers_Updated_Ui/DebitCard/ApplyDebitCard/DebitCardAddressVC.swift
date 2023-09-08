@@ -13,13 +13,16 @@ class DebitCardAddressVC: UIViewController {
     var fullUserName : String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        backView.dropShadow1()
+       
     
         let tapGestureRecognizers = UITapGestureRecognizer(target: self, action: #selector(Movetoback(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizers)
         buttonBranchAddress.backgroundColor = UIColor.clear
         buttonPostal.backgroundColor = UIColor.clear
+//        backView.dropShadow1()
+        backView.cornerRadius = 30
+        
     }
     
     @IBOutlet weak var blurView: UIImageView!

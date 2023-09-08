@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,12 +30,18 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MJY-Aa-y3s">
                                                 <rect key="frame" x="0.0" y="0.0" width="125" height="50"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backButton" translatesAutoresizingMaskIntoConstraints="NO" id="US7-3k-CaG">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Left Button" translatesAutoresizingMaskIntoConstraints="NO" id="US7-3k-CaG">
                                                         <rect key="frame" x="20" y="5" width="40" height="40"/>
+                                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="40" id="2ck-cQ-vM3"/>
                                                             <constraint firstAttribute="height" constant="40" id="F9c-RG-Wce"/>
                                                         </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="12"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="34q-7k-50S">
                                                         <rect key="frame" x="0.0" y="0.0" width="125" height="50"/>
@@ -587,8 +593,8 @@
                                     <constraint firstItem="hoT-n1-frD" firstAttribute="top" secondItem="Fpe-c5-4XL" secondAttribute="top" id="jqp-oT-rRn"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z16-2N-RAf">
-                                <rect key="frame" x="0.0" y="663" width="375" height="67"/>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z16-2N-RAf">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="730"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain">
@@ -612,7 +618,7 @@
                             <constraint firstItem="0Sl-t5-2ro" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="6om-p0-dTk"/>
                             <constraint firstItem="pTp-ew-sW1" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="8YI-Jy-Mmt"/>
                             <constraint firstItem="z16-2N-RAf" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="9OI-a9-6IK"/>
-                            <constraint firstItem="z16-2N-RAf" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="IwH-wJ-84J"/>
+                            <constraint firstItem="z16-2N-RAf" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="-20" id="IwH-wJ-84J"/>
                             <constraint firstItem="h3w-hf-c6H" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="OE9-jo-T1Y"/>
                             <constraint firstItem="z16-2N-RAf" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="QtD-O3-wU3"/>
                             <constraint firstItem="0Sl-t5-2ro" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="ROi-O2-U9r"/>
@@ -675,8 +681,8 @@
         <image name="Background" width="1276" height="240"/>
         <image name="Group 427320982" width="98" height="97"/>
         <image name="Invite Prangepng" width="89" height="89"/>
+        <image name="Left Button" width="152" height="153"/>
         <image name="ProfileBlack" width="65" height="65"/>
-        <image name="backButton" width="77" height="76"/>
         <image name="contact us" width="1126" height="2431"/>
         <image name="grayArrow" width="152" height="152"/>
         <image name="grayHome" width="89" height="89"/>

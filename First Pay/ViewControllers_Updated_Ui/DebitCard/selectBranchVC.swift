@@ -87,8 +87,9 @@ class selectBranchVC: BaseClassVC, UISearchBarDelegate {
                     
                     print("get branch data", self.filteredData)
                     self.tableView.delegate = self
-                    self.tableView.dataSource = self
+                   
                     self.tableView.reloadData()
+                    self.tableView.dataSource = self
                     
                 }
             }
@@ -100,6 +101,50 @@ class selectBranchVC: BaseClassVC, UISearchBarDelegate {
             }
         }
     }
+    
+    @objc func buttonpress(_ sender:UIButton)
+    {
+        
+        let tag = sender.tag
+        let cell = tableView.cellForRow(at: IndexPath(row: sender.tag, section: 0))
+        Seclected_Branch = filteredData?[tag]
+        for i in getBranch
+        {
+            if i.name == Seclected_Branch
+            {
+                branchID = i.id
+                branchCode = i.code
+                
+            }
+                
+        }
+    
+        let aCell = tableView.dequeueReusableCell(withIdentifier: "cellselectBranchVC") as! cellselectBranchVC
+      
+        aCell.labelBranchName.textColor = UIColor(hexValue: 0x00CC96)
+        aCell.accessoryType = UITableViewCell.AccessoryType.checkmark
+        aCell.tintColor = UIColor.gray
+         GlobalData.selectedBranch = Seclected_Branch!
+        GlobalData.selectedBranchId = branchID
+        GlobalData.selectedBranchCode = branchCode
+        GlobalData.debitCardUserName = fullname!
+        print("city id get",  GlobalData.selectedBranch)
+        
+        FBEvents.logEvent(title: .Debit_orderconfirm_screen)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardBranchAddressConfirmationVC") as!  DebitCardBranchAddressConfirmationVC
+            self.navigationController?.pushViewController(vc, animated: true)
+            //        vc.fullUserName = fullName!
+//            self.present(vc, animated: true)
+
+        }
+        
+        
+        
+        
+    }
+    
 }
 class myBranch
 {
@@ -121,42 +166,44 @@ extension selectBranchVC: UITableViewDelegate, UITableViewDataSource
         let aRequest = filteredData?[indexPath.row]
         aCell.labelBranchName.text = aRequest
         aCell.labelBranchName.textColor = UIColor(hexValue: 0x00CC96)
-        
+        aCell.buttonSelectBranch.setTitle("", for: .normal)
+        aCell.buttonSelectBranch.tag = indexPath.row
+        aCell.buttonSelectBranch.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
         return aCell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        NSLog ("You selected row: %@ \(indexPath)")
-        Seclected_Branch = filteredData?[indexPath.row]
-        for i in getBranch
-        {
-            if i.name == Seclected_Branch
-            {
-                branchID = i.id
-                branchCode = i.code
-                
-            }
-                
-        }
-    
-        let aCell = tableView.dequeueReusableCell(withIdentifier: "cellselectBranchVC") as! cellselectBranchVC
-        aCell.labelBranchName.textColor = UIColor(hexValue: 0x00CC96)
-        aCell.accessoryType = UITableViewCell.AccessoryType.checkmark
-        aCell.tintColor = UIColor.gray
-         GlobalData.selectedBranch = Seclected_Branch!
-        GlobalData.selectedBranchId = branchID
-        GlobalData.selectedBranchCode = branchCode
-        GlobalData.debitCardUserName = fullname!
-        print("city id get",  GlobalData.selectedBranch)
-        
-        FBEvents.logEvent(title: .Debit_orderconfirm_screen)
-
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardBranchAddressConfirmationVC") as!  DebitCardBranchAddressConfirmationVC
-//        vc.fullUserName = fullName!
-        
-        self.navigationController?.pushViewController(vc, animated: true)
-        
-        
-  
+//        NSLog ("You selected row: %@ \(indexPath)")
+//        Seclected_Branch = filteredData?[indexPath.row]
+//        for i in getBranch
+//        {
+//            if i.name == Seclected_Branch
+//            {
+//                branchID = i.id
+//                branchCode = i.code
+//
+//            }
+//
+//        }
+//
+//        let aCell = tableView.dequeueReusableCell(withIdentifier: "cellselectBranchVC") as! cellselectBranchVC
+//
+//        aCell.labelBranchName.textColor = UIColor(hexValue: 0x00CC96)
+//        aCell.accessoryType = UITableViewCell.AccessoryType.checkmark
+//        aCell.tintColor = UIColor.gray
+//         GlobalData.selectedBranch = Seclected_Branch!
+//        GlobalData.selectedBranchId = branchID
+//        GlobalData.selectedBranchCode = branchCode
+//        GlobalData.debitCardUserName = fullname!
+//        print("city id get",  GlobalData.selectedBranch)
+//
+//        FBEvents.logEvent(title: .Debit_orderconfirm_screen)
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//
+//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardBranchAddressConfirmationVC") as!  DebitCardBranchAddressConfirmationVC
+//            //        vc.fullUserName = fullName!
+//            self.present(vc, animated: true)
+//
+//        }
         
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
