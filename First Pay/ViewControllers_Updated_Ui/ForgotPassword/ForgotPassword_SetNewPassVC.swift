@@ -24,7 +24,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Signup_forgotpass_landed)
         super.viewDidLoad()
-        cnicTextField.becomeFirstResponder()
+        mobileNumberTextField.becomeFirstResponder()
         cnicTextField.delegate = self
         mobileNumberTextField.delegate = self
         lbl_InvalidCnic.isHidden = true

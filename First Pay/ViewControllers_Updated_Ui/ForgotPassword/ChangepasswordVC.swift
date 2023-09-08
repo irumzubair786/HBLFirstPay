@@ -232,7 +232,8 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/changePassword"
         
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID ?? "")","oldpass":self.oldPasswordTextfield.text! ?? "","newpass":self.confirmPasswordTextfield.text! ?? "","imei": DataManager.instance.imei! ?? "" ,"cnic" : userCnic!  ?? ""]
+        let parameters = ["channelId":"\(DataManager.instance.channelID ?? "")","oldPass":self.oldPasswordTextfield.text! ?? "","newPass":self.confirmPasswordTextfield.text! ?? "","imei": DataManager.instance.imei! ?? "" ,"cnic" : userCnic!  ?? ""]
+        
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(parameters)
@@ -270,8 +271,31 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
                     if let message = self.genericObj?.messages{
                         let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
                         print("Remover \(removePessi)")
-                        self.showAlertCustomPopup(title: "", message: message)
-                        self.logoutUser()
+                        let  message = self.genericObj?.messages
+                        self.showAlertCustomPopup(title: "Close this window & Login agian", message: message, iconName: .iconError, buttonNames: [
+                            
+                            ["buttonName": "LOGIN AGAIN",
+                             "buttonBackGroundColor": UIColor.clrOrange,
+                             "buttonTextColor": UIColor.white]
+                             
+                            
+                        ] as? [[String: AnyObject]])
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) {
+                            self.logoutUser()
+                        }
+                         
+                        self.showAlertCustomPopup(title: "", message: message,iconName:.iconError,buttonNames: []completion: <#T##((String?) -> Void)?##((String?) -> Void)?##(String?) -> Void#>
+                        
+                        
+//                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconSuccess,buttonName: [
+//
+//                            "buttonName": "LOG-OUT",
+//                            "buttonBackGroundColor": UIColor.clrOrange,
+//                            "buttonTextColor": UIColor.white] as [String : Any]
+//                                                  as? [[String: AnyObject]]) {buttonName in
+//                                self.logoutUser()
+//
+//                    }
                     }
                 }
                 else {

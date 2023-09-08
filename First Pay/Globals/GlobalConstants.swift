@@ -10,9 +10,9 @@ import Foundation
 var transactionV1or2 = "Transactions/v1"
 class GlobalConstants {
     // Live
-        public static let BASE_URL = "https://bb.hblmfb.com/"
+//        public static let BASE_URL = "https://bb.hblmfb.com/"
     // Stagging
-//    public static let BASE_URL = "http://bbuat.hblmfb.com/"
+    public static let BASE_URL = "http://bbuat.hblmfb.com/"
 }
 
 class GlobalOTPTypes {
