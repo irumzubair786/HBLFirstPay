@@ -55,6 +55,9 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     @IBOutlet weak var viewLineSix: UIView!
    
     override func viewDidDisappear(_ animated: Bool) {
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
         UITextField.appearance().tintColor = .systemBlue
     }
     

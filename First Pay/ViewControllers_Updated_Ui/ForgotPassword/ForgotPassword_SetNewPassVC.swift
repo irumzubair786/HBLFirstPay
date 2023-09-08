@@ -17,7 +17,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     let devicemodel = UIDevice.current.localizedModel
     var genericResponseObj : GenericResponseModel?
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         UITextField.appearance().tintColor = .systemBlue
     }
     

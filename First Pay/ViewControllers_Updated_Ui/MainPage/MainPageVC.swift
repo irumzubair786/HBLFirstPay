@@ -61,7 +61,9 @@ class MainPageVC: BaseClassVC {
             
         }
     }
-    
+    @IBOutlet weak var imgHome: UIImageView!
+    @IBOutlet weak var imgLocation: UIImageView!
+
     
     
     @IBOutlet weak var imgPromtionsPopup: UIImageView!
@@ -70,30 +72,31 @@ class MainPageVC: BaseClassVC {
     @IBOutlet weak var myContentView: UIView!
     @IBOutlet weak var lblHome: UILabel!
     @IBOutlet weak var btnHomes: UIButton!
-    @IBOutlet weak var lblNotification: UILabel!
+    @IBOutlet weak var lblLocator: UILabel!
     @IBOutlet weak var btnNotification: UIButton!
     @IBOutlet weak var btnScanQR: UIButton!
     @IBOutlet weak var btnAccount: UIButton!
     @IBOutlet weak var lblAccount: UILabel!
-    @IBOutlet weak var lblLocator: UILabel!
+  
     @IBOutlet weak var btnLocator: UIButton!
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBAction func Action_Home(_ sender: UIButton) {
-        btnHomes.setImage(UIImage(named: "path0-6"), for: .normal)
-        btnNotification.setImage(UIImage(named: "BranchLocator"), for: .normal)
+        imgHome.image = UIImage(named: "path0-6")
+        imgLocation.image = UIImage(named: "BranchLocator")
         lblHome.textColor = UIColor.orange
-        lblNotification.textColor = UIColor.white
+        lblLocator.textColor = UIColor.white
         let  myDict = [ "name": "DashBoardVC"]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
     }
     @IBAction func Action_Notification(_ sender: UIButton) {
         print("done")
-        btnNotification.setImage(UIImage(named: "locatorOrange"), for: .normal)
-        btnHomes.setImage(UIImage(named: "grayHome"), for: .normal)
+        imgLocation.image = UIImage(named: "locatorOrange")
+        imgHome.image = UIImage(named: "grayHome")
+
         lblHome.textColor = UIColor.white
-        lblNotification.textColor = UIColor.orange
-        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
-        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
+        lblLocator.textColor = UIColor.orange
+//        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
+//        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
         let  myDict = [ "name": "ATMLocatormainVc"]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
 
