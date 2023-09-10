@@ -7,7 +7,7 @@
 //
 import Foundation
 
-var transactionV1or2 = "Transactions/v1"
+var transactionV1or2 = "Transactions/v2"
 class GlobalConstants {
     // Live
 //        public static let BASE_URL = "https://bb.hblmfb.com/"
