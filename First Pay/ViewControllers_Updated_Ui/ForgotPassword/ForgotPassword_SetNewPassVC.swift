@@ -372,7 +372,8 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
                 }
                 else {
                     if let message = self.genericResponseObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError
+                        )
                     }
                     
                     // Html Parse

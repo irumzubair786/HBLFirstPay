@@ -35,6 +35,12 @@ class changeLimitVC: BaseClassVC {
     var AmounttType: String?
     var refreshScreen: (()->())!
     
+    
+    
+    
+    
+    
+    
     @IBOutlet weak var viewBackground: UIView!
     
     override func viewDidAppear(_ animated: Bool) {
