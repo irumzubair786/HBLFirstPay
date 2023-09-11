@@ -17,6 +17,8 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         super.viewDidLoad()
         buttonback.setTitle("", for: .normal)
         oldPasswordTextfield.becomeFirstResponder()
+        newPasswordTextfield.becomeFirstResponder()
+        confirmPasswordTextfield.becomeFirstResponder()
         oldPasswordTextfield.delegate = self
         newPasswordTextfield.delegate = self
         confirmPasswordTextfield.delegate = self
@@ -161,11 +163,15 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         
         if oldPasswordTextfield.text?.count == 6
         {
+           
             newPasswordTextfield.isUserInteractionEnabled = true
+           
         }
          if newPasswordTextfield.text?.count == 6
         {
+            
             confirmPasswordTextfield.isUserInteractionEnabled = true
+            
        }
         
         
@@ -398,8 +404,8 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
                     if let message = self.genericObj?.messages{
                         let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
                         print("Remover \(removePessi)")
-                        let  message = self.genericObj?.messages
-                        self.showAlertCustomPopup(title: "Close this window & Login agian", message: message, iconName: .iconError, buttonNames: [
+                        let  message = "Close this window & Login agian     \(self.genericObj?.messages!)"
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
                             
                             ["buttonName": "LOGIN AGAIN",
                              "buttonBackGroundColor": UIColor.clrOrange,
@@ -407,25 +413,11 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
                              
                             
                         ]
-                                                  
 //                     add completion button here....
-                        as? [[String: AnyObject]])
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) {
-//                            self.logoutUser()
-                        }
-                         
-//                        self.showAlertCustomPopup(title: "", message: message,iconName:.iconError,buttonNames: []completion: <#T##((String?) -> Void)?##((String?) -> Void)?##(String?) -> Void#>
-                        
-                        
-//                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconSuccess,buttonName: [
-//
-//                            "buttonName": "LOG-OUT",
-//                            "buttonBackGroundColor": UIColor.clrOrange,
-//                            "buttonTextColor": UIColor.white] as [String : Any]
-//                                                  as? [[String: AnyObject]]) {buttonName in
-//                                self.logoutUser()
-//
-//                    }
+                        as? [[String: AnyObject]]){ _ in
+                            self.logoutUser()
+                         }
+ 
                     }
                 }
                 else {

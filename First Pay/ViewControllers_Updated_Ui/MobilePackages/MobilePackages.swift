@@ -38,6 +38,7 @@ class MobilePackages: UIViewController {
             else {
                 self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
                     
+                    
                 }
             }
         }
