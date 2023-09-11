@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
-import OneSignal
+import OneSignalFramework
 import Siren
 import IQKeyboardManager
 import FirebaseCore
@@ -85,32 +85,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                  }
 //              }
 //
-        //Remove this method to stop OneSignal Debugging
-         OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+
+        //OneSignal START
+        // Remove this method to stop OneSignal Debugging
+        //              OneSignal.Debug.setLogLevel(.LL_VERBOSE)
+        
         // OneSignal initialization
-         OneSignal.initWithLaunchOptions(launchOptions)
-         OneSignal.setAppId("12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d")
-        // promptForPushNotifications will show the native iOS notification permission prompt.
-          // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
-          OneSignal.promptForPushNotifications(userResponse: { accepted in
+        OneSignal.initialize("12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d", withLaunchOptions: launchOptions)
+        
+        // requestPermission will show the native iOS notification permission prompt.
+        // We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+        OneSignal.Notifications.requestPermission({ accepted in
             print("User accepted notifications: \(accepted)")
-          })
+        }, fallbackToSettings: true)
+        
+        // Login your customer with externalId
+        // OneSignal.login("EXTERNAL_ID")
         
         // Set your customer userId
         // OneSignal.setExternalUserId("userId")
-//         //START OneSignal initialization code
-//         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false, kOSSettingsKeyInAppLaunchURL: false]
-//
-//
-//         OneSignal.initWithLaunchOptions(launchOptions,
-//           appId: "12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d",
-//           handleNotificationAction: notificationOpenedBlock,
-//           settings: onesignalInitSettings)
-//
-//         OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
-//         OneSignal.promptForPushNotifications(userResponse: { accepted in
-////           print("User accepted notifications: \(accepted)")
-//         })
+        //OneSignal END
+
 
         FirebaseApp.configure()
         FBEvents.logEvent(title: .testOne, failureReason: "test fail")

@@ -19,7 +19,7 @@ import CryptoSwift
 import RNCryptor
 import PasswordTextField
 import CoreLocation
-import OneSignal
+import OneSignalFramework
 import FingerprintSDK
 
 class Login_VC: BaseClassVC, UITextFieldDelegate  {
