@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,9 +20,16 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tg4-Qk-eX4" userLabel="TOPVIEW">
                                 <rect key="frame" x="0.0" y="20" width="375" height="108"/>
                                 <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backButton" translatesAutoresizingMaskIntoConstraints="NO" id="Q2R-Zb-0eK">
+                                        <rect key="frame" x="15" y="38" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="LvP-af-NW5"/>
+                                            <constraint firstAttribute="height" constant="40" id="nEn-UV-jcH"/>
+                                        </constraints>
+                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ERc-hX-JZK">
                                         <rect key="frame" x="10" y="33" width="50" height="50"/>
-                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="V9L-jb-rwZ"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="bWz-9s-JUx"/>
@@ -31,7 +38,7 @@
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain">
-                                            <backgroundConfiguration key="background" image="Left Button"/>
+                                            <backgroundConfiguration key="background"/>
                                         </buttonConfiguration>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -57,7 +64,9 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="Q2R-Zb-0eK" firstAttribute="centerY" secondItem="ERc-hX-JZK" secondAttribute="centerY" id="3hQ-D6-Cpi"/>
                                     <constraint firstAttribute="height" constant="108" id="EMK-mr-7qJ"/>
+                                    <constraint firstItem="Q2R-Zb-0eK" firstAttribute="centerX" secondItem="ERc-hX-JZK" secondAttribute="centerX" id="Eu8-NS-r4E"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="108" id="NbV-o2-7eg"/>
                                     <constraint firstItem="ERc-hX-JZK" firstAttribute="top" secondItem="tg4-Qk-eX4" secondAttribute="top" constant="33" id="QzZ-eN-mrl"/>
                                     <constraint firstItem="ERc-hX-JZK" firstAttribute="leading" secondItem="tg4-Qk-eX4" secondAttribute="leading" constant="10" id="SiP-3h-5R5"/>
@@ -350,9 +359,16 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wXT-LG-qeb" userLabel="TOPVIEW">
                                 <rect key="frame" x="0.0" y="20" width="375" height="108"/>
                                 <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backButton" translatesAutoresizingMaskIntoConstraints="NO" id="J9c-BV-nx6">
+                                        <rect key="frame" x="15" y="37.5" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="NIj-dR-D3m"/>
+                                            <constraint firstAttribute="width" constant="40" id="eDh-aK-tC4"/>
+                                        </constraints>
+                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Wn-wm-4wJ">
                                         <rect key="frame" x="10" y="32.5" width="50" height="50"/>
-                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="H4d-h1-kd7"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Q2c-OC-1rm"/>
@@ -361,7 +377,7 @@
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain">
-                                            <backgroundConfiguration key="background" image="Left Button"/>
+                                            <backgroundConfiguration key="background"/>
                                         </buttonConfiguration>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -392,6 +408,8 @@
                                     <constraint firstItem="3Wn-wm-4wJ" firstAttribute="centerY" secondItem="Fb9-WA-jmO" secondAttribute="centerY" id="XWI-Bm-jyX"/>
                                     <constraint firstAttribute="height" constant="108" id="cuX-Gz-xZi"/>
                                     <constraint firstItem="Fb9-WA-jmO" firstAttribute="top" secondItem="wXT-LG-qeb" secondAttribute="top" constant="47" id="fhc-In-QRZ"/>
+                                    <constraint firstItem="J9c-BV-nx6" firstAttribute="centerY" secondItem="3Wn-wm-4wJ" secondAttribute="centerY" id="r1F-3v-LpZ"/>
+                                    <constraint firstItem="J9c-BV-nx6" firstAttribute="centerX" secondItem="3Wn-wm-4wJ" secondAttribute="centerX" id="sPa-jb-VS0"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tov-HE-Jj9">
@@ -755,6 +773,7 @@
         <image name="Rectangle 1944" width="64" height="64"/>
         <image name="Terms &amp; Conditions" width="1125" height="2430"/>
         <image name="]greenarrow" width="152" height="152"/>
+        <image name="backButton" width="77" height="76"/>
         <image name="dotGray" width="927" height="8"/>
         <image name="faceicon" width="107" height="132"/>
         <image name="faceidpng" width="232" height="233"/>
@@ -763,9 +782,6 @@
         <image name="thumbicon" width="88" height="132"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

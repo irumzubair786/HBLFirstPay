@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,18 +18,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qnZ-da-Uq7" userLabel="TOPVIEW">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="84"/>
                                 <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backButton" translatesAutoresizingMaskIntoConstraints="NO" id="HRp-Fg-yc8">
+                                        <rect key="frame" x="17" y="42" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="BVS-tI-nkh"/>
+                                            <constraint firstAttribute="height" constant="40" id="IE8-Bd-iw4"/>
+                                        </constraints>
+                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mId-US-xLi">
                                         <rect key="frame" x="12" y="37" width="50" height="50"/>
-                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="cJY-SX-yeW"/>
                                             <constraint firstAttribute="height" constant="50" id="gLS-J8-OTB"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain">
-                                            <backgroundConfiguration key="background" image="Left Button"/>
+                                            <backgroundConfiguration key="background"/>
                                         </buttonConfiguration>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -58,14 +65,16 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="84" id="3qY-LG-00D"/>
                                     <constraint firstItem="mId-US-xLi" firstAttribute="top" secondItem="qnZ-da-Uq7" secondAttribute="top" constant="37" id="8B6-Yd-zYe"/>
+                                    <constraint firstItem="HRp-Fg-yc8" firstAttribute="centerY" secondItem="mId-US-xLi" secondAttribute="centerY" id="9rW-wa-UTo"/>
                                     <constraint firstItem="mId-US-xLi" firstAttribute="leading" secondItem="qnZ-da-Uq7" secondAttribute="leading" constant="12" id="DBY-GW-fdz"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="FAJ-zT-AEt"/>
                                     <constraint firstItem="hD7-2F-ddw" firstAttribute="leading" secondItem="mId-US-xLi" secondAttribute="trailing" constant="26" id="Qar-NC-pAX"/>
                                     <constraint firstItem="hD7-2F-ddw" firstAttribute="top" secondItem="qnZ-da-Uq7" secondAttribute="top" constant="50" id="Uw3-YA-Xln"/>
+                                    <constraint firstItem="HRp-Fg-yc8" firstAttribute="centerX" secondItem="mId-US-xLi" secondAttribute="centerX" id="a0O-qp-biK"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xxH-EH-srZ">
-                                <rect key="frame" x="0.0" y="79" width="375" height="67"/>
+                                <rect key="frame" x="0.0" y="99" width="375" height="67"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="First Pay" translatesAutoresizingMaskIntoConstraints="NO" id="pNH-D5-uRp">
                                         <rect key="frame" x="30" y="26" width="145" height="49"/>
@@ -92,7 +101,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vC2-HC-aL9">
-                                <rect key="frame" x="30" y="150" width="315" height="410"/>
+                                <rect key="frame" x="30" y="170" width="315" height="390"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -212,15 +221,12 @@
     <resources>
         <image name="First Pay" width="440" height="136"/>
         <image name="HBL Logo" width="540" height="73"/>
-        <image name="Left Button" width="152" height="153"/>
+        <image name="backButton" width="77" height="76"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray3Color">
             <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
