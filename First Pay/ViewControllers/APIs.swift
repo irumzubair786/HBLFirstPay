@@ -291,6 +291,8 @@ struct APIs {
                 print("Request Parameters: \(parameters)")
                 print("JSON: \(serverResponse)")
                 print("JSON: \(json)")
+                let str = String(decoding: response.data!, as: UTF8.self)
+print(str)
                 switch response.response?.statusCode {
                 case 200 :
                     if serverResponse["responsecode"] == 1 {

@@ -500,9 +500,6 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var fingerPrintVerification: FingerPrintVerification!
 
     func loginAction() {
-        fingerPrintVerification(viewController: self)
-        
-        return
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return

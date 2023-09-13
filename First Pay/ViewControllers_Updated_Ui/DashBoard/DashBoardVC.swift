@@ -985,9 +985,9 @@ extension DashBoardVC: FingerprintResponseDelegate {
                     guard let instance = FingerPrintVerification.Fingerprints(fingerIndex: "\(item.fingerPositionCode)", fingerTemplate: imageString) else { return }
                    
                     tempFingerPrintDictionary.append(
-                        ["fingerIndex":item.fingerPositionCode,
-                         "fingerTemplate":imageString,
-                         "templateType":"WSQ"]
+                        ["fingerIndex": "\(item.fingerPositionCode)",//getFingerIndex(index: item.fingerPositionCode),
+                         "fingerTemplate": imageString,
+                         "templateType": "WSQ"]
                     )
                 }
             }
@@ -1039,4 +1039,31 @@ extension DashBoardVC: FingerprintResponseDelegate {
     
     
 
+}
+
+func getFingerIndex(index: Int) -> String {
+    switch index {
+        case 1:
+            return "1"
+        case 2:
+            return "2"
+        case 3:
+            return "3"
+        case 4:
+            return "4"
+        case 5:
+            return "5"
+        case 6:
+            return "6"
+        case 7:
+            return "7"
+        case 8:
+            return "8"
+        case 9:
+            return "9"
+        case 10:
+            return "10"
+        default:
+            return ""
+    }
 }

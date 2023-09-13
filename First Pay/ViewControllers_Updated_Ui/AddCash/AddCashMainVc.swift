@@ -282,7 +282,7 @@ extension AddCashMainVc: FingerprintResponseDelegate {
                     guard let instance = FingerPrintVerification.Fingerprints(fingerIndex: "\(item.fingerPositionCode)", fingerTemplate: imageString) else { return }
                    
                     tempFingerPrintDictionary.append(
-                        ["fingerIndex":item.fingerPositionCode,
+                        ["fingerIndex":"\(item.fingerPositionCode)",
                          "fingerTemplate":imageString,
                          "templateType":"WSQ"]
                     )
