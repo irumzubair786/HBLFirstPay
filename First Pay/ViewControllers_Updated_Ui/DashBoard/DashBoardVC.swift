@@ -38,18 +38,21 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var fingerPrintVerification: FingerPrintVerification!
     var fingerprintPngs : [Png]?
 
-    var modelFingerPrintResponse: FingerPrintVerification.ModelFingerPrintResponse? {
+    var modelAcccountLevelUpgradeResponse: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? {
         didSet {
-            print(modelFingerPrintResponse)
-            if modelFingerPrintResponse?.responsecode == 1 {
-            self.showAlertCustomPopup(title: "Success", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
-//                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-//                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-//                    self.present(vc, animated: true)
+            print(modelAcccountLevelUpgradeResponse)
+            if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
+                self.showAlertCustomPopup(title: "Success", message: modelAcccountLevelUpgradeResponse?.messages ?? "SUCCESS FROM API") {_ in
+                    self.getActiveLoan()
+                }
+            }
+            else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
+                self.showAlertCustomPopup(title: "Error", message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
+                    
                 }
             }
             else {
-                self.showAlertCustomPopup(title: "Error", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+                self.showAlertCustomPopup(title: "Error", message: "ERROR IN RESPONSE API") {_ in
                     
                 }
             }
@@ -57,6 +60,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     }
 
     @IBOutlet weak var imgSeeAll: UIImageView!
+    
     override func viewDidAppear(_ animated: Bool) {
         changeImageTimerStart()
     }
@@ -231,6 +235,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                 DispatchQueue.main.async {
                     self.fingerPrintVerification(viewController: self)
                 }
+//                dummy finger print api calling
+//                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
             }
            else {
                getActiveLoan()
@@ -983,7 +989,7 @@ extension DashBoardVC: FingerprintResponseDelegate {
                 for item in fpPNGs {
                     guard let imageString = item.binaryBase64ObjectPNG else { return }
                     guard let instance = FingerPrintVerification.Fingerprints(fingerIndex: "\(item.fingerPositionCode)", fingerTemplate: imageString) else { return }
-                   
+                    
                     tempFingerPrintDictionary.append(
                         ["fingerIndex": "\(item.fingerPositionCode)",//getFingerIndex(index: item.fingerPositionCode),
                          "fingerTemplate": imageString,
@@ -994,7 +1000,7 @@ extension DashBoardVC: FingerprintResponseDelegate {
             self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
         }else {
             self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
-//                self.dismiss(animated: true)
+                //                self.dismiss(animated: true)
             }
         }
     }
@@ -1010,11 +1016,11 @@ extension DashBoardVC: FingerprintResponseDelegate {
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
         ]
-
-    //    let apiAttribute3 = [
-    //        "apiAttribute3" : fingerprints.template
-    //    ]
-    //    print(parameters)
+        
+        //    let apiAttribute3 = [
+        //        "apiAttribute3" : fingerprints.template
+        //    ]
+        //    print(parameters)
         
         APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: self) {
             responseData, success, errorMsg in
@@ -1029,16 +1035,11 @@ extension DashBoardVC: FingerprintResponseDelegate {
             catch let error {
                 print(error)
             }
-
-            let model: FingerPrintVerification.ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
-            print(model)
-            print(model)
-            self.modelFingerPrintResponse = model
+            
+            let model: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelAcccountLevelUpgradeResponse = model
         }
     }
-    
-    
-
 }
 
 func getFingerIndex(index: Int) -> String {
@@ -1065,5 +1066,41 @@ func getFingerIndex(index: Int) -> String {
             return "10"
         default:
             return ""
+    }
+}
+
+extension DashBoardVC {
+    // MARK: - Welcome
+    struct ModelAcccountLevelUpgrade: Codable {
+        let responsecode: Int
+        let data, responseblock: JSONNull?
+        let messages: String
+    }
+
+    // MARK: - Encode/decode helpers
+
+    class JSONNull: Codable, Hashable {
+
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+
+        public var hashValue: Int {
+            return 0
+        }
+
+        public init() {}
+
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
     }
 }

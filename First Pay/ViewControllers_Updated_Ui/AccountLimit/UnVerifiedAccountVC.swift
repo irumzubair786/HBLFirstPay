@@ -48,18 +48,24 @@ class UnVerifiedAccountVC: UIViewController {
     var comatotalYearlyLimitCr1 : String?
     var fingerPrintVerification: FingerPrintVerification!
 
-    var modelFingerPrintResponse: FingerPrintVerification.ModelFingerPrintResponse? {
+    
+    var modelAcccountLevelUpgradeResponse: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? {
         didSet {
-            print(modelFingerPrintResponse)
-            if modelFingerPrintResponse?.responsecode == 1 {
-                self.showAlertCustomPopup(title: "Success", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+            print(modelAcccountLevelUpgradeResponse)
+            if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
+                self.showAlertCustomPopup(title: "Success", message: modelAcccountLevelUpgradeResponse?.messages ?? "SUCCESS FROM API") {_ in
                     let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
                     let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
                     self.present(vc, animated: true)
                 }
             }
+            else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
+                self.showAlertCustomPopup(title: "Error", message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
+                    
+                }
+            }
             else {
-                self.showAlertCustomPopup(title: "Error", message: modelFingerPrintResponse?.messages ?? "No Message from API") {_ in
+                self.showAlertCustomPopup(title: "Error", message: "ERROR IN RESPONSE API") {_ in
                     
                 }
             }
@@ -345,8 +351,8 @@ extension  UnVerifiedAccountVC: FingerprintResponseDelegate {
                 print(error)
             }
 
-            let model: FingerPrintVerification.ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelFingerPrintResponse = model
+            let model: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelAcccountLevelUpgradeResponse = model
         }
     }
 }

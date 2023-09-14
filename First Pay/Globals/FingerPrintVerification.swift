@@ -22,13 +22,26 @@ class FingerPrintVerification {
     var viewController: UIViewController!
     var delegate: FingerPrintVerificationDelegate!
     var fingerPrintApiHitCount: Int!
-    var modelFingerPrintResponse: ModelFingerPrintResponse? {
+    
+    
+    var modelAcccountLevelUpgradeResponse: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? {
         didSet {
-            print(modelFingerPrintResponse)
-//            if modelFingerPrintResponse?.responsecode == 1 {
-//                fingerPrintApiHitCount += 1
-//                delegate.onEightFingerComplition(success: true, fingerPrintApiHitCount: fingerPrintApiHitCount, apiResponseMessage: modelFingerPrintResponse?.messages ?? "No Message from API")
-//            }
+            print(modelAcccountLevelUpgradeResponse)
+            if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
+//                self.showAlertCustomPopup(title: "Success", message: modelAcccountLevelUpgradeResponse?.messages ?? "SUCCESS FROM API") {_ in
+//
+//                }
+            }
+            else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
+//                self.showAlertCustomPopup(title: "Error", message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
+//
+//                }
+            }
+            else {
+//                self.showAlertCustomPopup(title: "Error", message: "ERROR IN RESPONSE API") {_ in
+//                    
+//                }
+            }
         }
     }
     
@@ -110,8 +123,8 @@ class FingerPrintVerification {
 //                print(error)
 //            }
 //
-//            let model: ModelFingerPrintResponse? = APIs.decodeDataToObject(data: responseData)
-//            self.modelFingerPrintResponse = model
+//           let model: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? = APIs.decodeDataToObject(data: responseData)
+//        self.modelAcccountLevelUpgradeResponse = model
 //        }
     }
 }
@@ -156,18 +169,37 @@ extension  FingerPrintVerification: FingerprintResponseDelegate {
 }
 extension FingerPrintVerification {
     // MARK: - ModelFingerPrintResponse
-    struct ModelFingerPrintResponse: Codable {
+    struct ModelAcccountLevelUpgradeResponse: Codable {
         let responsecode: Int
-        let data: DataClass
+        let data, responseblock: JSONNull?
         let messages: String
-        let responseblock: JSONNull?
     }
-    
-    // MARK: - DataClass
-    struct DataClass: Codable {
-        let response: Int
-        let message: String
-        let data: [String: Int?]
+
+    // MARK: - Encode/decode helpers
+
+    class JSONNull: Codable, Hashable {
+
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+
+        public var hashValue: Int {
+            return 0
+        }
+
+        public init() {}
+
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
     }
 
     struct Fingerprints: Codable {
