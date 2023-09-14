@@ -42,8 +42,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         didSet {
             print(modelAcccountLevelUpgradeResponse)
             if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
-                self.showAlertCustomPopup(title: "Success", message: modelAcccountLevelUpgradeResponse?.messages ?? "SUCCESS FROM API") {_ in
+                NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
+                let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+                viewController.accountUpGradeSuccessfull = {
                     self.getActiveLoan()
+                }
+                DispatchQueue.main.async {
+                    self.present(viewController, animated: true)
                 }
             }
             else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
@@ -102,6 +107,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         labelSeeAll.addGestureRecognizer(tapGestureRecognizrzSeeAll)
        
 //        getActiveLoan()
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(homeAction), name: Notification.Name("updateAccountLevel"),object: nil)
+
+        
     }
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBOutlet weak var imageAddCash: UIImageView!
@@ -235,11 +244,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                 DispatchQueue.main.async {
                     self.fingerPrintVerification(viewController: self)
                 }
-//                dummy finger print api calling
-//                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
+                //                dummy finger print api calling
+                //                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
             }
            else {
                getActiveLoan()
+               //                dummy finger print api calling
+               //                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
             }
 //            self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -302,7 +313,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func openNanoLoan() {
-        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
+        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainerNavigatior")
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
@@ -362,12 +373,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         }
     }
 
-    func homeAction() {
-        showActivityIndicator()
+    @objc func homeAction() {
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
         }
+        showActivityIndicator()
+
         //        showActivityIndicator()
         
         //        let compelteUrl = GlobalConstants.BASE_URL + "home"

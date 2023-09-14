@@ -50,20 +50,9 @@ class NanoLoanRepayConfirmationVC: UIViewController {
         }
     }
     
-    var modelGetActiveLoanToPay: NanoLoanRepayViewController.ModelGetActiveLoanToPay? {
-        didSet {
-            if let getActiveLoanToPay = modelGetActiveLoanToPay?.data {
-                //                labelLoanNumber.text = "\(currentLoan.loanNo)"
-                labelAmount.text = "Rs. \((getActiveLoanToPay.payableTotalAmount ?? 0).twoDecimal())"
-                labelLoanNumber.text = "\(getActiveLoanToPay.loanNumber ?? "")"
-                labelLoanAvailedAmount.text = "Rs. \((getActiveLoanToPay.loanAvailedAmount ?? 0).twoDecimal())"
-                labelDueDate.text = getActiveLoanToPay.dueDate
-                labelProcessingFee.text = "\((getActiveLoanToPay.processingFee ?? 0).twoDecimal())"
-                labelMarkupCharged.text = "Rs. \((getActiveLoanToPay.outstandingMarkupAmount ?? 0).twoDecimal())"
-                viewBackGroundTotalAmount.radiusLineDashedStroke()
-            }
-        }
-    }
+    var modelGetActiveLoanToPay: NanoLoanRepayViewController.ModelGetActiveLoanToPay?
+    
+   
     
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
@@ -79,6 +68,7 @@ class NanoLoanRepayConfirmationVC: UIViewController {
         FaceBookEvents.logEvent(title: .Loans_repayconfirm_landing)
         viewBackGroundTotalAmount.radius()
         viewBackGroundRepayNowButton.circle()
+        setData()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -86,6 +76,21 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     }
     @IBAction func buttonRepayNow(_ sender: Any) {
         payActiveLoan()
+    }
+    
+    func setData() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if let getActiveLoanToPay = self.modelGetActiveLoanToPay?.data {
+                //                labelLoanNumber.text = "\(currentLoan.loanNo)"
+                self.labelAmount.text = "Rs. \((getActiveLoanToPay.payableTotalAmount ?? 0).twoDecimal())"
+                self.labelLoanNumber.text = "\(getActiveLoanToPay.loanNumber ?? "")"
+                self.labelLoanAvailedAmount.text = "Rs. \((getActiveLoanToPay.loanAvailedAmount ?? 0).twoDecimal())"
+                self.labelDueDate.text = getActiveLoanToPay.dueDate
+                self.labelProcessingFee.text = "\((getActiveLoanToPay.processingFee ?? 0).twoDecimal())"
+                self.labelMarkupCharged.text = "Rs. \((getActiveLoanToPay.outstandingMarkupAmount ?? 0).twoDecimal())"
+                self.viewBackGroundTotalAmount.radiusLineDashedStroke()
+            }
+        }
     }
     func payActiveLoan() {
         

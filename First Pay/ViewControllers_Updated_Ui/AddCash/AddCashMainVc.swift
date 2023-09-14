@@ -22,10 +22,13 @@ class AddCashMainVc: BaseClassVC {
         didSet {
             print(modelAcccountLevelUpgradeResponse)
             if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
-                self.showAlertCustomPopup(title: "Success", message: modelAcccountLevelUpgradeResponse?.messages ?? "SUCCESS FROM API") {_ in
-                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-                    self.present(vc, animated: true)
+                NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
+                let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+                viewController.accountUpGradeSuccessfull = {
+                    self.getActiveLoan()
+                }
+                DispatchQueue.main.async {
+                    self.present(viewController, animated: true)
                 }
             }
             else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
@@ -94,6 +97,8 @@ class AddCashMainVc: BaseClassVC {
         }
         else {
             getActiveLoan()
+            //                dummy finger print api calling
+//                            self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
         }
     }
     
@@ -253,17 +258,11 @@ class AddCashMainVc: BaseClassVC {
                     if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
                         let vc = self.storyboard!.instantiateViewController(withIdentifier: "FromLinkAccountListVc") as! FromLinkAccountListVc
                         self.navigationController?.pushViewController(vc, animated: true)
-                        
-                        
-                        
                     }
-                    
                 }
                 else{
-                    
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "NobankExistsVc") as! NobankExistsVc
                     self.navigationController?.pushViewController(vc, animated: true)
-                    
                 }
             }
             else {

@@ -11,6 +11,8 @@ import Alamofire
 import FingerprintSDK
 
 class UnVerifiedAccountVC: UIViewController {
+    
+    
     var fingerprintPngs : [Png]?
 
     var levelCode :String?
@@ -53,6 +55,8 @@ class UnVerifiedAccountVC: UIViewController {
         didSet {
             print(modelAcccountLevelUpgradeResponse)
             if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
+                NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
+
                 self.showAlertCustomPopup(title: "Success", message: modelAcccountLevelUpgradeResponse?.messages ?? "SUCCESS FROM API") {_ in
                     let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
                     let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")

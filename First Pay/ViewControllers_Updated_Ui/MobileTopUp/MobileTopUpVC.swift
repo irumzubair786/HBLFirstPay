@@ -243,7 +243,6 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
         GlobalData.topup = "P R E P A I D"
         NotificationCenter.default.post(name: Notification.Name("operationSelectionPrepaid"), object: nil)
         
-        
         //<<<<<<< HEAD
         ////        let vc = storyboard?.instantiateViewController(withIdentifier: "OpreatorSelectionVc") as! OpreatorSelectionVc
         ////        if parentCompanyID == nil

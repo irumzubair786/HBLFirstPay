@@ -13,7 +13,9 @@ import ObjectMapper
 import FingerprintSDK
 
 class UnverifeidAccountMainVc: BaseClassVC {
+    @IBOutlet weak var buttonUpgradeAccount: UIButton!
     var fingerprintPngs : [Png]?
+    var accountUpGradeSuccessfull: (() -> ())!
 
     
     var levelCode :String?
@@ -37,15 +39,22 @@ class UnverifeidAccountMainVc: BaseClassVC {
         didSet {
             print(modelAcccountLevelUpgradeResponse)
             if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
-                self.showAlertCustomPopup(title: "Success", message: modelAcccountLevelUpgradeResponse?.messages ?? "SUCCESS FROM API") {_ in
-                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-                    self.present(vc, animated: true)
+                NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
+
+                let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+                viewController.accountUpGradeSuccessfull = {
+                    self.dismiss(animated: true)
+                    self.accountUpGradeSuccessfull!()
+                }
+                DispatchQueue.main.async {
+                    self.present(viewController, animated: true)
                 }
             }
             else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
+                NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
+
                 self.showAlertCustomPopup(title: "Error", message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
-                    
+
                 }
             }
             else {
@@ -60,6 +69,20 @@ class UnverifeidAccountMainVc: BaseClassVC {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
         // Do any additional setup after loading the view.
+    }
+    
+
+    @IBAction func buttonUpgradeAccount(_ sender: Any) {
+//        FBEvents.logEvent(title: .BioMetric_Sccanining)
+//        // call sdk fingerPrint
+//
+//        fingerPrintVerification = FingerPrintVerification()
+//        DispatchQueue.main.async {
+//            self.fingerPrintVerification(viewController: self)
+//        }
+        
+        //                dummy finger print api calling
+         self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
     }
 
     @IBOutlet weak var buttonBack: UIButton!
@@ -85,23 +108,6 @@ class UnverifeidAccountMainVc: BaseClassVC {
         vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
         self.present(vc, animated: true)
 //        UnVerifiedAccountVC
-    }
-    
-    @IBAction func buttonUpgrade(_ sender: UIButton) {
-        FBEvents.logEvent(title: .BioMetric_Sccanining)
-        // call sdk fingerPrint
-        
-        fingerPrintVerification = FingerPrintVerification()
-        DispatchQueue.main.async {
-            self.fingerPrintVerification(viewController: self)
-        }
-        
-//        self.showAlertCustomPopup(title: "", message: "Please visit your nearest HBLMfB branch", iconName: .iconSucess, buttonNames: [
-//
-//            ["buttonName": "OK",
-//            "buttonBackGroundColor": UIColor.clrOrange,
-//            "buttonTextColor": UIColor.white]
-//        ] as? [[String: AnyObject]])
     }
     
     func fingerPrintVerification(viewController: UIViewController) {
@@ -161,7 +167,7 @@ class UnverifeidAccountMainVc: BaseClassVC {
 //            self.showAlertCustomPopup(title: "Success", message: apiResponseMessage)
 //        }
 //    }
-//    
+//
 //    func onScanComplete(fingerprintsList: [FingerPrintVerification.Fingerprints]?) {
 //        if fingerprintsList?.count ?? 0 > 0 {
 ////            for fingerprint in fingerprintsList! {
@@ -248,11 +254,6 @@ extension UnverifeidAccountMainVc: FingerprintResponseDelegate {
             "channelId" : "\(DataManager.instance.channelID)",
         ]
 
-    //    let apiAttribute3 = [
-    //        "apiAttribute3" : fingerprints.template
-    //    ]
-    //    print(parameters)
-        
         APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: self) {
             responseData, success, errorMsg in
             

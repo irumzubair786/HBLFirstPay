@@ -28,6 +28,8 @@ class FingerPrintVerification {
         didSet {
             print(modelAcccountLevelUpgradeResponse)
             if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
+                NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
+
 //                self.showAlertCustomPopup(title: "Success", message: modelAcccountLevelUpgradeResponse?.messages ?? "SUCCESS FROM API") {_ in
 //
 //                }

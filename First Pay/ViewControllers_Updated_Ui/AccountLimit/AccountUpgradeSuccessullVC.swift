@@ -10,6 +10,7 @@ import UIKit
 
 class AccountUpgradeSuccessullVC: UIViewController {
 
+    var accountUpGradeSuccessfull: (() -> ())!
     override func viewDidLoad() {
         super.viewDidLoad()
         let tapGestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(moveTonext(tapGestureRecognizer:)))
@@ -32,9 +33,8 @@ class AccountUpgradeSuccessullVC: UIViewController {
     @IBAction func buttonContinue(_ sender: UIButton) {
 //        self.dismiss(animated: true)
         FBEvents.logEvent(title: .BioMetric_Sccanining_Successful)
-        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-        self.present(vc, animated: true)
+        self.dismiss(animated: true)
+        accountUpGradeSuccessfull!()
     }
     @objc func moveTonext(tapGestureRecognizer: UITapGestureRecognizer) {
 //        self.dismiss(animated: true)

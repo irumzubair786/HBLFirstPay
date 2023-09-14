@@ -197,6 +197,11 @@ class MyAccountLimitsVc: BaseClassVC {
         vc.totalMonthlyLimitDr1 =  totalMonthlyLimitDr1
         vc.totalYearlyLimitDr = totalYearlyLimitDr
         vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
+        
+        vc.accountUpGradeSuccessfull = {
+            DataManager.instance.accountLevel = "LEVEL 1"
+            self.checkLevel()
+        }
         self.present(vc, animated: true)
     }
     
