@@ -106,11 +106,6 @@ class FingerPrintVerification {
             //"fingerindex" : fingerprints.index
         ]
 
-    //    let apiAttribute3 = [
-    //        "apiAttribute3" : fingerprints.template
-    //    ]
-    //    print(parameters)
-        
 //        APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: viewController) {
 //            responseData, success, errorMsg in
 //            

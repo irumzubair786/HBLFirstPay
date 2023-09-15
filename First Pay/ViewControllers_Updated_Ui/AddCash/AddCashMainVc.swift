@@ -88,18 +88,34 @@ class AddCashMainVc: BaseClassVC {
     @IBAction func buttonGetLoan(_ sender: UIButton) {
         FBEvents.logEvent(title: .Upgrade_Account_Level_NanoLoan)
         
-        if DataManager.instance.accountLevel == "LEVEL 0" {
+        if DataManager.instance.accountLevel != "LEVEL 0" {
         //   call sdk
-            fingerPrintVerification = FingerPrintVerification()
-            DispatchQueue.main.async {
-                self.fingerPrintVerification.fingerPrintVerification(viewController: self)
-            }
+//            fingerPrintVerification = FingerPrintVerification()
+//            DispatchQueue.main.async {
+//                self.fingerPrintVerification.fingerPrintVerification(viewController: self)
+//            }
+            navigateToBiometricFlow()
         }
         else {
             getActiveLoan()
             //                dummy finger print api calling
 //                            self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
         }
+    }
+    func navigateToBiometricFlow() {
+        //                dummy finger print api calling
+        //                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
+        let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "UnverifeidAccountMainVc") as! UnverifeidAccountMainVc
+        
+        viewController.accountUpGradeSuccessfull = {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                viewController.dismiss(animated: false)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    self.getActiveLoan()
+                }
+            }
+        }
+        self.present(viewController, animated: true)
     }
     
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
@@ -311,12 +327,6 @@ extension AddCashMainVc: FingerprintResponseDelegate {
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
         ]
-
-    //    let apiAttribute3 = [
-    //        "apiAttribute3" : fingerprints.template
-    //    ]
-    //    print(parameters)
-        
         APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: self) {
             responseData, success, errorMsg in
             

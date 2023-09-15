@@ -118,20 +118,20 @@ class AddCashConfirmationVc: BaseClassVC {
 //            self.transactionApiResponseObj = response.result.value
             if response.response?.statusCode == 200 {
                 
-                        if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
-                           
-                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
-                            vc.TotalAmount = self.TotalAmount
-                            vc.userAccountNo = self.transactionApiResponseObj?.data?.accountNo
-                            isfromPullFund = true
-                            self.navigationController?.pushViewController(vc, animated: true
-                            )
-                            
+                if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
+                    
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
+                    vc.TotalAmount = self.TotalAmount
+                    vc.userAccountNo = self.transactionApiResponseObj?.data?.accountNo
+                    isfromPullFund = true
+                    self.navigationController?.pushViewController(vc, animated: true
+                    )
+                    
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                    }
-                     
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                    }
                 }
             }
             else {
@@ -143,7 +143,4 @@ class AddCashConfirmationVc: BaseClassVC {
             }
         }
     }
-    
-    
-
 }

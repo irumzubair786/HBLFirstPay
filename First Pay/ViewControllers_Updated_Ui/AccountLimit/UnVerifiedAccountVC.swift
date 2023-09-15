@@ -335,12 +335,6 @@ extension  UnVerifiedAccountVC: FingerprintResponseDelegate {
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
         ]
-
-    //    let apiAttribute3 = [
-    //        "apiAttribute3" : fingerprints.template
-    //    ]
-    //    print(parameters)
-        
         APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: self) {
             responseData, success, errorMsg in
             

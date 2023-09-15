@@ -63,7 +63,7 @@ class MyAccountLimitsVc: BaseClassVC {
         }
         else
         {
-            buttonUpgrade.isHidden = true
+            buttonUpgrade.isHidden = false
             imageCheckLevel.image = UIImage(named: "verifiedicon")
         }
         
@@ -199,8 +199,11 @@ class MyAccountLimitsVc: BaseClassVC {
         vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
         
         vc.accountUpGradeSuccessfull = {
-            DataManager.instance.accountLevel = "LEVEL 1"
-            self.checkLevel()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                vc.dismiss(animated: false)
+                DataManager.instance.accountLevel = "LEVEL 1"
+                self.checkLevel()
+            }
         }
         self.present(vc, animated: true)
     }

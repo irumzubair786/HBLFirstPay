@@ -33,7 +33,7 @@ class AccountUpgradeSuccessullVC: UIViewController {
     @IBAction func buttonContinue(_ sender: UIButton) {
 //        self.dismiss(animated: true)
         FBEvents.logEvent(title: .BioMetric_Sccanining_Successful)
-        self.dismiss(animated: true)
+        self.dismiss(animated: false)
         accountUpGradeSuccessfull!()
     }
     @objc func moveTonext(tapGestureRecognizer: UITapGestureRecognizer) {
