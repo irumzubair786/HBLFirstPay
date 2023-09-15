@@ -29,9 +29,10 @@ class AddCashConfirmationVc: BaseClassVC {
         img_next.addGestureRecognizer(tapGestureRecognizerr)
         // Do any additional setup after loading the view.
     }
-    
+   
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
+     
         self.navigationController?.popViewController(animated: true)
     }
     

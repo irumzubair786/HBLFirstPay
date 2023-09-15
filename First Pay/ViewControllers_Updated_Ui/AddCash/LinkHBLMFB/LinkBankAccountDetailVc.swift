@@ -41,10 +41,10 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
     
     @IBOutlet weak var textFieldCNIC: NumberTextField!
     @IBAction func textFieldCNIC(_ sender: UITextField) {
-        
-        
+       
+       
     }
-  
+    
     @objc func changeTextInTextField() {
        if (textFieldMobileNo.text?.count ?? 0 == 11)
         {

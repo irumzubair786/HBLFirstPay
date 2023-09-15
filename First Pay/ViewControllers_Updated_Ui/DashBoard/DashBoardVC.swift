@@ -37,7 +37,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var topBtnarr =  ["SendMoney", "Mobile Topup", "PayBill","First Option","DebitCard","SeeAll"]
     var fingerPrintVerification: FingerPrintVerification!
     var fingerprintPngs : [Png]?
-
+   
     var modelAcccountLevelUpgradeResponse: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? {
         didSet {
             print(modelAcccountLevelUpgradeResponse)
