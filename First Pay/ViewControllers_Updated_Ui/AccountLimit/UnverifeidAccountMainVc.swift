@@ -53,12 +53,12 @@ class UnverifeidAccountMainVc: BaseClassVC {
             else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
                 NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
 
-                self.showAlertCustomPopup(title: "Error", message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
+                self.showAlertCustomPopup(message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
 
                 }
             }
             else {
-                self.showAlertCustomPopup(title: "Error", message: "ERROR IN RESPONSE API") {_ in
+                self.showAlertCustomPopup(message: "ERROR IN RESPONSE API") {_ in
                     
                 }
             }
@@ -73,16 +73,16 @@ class UnverifeidAccountMainVc: BaseClassVC {
     
 
     @IBAction func buttonUpgradeAccount(_ sender: Any) {
-//        FBEvents.logEvent(title: .BioMetric_Sccanining)
-//        // call sdk fingerPrint
-//
-//        fingerPrintVerification = FingerPrintVerification()
-//        DispatchQueue.main.async {
-//            self.fingerPrintVerification(viewController: self)
-//        }
+        FBEvents.logEvent(title: .BioMetric_Sccanining)
+        // call sdk fingerPrint
+
+        fingerPrintVerification = FingerPrintVerification()
+        DispatchQueue.main.async {
+            self.fingerPrintVerification(viewController: self)
+        }
         
         //                dummy finger print api calling
-         self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
+//         self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
     }
 
     @IBOutlet weak var buttonBack: UIButton!

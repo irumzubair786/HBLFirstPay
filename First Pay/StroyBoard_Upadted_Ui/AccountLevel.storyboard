@@ -2871,18 +2871,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yDB-0H-HEp" userLabel="TOPVIEW">
-                                <rect key="frame" x="0.0" y="20" width="375" height="83"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8C-4M-bXt">
-                                        <rect key="frame" x="10" y="13.5" width="50" height="50"/>
-                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backButton" translatesAutoresizingMaskIntoConstraints="NO" id="g6Y-jC-4GX">
+                                        <rect key="frame" x="15" y="5" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="iVH-DN-Qe0"/>
+                                            <constraint firstAttribute="width" constant="40" id="l5J-Hc-HPx"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8C-4M-bXt">
+                                        <rect key="frame" x="10" y="0.0" width="50" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="Oot-nj-h3n"/>
                                             <constraint firstAttribute="height" constant="50" id="Stw-JN-1rb"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain">
-                                            <backgroundConfiguration key="background" image="Left Button"/>
+                                            <backgroundConfiguration key="background"/>
                                         </buttonConfiguration>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2897,7 +2904,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="U P G R A D E  A C C O U N T" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Psf-U9-l1Y">
-                                        <rect key="frame" x="80" y="28" width="247" height="21"/>
+                                        <rect key="frame" x="80" y="14.5" width="247" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="S93-k6-Rj7"/>
                                             <constraint firstAttribute="width" constant="247" id="uaF-BY-xU0"/>
@@ -2908,25 +2915,28 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="83" id="9gT-au-21D"/>
-                                    <constraint firstItem="Psf-U9-l1Y" firstAttribute="leading" secondItem="o8C-4M-bXt" secondAttribute="trailing" constant="20" id="Fud-zT-got"/>
+                                    <constraint firstAttribute="height" constant="50" id="9gT-au-21D"/>
                                     <constraint firstItem="o8C-4M-bXt" firstAttribute="leading" secondItem="yDB-0H-HEp" secondAttribute="leading" constant="10" id="HYe-qT-6VB"/>
+                                    <constraint firstItem="Psf-U9-l1Y" firstAttribute="centerY" secondItem="yDB-0H-HEp" secondAttribute="centerY" id="Uo3-cc-DVA"/>
+                                    <constraint firstItem="o8C-4M-bXt" firstAttribute="centerY" secondItem="Psf-U9-l1Y" secondAttribute="centerY" id="gpf-Cx-R5H"/>
+                                    <constraint firstItem="g6Y-jC-4GX" firstAttribute="centerX" secondItem="o8C-4M-bXt" secondAttribute="centerX" id="hyq-Ht-6Dw"/>
+                                    <constraint firstItem="g6Y-jC-4GX" firstAttribute="centerY" secondItem="o8C-4M-bXt" secondAttribute="centerY" id="uu1-Rc-Msc"/>
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AccountImage" translatesAutoresizingMaskIntoConstraints="NO" id="dOI-F4-IXV">
-                                <rect key="frame" x="0.0" y="78" width="375" height="220"/>
+                                <rect key="frame" x="0.0" y="70" width="375" height="220"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="220" id="7rM-IW-hlo"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upgrade your account and enjoy increased transaction limits &amp; get eligible for Nano Loans" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uUI-jM-ozq">
-                                <rect key="frame" x="40" y="310" width="295" height="50"/>
+                                <rect key="frame" x="40" y="302" width="295" height="66"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify your biometric to upgrade your account level." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sT-i9-OY9">
-                                <rect key="frame" x="30" y="366.5" width="315" height="43"/>
+                                <rect key="frame" x="30" y="374.5" width="315" height="43"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="43" id="PDe-If-HpY"/>
                                 </constraints>
@@ -2935,13 +2945,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AccountText" translatesAutoresizingMaskIntoConstraints="NO" id="P0Y-x7-JFd">
-                                <rect key="frame" x="32" y="420.5" width="311" height="88"/>
+                                <rect key="frame" x="32" y="428.5" width="311" height="88"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="88" id="bjw-0I-PLV"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For Biometric verification you will be redirected to app store. Download our BVS APP for Biometric verification" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xla-s0-4Jr">
-                                <rect key="frame" x="40" y="512.5" width="295" height="30"/>
+                                <rect key="frame" x="40" y="520.5" width="295" height="22"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" red="0.56078431370000004" green="0.57254901960000004" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -3012,7 +3022,7 @@
                             <constraint firstItem="C99-23-bxv" firstAttribute="leading" secondItem="rlq-AE-X0D" secondAttribute="leading" constant="130" id="KFR-gI-Vrq"/>
                             <constraint firstItem="PlL-Rd-GlN" firstAttribute="trailing" secondItem="P0Y-x7-JFd" secondAttribute="trailing" constant="32" id="Lfm-u3-mPz"/>
                             <constraint firstItem="PlL-Rd-GlN" firstAttribute="trailing" secondItem="4sT-i9-OY9" secondAttribute="trailing" constant="30" id="OBS-fC-iQM"/>
-                            <constraint firstItem="dOI-F4-IXV" firstAttribute="top" secondItem="yDB-0H-HEp" secondAttribute="bottom" constant="-25" id="QKz-bg-0bV"/>
+                            <constraint firstItem="dOI-F4-IXV" firstAttribute="top" secondItem="yDB-0H-HEp" secondAttribute="bottom" id="QKz-bg-0bV"/>
                             <constraint firstItem="yDB-0H-HEp" firstAttribute="leading" secondItem="PlL-Rd-GlN" secondAttribute="leading" id="Qq3-Vk-q5W"/>
                             <constraint firstItem="C99-23-bxv" firstAttribute="top" secondItem="jsw-Hn-KCa" secondAttribute="bottom" constant="9" id="RsU-Kj-SqK"/>
                             <constraint firstItem="dOI-F4-IXV" firstAttribute="trailing" secondItem="PlL-Rd-GlN" secondAttribute="trailing" id="SLG-VO-lak"/>
@@ -3058,7 +3068,6 @@
         <image name="Group 427321071" width="1304" height="506"/>
         <image name="ICONSDK" width="1046" height="528"/>
         <image name="ICONVERIFY" width="1350" height="1289"/>
-        <image name="Left Button" width="152" height="153"/>
         <image name="Line" width="638" height="2.5"/>
         <image name="Line 51" width="5" height="27"/>
         <image name="Rectangle 1944" width="64" height="64"/>

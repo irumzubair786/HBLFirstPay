@@ -32,12 +32,12 @@ class AddCashMainVc: BaseClassVC {
                 }
             }
             else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
-                self.showAlertCustomPopup(title: "Error", message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
+                self.showAlertCustomPopup(message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
                     
                 }
             }
             else {
-                self.showAlertCustomPopup(title: "Error", message: "ERROR IN RESPONSE API") {_ in
+                self.showAlertCustomPopup(message: "ERROR IN RESPONSE API") {_ in
                     
                 }
             }
