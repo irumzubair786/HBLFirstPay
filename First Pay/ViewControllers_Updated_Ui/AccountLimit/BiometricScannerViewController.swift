@@ -47,19 +47,17 @@ class BiometricScannerViewController: UIViewController {
                 }
             }
             else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
-                NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
+                self.showAlertCustomPopup(message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
 
-//                self.showAlertCustomPopup(message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
-//
+                }
+//                let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+//                viewController.accountUpGradeSuccessfull = {
+//                    self.dismiss(animated: true)
+//                    self.accountUpGradeSuccessfull!()
 //                }
-                let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
-                viewController.accountUpGradeSuccessfull = {
-                    self.dismiss(animated: true)
-                    self.accountUpGradeSuccessfull!()
-                }
-                DispatchQueue.main.async {
-                    self.present(viewController, animated: false)
-                }
+//                DispatchQueue.main.async {
+//                    self.present(viewController, animated: false)
+//                }
             }
             else {
                 self.showAlertCustomPopup(message: "ERROR IN RESPONSE API") {_ in

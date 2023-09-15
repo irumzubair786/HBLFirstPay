@@ -240,16 +240,16 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 //
 //                self.acccountLevelUpgrade(fingerprints: decode)
 //                return
-                fingerPrintVerification = FingerPrintVerification()
-                DispatchQueue.main.async {
-                    self.fingerPrintVerification(viewController: self)
-                }
+//                fingerPrintVerification = FingerPrintVerification()
+//                DispatchQueue.main.async {
+//                    self.fingerPrintVerification(viewController: self)
+//                }
+                self.navigateToBiometricFlow()
                 //                dummy finger print api calling
                 //                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
             }
            else {
-//               getActiveLoan()
-               navigateToBiometricFlow()
+               getActiveLoan()
             }
 //            self.navigationController?.pushViewController(vc, animated: true)
         }

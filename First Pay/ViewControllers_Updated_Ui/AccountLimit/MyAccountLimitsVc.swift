@@ -63,7 +63,7 @@ class MyAccountLimitsVc: BaseClassVC {
         }
         else
         {
-            buttonUpgrade.isHidden = false
+            buttonUpgrade.isHidden = true
             imageCheckLevel.image = UIImage(named: "verifiedicon")
         }
         

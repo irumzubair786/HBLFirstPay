@@ -145,7 +145,7 @@ class AddCashMainVc: BaseClassVC {
     var modelNanoLoanEligibilityCheck: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? {
         didSet {
             if modelNanoLoanEligibilityCheck?.responsecode ?? 0 == 0 {
-                showAlertCustomPopup(title: "Alert", message: modelNanoLoanEligibilityCheck?.messages ?? "", iconName: .iconError)
+                showAlertCustomPopup(message: modelNanoLoanEligibilityCheck?.messages ?? "", iconName: .iconError)
             }
             else {
                 openNanoLoan()
