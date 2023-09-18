@@ -27,17 +27,21 @@ class MobilePackages: UIViewController {
     @IBOutlet weak var buttonSetting: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
 
+    var indexSelectedNetwork = 0
     var selectedCell: Int!
     var arrayNames = ["ios", "Android", "Apple", "Nokia Phone", "One Plus Phone"]
-    
+    var companyNames: [String]!
     var modelGetBundleDetails: ModelGetBundleDetails? {
         didSet {
             if modelGetBundleDetails?.responsecode == 1 {
-                
+                companyNames = self.modelGetBundleDetails?.data.map({
+                    print($0.companyName)
+                    return $0.companyName
+                })
+                tableView.reloadData()
             }
             else {
                 self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
-                    
                     
                 }
             }
@@ -58,6 +62,7 @@ class MobilePackages: UIViewController {
         // Do any additional setup after loading the view.
         getBundleDetails()
         bundleSubscription()
+        selectedButton(view: viewOne, button: buttonOne)
     }
     @IBAction func buttonBack(_ sender: Any) {
         self.dismiss(animated: true)
@@ -93,10 +98,10 @@ class MobilePackages: UIViewController {
             view!.backgroundColor = .clrOrange
             button.tag = 1
         }
+        tableView.reloadData()
     }
     func getBundleDetails() {
         APIs.getAPI(apiName: .getBundleDetails, parameters: nil) { responseData, success, errorMsg in
-            
             print(responseData)
             print(success)
             print(errorMsg)
@@ -140,6 +145,12 @@ class MobilePackages: UIViewController {
 //            self.modelGetLoanCharges = model
         }
     }
+    
+    func navigateToMobilePackagesDetails(bundleDetails: BundleDetail) {
+        let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesDetails") as! MobilePackagesDetails
+        vc.bundleDetail = bundleDetails
+        self.navigationController!.pushViewController(vc, animated: true)
+    }
 }
 
 extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -149,7 +160,9 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayNames.count
+        
+        
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -191,13 +204,52 @@ extension MobilePackages: UITableViewDelegate, UITableViewDataSource {
         return UITableViewAutomaticDimension
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        if companyNames == nil {
+            return 0
+        }
+        
+        for (index, companyName) in companyNames.enumerated() {
+            if buttonOne.tag == 1 {
+                indexSelectedNetwork = index
+                if companyName == "TELENOR" {
+                    break
+                }
+            }
+            else if buttonTwo.tag == 1 {
+                indexSelectedNetwork = index
+                if companyName == "JAZZ" {
+                    break
+                }
+            }
+            else if buttonThree.tag == 1 {
+                indexSelectedNetwork = index
+                if companyName == "UFONE" {
+                    break
+                }
+            }
+            else if buttonFour.tag == 1 {
+                indexSelectedNetwork = index
+                if companyName == "ZONG" {
+                    break
+                }
+            }
+        }
+        
+        return modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MobilePackagesCell") as! MobilePackagesCell
         // if change internet package is true then we dont need to show subscribed package
+        let bundleDetail = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails[indexPath.row]
+        cell.bundleDetail = bundleDetail
+        cell.buttonSubscribeNow = { tempBundleDetail in
+            self.navigateToMobilePackagesDetails(bundleDetails: tempBundleDetail)
+        }
+        cell.buttonFavouriteNow = { tempBundleDetail in
+
+        }
         return cell
         
     }
@@ -228,12 +280,12 @@ extension MobilePackages {
     struct ModelGetBundleDetails: Codable {
         let responseblock: JSONNull?
         let responsecode: Int
-        let data: [Datum]
+        let data: [ModelGetBundleDetailsData]
         let messages: String
     }
 
     // MARK: - Datum
-    struct Datum: Codable {
+    struct ModelGetBundleDetailsData: Codable {
         let disabledIcon: String
         let bundleDetails: [BundleDetail]
         let companyName, enabledIcon: String
@@ -245,16 +297,16 @@ extension MobilePackages {
     struct BundleDetail: Codable {
         let bundleKey, bundleResources: String
         let bundleType: BundleType
-        let bundleResourceOffnet, bundleResourceOnnet: JSONNull?
+        let bundleResourceOffnet, bundleResourceOnnet: String?
         let bundleResourceSMS: String?
+        let bundleResourceData: String?
         let bundleSelfSubscription: JSONNull?
         let bundleName: String
         let bundleDiscountPrice: Int
         let bundleValidityType: BundleValidityType?
         let bundleDiscountPercentage, ubpBundleFilterID: Int
         let bundleSequence: JSONNull?
-        let bundleValidity: BundleValidity
-        let bundleResourceData: String?
+        let bundleValidity: String?
         let ubpBundleID: Int
         let bundleDefaultPrice: Double
 
@@ -277,14 +329,7 @@ extension MobilePackages {
         case voice = "Voice"
     }
 
-    enum BundleValidity: String, Codable {
-        case bundleValidity30Days = "30 days"
-        case the1Day = "1 Day"
-        case the30Days = "30 Days"
-        case the3Days = "3 Days"
-        case the60Days = "60 Days"
-        case the7Days = "7 Days"
-    }
+    
 
     enum BundleValidityType: String, Codable {
         case d = "D"
