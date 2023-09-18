@@ -132,9 +132,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @IBOutlet weak var buttonMobilepakegs: UIButton!
     @IBAction func buttonMobilepakegs(_ sender: UIButton) {
-        let vc = UIStoryboard.init(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesNavigationController")
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true)
+//        let vc = UIStoryboard.init(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesNavigationController")
+//        vc.modalPresentationStyle = .fullScreen
+//        self.present(vc, animated: true)
     }
     func AddCash(){
         let tapGestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(btnAddCash(tapGestureRecognizer:)))
