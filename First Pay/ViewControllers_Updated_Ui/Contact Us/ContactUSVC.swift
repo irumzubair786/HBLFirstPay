@@ -208,29 +208,30 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-//            self.genericObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                    self.btnAlertView.isHidden = false
-                    
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genericObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                        self.btnAlertView.isHidden = false
+                        
+                    }
+                    else {
+                        if let message = self.genericObj?.messages{
+                            self.showToast(title: message)
+                            //                        self.showDefaultAlert(title: "", message: message)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genericObj?.messages{
                         self.showToast(title: message)
-//                        self.showDefaultAlert(title: "", message: message)
+                        self.showDefaultAlert(title: "", message: message)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.genericObj?.messages{
-                    self.showToast(title: message)
-                    self.showDefaultAlert(title: "", message: message)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
 

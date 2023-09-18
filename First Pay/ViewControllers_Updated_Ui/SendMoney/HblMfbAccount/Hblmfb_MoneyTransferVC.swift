@@ -347,29 +347,30 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.fundsTransSuccessObj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
-            //            self.fundsTransSuccessObj = response.result.value
-            if response.response?.statusCode == 200 {
-                
-                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
-                    self.movetonext()
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.fundsTransSuccessObj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
+                //            self.fundsTransSuccessObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
+                        self.movetonext()
+                    }
+                    else {
+                        if let message = self.fundsTransSuccessObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)
+                            //                        self.showToast(title: message)
+                            
+                        }
+                    }
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)
-                        //                        self.showToast(title: message)
-                        
                     }
+                    //                print(response.result.value)
+                    //
+                    print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)
-                }
-                //                print(response.result.value)
-                //
-                print(response.response?.statusCode)
             }
         }
     }

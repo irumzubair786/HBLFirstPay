@@ -63,32 +63,26 @@ class LinkBankAccountListVC: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.cbsAccountsObj = Mapper<GetCBSAccounts>().map(JSONObject: json)
-            
-//            self.cbsAccountsObj = response.result.value
-            if response.response?.statusCode == 200 {
-            
-                if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
-                    if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
-
-                        self.tableView.delegate = self
-                        self.tableView.dataSource = self
-                        self.tableView.reloadData()
-                        self.tableView.rowHeight = 120
-
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                //            self.cbsAccountsObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
+                        if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
+                            self.tableView.delegate = self
+                            self.tableView.dataSource = self
+                            self.tableView.reloadData()
+                            self.tableView.rowHeight = 120
+                        }
                     }
-                   
+                    else {
+                        self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
+                    }
                 }
                 else {
-                    self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }

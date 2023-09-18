@@ -347,48 +347,49 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.mobileRegistrationObj = Mapper<mobileRegistrationModel>().map(JSONObject: json)
-
-//            self.mobileRegistrationObj = response.result.value
-            if response.response?.statusCode == 200 {
-                FBEvents.logEvent(title: .Signup_login_success)
-
-                if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
-                    if let accessToken = self.mobileRegistrationObj?.data?.token{
-                        DataManager.instance.AuthToken = accessToken
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.mobileRegistrationObj = Mapper<mobileRegistrationModel>().map(JSONObject: json)
+                
+                //            self.mobileRegistrationObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    FBEvents.logEvent(title: .Signup_login_success)
+                    
+                    if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
+                        if let accessToken = self.mobileRegistrationObj?.data?.token{
+                            DataManager.instance.AuthToken = accessToken
+                        }
+                        let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
+                        OTPVerifyVC.mobileNo = self.TF_Mobileno.text!
+                        DataManager.instance.mobNo =  self.mobileNumber!
+                        self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
+                        
+                        
                     }
-                    let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
-                    OTPVerifyVC.mobileNo = self.TF_Mobileno.text!
-                    DataManager.instance.mobNo =  self.mobileNumber!
-                    self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
-
-
+                    else {
+                        if let message = self.mobileRegistrationObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                        
+                        // Html Parse
+                        if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                            if title.contains("Request Rejected") {
+                                self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                            }
+                            
+                        }
+                    }
                 }
                 else {
-                    if let message = self.mobileRegistrationObj?.messages{
+                    if let message = self.mobileRegistrationObj?.messages {
+                        FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
-
-                    // Html Parse
-                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                        if title.contains("Request Rejected") {
-                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
-                        }
-                       
+                    else {
+                        self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.mobileRegistrationObj?.messages {
-                    FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                else {
-                    self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

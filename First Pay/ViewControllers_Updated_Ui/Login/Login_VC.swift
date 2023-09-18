@@ -570,115 +570,116 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            //            self.loginObj = Mapper<login>().map(JSONObject: json)
-            
-            //            self.loginObj = response.result.value
-            if response.response?.statusCode == 200 {
-                FBEvents.logEvent(title: .Login_success)
-                FaceBookEvents.logEvent(title: .Login_success)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                //            self.loginObj = Mapper<login>().map(JSONObject: json)
                 
-                if self.pinTextField.text != "" {
-                    UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
-                }
-                self.loginObj = Mapper<login>().map(JSONObject: json)
-                
-                //                self.loginObj = response.result.value
-                
-               
-                
-                if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
+                //            self.loginObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    FBEvents.logEvent(title: .Login_success)
+                    FaceBookEvents.logEvent(title: .Login_success)
                     
-//                    if self.loginObj?.responseblock?.responseType == nil
-//                    {
-//                        let message = self.loginObj?.messages ?? ""
-//                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-//                    }
-//
-//
-                    if self.loginObj?.data != nil{
+                    if self.pinTextField.text != "" {
+                        UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
+                    }
+                    self.loginObj = Mapper<login>().map(JSONObject: json)
+                    
+                    //                self.loginObj = response.result.value
+                    
+                    
+                    
+                    if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
                         
-                        if let accessToken = self.loginObj?.data?.token{
-                            DataManager.instance.accessToken = accessToken
-                            DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType
-                            DataManager.instance.customerId = self.loginObj?.data?.customerHomeScreens?[0].customerId
-                            print("\(accessToken)")
-                            if let passKey = self.pinTextField.text{
-                                let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
-                                print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-                            }
+                        //                    if self.loginObj?.responseblock?.responseType == nil
+                        //                    {
+                        //                        let message = self.loginObj?.messages ?? ""
+                        //                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        //                    }
+                        //
+                        //
+                        if self.loginObj?.data != nil{
                             
-                        }
-                        if self.loginObj?.data?.customerHomeScreens?[0].accountDormant == "Y"
-                        {
-                            let vc = storyboard?.instantiateViewController(withIdentifier: "dormantPopupVC") as! dormantPopupVC
-                            vc.consentStatus = loginObj?.data?.customerHomeScreens?[0].accountDormant
-                            vc.loginHistoryId = loginObj?.data?.customerHomeScreens?[0].loginHistoryId
-                            //                            DataManager.instance.accessToken   = loginObj?.data?.customerHomeScreens?[0].token
-                            self.navigationController?.pushViewController(vc, animated: true)
-                            //                            self.present(vc, animated: true)
-                        }
-                        else
-                        {
-                            self.saveInDataManager()
-                        }
-                    }
-                }
-                else{
-                    let message = self.loginObj?.messages ?? ""
-                    //                    if self.loginObj?.responseblock == nil {
-                    
-                    
-                    if self.loginObj?.responseblock?.responseType == nil
-                    {
-                        
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                    }
-                  
-                   else  if self.loginObj?.responseblock?.responseType?.lowercased() == "L".lowercased() {
-                        lbl_InvalidPassword.isHidden = false
-                        lbl_InvalidPassword.text = message
-                        lbl_InvalidPassword.textColor = .red
-                    }
-                  else if self.loginObj?.responseblock?.responseType?.lowercased() == "I".lowercased() {
-                        lbl_InvalidPassword.isHidden = false
-                        lbl_InvalidPassword.text = message
-                        lbl_InvalidPassword.textColor = .red
-                    }
-                 else if self.loginObj?.responseblock?.responseType?.lowercased() == "P".lowercased() {
-                        lbl_InvalidPassword.isHidden = true
-                        self.showAlertCustomPopup(title: "Device Authentication", message: message,iconName: .iconError, buttonNames: [
-                            [
-                                "buttonName": "SIGN-IN",
-                                "buttonBackGroundColor": UIColor.clrOrange,
-                                "buttonTextColor": UIColor.white] as [String : Any],
-                            [
-                                "buttonName": "CANCEL",
-                                "buttonBackGroundColor": UIColor.white,
-                                "buttonTextColor": UIColor.clrOrange]
-                        ] as? [[String: AnyObject]]) {buttonName in
-                            self.navigationController?.popViewController(animated: false)
-                            if buttonName == "SIGN-IN" {
-                                self.moveToSignUp!()
+                            if let accessToken = self.loginObj?.data?.token{
+                                DataManager.instance.accessToken = accessToken
+                                DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType
+                                DataManager.instance.customerId = self.loginObj?.data?.customerHomeScreens?[0].customerId
+                                print("\(accessToken)")
+                                if let passKey = self.pinTextField.text{
+                                    let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                                    print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                                }
+                                
+                            }
+                            if self.loginObj?.data?.customerHomeScreens?[0].accountDormant == "Y"
+                            {
+                                let vc = storyboard?.instantiateViewController(withIdentifier: "dormantPopupVC") as! dormantPopupVC
+                                vc.consentStatus = loginObj?.data?.customerHomeScreens?[0].accountDormant
+                                vc.loginHistoryId = loginObj?.data?.customerHomeScreens?[0].loginHistoryId
+                                //                            DataManager.instance.accessToken   = loginObj?.data?.customerHomeScreens?[0].token
+                                self.navigationController?.pushViewController(vc, animated: true)
+                                //                            self.present(vc, animated: true)
+                            }
+                            else
+                            {
+                                self.saveInDataManager()
                             }
                         }
                     }
-                    else {
-                       
-                        lbl_InvalidPassword.isHidden = false
-                        lbl_InvalidPassword.text = message
-                        lbl_InvalidPassword.textColor = .red
+                    else{
+                        let message = self.loginObj?.messages ?? ""
+                        //                    if self.loginObj?.responseblock == nil {
+                        
+                        
+                        if self.loginObj?.responseblock?.responseType == nil
+                        {
+                            
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                        
+                        else  if self.loginObj?.responseblock?.responseType?.lowercased() == "L".lowercased() {
+                            lbl_InvalidPassword.isHidden = false
+                            lbl_InvalidPassword.text = message
+                            lbl_InvalidPassword.textColor = .red
+                        }
+                        else if self.loginObj?.responseblock?.responseType?.lowercased() == "I".lowercased() {
+                            lbl_InvalidPassword.isHidden = false
+                            lbl_InvalidPassword.text = message
+                            lbl_InvalidPassword.textColor = .red
+                        }
+                        else if self.loginObj?.responseblock?.responseType?.lowercased() == "P".lowercased() {
+                            lbl_InvalidPassword.isHidden = true
+                            self.showAlertCustomPopup(title: "Device Authentication", message: message,iconName: .iconError, buttonNames: [
+                                [
+                                    "buttonName": "SIGN-IN",
+                                    "buttonBackGroundColor": UIColor.clrOrange,
+                                    "buttonTextColor": UIColor.white] as [String : Any],
+                                [
+                                    "buttonName": "CANCEL",
+                                    "buttonBackGroundColor": UIColor.white,
+                                    "buttonTextColor": UIColor.clrOrange]
+                            ] as? [[String: AnyObject]]) {buttonName in
+                                self.navigationController?.popViewController(animated: false)
+                                if buttonName == "SIGN-IN" {
+                                    self.moveToSignUp!()
+                                }
+                            }
+                        }
+                        else {
+                            
+                            lbl_InvalidPassword.isHidden = false
+                            lbl_InvalidPassword.text = message
+                            lbl_InvalidPassword.textColor = .red
+                        }
+                        
                     }
-                    
                 }
+                
+                else{
+                    
+                    self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
+                }
+                print(response.value)
+                print(response.response?.statusCode)
             }
-            
-            else{
-               
-                self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
-            }
-            print(response.value)
-            print(response.response?.statusCode)
         }
     }
     

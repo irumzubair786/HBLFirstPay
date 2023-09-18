@@ -247,35 +247,36 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.LinkedAccountsObj = Mapper<getLinkedAccountModel>().map(JSONObject: json)
-            
-//            self.LinkedAccountsObj = response.result.value
-            if response.response?.statusCode == 200 {
-            
-                if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
-//                    if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
-//
-//
-//                }
-//                    GlobalData.userAcc = self.LinkedAccountsObj?.data?[0].cbsAccountNo
-//                    GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
-                    self.labelAccountTitle.text = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
-                    self.labelAccountNo.text = self.LinkedAccountsObj?.data?[0].cbsAccountNo
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.LinkedAccountsObj = Mapper<getLinkedAccountModel>().map(JSONObject: json)
+                
+                //            self.LinkedAccountsObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    self.labelBankName.text = self.LinkedAccountsObj?.data?[0].branchName
-                    
-                    
+                    if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
+                        //                    if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
+                        //
+                        //
+                        //                }
+                        //                    GlobalData.userAcc = self.LinkedAccountsObj?.data?[0].cbsAccountNo
+                        //                    GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
+                        self.labelAccountTitle.text = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
+                        self.labelAccountNo.text = self.LinkedAccountsObj?.data?[0].cbsAccountNo
+                        
+                        self.labelBankName.text = self.LinkedAccountsObj?.data?[0].branchName
+                        
+                        
+                    }
+                    else {
+                        self.showAlert(title: "", message: (self.LinkedAccountsObj?.messages)!, completion: nil)
+                    }
                 }
                 else {
-                    self.showAlert(title: "", message: (self.LinkedAccountsObj?.messages)!, completion: nil)
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -322,41 +323,42 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
-            
-//            self.transactionApiResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
                 
-                        if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
-                           
-                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddCashConfirmationVc") as! AddCashConfirmationVc
-//                            GlobalData.userAcc = self.LinkedAccountsObj?.data?[0].cbsAccountNo
-//                            GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
-                            vc.accontNo = self.LinkedAccountsObj?.data?[0].cbsAccountNo
-                            vc.accounttilte = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
-                            vc.bankName = self.LinkedAccountsObj?.data?[0].branchName
-                            vc.FirstPayNo = self.LinkedAccountsObj?.data?[0].mobileNo
-                            vc.TotalAmount = Float(self.textFieldAmount.text!)
-                            self.navigationController?.pushViewController(vc, animated: true
-                            )
-                            
-                            
-                            
+                //            self.transactionApiResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddCashConfirmationVc") as! AddCashConfirmationVc
+                        //                            GlobalData.userAcc = self.LinkedAccountsObj?.data?[0].cbsAccountNo
+                        //                            GlobalData.userAcc =  GlobalData.userAcc?.replacingOccurrences(of: " ", with: "")
+                        vc.accontNo = self.LinkedAccountsObj?.data?[0].cbsAccountNo
+                        vc.accounttilte = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
+                        vc.bankName = self.LinkedAccountsObj?.data?[0].branchName
+                        vc.FirstPayNo = self.LinkedAccountsObj?.data?[0].mobileNo
+                        vc.TotalAmount = Float(self.textFieldAmount.text!)
+                        self.navigationController?.pushViewController(vc, animated: true
+                        )
+                        
+                        
+                        
+                    }
+                    else {
+                        if let message = self.transactionApiResponseObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                        
+                    }
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
-                     
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.transactionApiResponseObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

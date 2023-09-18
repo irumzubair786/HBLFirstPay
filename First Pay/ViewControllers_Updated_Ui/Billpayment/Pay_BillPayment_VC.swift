@@ -124,27 +124,28 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
-            
-//            self.billtransactionOBj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
-                    self.navigateToDetailsVC(code: utilityBillCompany!)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
+                
+                //            self.billtransactionOBj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
+                        self.navigateToDetailsVC(code: utilityBillCompany!)
+                    }
+                    else {
+                        if let message = self.billtransactionOBj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+                            //                        self.showAlert(title: "", message: message, completion: nil)
+                        }
+                    }
                 }
                 else {
                     if let message = self.billtransactionOBj?.messages{
                         self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-//                        self.showAlert(title: "", message: message, completion: nil)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.billtransactionOBj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

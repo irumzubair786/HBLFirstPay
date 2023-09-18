@@ -271,58 +271,59 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genResponse = Mapper<GenericResponse>().map(JSONObject: json)
-            
-//            self.genResponse = response.result.value
-            print(self.genResponse)
-        
-            if response.response?.statusCode == 200 {
-                FBEvents.logEvent(title: .Debit_activateotp_success)
-
-                if self.genResponse?.responsecode == 2 || self.genResponse?.responsecode == 1 {
-                  
-                    if isFromDeactivate == true {
-//                        apicalldeactivate
-                        self.changeDCStatus()
-                       
-                    }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genResponse = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genResponse = response.result.value
+                print(self.genResponse)
+                
+                if response.response?.statusCode == 200 {
+                    FBEvents.logEvent(title: .Debit_activateotp_success)
                     
-                    if isfromReactivateCard == true
-                    {
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardSetPinVC") as!  ActivationDebitCardSetPinVC
-                        self.navigationController?.pushViewController(vc, animated: true)
+                    if self.genResponse?.responsecode == 2 || self.genResponse?.responsecode == 1 {
+                        
+                        if isFromDeactivate == true {
+                            //                        apicalldeactivate
+                            self.changeDCStatus()
+                            
+                        }
+                        
+                        if isfromReactivateCard == true
+                        {
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardSetPinVC") as!  ActivationDebitCardSetPinVC
+                            self.navigationController?.pushViewController(vc, animated: true)
+                            
+                        }
+                        if isFromChangePin == true{
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardSetPinVC") as!  ActivationDebitCardSetPinVC
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }
+                        else
+                        {
+                            
+                            //
+                            //                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardSetPinVC") as!  ActivationDebitCardSetPinVC
+                            //                        self.navigationController?.pushViewController(vc, animated: true)
+                        }
                         
                     }
-                   if isFromChangePin == true{
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardSetPinVC") as!  ActivationDebitCardSetPinVC
-                        self.navigationController?.pushViewController(vc, animated: true)
+                    else {
+                        if let message = self.genResponse?.messages{
+                            
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            
+                        }
                     }
-                    else
-                    {
-                        
-//
-//                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardSetPinVC") as!  ActivationDebitCardSetPinVC
-//                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
-                   
                 }
                 else {
+                    FBEvents.logEvent(title: .Debit_activateotp_failure)
+                    
                     if let message = self.genResponse?.messages{
-                      
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                FBEvents.logEvent(title: .Debit_activateotp_failure)
-
-                if let message = self.genResponse?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -375,33 +376,34 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genResponse = Mapper<GenericResponse>().map(JSONObject: json)
-            
-            
-//            self.genResponse = response.result.value
-            print(self.genResponse)
-        
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genResponse = Mapper<GenericResponse>().map(JSONObject: json)
                 
-                if self.genResponse?.responsecode == 2 || self.genResponse?.responsecode == 1 {
-                  
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeactivationSuccessfullyVC") as!  DeactivationSuccessfullyVC
-                    self.navigationController?.pushViewController(vc, animated: true)
+                
+                //            self.genResponse = response.result.value
+                print(self.genResponse)
+                
+                if response.response?.statusCode == 200 {
+                    
+                    if self.genResponse?.responsecode == 2 || self.genResponse?.responsecode == 1 {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeactivationSuccessfullyVC") as!  DeactivationSuccessfullyVC
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                    else {
+                        if let message = self.genResponse?.messages{
+                            
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            
+                        }
+                    }
                 }
                 else {
                     if let message = self.genResponse?.messages{
-                      
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
-                    }
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.genResponse?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -446,35 +448,36 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
 
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//            [self] (response: DataResponse<OTPserviceModel>) in
+            //            [self] (response: DataResponse<OTPserviceModel>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.UpdateStatusObj = Mapper<OTPserviceModel>().map(JSONObject: json)
-            
-//            self.UpdateStatusObj = response.result.value
-            if response.response?.statusCode == 200 {
-                FBEvents.logEvent(title: .Debit_activate_success)
-                FaceBookEvents.logEvent(title: .Debit_activate_success)
-                if self.UpdateStatusObj?.responsecode == 2 || self.UpdateStatusObj?.responsecode == 1 {
-                    self.movetoNext()
-                }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.UpdateStatusObj = Mapper<OTPserviceModel>().map(JSONObject: json)
                 
+                //            self.UpdateStatusObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    FBEvents.logEvent(title: .Debit_activate_success)
+                    FaceBookEvents.logEvent(title: .Debit_activate_success)
+                    if self.UpdateStatusObj?.responsecode == 2 || self.UpdateStatusObj?.responsecode == 1 {
+                        self.movetoNext()
+                    }
+                    
+                    else {
+                        if let message = self.UpdateStatusObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                    }
+                }
                 else {
+                    FBEvents.logEvent(title: .Debit_activateotp_failure)
+                    
                     if let message = self.UpdateStatusObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                FBEvents.logEvent(title: .Debit_activateotp_failure)
-
-             if let message = self.UpdateStatusObj?.messages{
-                 self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

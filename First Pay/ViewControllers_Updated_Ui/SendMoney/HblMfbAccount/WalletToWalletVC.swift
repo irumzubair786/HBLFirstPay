@@ -269,32 +269,33 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
-            
-            
-//            self.transactionApiResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
                 
-                                if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
-                                 
-                                    
-                            self.navigateToConfirmation()
+                
+                //            self.transactionApiResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
+                        
+                        
+                        self.navigateToConfirmation()
+                    }
+                    else {
+                        if let message = self.transactionApiResponseObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            
+                        }
+                        
+                    }
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                        
                     }
-                     
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.transactionApiResponseObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -332,31 +333,28 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
-//            (response: DataResponse<GetReasonsModel>) in
+            //            (response: DataResponse<GetReasonsModel>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            
-            
-            if response.response?.statusCode == 200 {
-                self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                if response.response?.statusCode == 200 {
+                    self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
 
-//                self.reasonsObj = response.result.value
-                if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
-                   
-//                    self.reasonsList = self.reasonsObj!.stringReasons
-//                    self.PurposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
-//                    GlobalData.money_Reason = self.PurposeTf.text ?? ""
-//                    GlobalData.moneyReasonid =  
-                    
+    //                self.reasonsObj = response.result.value
+                    if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
+                       
+    //                    self.reasonsList = self.reasonsObj!.stringReasons
+    //                    self.PurposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
+    //                    GlobalData.money_Reason = self.PurposeTf.text ?? ""
+    //                    GlobalData.moneyReasonid =
+                    }
                 }
-                
-            }
-            else {
-                
-                print(response.value)
-                print(response.response?.statusCode)
+                else {
+                    
+                    print(response.value)
+                    print(response.response?.statusCode)
+                }
             }
         }
     }

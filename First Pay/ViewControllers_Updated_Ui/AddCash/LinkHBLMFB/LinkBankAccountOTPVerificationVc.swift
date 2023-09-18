@@ -236,33 +236,35 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
-            
-//            self.genResponseObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
-                    let vc = self.storyboard!.instantiateViewController(withIdentifier: "POPUPSuccessfullVc") as! POPUPSuccessfullVc
-                  
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
                 
+                //            self.genResponseObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    self.genResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+                    
+                    if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
+                        let vc = self.storyboard!.instantiateViewController(withIdentifier: "POPUPSuccessfullVc") as! POPUPSuccessfullVc
+                        
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                    
+                    else {
+                        if let message = self.genResponseObj?.messages {
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                            
+                        }
+                    }
+                }
                 else {
                     if let message = self.genResponseObj?.messages {
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                         
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genResponseObj?.messages {
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                   
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -320,31 +322,32 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.fundsTransSuccessObj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
-            
-//            self.fundsTransSuccessObj = response.result.value
-            if response.response?.statusCode == 200 {
-
-                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
-                    self.movetonext()
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.fundsTransSuccessObj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
+                
+                //            self.fundsTransSuccessObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
+                        self.movetonext()
+                    }
+                    else {
+                        if let message = self.fundsTransSuccessObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                            //                        self.showToast(title: message)
+                            //                        self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.messages ?? "") ")
+                        }
+                    }
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-//                        self.showToast(title: message)
-//                        self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.messages ?? "") ")
+                        
+                        //                    self.showAlert(title: "", message: message, completion: nil)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                  
-//                    self.showAlert(title: "", message: message, completion: nil)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -396,37 +399,38 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-//            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-                  
-                    self.labelMessage.isHidden = false
-                    self.labelMessage.text = "OTP will be Resend after 30 Seconds"
-//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-                        self.labelMessage.isHidden = true
-//                        self.blurView.isHidden = true
-//                        self.popupView.isHidden = true
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        
+                        self.labelMessage.isHidden = false
+                        self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+                        //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                            self.labelMessage.isHidden = true
+                            //                        self.blurView.isHidden = true
+                            //                        self.popupView.isHidden = true
+                        }
+                        //
+                        
                     }
-//
-                    
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlert(title: "", message: message, completion: nil)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -465,36 +469,37 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-//            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-                    
-//                    self.labelMessage.isHidden = false
-//                    self.labelMessage.text = "OTP Call  will be Resend after 30 Second"
-//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-//                        self.labelMessage.isHidden = true
-////                        self.blurView.isHidden = true
-////                        self.popupView.isHidden = true
-//                    }
-    
-                    
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        
+                        //                    self.labelMessage.isHidden = false
+                        //                    self.labelMessage.text = "OTP Call  will be Resend after 30 Second"
+                        //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                        //                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                        //                        self.labelMessage.isHidden = true
+                        ////                        self.blurView.isHidden = true
+                        ////                        self.popupView.isHidden = true
+                        //                    }
+                        
+                        
+                    }
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlert(title: "", message: message, completion: nil)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }

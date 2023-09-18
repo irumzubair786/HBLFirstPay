@@ -103,43 +103,44 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
-            
-//            self.billCompanyListObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
-                    if let companies = self.billCompanyListObj?.companies {
-                        self.comapniesList = companies
-                        self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
+                
+                //            self.billCompanyListObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
+                        if let companies = self.billCompanyListObj?.companies {
+                            self.comapniesList = companies
+                            self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+                        }
+                        
+                        for i in self.billCompanyListObj?.companies! ?? []
+                        {
+                            let temp = myOperator()
+                            temp.code = i.code!
+                            temp.id = i.ubpCompaniesId!
+                            temp.name = i.name!
+                            temp.path = i.path ?? ""
+                            self.getOperator.append(temp)
+                        }
+                        
+                        self.tableView.delegate = self
+                        self.tableView.dataSource = self
+                        self.tableView.reloadData()
                     }
-                    
-                    for i in self.billCompanyListObj?.companies! ?? []
-                    {
-                        let temp = myOperator()
-                        temp.code = i.code!
-                        temp.id = i.ubpCompaniesId!
-                        temp.name = i.name!
-                        temp.path = i.path ?? ""
-                        self.getOperator.append(temp)
+                    else {
+                        if let message = self.billCompanyListObj?.messages{
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
                     }
-                    
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
-                    self.tableView.reloadData()
                 }
                 else {
-                    if let message = self.billCompanyListObj?.messages{
-                        self.showAlert(title: "", message: message, completion: nil)
-                    }
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -167,44 +168,45 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
-            
-//            self.billCompanyListObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
-                    
-                   
-                    if let companies = self.billCompanyListObj?.companies {
-                        self.comapniesList = companies
-                        self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
+                
+                //            self.billCompanyListObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
+                        
+                        
+                        if let companies = self.billCompanyListObj?.companies {
+                            self.comapniesList = companies
+                            self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+                        }
+                        
+                        for i in self.billCompanyListObj?.companies! ?? []
+                        {
+                            let temp = myOperator()
+                            temp.code = i.code!
+                            temp.id = i.ubpCompaniesId!
+                            temp.name = i.name!
+                            temp.path = i.path ?? ""
+                            self.getOperator.append(temp)
+                        }
+                        
+                        
+                        self.tableView.reloadData()
                     }
-                    
-                    for i in self.billCompanyListObj?.companies! ?? []
-                    {
-                        let temp = myOperator()
-                        temp.code = i.code!
-                        temp.id = i.ubpCompaniesId!
-                        temp.name = i.name!
-                        temp.path = i.path ?? ""
-                        self.getOperator.append(temp)
+                    else {
+                        if let message = self.billCompanyListObj?.messages{
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
                     }
-                    
-                    
-                    self.tableView.reloadData()
                 }
                 else {
-                    if let message = self.billCompanyListObj?.messages{
-                        self.showAlert(title: "", message: message, completion: nil)
-                    }
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }

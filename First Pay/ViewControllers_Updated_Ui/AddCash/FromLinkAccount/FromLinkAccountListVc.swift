@@ -60,32 +60,33 @@ class FromLinkAccountListVc: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.LinkedAccountsObj = Mapper<getLinkedAccountModel>().map(JSONObject: json)
-            
-//            self.LinkedAccountsObj = response.result.value
-            if response.response?.statusCode == 200 {
-            
-                if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.LinkedAccountsObj = Mapper<getLinkedAccountModel>().map(JSONObject: json)
+                
+                //            self.LinkedAccountsObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
-                     
-                        self.tableView.delegate = self
-                        self.tableView.dataSource = self
-                        self.tableView.reloadData()
-                        self.tableView.rowHeight = 120
-   
-                }
+                    if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
+                        
+                        if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
+                            
+                            self.tableView.delegate = self
+                            self.tableView.dataSource = self
+                            self.tableView.reloadData()
+                            self.tableView.rowHeight = 120
+                            
+                        }
+                    }
+                    else {
+                        self.showAlert(title: "", message: (self.LinkedAccountsObj?.messages)!, completion: nil)
+                    }
                 }
                 else {
-                    self.showAlert(title: "", message: (self.LinkedAccountsObj?.messages)!, completion: nil)
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }

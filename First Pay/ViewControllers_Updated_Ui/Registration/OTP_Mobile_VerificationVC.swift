@@ -329,37 +329,38 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-            
-            //            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-//                    self.labelMessage.isHidden = false
-                    self.labelMessage.text = "OTP will be Resend after 30 Seconds"
-                    //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-                        self.labelMessage.isHidden = true
-                        //                        self.blurView.isHidden = true
-                        //                        self.popupView.isHidden = true
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        //                    self.labelMessage.isHidden = false
+                        self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+                        //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                            self.labelMessage.isHidden = true
+                            //                        self.blurView.isHidden = true
+                            //                        self.popupView.isHidden = true
+                        }
+                        //
+                        
                     }
-                    //
-                    
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlert(title: "", message: message, completion: nil)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -398,28 +399,29 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-            
-            //            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-                 
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        
+                    }
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlert(title: "", message: message, completion: nil)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -460,55 +462,56 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
             self.mobileVerificationObj = Mapper<mobileVerificationModel>().map(JSONObject: json)
             
             //            self.mobileVerificationObj = response.result.value
-            if response.response?.statusCode == 200 {
-                
-                if self.mobileVerificationObj?.responsecode == 2 || self.mobileVerificationObj?.responsecode == 1 {
-                    if self.mobileVerificationObj?.data?.newRegistration == "N"
-                    {
-                        //                        DataManager.instance.registerNewDevice = false
-                        UserDefaults.standard.set("true", forKey: "AlreadyRegistered")
-                        UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
-                        
-                        DataManager.FirstTimeLogin = "true"
-                        let New_User_ProfileVC = self.storyboard!.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
-                        //                        DataManager.instance.AlreadtLogin = true
-                        UserDefaults.standard.set(self.mobileVerificationObj?.data?.cnic, forKey: "userCnic")
-                        KeychainWrapper.standard.hasValue(forKey: "userCnic")
-                        print("Save user cnic  is ",DataManager.instance.userCnic)
-                        DataManager.instance.userCnic = self.mobileVerificationObj?.data?.cnic
-                        print("get cnic",DataManager.instance.userCnic)
-                        
-                        self.navigationController!.pushViewController(New_User_ProfileVC, animated: true)
-                        
-                    }
-                    
-                    else{
-                        
-                        DataManager.instance.registerNewDevice = true
-                        let New_User_ProfileVC = self.storyboard!.instantiateViewController(withIdentifier: "New_User_ProfileVC") as! New_User_ProfileVC
-                        DataManager.instance.forgotPassword = false
-                        //                    DataManager.instance.mobile_number = self.TF_Mobileno
-                        
-                        self.navigationController!.pushViewController(New_User_ProfileVC, animated: true)
-                    }
-                    
-                }
-                else {
-                    if let message = self.mobileVerificationObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                    }
-                    // Html Parse
-                    
-                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                        if title.contains("Request Rejected") {
-                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
-                        }
-                    }
-                }
+                            if response.response?.statusCode == 200 {
+                                
+                                if self.mobileVerificationObj?.responsecode == 2 || self.mobileVerificationObj?.responsecode == 1 {
+                                    if self.mobileVerificationObj?.data?.newRegistration == "N"
+                                    {
+                                        //                        DataManager.instance.registerNewDevice = false
+                                        UserDefaults.standard.set("true", forKey: "AlreadyRegistered")
+                                        UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
+                                        
+                                        DataManager.FirstTimeLogin = "true"
+                                        let New_User_ProfileVC = self.storyboard!.instantiateViewController(withIdentifier: "Login_VC") as! Login_VC
+                                        //                        DataManager.instance.AlreadtLogin = true
+                                        UserDefaults.standard.set(self.mobileVerificationObj?.data?.cnic, forKey: "userCnic")
+                                        KeychainWrapper.standard.hasValue(forKey: "userCnic")
+                                        print("Save user cnic  is ",DataManager.instance.userCnic)
+                                        DataManager.instance.userCnic = self.mobileVerificationObj?.data?.cnic
+                                        print("get cnic",DataManager.instance.userCnic)
+                                        
+                                        self.navigationController!.pushViewController(New_User_ProfileVC, animated: true)
+                                        
+                                    }
+                                    
+                                    else{
+                                        
+                                        DataManager.instance.registerNewDevice = true
+                                        let New_User_ProfileVC = self.storyboard!.instantiateViewController(withIdentifier: "New_User_ProfileVC") as! New_User_ProfileVC
+                                        DataManager.instance.forgotPassword = false
+                                        //                    DataManager.instance.mobile_number = self.TF_Mobileno
+                                        
+                                        self.navigationController!.pushViewController(New_User_ProfileVC, animated: true)
+                                    }
+                                    
+                                }
+                                else {
+                                    if let message = self.mobileVerificationObj?.messages{
+                                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                                    }
+                                    // Html Parse
+                                    
+                                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                                        if title.contains("Request Rejected") {
+                                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                                        }
+                                    }
+                                }
+                            }
             }
         }
     }
@@ -543,49 +546,50 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.mobileRegistrationObj = Mapper<mobileRegistrationModel>().map(JSONObject: json)
-            
-            //                self.mobileRegistrationObj = response.result.value
-            if response.response?.statusCode == 200 {
-                FBEvents.logEvent(title: .Signup_login_success)
-                FaceBookEvents.logEvent(title: .Signup_login_success)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.mobileRegistrationObj = Mapper<mobileRegistrationModel>().map(JSONObject: json)
                 
-                if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
-                    if let accessToken = self.mobileRegistrationObj?.data?.token{
-                        DataManager.instance.AuthToken = accessToken
+                //                self.mobileRegistrationObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    FBEvents.logEvent(title: .Signup_login_success)
+                    FaceBookEvents.logEvent(title: .Signup_login_success)
+                    
+                    if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
+                        if let accessToken = self.mobileRegistrationObj?.data?.token{
+                            DataManager.instance.AuthToken = accessToken
+                        }
+                        //                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        //                            self.blurView.isHidden = true
+                        //                            self.popupView.isHidden = true
+                        //                        }
+                        
                     }
-                    //                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                    //                            self.blurView.isHidden = true
-                    //                            self.popupView.isHidden = true
-                    //                        }
-                    
-                }
-                else {
-                    if let message = self.mobileRegistrationObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                    }
-                    
-                    // Html Parse
-                    
-                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                        if title.contains("Request Rejected") {
-                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                    else {
+                        if let message = self.mobileRegistrationObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                        
+                        // Html Parse
+                        
+                        if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                            if title.contains("Request Rejected") {
+                                self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                            }
                         }
                     }
                 }
-            }
-            else {
-                if let message = self.mobileRegistrationObj?.messages {
-                    FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
-                    FBEvents.logEvent(title: .Signup_login_failure, failureReason: message)
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
                 else {
-                    self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
+                    if let message = self.mobileRegistrationObj?.messages {
+                        FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
+                        FBEvents.logEvent(title: .Signup_login_failure, failureReason: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                    }
+                    else {
+                        self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
+                    }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
             }
         }
     }

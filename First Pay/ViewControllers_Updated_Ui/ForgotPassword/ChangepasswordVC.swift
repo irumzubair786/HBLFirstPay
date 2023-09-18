@@ -394,41 +394,42 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            
-            if response.response?.statusCode == 200 {
-                self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
-
-//                self.genericObj = response.result.value
-                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                    if let message = self.genericObj?.messages{
-                        let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
-                        print("Remover \(removePessi)")
-                        let  message = "Close this window & Login agian     \(self.genericObj?.messages!)"
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                
+                if response.response?.statusCode == 200 {
+                    self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
+                    
+                    //                self.genericObj = response.result.value
+                    if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                        if let message = self.genericObj?.messages{
+                            let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
+                            print("Remover \(removePessi)")
+                            let  message = "Close this window & Login agian     \(self.genericObj?.messages!)"
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
+                                
+                                ["buttonName": "LOGIN AGAIN",
+                                 "buttonBackGroundColor": UIColor.clrOrange,
+                                 "buttonTextColor": UIColor.white]
+                                
+                                
+                            ]
+                                                      //                     add completion button here....
+                                                      as? [[String: AnyObject]]){ _ in
+                                self.logoutUser()
+                            }
                             
-                            ["buttonName": "LOGIN AGAIN",
-                             "buttonBackGroundColor": UIColor.clrOrange,
-                             "buttonTextColor": UIColor.white]
-                             
-                            
-                        ]
-//                     add completion button here....
-                        as? [[String: AnyObject]]){ _ in
-                            self.logoutUser()
-                         }
- 
+                        }
+                    }
+                    else {
+                        if let message = self.genericObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+                        }
                     }
                 }
                 else {
                     if let message = self.genericObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
                     }
-                }
-            }
-            else {
-                if let message = self.genericObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
                 }
             }
         }

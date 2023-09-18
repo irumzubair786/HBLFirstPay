@@ -357,42 +357,43 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genericResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
-            
-//            self.genericResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                FBEvents.logEvent(title: .Signup_forgotpass_success)
-                if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
-                    let vc = self.storyboard!.instantiateViewController(withIdentifier: "ForgotPassword_OTPVerificationVC") as! ForgotPassword_OTPVerificationVC
-                    vc.Fetch_MobNo = self.mobileNumber
-                    vc.fetchCnic = self.cnicTextField.text!
-                    DataManager.instance.userCnic = cnicNumber
-                    self.navigationController!.pushViewController(vc, animated: true)
-                }
-                else {
-                    if let message = self.genericResponseObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError
-                        )
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genericResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+                
+                //            self.genericResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    FBEvents.logEvent(title: .Signup_forgotpass_success)
+                    if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
+                        let vc = self.storyboard!.instantiateViewController(withIdentifier: "ForgotPassword_OTPVerificationVC") as! ForgotPassword_OTPVerificationVC
+                        vc.Fetch_MobNo = self.mobileNumber
+                        vc.fetchCnic = self.cnicTextField.text!
+                        DataManager.instance.userCnic = cnicNumber
+                        self.navigationController!.pushViewController(vc, animated: true)
                     }
-                    
-                    // Html Parse
-                    
-                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                        if title.contains("Request Rejected") {
-                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                    else {
+                        if let message = self.genericResponseObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError
+                            )
+                        }
+                        
+                        // Html Parse
+                        
+                        if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                            if title.contains("Request Rejected") {
+                                self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                            }
                         }
                     }
                 }
-            }
-            else {
-                if let message = self.genericResponseObj?.messages {
-                    FBEvents.logEvent(title: .Signup_forgotpass_success, failureReason: message)
-
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                else {
+                    if let message = self.genericResponseObj?.messages {
+                        FBEvents.logEvent(title: .Signup_forgotpass_success, failureReason: message)
+                        
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                    }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
             }
         }
     }

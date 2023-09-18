@@ -199,36 +199,37 @@ class AddCashMainVc: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.cbsAccountsObj = Mapper<GetCBSAccounts>().map(JSONObject: json)
-            
-            //            self.cbsAccountsObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.cbsAccountsObj = Mapper<GetCBSAccounts>().map(JSONObject: json)
                 
-                if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
-                    if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountListVC") as! LinkBankAccountListVC
-                        //                        vc.accountTitle = cbsAccountsObj?.accdata[0].cbsAccountTitle
-                        
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
+                //            self.cbsAccountsObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
+                        if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountListVC") as! LinkBankAccountListVC
+                            //                        vc.accountTitle = cbsAccountsObj?.accdata[0].cbsAccountTitle
+                            
+                            self.navigationController?.pushViewController(vc, animated: true)
+                            
+                        }
+                        else{
+                            
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NoBankAccountFoundVc") as! NoBankAccountFoundVc
+                            self.navigationController?.pushViewController(vc, animated: true)
+                            
+                        }
                     }
-                    else{
-                        
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NoBankAccountFoundVc") as! NoBankAccountFoundVc
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
+                    else {
+                        self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
                     }
                 }
                 else {
-                    self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -263,26 +264,27 @@ class AddCashMainVc: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.LinkedAccountsObj = Mapper<getLinkedAccountModel>().map(JSONObject: json)
-            
-            
-            //            self.LinkedAccountsObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.LinkedAccountsObj = Mapper<getLinkedAccountModel>().map(JSONObject: json)
                 
-                if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
-                    if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
-                        let vc = self.storyboard!.instantiateViewController(withIdentifier: "FromLinkAccountListVc") as! FromLinkAccountListVc
+                
+                //            self.LinkedAccountsObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
+                        if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
+                            let vc = self.storyboard!.instantiateViewController(withIdentifier: "FromLinkAccountListVc") as! FromLinkAccountListVc
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }
+                    }
+                    else{
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NobankExistsVc") as! NobankExistsVc
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                 }
-                else{
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "NobankExistsVc") as! NobankExistsVc
-                    self.navigationController?.pushViewController(vc, animated: true)
+                else {
+                    self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
                 }
-            }
-            else {
-                self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
             }
         }
     }

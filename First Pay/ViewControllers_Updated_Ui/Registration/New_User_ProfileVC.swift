@@ -668,28 +668,29 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
             self.cnicVerificationObj = Mapper<cnicVerficationModel>().map(JSONObject: json)
             
 //            self.cnicVerificationObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.cnicVerificationObj?.responsecode == 2 || self.cnicVerificationObj?.responsecode == 1 {
-                    if self.cnicVerificationObj?.data != nil{
-                        self.View_mothername.isHidden = false
-                        self.blurView.isHidden = false
-                        self.flagMother_nameselected = false
-                        self.btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
-                        btn_Mname2.setTitle(cnicVerificationObj?.data?.motherNamesList?[1], for: .normal)
-                        
-                        self.btn_Mname3.setTitle(cnicVerificationObj?.data?.motherNamesList?[2], for: .normal)
-                        
-                        self.btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
-                    }
-                }
-                else
-               {
-                 checkValue()
-               }
+                            if response.response?.statusCode == 200 {
+                                if self.cnicVerificationObj?.responsecode == 2 || self.cnicVerificationObj?.responsecode == 1 {
+                                    if self.cnicVerificationObj?.data != nil{
+                                        self.View_mothername.isHidden = false
+                                        self.blurView.isHidden = false
+                                        self.flagMother_nameselected = false
+                                        self.btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
+                                        btn_Mname2.setTitle(cnicVerificationObj?.data?.motherNamesList?[1], for: .normal)
+                                        
+                                        self.btn_Mname3.setTitle(cnicVerificationObj?.data?.motherNamesList?[2], for: .normal)
+                                        
+                                        self.btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
+                                    }
+                                }
+                                else
+                                {
+                                    checkValue()
+                                }
+                            }
             }
         }
         func checkValue()
@@ -819,59 +820,60 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
             self.genericObj = Mapper<GenericResponseModel>().map(JSONObject: json)
             
 //            self.genericObj = response.result.value
-            if response.response?.statusCode == 200 {
-                
-                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                    if let message = self.genericObj?.messages {
-                        //MARK: - Shakeel Need to add Complition in alertCustomPopup for further action
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSuccess) {_ in 
-                            //                        if message == "Customer Registered successfully"
-                            //                        if self.genericObj?.data != nil{
-                            
-                            UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
-                            print("Save user cnic  is ",DataManager.instance.userCnic)
-                            DataManager.instance.userCnic = DataManager.instance.userCnic!
-                            print("get cnic",DataManager.instance.userCnic)
-                            
-                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
-                            UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
-                            self.navigationController?.pushViewController(vc, animated: true)
-                            //                        }
-                            
-                            
-                            //                        }
-                        }
-                        
-                        //                    self.showAlert(title: message, message: "", completion: {
-                        ////                        if message == "Customer Registered successfully"
-                        ////                        if self.genericObj?.data != nil{
-                        //
-                        //                        UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
-                        //                        print("Save user cnic  is ",DataManager.instance.userCnic)
-                        //                        DataManager.instance.userCnic = DataManager.instance.userCnic!
-                        //                        print("get cnic",DataManager.instance.userCnic)
-                        //
-                        //                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
-                        //                            UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
-                        //                            self.navigationController?.pushViewController(vc, animated: true)
-                        ////                        }
-                        //
-                        //
-                        ////                        }
-                        //               })
-                        
-                    }
-                }
-                else{
-                    if let message = self.genericObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSuccess)
-                    }
-                    
-                }
+                            if response.response?.statusCode == 200 {
+                                
+                                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                                    if let message = self.genericObj?.messages {
+                                        //MARK: - Shakeel Need to add Complition in alertCustomPopup for further action
+                                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSuccess) {_ in 
+                                            //                        if message == "Customer Registered successfully"
+                                            //                        if self.genericObj?.data != nil{
+                                            
+                                            UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
+                                            print("Save user cnic  is ",DataManager.instance.userCnic)
+                                            DataManager.instance.userCnic = DataManager.instance.userCnic!
+                                            print("get cnic",DataManager.instance.userCnic)
+                                            
+                                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
+                                            UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
+                                            self.navigationController?.pushViewController(vc, animated: true)
+                                            //                        }
+                                            
+                                            
+                                            //                        }
+                                        }
+                                        
+                                        //                    self.showAlert(title: message, message: "", completion: {
+                                        ////                        if message == "Customer Registered successfully"
+                                        ////                        if self.genericObj?.data != nil{
+                                        //
+                                        //                        UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
+                                        //                        print("Save user cnic  is ",DataManager.instance.userCnic)
+                                        //                        DataManager.instance.userCnic = DataManager.instance.userCnic!
+                                        //                        print("get cnic",DataManager.instance.userCnic)
+                                        //
+                                        //                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
+                                        //                            UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
+                                        //                            self.navigationController?.pushViewController(vc, animated: true)
+                                        ////                        }
+                                        //
+                                        //
+                                        ////                        }
+                                        //               })
+                                        
+                                    }
+                                }
+                                else{
+                                    if let message = self.genericObj?.messages{
+                                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSuccess)
+                                    }
+                                    
+                                }
+                            }
             }
         }
         

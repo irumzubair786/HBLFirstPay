@@ -276,35 +276,36 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator2()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.billCompanyObj = Mapper<BillPaymentCompanies>().map(JSONObject: json)
-            
-            
-            //            self.hideActivityIndicator()
-            //            self.billCompanyObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billCompanyObj = Mapper<BillPaymentCompanies>().map(JSONObject: json)
                 
-                if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
+                
+                //            self.hideActivityIndicator()
+                //            self.billCompanyObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    GlobalData.topup = "P O S T P A I D"
-                    self.companyID = self.billCompanyObj?.companies?[0].code
-                    self.parentCompanyID = self.billCompanyObj?.companies?[0].ubpCompaniesId
-                    print("u selected prepaid id", self.companyID)
-                    print("u selected prepaidcode ", self.parentCompanyID)
-                    
-                    //
-                    
+                    if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
+                        
+                        GlobalData.topup = "P O S T P A I D"
+                        self.companyID = self.billCompanyObj?.companies?[0].code
+                        self.parentCompanyID = self.billCompanyObj?.companies?[0].ubpCompaniesId
+                        print("u selected prepaid id", self.companyID)
+                        print("u selected prepaidcode ", self.parentCompanyID)
+                        
+                        //
+                        
+                    }
+                    else {
+                        self.showAlertCustomPopup(title: "",message: self.billCompanyObj?.messages, iconName: .iconError)
+                    }
                 }
                 else {
                     self.showAlertCustomPopup(title: "",message: self.billCompanyObj?.messages, iconName: .iconError)
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
+                    
                 }
-            }
-            else {
-                self.showAlertCustomPopup(title: "",message: self.billCompanyObj?.messages, iconName: .iconError)
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
-                
             }
         }
     }
@@ -352,53 +353,54 @@ class PostPaidVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
-            //            self.billtransactionOBj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
-                    vc.phoneNumber = self.tfMobileNo.text!
-                    vc.DueDate = self.billtransactionOBj?.data?.paymentDueDate!
-                    vc.status = self.billtransactionOBj?.data?.billStatus
-                    //                    vc.DueDate = DueDate ?? ""
-                    //                    vc.status = status ?? ""
-                    let Amount = self.billtransactionOBj?.data?.actualDueAmount
-                    if  GlobalData.Select_operator_code == "TELNOR02"
-                    {
-                        if Amount != nil
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
+                //            self.billtransactionOBj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
+                        vc.phoneNumber = self.tfMobileNo.text!
+                        vc.DueDate = self.billtransactionOBj?.data?.paymentDueDate!
+                        vc.status = self.billtransactionOBj?.data?.billStatus
+                        //                    vc.DueDate = DueDate ?? ""
+                        //                    vc.status = status ?? ""
+                        let Amount = self.billtransactionOBj?.data?.actualDueAmount
+                        if  GlobalData.Select_operator_code == "TELNOR02"
                         {
-                            vc.amount = Amount
-                            
+                            if Amount != nil
+                            {
+                                vc.amount = Amount
+                                
+                            }
+                            else
+                            {
+                                vc.amount = "0"
+                                
+                            }
                         }
+                        
                         else
                         {
-                            vc.amount = "0"
-                            
+                            vc.amount = Amount
+                        }
+                        
+                        self.present(vc, animated: true)
+                        //                    self.navigationController?.pushViewController(vc, animated: true)
+                        
+                    }
+                    else {
+                        if let message = self.billtransactionOBj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                         }
                     }
-                    
-                    else
-                    {
-                        vc.amount = Amount
-                    }
-                    
-                    self.present(vc, animated: true)
-                    //                    self.navigationController?.pushViewController(vc, animated: true)
-                    
                 }
                 else {
                     if let message = self.billtransactionOBj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.billtransactionOBj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
             }
         }
     }

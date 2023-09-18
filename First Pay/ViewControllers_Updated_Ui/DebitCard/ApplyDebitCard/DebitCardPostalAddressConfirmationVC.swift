@@ -114,31 +114,32 @@ class DebitCardPostalAddressConfirmationVC: BaseClassVC {
            response in
            self.hideActivityIndicator()
            guard let data = response.data else { return }
-           let json = try! JSONSerialization.jsonObject(with: data, options: [])
-           self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
-           
-           
-//           self.genericObj = response.result.value
-           if response.response?.statusCode == 200 {
+           if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+               self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
                
-               if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                   self.blurview.isHidden = false
-                   self.imagePopup.isHidden = false
-                  
+               
+               //           self.genericObj = response.result.value
+               if response.response?.statusCode == 200 {
+                   
+                   if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                       self.blurview.isHidden = false
+                       self.imagePopup.isHidden = false
+                       
+                   }
+                   else {
+                       if let message = self.genericObj?.messages{
+                           self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                           
+                       }
+                   }
                }
                else {
                    if let message = self.genericObj?.messages{
                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                       
+                       //                   self.showDefaultAlert(title: "", message: message)
                    }
+                   //
                }
-           }
-           else {
-               if let message = self.genericObj?.messages{
-                   self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-//                   self.showDefaultAlert(title: "", message: message)
-               }
-//
            }
        }
    }

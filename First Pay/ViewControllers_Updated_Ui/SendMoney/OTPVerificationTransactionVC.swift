@@ -228,28 +228,29 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-//            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-     
-                    
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        
+                        
+                    }
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -294,36 +295,37 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-//            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-                    self.labelMessage.isHidden = false
-                    self.labelMessage.text = "OTP will be Resend after 30 Seconds"
-//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-                        self.labelMessage.isHidden = true
-//                        self.blurView.isHidden = true
-//                        self.popupView.isHidden = true
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        self.labelMessage.isHidden = false
+                        self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+                        //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                            self.labelMessage.isHidden = true
+                            //                        self.blurView.isHidden = true
+                            //                        self.popupView.isHidden = true
+                        }
+                        //
+                        
                     }
-//
-                    
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -375,28 +377,29 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.fundsTransSuccessObj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
-
-//            self.fundsTransSuccessObj = response.result.value
-            if response.response?.statusCode == 200 {
-
-                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
-                    self.movetonext()
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.fundsTransSuccessObj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
+                
+                //            self.fundsTransSuccessObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
+                        self.movetonext()
+                    }
+                    else {
+                        if let message = self.fundsTransSuccessObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            //                        self.showToast(title: message)
+                            
+                        }
+                    }
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-//                        self.showToast(title: message)
-                        
-                    }
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

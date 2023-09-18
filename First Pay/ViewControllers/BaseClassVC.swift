@@ -472,7 +472,7 @@ class BaseClassVC: UIViewController {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
             self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
             
 //            self.genRespBaseObj = response.result.value
@@ -489,13 +489,13 @@ class BaseClassVC: UIViewController {
                     }
                 }
             }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
+                            else {
+                                if let message = self.genRespBaseObj?.messages {
+                                    self.showAlert(title: "", message: message, completion: nil)
+                                }
+                                //                print(response.result.value)
+                                //                print(response.response?.statusCode)
+                            }
             }
         }
     }
@@ -543,29 +543,30 @@ class BaseClassVC: UIViewController {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.miniStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
-            
-//            self.miniStatementObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                if self.miniStatementObj?.responsecode == 2 || self.miniStatementObj?.responsecode == 1 {
-                    if self.miniStatementObj != nil {
-                        completionHandler(self.miniStatementObj!)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.miniStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
+                
+                //            self.miniStatementObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    if self.miniStatementObj?.responsecode == 2 || self.miniStatementObj?.responsecode == 1 {
+                        if self.miniStatementObj != nil {
+                            completionHandler(self.miniStatementObj!)
+                        }
+                    }
+                    else {
+                        if let message = self.miniStatementObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
                     }
                 }
                 else {
                     if let message = self.miniStatementObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.miniStatementObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

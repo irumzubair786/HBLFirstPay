@@ -316,27 +316,28 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.myStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
-//            self.myStatementObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
-                    GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
-                    print("fetch transation refference Number",  GlobalData.transRefnum)
-                    self.tableView.reloadData()
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.myStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
+                //            self.myStatementObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
+                        GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
+                        print("fetch transation refference Number",  GlobalData.transRefnum)
+                        self.tableView.reloadData()
+                    }
+                    else {
+                        if let message = self.myStatementObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.myStatementObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                    print(response.result.value)
+                    //                    print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.myStatementObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                    print(response.result.value)
-                //                    print(response.response?.statusCode)
             }
         }
     }
@@ -392,32 +393,33 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.myStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
-//            self.myStatementObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
-                    GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
-                    print("fetch transation refference Number",  GlobalData.transRefnum)
-                    //                    if self.miniStatementObj != nil {
-                    //                        completionHandler(self.miniStatementObj!)
-                    //                    }
-                    self.tableView.reloadData()
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.myStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
+                //            self.myStatementObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
+                        GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
+                        print("fetch transation refference Number",  GlobalData.transRefnum)
+                        //                    if self.miniStatementObj != nil {
+                        //                        completionHandler(self.miniStatementObj!)
+                        //                    }
+                        self.tableView.reloadData()
+                    }
+                    else {
+                        
+                        if let message = self.myStatementObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                        self.tableView.reloadData()
+                    }
                 }
                 else {
-                    
                     if let message = self.myStatementObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
-                    self.tableView.reloadData()
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.myStatementObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
             }
         }
     }

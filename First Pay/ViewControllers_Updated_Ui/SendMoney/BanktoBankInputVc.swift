@@ -189,25 +189,26 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            
-            if response.response?.statusCode == 200 {
-                //                self.reasonsObj = response.result.value
-                self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
                 
-                if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
+                if response.response?.statusCode == 200 {
+                    //                self.reasonsObj = response.result.value
+                    self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
                     
-                    //                    self.reasonsList = self.reasonsObj!.stringReasons
-                    //                    self.purposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
-                    //                    GlobalData.money_Reason = self.purposeTf.text ?? ""
+                    if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
+                        
+                        //                    self.reasonsList = self.reasonsObj!.stringReasons
+                        //                    self.purposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
+                        //                    GlobalData.money_Reason = self.purposeTf.text ?? ""
+                        
+                    }
                     
                 }
-                
-            }
-            else {
-                
-                print(response.value)
-                print(response.response?.statusCode)
+                else {
+                    
+                    print(response.value)
+                    print(response.response?.statusCode)
+                }
             }
         }
     }
@@ -259,40 +260,41 @@ class BanktoBankInputVc: BaseClassVC,UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
-            
-            //            self.transactionApiResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
                 
-                if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
-                    //                    if self.transactionApiResponseObj?.data?.oTPREQ == "Y"
-                    //                    {
-                    if isfromBanktoBank == true{
-                        self.navigateToConfirmation()
-                    }
-                    else
-                    {
-                        self.movetonext()
-                    }
-                    //                    }
+                //            self.transactionApiResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    
-                    //
+                    if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
+                        //                    if self.transactionApiResponseObj?.data?.oTPREQ == "Y"
+                        //                    {
+                        if isfromBanktoBank == true{
+                            self.navigateToConfirmation()
+                        }
+                        else
+                        {
+                            self.movetonext()
+                        }
+                        //                    }
+                        
+                        
+                        //
+                    }
+                    else {
+                        if let message = self.transactionApiResponseObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            //                        self.showDefaultAlert(title: "", message: message)
+                        }
+                    }
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                        //                        self.showDefaultAlert(title: "", message: message)
                     }
+                    //                    print(response.result.value)
+                    //                    print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.transactionApiResponseObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-                //                    print(response.result.value)
-                //                    print(response.response?.statusCode)
             }
         }
     }

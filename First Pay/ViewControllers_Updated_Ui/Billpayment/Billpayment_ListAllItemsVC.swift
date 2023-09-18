@@ -74,44 +74,45 @@ class Billpayment_ListAllItemsVC: BaseClassVC , UISearchBarDelegate{
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
-            
-//            self.billCompanyListObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
-                    if let companies = self.billCompanyListObj?.companies {
-                        self.comapniesList = companies
-                        self.bill_arr = self.billCompanyListObj?.stringCompaniesList
-                    }
-
-                    for i in self.billCompanyListObj?.companies! ?? []
-                    {
-                        let temp = BillCompany()
-                        temp.code = i.code!
-                        temp.id = i.ubpCompaniesId!
-                        temp.name = i.name!
-                        temp.path = i.path ?? ""
-                        self.getClassBillComapny.append(temp)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
+                
+                //            self.billCompanyListObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
+                        if let companies = self.billCompanyListObj?.companies {
+                            self.comapniesList = companies
+                            self.bill_arr = self.billCompanyListObj?.stringCompaniesList
+                        }
                         
+                        for i in self.billCompanyListObj?.companies! ?? []
+                        {
+                            let temp = BillCompany()
+                            temp.code = i.code!
+                            temp.id = i.ubpCompaniesId!
+                            temp.name = i.name!
+                            temp.path = i.path ?? ""
+                            self.getClassBillComapny.append(temp)
+                            
+                        }
+                        self.filteredData =  self.getClassBillComapny
+                        self.tableView.delegate = self
+                        self.tableView.dataSource = self
+                        self.tableView.reloadData()
                     }
-                    self.filteredData =  self.getClassBillComapny
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
-                    self.tableView.reloadData()
+                    else {
+                        if let message = self.billCompanyListObj?.messages{
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
+                    }
                 }
                 else {
-                    if let message = self.billCompanyListObj?.messages{
-                        self.showAlert(title: "", message: message, completion: nil)
-                    }
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }

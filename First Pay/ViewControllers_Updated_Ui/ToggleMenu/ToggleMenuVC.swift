@@ -287,30 +287,31 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
               response in
               self.hideActivityIndicator()
               guard let data = response.data else { return }
-              let json = try! JSONSerialization.jsonObject(with: data, options: [])
-              self.availableLimitObj = Mapper<AvailableLimitsModel>().map(JSONObject: json)
-  
-//              self.availableLimitObj = response.result.value
-  
-              if response.response?.statusCode == 200 {
-  
-                  if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
-  
-                      self.updateUI()
-  //                                    self.fromlevel1()
+              if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                  self.availableLimitObj = Mapper<AvailableLimitsModel>().map(JSONObject: json)
+                  
+                  //              self.availableLimitObj = response.result.value
+                  
+                  if response.response?.statusCode == 200 {
+                      
+                      if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+                          
+                          self.updateUI()
+                          //                                    self.fromlevel1()
+                      }
+                      else {
+                          if let message = self.availableLimitObj?.messages{
+                              self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                          }
+                      }
                   }
                   else {
                       if let message = self.availableLimitObj?.messages{
                           self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                       }
+                      //                  print(response.result.value)
+                      //                  print(response.response?.statusCode)
                   }
-              }
-              else {
-                  if let message = self.availableLimitObj?.messages{
-                      self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                  }
-//                  print(response.result.value)
-//                  print(response.response?.statusCode)
               }
           }
       }

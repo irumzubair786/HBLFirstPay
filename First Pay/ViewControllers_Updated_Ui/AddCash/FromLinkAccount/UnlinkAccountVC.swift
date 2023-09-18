@@ -101,27 +101,28 @@ class UnlinkAccountVC: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genericResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
-//            self.genericResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
-            
-                if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
-                    let vc = self.storyboard!.instantiateViewController(withIdentifier: "DelinkSuccessfullVC") as! DelinkSuccessfullVC
-                    isfromPullFund = false
-                    self.navigationController?.pushViewController(vc, animated: true)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genericResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+                //            self.genericResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
+                    if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
+                        let vc = self.storyboard!.instantiateViewController(withIdentifier: "DelinkSuccessfullVC") as! DelinkSuccessfullVC
+                        isfromPullFund = false
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                    }
+                    else {
+                        self.showAlertCustomPopup(title: "",message: genericResponseObj?.messages,iconName: .iconError)
+                    }
                 }
                 else {
+                    
                     self.showAlertCustomPopup(title: "",message: genericResponseObj?.messages,iconName: .iconError)
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-                self.showAlertCustomPopup(title: "",message: genericResponseObj?.messages,iconName: .iconError)
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }

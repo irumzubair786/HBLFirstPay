@@ -113,33 +113,34 @@ class AddCashConfirmationVc: BaseClassVC {
             self.hideActivityIndicator()
             guard let data = response.data else { return }
   
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
-//            self.transactionApiResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                
-                if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
+                //            self.transactionApiResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
-                    vc.TotalAmount = self.TotalAmount
-                    vc.userAccountNo = self.transactionApiResponseObj?.data?.accountNo
-                    isfromPullFund = true
-                    self.navigationController?.pushViewController(vc, animated: true
-                    )
-                    
+                    if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
+                        vc.TotalAmount = self.TotalAmount
+                        vc.userAccountNo = self.transactionApiResponseObj?.data?.accountNo
+                        isfromPullFund = true
+                        self.navigationController?.pushViewController(vc, animated: true
+                        )
+                        
+                    }
+                    else {
+                        if let message = self.transactionApiResponseObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.transactionApiResponseObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

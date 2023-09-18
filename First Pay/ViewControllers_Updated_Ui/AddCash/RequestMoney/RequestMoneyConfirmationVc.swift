@@ -280,30 +280,31 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genResponseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-//            self.genResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "RequestMoneySuccessfullVc") as! RequestMoneySuccessfullVc
-                         self.navigationController?.pushViewController(vc,animated: true)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genResponseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "RequestMoneySuccessfullVc") as! RequestMoneySuccessfullVc
+                        self.navigationController?.pushViewController(vc,animated: true)
+                    }
+                    else {
+                        if let message = self.genResponseObj?.messages{
+                            //                        self.showDefaultAlert(title: "", message: message)
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genResponseObj?.messages{
-//                        self.showDefaultAlert(title: "", message: message)
+                        //                    self.showDefaultAlert(title: "", message: message)
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.genResponseObj?.messages{
-//                    self.showDefaultAlert(title: "", message: message)
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

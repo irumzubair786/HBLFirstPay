@@ -332,62 +332,63 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.setLoginPinObj = Mapper<setLoginPinModel>().map(JSONObject: json)
-            
-//            self.setLoginPinObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.setLoginPinObj = Mapper<setLoginPinModel>().map(JSONObject: json)
                 
-                if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
-                    UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
-                    let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
-                    print("Remover \(removePessi)")
+                //            self.setLoginPinObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    var userCnic : String?
-                    if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-                        userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-                    }
+                    if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
+                        UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                        let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
+                        print("Remover \(removePessi)")
+                        
+                        var userCnic : String?
+                        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+                        }
                         else{
                             userCnic = ""
                         }
-                    UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
-                    if let passKey = self.enterPinTextField.text{
-                        let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
-                        print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-                        if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
-                            self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
-                            print("password saved"
-                            )
+                        UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                        if let passKey = self.enterPinTextField.text{
+                            let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                            print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                            if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
+                                self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
+                                print("password saved"
+                                )
+                            }
+                        }
+                        self.Alert_view.isHidden = false
+                        self.blur_view.isHidden = false
+                        
+                        
+                    }
+                    else {
+                        
+                        if let message = self.setLoginPinObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)                    }
+                        
+                        // Html Parse
+                        
+                        if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                            if title.contains("Request Rejected") {
+                                self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                            }
                         }
                     }
-                    self.Alert_view.isHidden = false
-                    self.blur_view.isHidden = false
-                  
-
                 }
                 else {
-                    
                     if let message = self.setLoginPinObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)                    }
-                    
-                    // Html Parse
-                    
-                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                        if title.contains("Request Rejected") {
-                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
-                        }
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    else {
+                        self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
+                    }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.setLoginPinObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                else {
-                    self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -400,132 +401,133 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     
     func login()
     {
-    self.showActivityIndicator()
-    if !NetworkConnectivity.isConnectedToInternet(){
-        self.showToast(title: "No Internet Available")
-        return
-    }
+        self.showActivityIndicator()
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
         
-    
-    
-    
-    
-//        let compelteUrl = GlobalConstants.BASE_URL + "login"
-    let compelteUrl = GlobalConstants.BASE_URL + "v2/login"
-    
-            
-    if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
-        pessi = KeychainWrapper.standard.string(forKey: "userKey")
-    }
-    else if let password = self.enterPinTextField.text{
-        pessi = password
-    }
-    else{
-        self.showDefaultAlert(title: "", message: "Please Use Password for first time Login after Registration")
-        self.hideActivityIndicator()
-        return
-    }
-    if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-        userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-    }
-    else{
-        userCnic = ""
-    }
-
-    let parameters = ["cnic":userCnic!,"loginPin":pessi!,"imeiNo":DataManager.instance.imei!,"ipAddress":DataManager.instance.ipAddress!,"channelId":"\(DataManager.instance.channelID)","longitude":"\(DataManager.instance.Longitude!)","latitude":"\(DataManager.instance.Latitude!)","uuid":"\(DataManager.instance.userUUID ?? "")"]
-   
-    print(parameters)
-    
-    let result = splitString(stringToSplit: base64EncodedString(params: parameters))
-
-    let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
-    
-    
-    print(params)
-    print(compelteUrl)
-    NetworkManager.sharedInstance.enableCertificatePinning()
-    
-    NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//        (response: DataResponse<LoginActionModel>) in
-//            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<LoginActionModel>) in
-        response in
-        self.hideActivityIndicator()
-        guard let data = response.data else { return }
-        let json = try! JSONSerialization.jsonObject(with: data, options: [])
-        self.loginObj = Mapper<LoginActionModel>().map(JSONObject: json)
         
-//        self.loginObj = response.result.value
-
-        if response.response?.statusCode == 200 {
+        
+        
+        
+        //        let compelteUrl = GlobalConstants.BASE_URL + "login"
+        let compelteUrl = GlobalConstants.BASE_URL + "v2/login"
+        
+        
+        if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
+            pessi = KeychainWrapper.standard.string(forKey: "userKey")
+        }
+        else if let password = self.enterPinTextField.text{
+            pessi = password
+        }
+        else{
+            self.showDefaultAlert(title: "", message: "Please Use Password for first time Login after Registration")
             self.hideActivityIndicator()
-            self.loginObj = Mapper<LoginActionModel>().map(JSONObject: json)
-
-//            self.loginObj = response.result.value
-            if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
-                if self.loginObj?.userData?.customerHomeScreens?[0].riskProfile == "Y"{
-//                   let createWalletVC = self.storyboard!.instantiateViewController(withIdentifier: "RiskProfileVC") as! RiskProfileVC
-//                    
-//                     if let accessToken = self.loginObj?.userData?.token{
-//                        DataManager.instance.accessToken = accessToken
-//                        DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
-//                        DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
-//                        print("\(accessToken)")
-//                     }
-//                    self.navigationController!.pushViewController(createWalletVC, animated: true)
-                }
-
-//
-            else{
-                
-             
-                
-                 if let accessToken = self.loginObj?.userData?.token{
-                    DataManager.instance.accessToken = accessToken
-                    DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
-                    DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
-                    print("\(accessToken)")
-                     UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
-                     if let passKey = self.enterPinTextField.text{
-                        let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
-                        print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-                         if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
-                             self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
-                             print("password saved"
-                                   )
-                             }
-                         
-                         
-                         
-                    }
-                    self.saveInDataManager()
-                }
-                    else {
-             
-                if let message = self.loginObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                // Html Parse
-                
-                if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                    if title.contains("Request Rejected") {
-                        self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
-                    }
-                }
-            }
+            return
+        }
+        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+        }
+        else{
+            userCnic = ""
+        }
         
+        let parameters = ["cnic":userCnic!,"loginPin":pessi!,"imeiNo":DataManager.instance.imei!,"ipAddress":DataManager.instance.ipAddress!,"channelId":"\(DataManager.instance.channelID)","longitude":"\(DataManager.instance.Longitude!)","latitude":"\(DataManager.instance.Latitude!)","uuid":"\(DataManager.instance.userUUID ?? "")"]
+        
+        print(parameters)
+        
+        let result = splitString(stringToSplit: base64EncodedString(params: parameters))
+        
+        let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+        
+        
+        print(params)
+        print(compelteUrl)
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+            //        (response: DataResponse<LoginActionModel>) in
+            //            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<LoginActionModel>) in
+            response in
+            self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.loginObj = Mapper<LoginActionModel>().map(JSONObject: json)
+                
+                //        self.loginObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    self.hideActivityIndicator()
+                    self.loginObj = Mapper<LoginActionModel>().map(JSONObject: json)
+                    
+                    //            self.loginObj = response.result.value
+                    if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
+                        if self.loginObj?.userData?.customerHomeScreens?[0].riskProfile == "Y"{
+                            //                   let createWalletVC = self.storyboard!.instantiateViewController(withIdentifier: "RiskProfileVC") as! RiskProfileVC
+                            //
+                            //                     if let accessToken = self.loginObj?.userData?.token{
+                            //                        DataManager.instance.accessToken = accessToken
+                            //                        DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
+                            //                        DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
+                            //                        print("\(accessToken)")
+                            //                     }
+                            //                    self.navigationController!.pushViewController(createWalletVC, animated: true)
+                        }
+                        
+                        //
+                        else{
+                            
+                            
+                            
+                            if let accessToken = self.loginObj?.userData?.token{
+                                DataManager.instance.accessToken = accessToken
+                                DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
+                                DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
+                                print("\(accessToken)")
+                                UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                                if let passKey = self.enterPinTextField.text{
+                                    let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                                    print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                                    if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
+                                        self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
+                                        print("password saved"
+                                        )
+                                    }
+                                    
+                                    
+                                    
+                                }
+                                self.saveInDataManager()
+                            }
+                            else {
+                                
+                                if let message = self.loginObj?.messages{
+                                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                                }
+                                // Html Parse
+                                
+                                if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                                    if title.contains("Request Rejected") {
+                                        self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                    else {
+                        
+                        self.showAlert(title: "", message: "Something Went Wrong", completion:nil)
+                        //                print(response.result.value)
+                        //                print(response.response?.statusCode)
+                    }
+                }
+                
+            }
         }
     }
-        else {
-        
-                self.showAlert(title: "", message: "Something Went Wrong", completion:nil)
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-        }
-  
-}
-}
-}
     func AccessTokenEncrypt(plaintext : String , password : String) -> String
        {
            let data: Data = plaintext.data(using: .utf8)!

@@ -139,33 +139,34 @@ contactPicker.delegate = self
               response in
               self.hideActivityIndicator()
               guard let data = response.data else { return }
-              let json = try! JSONSerialization.jsonObject(with: data, options: [])
-              self.titleFetchObj = Mapper<TitleFetchModel>().map(JSONObject: json)
-              
-//              self.titleFetchObj = response.result.value
-              if response.response?.statusCode == 200 {
-                  if self.titleFetchObj?.responsecode == 2 || self.titleFetchObj?.responsecode == 1 {
-                      let vc = self.storyboard?.instantiateViewController(withIdentifier: "RequestMoneyConfirmationVc") as!   RequestMoneyConfirmationVc
-                      vc.accountNo = self.titleFetchObj?.accountNo!
-                      vc.accountTitle = self.titleFetchObj?.accountTitle!
-                      self.navigationController?.pushViewController(vc, animated: true)
+              if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                  self.titleFetchObj = Mapper<TitleFetchModel>().map(JSONObject: json)
+                  
+                  //              self.titleFetchObj = response.result.value
+                  if response.response?.statusCode == 200 {
+                      if self.titleFetchObj?.responsecode == 2 || self.titleFetchObj?.responsecode == 1 {
+                          let vc = self.storyboard?.instantiateViewController(withIdentifier: "RequestMoneyConfirmationVc") as!   RequestMoneyConfirmationVc
+                          vc.accountNo = self.titleFetchObj?.accountNo!
+                          vc.accountTitle = self.titleFetchObj?.accountTitle!
+                          self.navigationController?.pushViewController(vc, animated: true)
+                      }
+                      else {
+                          if let message = self.titleFetchObj?.messages{
+                              //                          self.showDefaultAlert(title: "", message: message)
+                              self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                              
+                          }
+                      }
                   }
                   else {
                       if let message = self.titleFetchObj?.messages{
-//                          self.showDefaultAlert(title: "", message: message)
+                          //                      self.showDefaultAlert(title: "", message: message)
                           self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                        
+                          
                       }
+                      //                print(response.result.value)
+                      //                print(response.response?.statusCode)
                   }
-              }
-              else {
-                  if let message = self.titleFetchObj?.messages{
-//                      self.showDefaultAlert(title: "", message: message)
-                      self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
-                  }
-  //                print(response.result.value)
-  //                print(response.response?.statusCode)
               }
           }
       }

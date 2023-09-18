@@ -137,37 +137,38 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
             self.hideActivityIndicator()
             guard let data = response.data else { return }
 //               let json = try? JSON(data:data)
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-
-            self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
-            
-//            self.getDebitDetailsObj = response.result.value
-            print(self.getDebitDetailsObj)
-        
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
                 
-                if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
                 
-                    self.getValueFromAPI()
-//                    self.updateUI()
+                //            self.getDebitDetailsObj = response.result.value
+                print(self.getDebitDetailsObj)
+                
+                if response.response?.statusCode == 200 {
                     
-                }
-                
-                else {
-                    if let message = self.getDebitDetailsObj?.messages{
-                      
-
-
+                    if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        
+                        self.getValueFromAPI()
+                        //                    self.updateUI()
+                        
+                    }
+                    
+                    else {
+                        if let message = self.getDebitDetailsObj?.messages{
+                            
+                            
+                            
+                        }
                     }
                 }
-            }
-            else {
-//                if let message = self.genResponse?.messages{
-//                    self.showDefaultAlert(title: "", message: message)
-//                    self.movetonext()
-//                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
+                else {
+                    //                if let message = self.genResponse?.messages{
+                    //                    self.showDefaultAlert(title: "", message: message)
+                    //                    self.movetonext()
+                    //                }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                }
             }
         }
     }

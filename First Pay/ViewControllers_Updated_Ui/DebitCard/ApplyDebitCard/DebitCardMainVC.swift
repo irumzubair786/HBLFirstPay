@@ -76,7 +76,7 @@ class DebitCardMainVC: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
             self.checkDebitCardObj = Mapper<GetDebitCardCheckModel>().map(JSONObject: json)
             
 //            self.checkDebitCardObj = response.result.value
@@ -102,23 +102,23 @@ class DebitCardMainVC: BaseClassVC {
                     
                 }
             }
-            else {
-                FBEvents.logEvent(title: .Debit_ordername_failure)
-                if let message = self.checkDebitCardObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                   
-//                    self.movetoback()
-                }
-                else{
-                    if let message = self.checkDebitCardObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-//                    self.movetoback()
-                }
-                }
-                print(response.value)
-                print(response.response?.statusCode)
-//
+                            else {
+                                FBEvents.logEvent(title: .Debit_ordername_failure)
+                                if let message = self.checkDebitCardObj?.messages{
+                                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                                    
+                                    //                    self.movetoback()
+                                }
+                                else{
+                                    if let message = self.checkDebitCardObj?.messages{
+                                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                                        //                    self.movetoback()
+                                    }
+                                }
+                                print(response.value)
+                                print(response.response?.statusCode)
+                            }
             }
         }
     }

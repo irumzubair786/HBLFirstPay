@@ -471,35 +471,36 @@ class MobileTopUpVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
-            
-            //            self.billtransactionOBj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
-                    vc.phoneNumber = self.Tf_mobileNumber.text!
-                    vc.DueDate = self.billtransactionOBj?.data?.paymentDueDate!
-                    vc.status = self.billtransactionOBj?.data?.billStatus
-                    //                    vc.DueDate = DueDate ?? ""
-                    //                    vc.status = status ?? ""
-                    vc.amount = (self.billtransactionOBj?.data?.actualDueAmount)
-                    self.present(vc, animated: true)
-//                    self.navigationController?.pushViewController(vc, animated: true)
-                    
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
+                
+                //            self.billtransactionOBj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "POSTPAIDCONFIRMATIONVC") as! POSTPAIDCONFIRMATIONVC
+                        vc.phoneNumber = self.Tf_mobileNumber.text!
+                        vc.DueDate = self.billtransactionOBj?.data?.paymentDueDate!
+                        vc.status = self.billtransactionOBj?.data?.billStatus
+                        //                    vc.DueDate = DueDate ?? ""
+                        //                    vc.status = status ?? ""
+                        vc.amount = (self.billtransactionOBj?.data?.actualDueAmount)
+                        self.present(vc, animated: true)
+                        //                    self.navigationController?.pushViewController(vc, animated: true)
+                        
+                    }
+                    else {
+                        if let message = self.billtransactionOBj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.billtransactionOBj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.billtransactionOBj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
             }
         }
     }

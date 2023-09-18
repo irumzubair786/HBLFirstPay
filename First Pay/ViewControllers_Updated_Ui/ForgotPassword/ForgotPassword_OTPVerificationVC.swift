@@ -224,51 +224,52 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
-            
-//            self.genResponseObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                FBEvents.logEvent(title: .OTP_forgotpass_success)
-
-                if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+                
+                //            self.genResponseObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    FBEvents.logEvent(title: .OTP_forgotpass_success)
                     
-                    if self.genResponseObj?.messages == "OTP not verified"
-                    {
-                        self.showToast(title: (self.genResponseObj?.messages)!)
+                    if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
+                        
+                        if self.genResponseObj?.messages == "OTP not verified"
+                        {
+                            self.showToast(title: (self.genResponseObj?.messages)!)
+                        }
+                        
+                        else{
+                            let enterPinVC = self.storyboard!.instantiateViewController(withIdentifier: "ResetPassword_SuccessfullVC") as! ResetPassword_SuccessfullVC
+                            if let cnic = DataManager.instance.userCnic {
+                                let saveSuccessful : Bool = KeychainWrapper.standard.set(cnic, forKey: "userCnic")
+                                print("Cnic SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                                //                        }
+                                enterPinVC.MobNo  = self.Fetch_MobNo!
+                                
+                                //custAllID
+                                self.navigationController!.pushViewController(enterPinVC, animated: true)
+                            }
+                            
+                        }
                     }
                     
-                    else{
-                        let enterPinVC = self.storyboard!.instantiateViewController(withIdentifier: "ResetPassword_SuccessfullVC") as! ResetPassword_SuccessfullVC
-                        if let cnic = DataManager.instance.userCnic {
-                            let saveSuccessful : Bool = KeychainWrapper.standard.set(cnic, forKey: "userCnic")
-                            print("Cnic SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-//                        }
-                            enterPinVC.MobNo  = self.Fetch_MobNo!
-                        
-                        //custAllID
-                        self.navigationController!.pushViewController(enterPinVC, animated: true)
-                    }
-                        
+                    else {
+                        if let message = self.genResponseObj?.messages {
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
                     }
                 }
-                
                 else {
                     if let message = self.genResponseObj?.messages {
+                        FBEvents.logEvent(title: .OTP_forgotpass_landed,failureReason: message)
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genResponseObj?.messages {
-                    FBEvents.logEvent(title: .OTP_forgotpass_landed,failureReason: message)
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                   
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -306,28 +307,29 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-//            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-     
-                    
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        
+                        
+                    }
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -366,36 +368,37 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-//            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-                    self.labelMessage.isHidden = false
-                    self.labelMessage.text = "OTP will be Resend after 30 Seconds"
-//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-                        self.labelMessage.isHidden = true
-//                        self.blurView.isHidden = true
-//                        self.popupView.isHidden = true
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        self.labelMessage.isHidden = false
+                        self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+                        //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                            self.labelMessage.isHidden = true
+                            //                        self.blurView.isHidden = true
+                            //                        self.popupView.isHidden = true
+                        }
+                        //
+                        
                     }
-//
-                    
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }

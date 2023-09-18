@@ -64,40 +64,41 @@ class selectBranchVC: BaseClassVC, UISearchBarDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.getBranchesObj = Mapper<GetAllBranchesModel>().map(JSONObject: json)
-            
-//            self.getBranchesObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.getBranchesObj = Mapper<GetAllBranchesModel>().map(JSONObject: json)
                 
-                if self.getBranchesObj?.responsecode == 2 || self.getBranchesObj?.responsecode == 1 {
+                //            self.getBranchesObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    
-                    for i in self.getBranchesObj?.data! ?? []
-                    {
-                       var temp = myBranch()
-                        temp.id = i.branchId!
-                        temp.code = i.branchCode!
-                        temp.name = i.branchDescr!
-                        self.getBranch.append(temp)
+                    if self.getBranchesObj?.responsecode == 2 || self.getBranchesObj?.responsecode == 1 {
+                        
+                        
+                        for i in self.getBranchesObj?.data! ?? []
+                        {
+                            var temp = myBranch()
+                            temp.id = i.branchId!
+                            temp.code = i.branchCode!
+                            temp.name = i.branchDescr!
+                            self.getBranch.append(temp)
+                        }
+                        
+                        self.arrBranchList = self.getBranchesObj?.stringBranch
+                        self.filteredData = self.arrBranchList
+                        
+                        print("get branch data", self.filteredData)
+                        self.tableView.delegate = self
+                        
+                        self.tableView.reloadData()
+                        self.tableView.dataSource = self
+                        
                     }
+                }
+                else {
                     
-                    self.arrBranchList = self.getBranchesObj?.stringBranch
-                    self.filteredData = self.arrBranchList
-                    
-                    print("get branch data", self.filteredData)
-                    self.tableView.delegate = self
-                   
-                    self.tableView.reloadData()
-                    self.tableView.dataSource = self
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                     
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }

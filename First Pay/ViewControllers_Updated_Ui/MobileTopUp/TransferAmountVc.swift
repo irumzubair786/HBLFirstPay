@@ -281,28 +281,29 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.fundsTransSuccessObj = Mapper<TopUpApiResponse>().map(JSONObject: json)
-            
-
-            
-//            self.fundsTransSuccessObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.fundsTransSuccessObj = Mapper<TopUpApiResponse>().map(JSONObject: json)
                 
-                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
-                    self.navigatezToConfirmationVC()
+                
+                
+                //            self.fundsTransSuccessObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
+                        self.navigatezToConfirmationVC()
+                    }
+                    else {
+                        if let message = self.fundsTransSuccessObj?.messages{
+                            self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.messages ?? "") ")
+                        }
+                    }
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
-                        self.showDefaultAlert(title: "", message: "\(message) \(self.fundsTransSuccessObj?.messages ?? "") ")
-                    }
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .MismatchNumber)                }
+                    print(response.value)
+                    print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .MismatchNumber)                }
-                print(response.value)
-                print(response.response?.statusCode)
             }
         }
     }

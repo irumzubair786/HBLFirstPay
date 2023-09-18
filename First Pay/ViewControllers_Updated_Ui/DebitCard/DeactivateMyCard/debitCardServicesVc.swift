@@ -217,40 +217,41 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//            (response: DataResponse<ServiceModel>) in
+            //            (response: DataResponse<ServiceModel>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.servicesOBj = Mapper<ServiceModel>().map(JSONObject: json)
-            
-//            self.servicesOBj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.servicesOBj = Mapper<ServiceModel>().map(JSONObject: json)
                 
-                if self.servicesOBj?.responsecode == 2 || self.servicesOBj?.responsecode == 1 {
-                    self.switchATM.isEnabled = true
-                    self.switchPOS.isEnabled  = true
-                   
-                    print(self.userData = (self.servicesOBj?.data?.cardchannels)!)
-                    self.chanellist = self.servicesOBj?.data?.stringlist
-                
-                    print("channel is" ,self.chanellist)
-                    self.UpdateUI()
-
-                }
-                else {
-                    if let message = self.servicesOBj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                //            self.servicesOBj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.servicesOBj?.responsecode == 2 || self.servicesOBj?.responsecode == 1 {
+                        self.switchATM.isEnabled = true
+                        self.switchPOS.isEnabled  = true
+                        
+                        print(self.userData = (self.servicesOBj?.data?.cardchannels)!)
+                        self.chanellist = self.servicesOBj?.data?.stringlist
+                        
+                        print("channel is" ,self.chanellist)
+                        self.UpdateUI()
+                        
+                    }
+                    else {
+                        if let message = self.servicesOBj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4)  {
                                 self.navigationController?.popViewController(animated: true)
-//
+                                //
                             }
-
+                            
                         }
-
+                        
                     }
                 }
             }
+        }
            
         }
     func UpdateUI()

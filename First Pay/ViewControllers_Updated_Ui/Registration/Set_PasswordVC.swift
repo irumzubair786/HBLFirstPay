@@ -339,51 +339,52 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
                 response in
                 self.hideActivityIndicator()
                 guard let data = response.data else { return }
-                let json = try! JSONSerialization.jsonObject(with: data, options: [])
-                self.setLoginPinObj = Mapper<setLoginPinModel>().map(JSONObject: json)
-//                self.setLoginPinObj = response.result.value
-                if response.response?.statusCode == 200 {
-                    
-                    if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
-                        UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
-                        let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
-                        print("Remover \(removePessi)")
-                        var userCnic : String?
-                        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-                            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-                        }
+                if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                    self.setLoginPinObj = Mapper<setLoginPinModel>().map(JSONObject: json)
+                    //                self.setLoginPinObj = response.result.value
+                    if response.response?.statusCode == 200 {
+                        
+                        if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
+                            UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                            let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
+                            print("Remover \(removePessi)")
+                            var userCnic : String?
+                            if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                                userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+                            }
                             else{
                                 userCnic = ""
                             }
-                        self.Alert_view.isHidden = false
-                        self.blur_view.isHidden = false
-                      
-
-                    }
-                    else {
-                        
-                        if let message = self.setLoginPinObj?.messages{
-                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                            self.Alert_view.isHidden = false
+                            self.blur_view.isHidden = false
+                            
+                            
                         }
-                        
-                        // Html Parse
-                        
-                        if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                            if title.contains("Request Rejected") {
-                                self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                        else {
+                            
+                            if let message = self.setLoginPinObj?.messages{
+                                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                            }
+                            
+                            // Html Parse
+                            
+                            if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                                if title.contains("Request Rejected") {
+                                    self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                                }
                             }
                         }
                     }
-                }
-                else {
-                    if let message = self.setLoginPinObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                    }
                     else {
-                        self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
+                        if let message = self.setLoginPinObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                        else {
+                            self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
+                        }
+                        //                print(response.result.value)
+                        //                print(response.response?.statusCode)
                     }
-    //                print(response.result.value)
-    //                print(response.response?.statusCode)
                 }
             }
         }

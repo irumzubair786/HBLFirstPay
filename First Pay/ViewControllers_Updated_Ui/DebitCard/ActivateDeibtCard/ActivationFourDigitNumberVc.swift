@@ -204,34 +204,35 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
-            
-//            self.getDebitDetailsObj = response.result.value
-            print(self.getDebitDetailsObj ?? "")
-           
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
                 
-                if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as!  ActivationDebitCardOTPVerificationVC
-                    self.navigationController?.pushViewController(vc, animated: true)
+                //            self.getDebitDetailsObj = response.result.value
+                print(self.getDebitDetailsObj ?? "")
+                
+                if response.response?.statusCode == 200 {
                     
-                   
+                    if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as!  ActivationDebitCardOTPVerificationVC
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        
+                    }
+                    else {
+                        if let message = self.getDebitDetailsObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.getDebitDetailsObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        
+                        //                    self.showDefaultAlert(title: "", message: message)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.getDebitDetailsObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
-//                    self.showDefaultAlert(title: "", message: message)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

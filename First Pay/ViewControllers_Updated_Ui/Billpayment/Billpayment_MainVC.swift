@@ -83,36 +83,37 @@ class Billpayment_MainVC: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.billCompanyObj = Mapper<BillPaymentCompanies>().map(JSONObject: json)
-            
-//            self.billCompanyObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billCompanyObj = Mapper<BillPaymentCompanies>().map(JSONObject: json)
                 
-                if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
+                //            self.billCompanyObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    for aCompany in (self.billCompanyObj?.companies)!{
-                        if aCompany.ubpCompaniesId == 277 || aCompany.ubpCompaniesId == 276
-                        {
-                            
+                    if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
+                        
+                        for aCompany in (self.billCompanyObj?.companies)!{
+                            if aCompany.ubpCompaniesId == 277 || aCompany.ubpCompaniesId == 276
+                            {
+                                
+                            }
+                            else if aCompany.code != "MBP" && aCompany.code != "MTUP"{
+                                self.filteredCompanies.append(aCompany)
+                                //                            self.filteredCompanies.removeLast()
+                                //                            self.filteredCompanies.removeLast()
+                            }
                         }
-                        else if aCompany.code != "MBP" && aCompany.code != "MTUP"{
-                            self.filteredCompanies.append(aCompany)
-//                            self.filteredCompanies.removeLast()
-//                            self.filteredCompanies.removeLast()
-                        }
+                        self.tableview.reloadData()
                     }
-                    self.tableview.reloadData()
+                    else {
+                        // self.showAlert(title: "", message: (self.shopInfo?.resultDesc)!, completion: nil)
+                    }
                 }
                 else {
-                    // self.showAlert(title: "", message: (self.shopInfo?.resultDesc)!, completion: nil)
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }

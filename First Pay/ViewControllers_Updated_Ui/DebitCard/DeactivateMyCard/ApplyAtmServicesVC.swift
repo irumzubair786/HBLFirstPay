@@ -142,30 +142,31 @@ class ApplyAtmServicesVC: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.otpserviceobj = Mapper<OTPserviceModel>().map(JSONObject: json)
-               
-//               self.otpserviceobj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.otpserviceobj = Mapper<OTPserviceModel>().map(JSONObject: json)
                 
-                if self.otpserviceobj?.responsecode == 2 || self.otpserviceobj?.responsecode == 1 {
-                    movetoNext()
-                }
-                
-                
-                else {
-                    if let message = self.otpserviceobj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
+                //               self.otpserviceobj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.otpserviceobj?.responsecode == 2 || self.otpserviceobj?.responsecode == 1 {
+                        movetoNext()
                     }
+                    
+                    
+                    else {
+                        if let message = self.otpserviceobj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
+                        }
+                    }
+                    
+                    //                else {
+                    //                    if let message = self.servicesOBj?.messages{
+                    //                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
+                    //                    }
+                    //                    //                print(response.result.value)
+                    //                    //                print(response.response?.statusCode)
+                    //                }
                 }
-                
-//                else {
-//                    if let message = self.servicesOBj?.messages{
-//                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
-//                    }
-//                    //                print(response.result.value)
-//                    //                print(response.response?.statusCode)
-//                }
             }
            }
        }

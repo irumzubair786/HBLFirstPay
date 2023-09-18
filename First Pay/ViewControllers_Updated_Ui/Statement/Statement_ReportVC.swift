@@ -401,37 +401,38 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.disputeTypesObj = Mapper<GetDisputeTypesModel>().map(JSONObject: json)
-            
-//            self.disputeTypesObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.disputeTypesObj = Mapper<GetDisputeTypesModel>().map(JSONObject: json)
                 
-                if self.disputeTypesObj?.responsecode == 2 || self.disputeTypesObj?.responsecode == 1 {
+                //            self.disputeTypesObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
                     
-                    self.updateui()
-                    
-//                    if let disputes = self.disputeTypesObj?.disputeTypes {
-//                        self.disputesList = disputes
-//                    }
-//                    self.arrDisputesList = self.disputeTypesObj?.stringDisputesList
-//                    self.methodDropDownDisputes(Disputes: (self.arrDisputesList)!)
-                    
-                }
-                else {
-                    if let message = self.disputeTypesObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-//                        self.showAlert(title: "", message: message, completion: nil)
+                    if self.disputeTypesObj?.responsecode == 2 || self.disputeTypesObj?.responsecode == 1 {
+                        
+                        self.updateui()
+                        
+                        //                    if let disputes = self.disputeTypesObj?.disputeTypes {
+                        //                        self.disputesList = disputes
+                        //                    }
+                        //                    self.arrDisputesList = self.disputeTypesObj?.stringDisputesList
+                        //                    self.methodDropDownDisputes(Disputes: (self.arrDisputesList)!)
+                        
+                    }
+                    else {
+                        if let message = self.disputeTypesObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            //                        self.showAlert(title: "", message: message, completion: nil)
+                        }
                     }
                 }
-            }
-            else {
-                
-                if let message = self.disputeTypesObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-            }
-                
+                else {
+                    
+                    if let message = self.disputeTypesObj?.messages{
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                    }
+                    
+                }
             }
         }
     }
@@ -473,31 +474,32 @@ class Statement_ReportVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UI
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genResObj = Mapper<GenericResponseModel>().map(JSONObject: json)
-//            self.genResObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genResObj?.responsecode == 2 || self.genResObj?.responsecode == 1 {
-                    self.blurView.isHidden = false
-                    self.btnSuccessPopUp.isHidden = false
-//                    self.showAlert(title: "Success", message: self.genResObj!.messages!, completion: {
-//                        self.navigationController?.popToRootViewController(animated: true)
-//                    })
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genResObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+                //            self.genResObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genResObj?.responsecode == 2 || self.genResObj?.responsecode == 1 {
+                        self.blurView.isHidden = false
+                        self.btnSuccessPopUp.isHidden = false
+                        //                    self.showAlert(title: "Success", message: self.genResObj!.messages!, completion: {
+                        //                        self.navigationController?.popToRootViewController(animated: true)
+                        //                    })
+                    }
+                    else {
+                        if let message = self.genResObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            //                        self.showDefaultAlert(title: "", message: "\(message)")
+                            //                        self.navigationController?.popToRootViewController(animated: true)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genResObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-//                        self.showDefaultAlert(title: "", message: "\(message)")
-//                        self.navigationController?.popToRootViewController(animated: true)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.genResObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

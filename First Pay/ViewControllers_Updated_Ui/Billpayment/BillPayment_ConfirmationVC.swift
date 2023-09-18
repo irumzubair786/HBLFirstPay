@@ -148,38 +148,39 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//            (response: DataResponse<FundsTransferApiResponse>) in
+            //            (response: DataResponse<FundsTransferApiResponse>) in
             response in
             guard let data = response.data else { return }
-//               let json = try? JSON(data:data)
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-
-            self.successmodelobj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
-            self.hideActivityIndicator()
-           
-            if response.response?.statusCode == 200 {
-                if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
-                    self.move_to_next()
-//                    self.tablleview?.reloadData()
+            //               let json = try? JSON(data:data)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                
+                self.successmodelobj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
+                self.hideActivityIndicator()
+                
+                if response.response?.statusCode == 200 {
+                    if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
+                        self.move_to_next()
+                        //                    self.tablleview?.reloadData()
+                    }
+                    else {
+                        if let message = self.successmodelobj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+                            //                        self.navigateToSuccessVC()
+                        }
+                    }
                 }
                 else {
                     if let message = self.successmodelobj?.messages{
                         self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-//                        self.navigateToSuccessVC()
+                        //                        self.navigateToSuccessVC()
                     }
+                    
                 }
-            }
-            else {
-                if let message = self.successmodelobj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-//                        self.navigateToSuccessVC()
-                    }
-
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
             }
         }
+    }
     
 
     func move_to_next()

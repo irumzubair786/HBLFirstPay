@@ -108,32 +108,33 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
            response in
            self.hideActivityIndicator()
            guard let data = response.data else { return }
-           let json = try! JSONSerialization.jsonObject(with: data, options: [])
-           self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
-           
-//           self.genericObj = response.result.value
-           if response.response?.statusCode == 200 {
-               FBEvents.logEvent(title: .Debit_orderconfirm_success)
-               FaceBookEvents.logEvent(title: .Debit_orderconfirm_success)
-
-               if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                   self.blurview.isHidden = false
-                   self.imagePopup.isHidden = false
-                  
+           if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+               self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
+               
+               //           self.genericObj = response.result.value
+               if response.response?.statusCode == 200 {
+                   FBEvents.logEvent(title: .Debit_orderconfirm_success)
+                   FaceBookEvents.logEvent(title: .Debit_orderconfirm_success)
+                   
+                   if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                       self.blurview.isHidden = false
+                       self.imagePopup.isHidden = false
+                       
+                   }
+                   else {
+                       if let message = self.genericObj?.messages{
+                           self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                       }
+                   }
                }
                else {
+                   FBEvents.logEvent(title: .Debit_orderconfirm_failure)
+                   
                    if let message = self.genericObj?.messages{
                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                    }
+                   //
                }
-           }
-           else {
-               FBEvents.logEvent(title: .Debit_orderconfirm_failure)
-
-               if let message = self.genericObj?.messages{
-                   self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-               }
-//
            }
        }
    }

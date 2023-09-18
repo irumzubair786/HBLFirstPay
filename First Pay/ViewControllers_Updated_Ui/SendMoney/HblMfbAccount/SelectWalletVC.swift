@@ -146,29 +146,30 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-
-            if response.response?.statusCode == 200 {
-//                self.banksObj = response.result.value
-                self.banksObj = Mapper<GetBankNames>().map(JSONObject: json)
-                if self.banksObj?.responsecode == 2 || self.banksObj?.responsecode == 1 {
-                    self.test()
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                
+                if response.response?.statusCode == 200 {
+                    //                self.banksObj = response.result.value
+                    self.banksObj = Mapper<GetBankNames>().map(JSONObject: json)
+                    if self.banksObj?.responsecode == 2 || self.banksObj?.responsecode == 1 {
+                        self.test()
+                    }
+                    else  {
+                        if let message = self.banksObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                        
+                    }
                 }
-                else  {
+                else {
                     if let message = self.banksObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
-                     
-                }
-            }
-            else {
-                if let message = self.banksObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-
+                    
                     print(response.value)
                     print(response.response?.statusCode)
-                
+                    
+                }
             }
         }
     }

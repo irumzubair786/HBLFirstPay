@@ -211,28 +211,29 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            
-//            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-     
-                    
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        
+                        
+                    }
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -274,37 +275,38 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
-            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
-
-//            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-                    self.labelmessage.isHidden = false
-                    self.labelmessage.text = "OTP will be Resend after 30 Seconds"
-//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-                        self.labelmessage.isHidden = true
-//                        self.blurView.isHidden = true
-//                        self.popupView.isHidden = true
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        self.labelmessage.isHidden = false
+                        self.labelmessage.text = "OTP will be Resend after 30 Seconds"
+                        //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                            self.labelmessage.isHidden = true
+                            //                        self.blurView.isHidden = true
+                            //                        self.popupView.isHidden = true
+                        }
+                        //
+                        
                     }
-//
-                    
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -336,36 +338,37 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
         NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
-//            (response: DataResponse<FundsTransferApiResponse>) in
+            //            (response: DataResponse<FundsTransferApiResponse>) in
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.successmodelobj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
-//             self.successmodelobj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
-                    self.move_to_next()
-//                    self.tablleview?.reloadData()
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.successmodelobj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
+                //             self.successmodelobj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
+                        self.move_to_next()
+                        //                    self.tablleview?.reloadData()
+                    }
+                    else {
+                        if let message = self.successmodelobj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+                            //                        self.navigateToSuccessVC()
+                        }
+                    }
                 }
                 else {
                     if let message = self.successmodelobj?.messages{
                         self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-//                        self.navigateToSuccessVC()
+                        //                        self.navigateToSuccessVC()
                     }
+                    
                 }
-            }
-            else {
-                if let message = self.successmodelobj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-//                        self.navigateToSuccessVC()
-                    }
-
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
             }
         }
+    }
     func move_to_next()
     {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPayment_SuccessfullVC") as! BillPayment_SuccessfullVC

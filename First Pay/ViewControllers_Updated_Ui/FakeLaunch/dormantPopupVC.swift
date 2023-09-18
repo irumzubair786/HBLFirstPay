@@ -195,50 +195,51 @@ class dormantPopupVC: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
 //            self.loginObj = Mapper<login>().map(JSONObject: json)
             
 //            self.loginObj = response.result.value
-            if response.response?.statusCode == 200 {
-//                self.loginObj = response.result.value
-                self.loginObj = Mapper<login>().map(JSONObject: json)
-
-                if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
-                    fetchdataFromAPI()
-//                    if self.loginObj?.data != nil{
-//
-//                        fetchdataFromAPI()
-//                    }
-                }
-                else{
-                    if let message = self.loginObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
-                            
-                            ["buttonName": "OK",
-                             "buttonBackGroundColor": UIColor.clrOrange,
-                             "buttonTextColor": UIColor.white]
-                            
-                            //                                ["buttonName": "CANCEL",
-                            //                                "buttonBackGroundColor": UIColor.clrOrange,
-                            //                                "buttonTextColor": UIColor.white]
-                            
-                            
-                        ] as? [[String: AnyObject]])
-                        
-                    }
-                    //            }
-                    
-                    else{
-                        self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
-                        //                if let message = self.loginObj?.messages{
-                        //                    self.showDefaultAlert(title: "", message: message)
-                        //                }
-                    }
-                    
-                    print(response.value)
-                    print(response.response?.statusCode)
-                    
-                }
+                            if response.response?.statusCode == 200 {
+                                //                self.loginObj = response.result.value
+                                self.loginObj = Mapper<login>().map(JSONObject: json)
+                                
+                                if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
+                                    fetchdataFromAPI()
+                                    //                    if self.loginObj?.data != nil{
+                                    //
+                                    //                        fetchdataFromAPI()
+                                    //                    }
+                                }
+                                else{
+                                    if let message = self.loginObj?.messages{
+                                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
+                                            
+                                            ["buttonName": "OK",
+                                             "buttonBackGroundColor": UIColor.clrOrange,
+                                             "buttonTextColor": UIColor.white]
+                                            
+                                            //                                ["buttonName": "CANCEL",
+                                            //                                "buttonBackGroundColor": UIColor.clrOrange,
+                                            //                                "buttonTextColor": UIColor.white]
+                                            
+                                            
+                                        ] as? [[String: AnyObject]])
+                                        
+                                    }
+                                    //            }
+                                    
+                                    else{
+                                        self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
+                                        //                if let message = self.loginObj?.messages{
+                                        //                    self.showDefaultAlert(title: "", message: message)
+                                        //                }
+                                    }
+                                    
+                                    print(response.value)
+                                    print(response.response?.statusCode)
+                                    
+                                }
+                            }
             }
         }
         

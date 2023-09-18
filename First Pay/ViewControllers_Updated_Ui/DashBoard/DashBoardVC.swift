@@ -415,32 +415,33 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            
-//            self.homeObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                self.homeObj = Mapper<HomeModel>().map(JSONObject: json)
-
-//                self.homeObj = response.result.value
-                if self.homeObj?.responsecode == 2 || self.homeObj?.responsecode == 1 {
-                 
-                    self.saveInDataManager(index: 0)
-                 
-                    self.hideActivityIndicator()
-//                    banapi()
-//
-                }
-                else {
-                    if let message = self.homeObj?.messages{
-                        self.showAlert(title: "", message: message, completion: nil)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                
+                //            self.homeObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    self.homeObj = Mapper<HomeModel>().map(JSONObject: json)
+                    
+                    //                self.homeObj = response.result.value
+                    if self.homeObj?.responsecode == 2 || self.homeObj?.responsecode == 1 {
+                        
+                        self.saveInDataManager(index: 0)
+                        
+                        self.hideActivityIndicator()
+                        //                    banapi()
+                        //
+                    }
+                    else {
+                        if let message = self.homeObj?.messages{
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
                     }
                 }
-            }
-            else {
-                //                self.showAlert(title: "", message: "Something Went Wrong", completion:nil)
-                                print(response.value)
-                                print(response.response?.statusCode)
+                else {
+                    //                self.showAlert(title: "", message: "Something Went Wrong", completion:nil)
+                    print(response.value)
+                    print(response.response?.statusCode)
+                }
             }
         }
     }
@@ -609,32 +610,32 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
             self.checkDebitCardObj = Mapper<GetDebitCardCheckModel>().map(JSONObject: json)
             
 //            self.checkDebitCardObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.checkDebitCardObj?.responsecode == 2 || self.checkDebitCardObj?.responsecode == 1 {
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
-                            self.present(vc, animated: true)
-                }
-                  else
-                    {
-                      if let message = self.checkDebitCardObj?.messages
-                      {
-                          if message == "Debit Card Already Exists"
-                          {
-                              let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                              let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
-                              self.present(vc, animated: true)
-                          }
-
-                  }
-                      
-                  }
-                      
-                  
+                            if response.response?.statusCode == 200 {
+                                if self.checkDebitCardObj?.responsecode == 2 || self.checkDebitCardObj?.responsecode == 1 {
+                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                    let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
+                                    self.present(vc, animated: true)
+                                }
+                                else
+                                {
+                                    if let message = self.checkDebitCardObj?.messages
+                                    {
+                                        if message == "Debit Card Already Exists"
+                                        {
+                                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                            let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                                            self.present(vc, animated: true)
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                                
+                            }
               
                 }
               
@@ -687,82 +688,83 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
-            
-//            self.getDebitDetailsObj = response.result.value
-            print(self.getDebitDetailsObj)
-        
-            if response.response?.statusCode == 200 {
-               
-                if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
-                    if self.getDebitDetailsObj?.debitCardData != nil{
-                        GlobalData.accountDebitCardId = self.getDebitDetailsObj?.debitCardData?[0].accountDebitCardId
-                       
-                        if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ActivateCard"
-                        {
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
-                            self.present(vc, animated: true)
-                        }
-                        else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "DeactivateCard"
-                        {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
+                
+                //            self.getDebitDetailsObj = response.result.value
+                print(self.getDebitDetailsObj)
+                
+                if response.response?.statusCode == 200 {
+                    
+                    if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        if self.getDebitDetailsObj?.debitCardData != nil{
+                            GlobalData.accountDebitCardId = self.getDebitDetailsObj?.debitCardData?[0].accountDebitCardId
                             
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
-                           isFromDeactivate  = true
-                            self.present(vc, animated: true)
-                            
-                            
-                        }
-                        else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ReactivateCard"
-                        {
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
-                            isfromReactivateCard = true
-                            self.present(vc, animated: true)
-                        }
-         
-                    }
-                    else
-                    {
-                        
-                        if self.getDebitDetailsObj?.newCarddata != nil{
-                            if
-                                self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
+                            if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ActivateCard"
                             {
                                 let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                                let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
+                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
                                 self.present(vc, animated: true)
                             }
-                            else if self.getDebitDetailsObj?.newCarddata?.apiFlow == "DeactivateCard"
+                            else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "DeactivateCard"
                             {
                                 
                                 let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
                                 let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                                isFromDeactivate  = true
                                 self.present(vc, animated: true)
                                 
+                                
                             }
+                            else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ReactivateCard"
+                            {
+                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                                isfromReactivateCard = true
+                                self.present(vc, animated: true)
+                            }
+                            
+                        }
+                        else
+                        {
+                            
+                            if self.getDebitDetailsObj?.newCarddata != nil{
+                                if
+                                    self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
+                                {
+                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                    let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
+                                    self.present(vc, animated: true)
+                                }
+                                else if self.getDebitDetailsObj?.newCarddata?.apiFlow == "DeactivateCard"
+                                {
+                                    
+                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                    let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                                    self.present(vc, animated: true)
+                                    
+                                }
+                            }
+                            
                         }
                         
                     }
-                    
+                    else {
+                        if let message = self.getDebitDetailsObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            
+                            
+                        }
+                    }
                 }
                 else {
                     if let message = self.getDebitDetailsObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
-
+                        
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.getDebitDetailsObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                    
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -812,29 +814,30 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                   response in
                   self.hideActivityIndicator()
                   guard let data = response.data else { return }
-                  let json = try! JSONSerialization.jsonObject(with: data, options: [])
-                  self.availableLimitObj = Mapper<AvailableLimitsModel>().map(JSONObject: json)
-//                  self.availableLimitObj = response.result.value
-      
-                  if response.response?.statusCode == 200 {
-      
-                      if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
-      
-                          self.updateUI()
-      //                                    self.fromlevel1()
+                  if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                      self.availableLimitObj = Mapper<AvailableLimitsModel>().map(JSONObject: json)
+                      //                  self.availableLimitObj = response.result.value
+                      
+                      if response.response?.statusCode == 200 {
+                          
+                          if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+                              
+                              self.updateUI()
+                              //                                    self.fromlevel1()
+                          }
+                          else {
+                              if let message = self.availableLimitObj?.messages{
+                                  self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                              }
+                          }
                       }
                       else {
                           if let message = self.availableLimitObj?.messages{
                               self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                           }
+                          //                  print(response.result.value)
+                          //                  print(response.response?.statusCode)
                       }
-                  }
-                  else {
-                      if let message = self.availableLimitObj?.messages{
-                          self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                      }
-    //                  print(response.result.value)
-    //                  print(response.response?.statusCode)
                   }
               }
           }

@@ -58,35 +58,36 @@ class MoneyTransfer_ReasonVC: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-//            self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
-            
-            if response.response?.statusCode == 200 {
-//                self.reasonsObj = response.result.value
-                self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
-                if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
-                    var aReq =  self.reasonsObj?.reasonsData!
-                    for i in self.reasonsObj?.reasonsData! ?? []
-                    {
-                        var temp = myreason()
-                        temp.code = (i.code!)
-                        temp.name = (i.descr ?? "")
-                        temp.id = (i.transactionPurposeId!)
-                        self.getrznid.append(temp)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                //            self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
+                
+                if response.response?.statusCode == 200 {
+                    //                self.reasonsObj = response.result.value
+                    self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
+                    if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
+                        var aReq =  self.reasonsObj?.reasonsData!
+                        for i in self.reasonsObj?.reasonsData! ?? []
+                        {
+                            var temp = myreason()
+                            temp.code = (i.code!)
+                            temp.name = (i.descr ?? "")
+                            temp.id = (i.transactionPurposeId!)
+                            self.getrznid.append(temp)
+                        }
+                        self.reasonsList = self.reasonsObj!.stringReasons
+                        self.tableView.delegate = self
+                        self.tableView.dataSource = self
+                        self.tableView.reloadData()
+                        
+                        
                     }
-                    self.reasonsList = self.reasonsObj!.stringReasons
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
-                    self.tableView.reloadData()
-       
                     
                 }
-                
-            }
-            else {
-                
-                print(response.value)
-                print(response.response?.statusCode)
+                else {
+                    
+                    print(response.value)
+                    print(response.response?.statusCode)
+                }
             }
         }
     }

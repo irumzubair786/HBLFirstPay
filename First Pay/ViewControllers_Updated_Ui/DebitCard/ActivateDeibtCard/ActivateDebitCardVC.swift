@@ -111,55 +111,56 @@ class ActivateDebitCardVC: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
-            
-//            self.getDebitDetailsObj = response.result.value
-            print(self.getDebitDetailsObj)
-        
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
                 
-                if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                //            self.getDebitDetailsObj = response.result.value
+                print(self.getDebitDetailsObj)
                 
-                    for anObject in self.getDebitDetailsObj?.debitCardData ?? []
-                    {
-                        if let name = anObject.debitCardTitle {
-                            self.labelName.text = name
-                        }
-                        if let pan = anObject.pan {
-                            self.labelCardNumber.text = pan
-                        }
-                        if let month = anObject.cardExpiryMonth {
-                            if let year = anObject.cardExpiryYear{
-                                self.labelDate.text = "\(month)" + "/\(year)"
+                if response.response?.statusCode == 200 {
+                    
+                    if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        
+                        for anObject in self.getDebitDetailsObj?.debitCardData ?? []
+                        {
+                            if let name = anObject.debitCardTitle {
+                                self.labelName.text = name
+                            }
+                            if let pan = anObject.pan {
+                                self.labelCardNumber.text = pan
+                            }
+                            if let month = anObject.cardExpiryMonth {
+                                if let year = anObject.cardExpiryYear{
+                                    self.labelDate.text = "\(month)" + "/\(year)"
+                                }
+                            }
+                            
+                            if let accountID = anObject.accountDebitCardId{
+                                GlobalData.accountDebitCardId = Int(accountID)
+                                //                self.accountDebitCardId = "\(accountID)"
                             }
                         }
-                      
-                        if let accountID = anObject.accountDebitCardId{
-                            GlobalData.accountDebitCardId = Int(accountID)
-            //                self.accountDebitCardId = "\(accountID)"
+                        
+                        self.updateUI()
+                        
+                    }
+                    
+                    else {
+                        if let message = self.getDebitDetailsObj?.messages{
+                            
+                            
+                            
                         }
                     }
-                  
-                    self.updateUI()
-                    
                 }
-                
                 else {
-                    if let message = self.getDebitDetailsObj?.messages{
-                      
-
-
-                    }
+                    //                if let message = self.genResponse?.messages{
+                    //                    self.showDefaultAlert(title: "", message: message)
+                    //                    self.movetonext()
+                    //                }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-//                if let message = self.genResponse?.messages{
-//                    self.showDefaultAlert(title: "", message: message)
-//                    self.movetonext()
-//                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -210,34 +211,35 @@ class ActivateDebitCardVC: BaseClassVC {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
-            
-//            self.getDebitDetailsObj = response.result.value
-            print(self.getDebitDetailsObj)
-        
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
                 
-                if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
-                  
+                //            self.getDebitDetailsObj = response.result.value
+                print(self.getDebitDetailsObj)
                 
-                   
-                }
-                else {
-                    if let message = self.getDebitDetailsObj?.messages{
-                      
-
-                      
+                if response.response?.statusCode == 200 {
+                    
+                    if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        
+                        
+                        
+                    }
+                    else {
+                        if let message = self.getDebitDetailsObj?.messages{
+                            
+                            
+                            
+                        }
                     }
                 }
-            }
-            else {
-//                if let message = self.genResponse?.messages{
-//                    self.showDefaultAlert(title: "", message: message)
-//                    self.movetonext()
-//                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
+                else {
+                    //                if let message = self.genResponse?.messages{
+                    //                    self.showDefaultAlert(title: "", message: message)
+                    //                    self.movetonext()
+                    //                }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                }
             }
         }
     }

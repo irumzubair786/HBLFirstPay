@@ -64,49 +64,50 @@ class City_selectionVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.cityListObj = Mapper<CitiesList>().map(JSONObject: json)
-            
-//            self.cityListObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.cityListObj = Mapper<CitiesList>().map(JSONObject: json)
                 
-                if self.cityListObj?.responsecode == 2 || self.cityListObj?.responsecode == 1 {
-                    for i in self.cityListObj?.citiesList! ?? []
-                    {
-                        var temp = mycity()
-                        temp.id = (i.cityID!)
-                        temp.name = i.cityDescr!
-                        self.getcitid.append(temp)
+                //            self.cityListObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.cityListObj?.responsecode == 2 || self.cityListObj?.responsecode == 1 {
+                        for i in self.cityListObj?.citiesList! ?? []
+                        {
+                            var temp = mycity()
+                            temp.id = (i.cityID!)
+                            temp.name = i.cityDescr!
+                            self.getcitid.append(temp)
+                        }
+                        
+                        
+                        self.arrCitiesList = self.cityListObj?.stringCities
+                        
+                        filteredData =  self.arrCitiesList
+                        
+                        //                print("cityid",self.cityId)
+                        print("get city data", self.filteredData)
+                        
+                        tableview.delegate = self
+                        tableview.dataSource = self
+                        tableview.reloadData()
+                        //                    self.methodDropDownCities(Cities: self.arrCitiesList!)
+                        //                    self.getRefferID()
                     }
-                    
-                    
-                    self.arrCitiesList = self.cityListObj?.stringCities
-                 
-                    filteredData =  self.arrCitiesList
-                   
-                   //                print("cityid",self.cityId)
-                    print("get city data", self.filteredData)
-                   
-                    tableview.delegate = self
-                    tableview.dataSource = self
-                    tableview.reloadData()
-//                    self.methodDropDownCities(Cities: self.arrCitiesList!)
-//                    self.getRefferID()
+                    else{
+                        if let message = self.cityListObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                            
+                        }
+                    }
                 }
-                else{
+                else {
                     if let message = self.cityListObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                       
+                        
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.cityListObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                   
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

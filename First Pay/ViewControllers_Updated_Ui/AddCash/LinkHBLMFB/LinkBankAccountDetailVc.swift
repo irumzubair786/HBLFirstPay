@@ -170,37 +170,37 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
             response in
             self.hideActivityIndicator()
             guard let data = response.data else { return }
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            self.genericresponseObj = Mapper<otpVerificationModel>().map(JSONObject: json)
-            
-            
-//            self.genericresponseObj = response.result.value
-            if response.response?.statusCode == 200 {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
                 
-                if self.genericresponseObj?.responsecode == 2 || self.genericresponseObj?.responsecode == 1 {
-                    GlobalData.otpRequired = self.genericresponseObj?.data?.oTPREQ
-                
-                    let vc = self.storyboard!.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
-                    self.navigationController?.pushViewController(vc, animated: true)
+                //            self.genericresponseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    self.genericresponseObj = Mapper<otpVerificationModel>().map(JSONObject: json)
                     
-                    
+                    if self.genericresponseObj?.responsecode == 2 || self.genericresponseObj?.responsecode == 1 {
+                        GlobalData.otpRequired = self.genericresponseObj?.data?.oTPREQ
+                        
+                        let vc = self.storyboard!.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        
+                    }
+                    else {
+                        if let messsage = self.genericresponseObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: messsage, iconName: .iconError)
+                            //                        self.showToast(title: messsage)
+                        }
+                        
+                    }
                 }
                 else {
                     if let messsage = self.genericresponseObj?.messages{
                         self.showAlertCustomPopup(title: "", message: messsage, iconName: .iconError)
-//                        self.showToast(title: messsage)
+                        
                     }
+                    print(response.value)
+                    print(response.response?.statusCode)
                     
                 }
-            }
-            else {
-                if let messsage = self.genericresponseObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: messsage, iconName: .iconError)
-                    
-                }
-                print(response.value)
-                print(response.response?.statusCode)
-                
             }
         }
     }
