@@ -8,10 +8,11 @@
 import UIKit
 
 class MobilePackagesCell: UITableViewCell {
+    @IBOutlet weak var viewTag: UIView!
     @IBOutlet weak var labelCutPrice: UILabel!
     @IBOutlet weak var buttonSubscribe: UIButton!
     @IBOutlet weak var buttonStar: UIButton!
-
+    
     @IBOutlet weak var labelBundleValidity: UILabel!
     @IBOutlet weak var labelPackageName: UILabel!
     @IBOutlet weak var viewPackageTagBackground: UIView!
@@ -34,6 +35,7 @@ class MobilePackagesCell: UITableViewCell {
     @IBOutlet weak var labelMessages: UILabel!
     @IBOutlet weak var labelMessagesDescription: UILabel!
     @IBOutlet weak var labelPackageDescription: UILabel!
+    @IBOutlet weak var labelDiscountPercentage: UILabel!
     
     var buttonSubscribeNow: ((MobilePackages.BundleDetail) -> ())!
     var buttonFavouriteNow: ((MobilePackages.BundleDetail) -> ())!
@@ -42,14 +44,13 @@ class MobilePackagesCell: UITableViewCell {
             labelPackageName.text = bundleDetail.bundleName
             labelBundleValidity.text = bundleDetail.bundleValidity ?? ""
             labelTaxPrice.text = "incl. tax"
+            labelCutPrice.text = "Rs.\(bundleDetail.bundleDiscountPrice)"
+            labelPrice.text = "Rs.\(bundleDetail.bundleDefaultPrice)"
             if bundleDetail.bundleDiscountPrice == 0 {
                 labelCutPrice.isHidden = true
-                labelPrice.text = "Rs.\(bundleDetail.bundleDefaultPrice)"
             }
             else {
                 labelCutPrice.isHidden = false
-                labelCutPrice.text = "Rs.\(bundleDetail.bundleDiscountPrice)"
-                labelPrice.text = "Rs.\(bundleDetail.bundleDefaultPrice)"
                 labelCutPrice.cutPrice()
             }
             labelData.text = bundleDetail.bundleResourceData ?? "0"
@@ -57,6 +58,13 @@ class MobilePackagesCell: UITableViewCell {
             labelMessages.text = bundleDetail.bundleResourceOffnet ?? "0"
             labelMessages.text = bundleDetail.bundleResourceSMS ?? "0"
             labelPackageDescription.text = bundleDetail.bundleResources
+            viewPackageTagBackground.isHidden = true
+            viewTag.isHidden = true
+            if bundleDetail.bundleDiscountPercentage != nil && bundleDetail.bundleDiscountPercentage != 0 {
+                viewTag.isHidden = false
+                viewPackageTagBackground.isHidden = false
+                labelDiscountPercentage.text = "\(bundleDetail.bundleDiscountPercentage ?? 0)"
+            }
         }
     }
     override func awakeFromNib() {
@@ -67,7 +75,7 @@ class MobilePackagesCell: UITableViewCell {
         viewThree.radius()
         viewFour.radius()
         buttonSubscribe.circle()
-
+        
         viewPackageTagBackground.roundCorners(corners: [.topRight, .bottomRight], radius: 20)
         
         DispatchQueue.main.async {
@@ -80,8 +88,9 @@ class MobilePackagesCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
-    
 }
+    
+

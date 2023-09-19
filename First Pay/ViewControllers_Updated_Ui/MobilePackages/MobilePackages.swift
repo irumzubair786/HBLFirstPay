@@ -29,6 +29,7 @@ class MobilePackages: UIViewController {
 
     var indexSelectedNetwork = 0
     var selectedCell: Int!
+    var arrayCompanyIcons = ["telenor", "jazz", "ufone", "zong"]
     var arrayNames = ["ios", "Android", "Apple", "Nokia Phone", "One Plus Phone"]
     var companyNames: [String]!
     var modelGetBundleDetails: ModelGetBundleDetails? {
@@ -39,6 +40,7 @@ class MobilePackages: UIViewController {
                     return $0.companyName
                 })
                 tableView.reloadData()
+                collectionView.reloadData()
             }
             else {
                 self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
@@ -61,7 +63,7 @@ class MobilePackages: UIViewController {
         print(arrayNames)
         // Do any additional setup after loading the view.
         getBundleDetails()
-        bundleSubscription()
+        
         selectedButton(view: viewOne, button: buttonOne)
     }
     @IBAction func buttonBack(_ sender: Any) {
@@ -124,31 +126,13 @@ class MobilePackages: UIViewController {
 //        "channelId" : "3"
 //    }
     
-    func bundleSubscription() {
-        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters: Parameters = [
-            "cnic" : userCnic!,
-            "imei" : DataManager.instance.imei!,
-            "channelId" : "\(DataManager.instance.channelID)",
-            "lat" : "1000",
-            "lng" : "1000",
-            "mobileNo" : DataManager.instance.mobile_number ?? "", //"03445823336",
-            "bundleKey" : "502333",
-            "bundleId" : "5"
-        ]
-        
-        APIs.postAPI(apiName: .bundleSubscription, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            print(responseData)
-            print(success)
-            print(errorMsg)
-//            let model: ModelGetLoanCharges? = APIs.decodeDataToObject(data: responseData)
-//            self.modelGetLoanCharges = model
-        }
-    }
     
+
     func navigateToMobilePackagesDetails(bundleDetails: BundleDetail) {
         let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesDetails") as! MobilePackagesDetails
         vc.bundleDetail = bundleDetails
+        vc.companyIcon = UIImage(named: arrayCompanyIcons[indexSelectedNetwork])
+        vc.companyName = modelGetBundleDetails?.data[indexSelectedNetwork].companyName ?? ""
         self.navigationController!.pushViewController(vc, animated: true)
     }
 }
@@ -156,18 +140,49 @@ class MobilePackages: UIViewController {
 extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width + 45, height: 50)
+        return CGSize(width: arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width + 50, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if companyNames == nil {
+            return 0
+        }
+        for (index, companyName) in companyNames.enumerated() {
+            if buttonOne.tag == 1 {
+                indexSelectedNetwork = index
+                if companyName == "TELENOR" {
+                    break
+                }
+            }
+            else if buttonTwo.tag == 1 {
+                indexSelectedNetwork = index
+                if companyName == "JAZZ" {
+                    break
+                }
+            }
+            else if buttonThree.tag == 1 {
+                indexSelectedNetwork = index
+                if companyName == "UFONE" {
+                    break
+                }
+            }
+            else if buttonFour.tag == 1 {
+                indexSelectedNetwork = index
+                if companyName == "ZONG" {
+                    break
+                }
+            }
+        }
         
-        
-        return 5
+        return modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MobilePackagesDataNameCell", for: indexPath) as! MobilePackagesDataNameCell
-        cell.labelName.text = "\(arrayNames[ indexPath.row])"
+        
+        let bundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters[indexPath.row]
+        
+        cell.labelName.text = "\(bundleFilter?.filterName ?? "")"
         if selectedCell != nil {
             if selectedCell == indexPath.item {
                 cell.viewBackGround.backgroundColor = .clrOrange
@@ -304,7 +319,7 @@ extension MobilePackages {
         let bundleName: String
         let bundleDiscountPrice: Int
         let bundleValidityType: BundleValidityType?
-        let bundleDiscountPercentage, ubpBundleFilterID: Int
+        let bundleDiscountPercentage, ubpBundleFilterID: Int?
         let bundleSequence: JSONNull?
         let bundleValidity: String?
         let ubpBundleID: Int
