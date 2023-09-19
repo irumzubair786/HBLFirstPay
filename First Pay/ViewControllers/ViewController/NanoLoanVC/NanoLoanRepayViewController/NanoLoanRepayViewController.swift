@@ -152,7 +152,7 @@ class NanoLoanRepayViewController: UIViewController {
     
     func openNanoLoanBenifitVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanBenifitVC") as! NanoLoanBenifitVC
-        vc.modalPresentationStyle = .overFullScreen
+//        vc.modalPresentationStyle = .overFullScreen
         self.present(vc, animated: true)
     }
     func openMarkupCalendar() {

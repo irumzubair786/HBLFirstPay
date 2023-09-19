@@ -104,6 +104,7 @@ class MobilePackages: UIViewController {
             button.tag = 1
         }
         tableView.reloadData()
+        collectionView.reloadData()
     }
     func getBundleDetails() {
         APIs.getAPI(apiName: .getBundleDetails, parameters: nil) { responseData, success, errorMsg in

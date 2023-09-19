@@ -12,9 +12,14 @@ class NanoLoanBenifitVC: UIViewController {
 
     @IBOutlet weak var buttonCancel: UIButton!
     
+    @IBOutlet weak var viewBlackBackGround: UIView!
     @IBOutlet weak var viewBackGround: UIView!
+    override func viewWillAppear(_ animated: Bool) {
+        self.viewBlackBackGround.backgroundColor = .clear
+        self.view.backgroundColor = .clear
+    }
     override func viewDidAppear(_ animated: Bool) {
-        self.view.backgroundColor = .clrBlackWithOccupacy20
+        self.viewBlackBackGround.backgroundColor = .clrBlackWithOccupacy20
         viewBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
     }
     override func viewDidLoad() {
