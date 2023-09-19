@@ -92,7 +92,8 @@ class DebitCardMainVC: BaseClassVC {
                     userDebitCardName = self.checkDebitCardObj?.data?.customerName
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardNameSelectionVC") as!  DebitCardNameSelectionVC
                     vc.fullUserName = fullName!
-                    self.navigationController?.pushViewController(vc, animated: true)
+//                    self.present(vc, animated: true)
+                    self.navigationController?.pushViewController(vc, animated: false)
                 }
                 else {
                     

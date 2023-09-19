@@ -69,7 +69,10 @@ class MobilePackages: UIViewController {
     @IBAction func buttonBack(_ sender: Any) {
         self.dismiss(animated: true)
     }
+   
     @IBAction func buttonSetting(_ sender: UIButton) {
+        let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "PackagesFilter") as! PackagesFilter
+        self.present(vc, animated: true)
     }
     @IBAction func buttonOne(_ sender: UIButton) {
         selectedButton(view: viewOne, button: buttonOne)

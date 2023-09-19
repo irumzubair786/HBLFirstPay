@@ -215,17 +215,23 @@
                                                     <rect key="frame" x="15" y="43" width="17" height="23"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ContactListicon" translatesAutoresizingMaskIntoConstraints="NO" id="qx3-So-xTf">
+                                                    <rect key="frame" x="376" y="45" width="14" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KKP-RO-Ybc">
-                                                    <rect key="frame" x="376" y="46" width="14" height="17"/>
+                                                    <rect key="frame" x="363" y="35" width="40" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" backgroundImage="ContactListicon"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                                             <color key="value" systemColor="systemGreenColor"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="buttonContact:" destination="M4Z-VA-DCQ" eventType="touchUpInside" id="y4A-pZ-zTB"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -316,6 +322,7 @@
                     <size key="freeformSize" width="414" height="730"/>
                     <connections>
                         <outlet property="buttonBack" destination="ILQ-ND-9DV" id="dvx-3l-vS0"/>
+                        <outlet property="buttonContact" destination="KKP-RO-Ybc" id="Cp9-R7-Grd"/>
                         <outlet property="buttonContinue" destination="XIU-PW-2Gf" id="EXY-f4-fBL"/>
                         <outlet property="imageViewButtonContinue" destination="zti-Xm-Pbq" id="hCD-g1-f8d"/>
                         <outlet property="imageViewOperator" destination="31j-cf-ZjK" id="BYP-pW-sY2"/>

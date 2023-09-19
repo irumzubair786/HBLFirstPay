@@ -8,6 +8,8 @@
 
 import UIKit
 import Alamofire
+import ContactsUI
+import libPhoneNumber_iOS
 
 class MobilePackagesDetails: UIViewController {
 
@@ -23,15 +25,22 @@ class MobilePackagesDetails: UIViewController {
     @IBOutlet weak var labelCarrier: UILabel!
     @IBOutlet weak var labelPrice: UILabel!
     @IBOutlet weak var labelAmount: UILabel!
-    
+    @IBOutlet weak var buttonContact: UIButton!
+
     var companyIcon: UIImage!
     var companyName: String!
     var bundleDetail: MobilePackages.BundleDetail!
+    var stringName = ""
+
+    private let contactPicker = CNContactPickerViewController()
     override func viewDidLoad() {
         super.viewDidLoad()
         viewBackGroundContinueButton.circle()
         // Do any additional setup after loading the view.
         setData()
+        
+        textFieldMobileNumber.addTarget(self, action: #selector(changeNumberInTextField), for: .editingChanged)
+        textFieldMobileNumber.delegate = self
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -39,6 +48,10 @@ class MobilePackagesDetails: UIViewController {
     }
     @IBAction func buttonContinue(_ sender: Any) {
         bundleSubscription()
+    }
+    @IBAction func buttonContact(_ sender: Any) {
+        contactPicker.delegate = self
+        self.present(contactPicker, animated: true, completion: nil)
     }
     
     func setData() {
@@ -58,6 +71,7 @@ class MobilePackagesDetails: UIViewController {
             "lat" : "\(DataManager.instance.Latitude ?? 0)",
             "lng" : "\(DataManager.instance.Longitude ?? 0)",
             "mobileNo" : "03445823336",//textFieldMobileNumber.text!, //"03445823336",
+//            "mobileNo" : textFieldMobileNumber.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0"),
             "bundleKey" : "\(bundleDetail.bundleKey)",
             "bundleId" : "\(bundleDetail.ubpBundleID)"
         ]
@@ -70,5 +84,89 @@ class MobilePackagesDetails: UIViewController {
             //            self.modelGetLoanCharges = model
         }
     }
+    
+    @objc func changeNumberInTextField() {
+        let text = textFieldMobileNumber.text!.replacingOccurrences(of: "+92-", with: "")
+        if textFieldMobileNumber.text?.count == 1 && text == "0" {
+            textFieldMobileNumber.text = nil
+            return
+        }
+        textFieldMobileNumber.text = format(with: "+92-XXX-XXXXXXX", phone: text)
+    }
 
+}
+extension MobilePackagesDetails: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+    }
+}
+extension MobilePackagesDetails: CNContactPickerDelegate {
+
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+        
+        let phoneNumberCount = contact.phoneNumbers.count
+      //  let name = "\(contact.givenName + contact.familyName)"
+        let name = "\(contact.givenName) \(contact.familyName)"
+        
+        self.stringName = name
+        guard phoneNumberCount > 0 else {
+            dismiss(animated: true)
+            //show pop up: "Selected contact does not have a number"
+            return
+        }
+
+        if phoneNumberCount == 1 {
+            setNumberFromContact(contactNumber: contact.phoneNumbers[0].value.stringValue)
+
+        } else {
+            let alertController = UIAlertController(title: "Select one of the numbers", message: nil, preferredStyle: .alert)
+
+            for i in 0...phoneNumberCount-1 {
+                let phoneAction = UIAlertAction(title: contact.phoneNumbers[i].value.stringValue, style: .default, handler: {
+                alert -> Void in
+                    self.setNumberFromContact(contactNumber: contact.phoneNumbers[i].value.stringValue)
+                })
+                alertController.addAction(phoneAction)
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: {
+            alert -> Void in
+
+            })
+            alertController.addAction(cancelAction)
+
+            dismiss(animated: true)
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    func setNumberFromContact(contactNumber: String) {
+
+        //UPDATE YOUR NUMBER SELECTION LOGIC AND PERFORM ACTION WITH THE SELECTED NUMBER
+
+        var contactNumber = contactNumber.replacingOccurrences(of: "-", with: "")
+        contactNumber = contactNumber.replacingOccurrences(of: "(", with: "")
+        contactNumber = contactNumber.replacingOccurrences(of: ")", with: "")
+        
+        let phoneUtil = NBPhoneNumberUtil()
+
+          do {
+            
+            let phoneNumber: NBPhoneNumber = try phoneUtil.parse(contactNumber, defaultRegion: "PK")
+            let formattedString: String = try phoneUtil.format(phoneNumber, numberFormat: .NATIONAL)
+
+            print("Formatted String : \(formattedString)")
+              var tempPhoneNumber = "\(formattedString.allNumbers)".replace(string: "+92", replacement: "")
+              if tempPhoneNumber.first == "0" {
+                  tempPhoneNumber.removeFirst()
+              }
+              self.textFieldMobileNumber.text = format(with: "+92-XXX-XXXXXXX", phone: "\(tempPhoneNumber)")
+          }
+          catch let error as NSError {
+              print(error.localizedDescription)
+          }
+    }
+
+    func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+      
+    }
 }
