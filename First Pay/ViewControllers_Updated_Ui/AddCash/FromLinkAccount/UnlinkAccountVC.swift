@@ -15,7 +15,9 @@ class UnlinkAccountVC: BaseClassVC {
     var genericResponseObj : GenericResponseModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+//        add swipe Gesture
 //        blurView.alpha = 0.4
+        backView.dropShadow1()
         let tapGestureRecognizers = UITapGestureRecognizer(target: self, action: #selector(Movetoback(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizers)
@@ -41,6 +43,7 @@ class UnlinkAccountVC: BaseClassVC {
         self.navigationController?.popViewController(animated: false)
     }
     
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var labelCancel: UILabel!
     @IBOutlet weak var labelDelink: UILabel!
     @objc func Delink(tapGestureRecognizer: UITapGestureRecognizer)

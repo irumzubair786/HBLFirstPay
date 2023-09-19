@@ -30,6 +30,7 @@ class LocationAddress: UIViewController {
     var locationContact = ""
     override func viewDidLoad() {
         super.viewDidLoad()
+        //        add swipe Gesture
         titlelbl.text = titleName
         branchName.text = locationName
         branchAddress.text = locationAddress

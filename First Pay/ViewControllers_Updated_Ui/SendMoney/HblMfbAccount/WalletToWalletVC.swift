@@ -343,7 +343,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
 
     //                self.reasonsObj = response.result.value
                     if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
-                       
+                        
     //                    self.reasonsList = self.reasonsObj!.stringReasons
     //                    self.PurposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
     //                    GlobalData.money_Reason = self.PurposeTf.text ?? ""

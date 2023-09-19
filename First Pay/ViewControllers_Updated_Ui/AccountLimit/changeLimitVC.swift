@@ -53,7 +53,7 @@ class changeLimitVC: BaseClassVC {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //        add swipe Gesture
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         viewBackground.dropShadow1()
@@ -107,6 +107,7 @@ class changeLimitVC: BaseClassVC {
         if maximumAmount == "0" {
             convertdailymaxValue = 200000
         }
+        
         print("convertdailyminValue",convertdailyminValue as Any)
         print("convertdailymaxValue",convertdailymaxValue as Any)
 //        slider.minimumValue = Float(convertdailyminValue ?? 0)
@@ -138,11 +139,32 @@ class changeLimitVC: BaseClassVC {
         self.view.backgroundColor = .clear
         self.view.viewWithTag(999)?.removeFromSuperview()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            
+            
             self.delegate?.updatescreen(value:  self.labelAmount.text, tag: self.tag, section: self.section)
+            
             self.dismiss(animated: true)
             
         }
         
+        
+        
+    }
+    
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+            return 1
+        }
+    
+    
+    @IBAction func buttonDrawer(_ sender: UIButton) {
+        self.view.backgroundColor = .clear
+        self.view.viewWithTag(999)?.removeFromSuperview()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.delegate?.updatescreen(value:  self.labelAmount.text, tag: self.tag, section: self.section)
+            self.dismiss(animated: true)
+            
+        }
+
         
     }
     @IBAction func Action_Slider(_ sender: UISlider) {

@@ -59,8 +59,10 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         
         aCell.btnDetail.setTitle("", for: .normal)
         aCell.btnDetail.tag = indexPath.row
-        
+        aCell.cellBackButton.tag = indexPath.row
+        aCell.cellBackButton.setTitle("", for: .normal)
         aCell.btnDetail.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
+        aCell.cellBackButton.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
         
         return aCell
     }

@@ -415,13 +415,15 @@ class Hblmfb_MoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         vc.TransactionDate = fundsTransSuccessObj?.data?.transDate
         if  isfromFirstPayWallet == true
         {
-            vc.number = self.number!
+            vc.number = ToaccountTitle
+            vc.AccountNo = self.number!
         }
         else
         {
-            var merge = "\(ToaccountTitle!)\(number!)"
-            print("other wallet bank name", merge)
-            vc.number = merge
+//            var merge = "\(ToaccountTitle!)\(number!)"
+//            print("other wallet bank name", merge)
+            vc.number = ToaccountTitle!
+            vc.AccountNo = number!
             
         }
         vc.Toaccounttitle = ToaccountTitle

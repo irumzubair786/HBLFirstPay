@@ -64,9 +64,10 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     override func viewWillAppear(_ animated: Bool) {
         UITextField.appearance().tintColor = .clear
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        pinTextField.becomeFirstResponder()
+        checkFaceIdActive()
         
         //<<<<<<< HEAD
         //
@@ -269,7 +270,16 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
         }
     }
     
-    
+    func checkFaceIdActive()
+    {
+        guard let  ActiveId = UserDefaults.standard.string(forKey:  "enableTouchID")else
+        
+        {
+            pinTextField.becomeFirstResponder()
+            print("not active")
+            return
+        }
+    }
     //    --------------------
     //    outlets
     //    --------------------

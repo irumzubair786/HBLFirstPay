@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -729,13 +729,13 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r7I-sh-fwg">
-                                                            <rect key="frame" x="62" y="24" width="170" height="19"/>
+                                                            <rect key="frame" x="62" y="24" width="170" height="25"/>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ks-AF-xxc">
-                                                            <rect key="frame" x="62" y="45" width="170" height="18"/>
+                                                            <rect key="frame" x="62" y="48" width="170" height="18"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="18" id="LdW-bP-aau"/>
                                                             </constraints>
@@ -750,6 +750,12 @@
                                                                 <constraint firstAttribute="width" constant="20" id="hgh-a4-hPW"/>
                                                             </constraints>
                                                         </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="udY-mW-lwr">
+                                                            <rect key="frame" x="10" y="0.0" width="335" height="79"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <state key="normal" title="Button"/>
+                                                            <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
@@ -764,12 +770,12 @@
                                                         <constraint firstItem="8G8-8w-xUx" firstAttribute="top" secondItem="vK9-8A-bhU" secondAttribute="top" constant="10" id="XrM-LT-ZaM"/>
                                                         <constraint firstItem="r7I-sh-fwg" firstAttribute="leading" secondItem="g2J-V5-hHU" secondAttribute="trailing" constant="12" id="YJd-iC-RBF"/>
                                                         <constraint firstItem="8G8-8w-xUx" firstAttribute="leading" secondItem="vK9-8A-bhU" secondAttribute="leading" id="ZQF-cw-ecn"/>
-                                                        <constraint firstAttribute="bottom" secondItem="5ks-AF-xxc" secondAttribute="bottom" constant="24" id="bPV-Hp-me8"/>
+                                                        <constraint firstAttribute="bottom" secondItem="5ks-AF-xxc" secondAttribute="bottom" constant="21" id="bPV-Hp-me8"/>
                                                         <constraint firstItem="g2J-V5-hHU" firstAttribute="centerY" secondItem="vK9-8A-bhU" secondAttribute="centerY" id="bme-6W-lZx"/>
                                                         <constraint firstItem="zYJ-xR-67C" firstAttribute="top" secondItem="vK9-8A-bhU" secondAttribute="top" id="gca-na-HTv"/>
                                                         <constraint firstAttribute="bottom" secondItem="LQ2-4Z-x51" secondAttribute="bottom" id="hvd-N5-OTt"/>
                                                         <constraint firstItem="W4p-3i-qUg" firstAttribute="centerY" secondItem="vK9-8A-bhU" secondAttribute="centerY" id="iT2-ET-kTf"/>
-                                                        <constraint firstItem="5ks-AF-xxc" firstAttribute="top" secondItem="r7I-sh-fwg" secondAttribute="bottom" constant="2" id="j1e-zJ-X6U"/>
+                                                        <constraint firstItem="5ks-AF-xxc" firstAttribute="top" secondItem="r7I-sh-fwg" secondAttribute="bottom" constant="-1" id="j1e-zJ-X6U"/>
                                                         <constraint firstAttribute="trailing" secondItem="8G8-8w-xUx" secondAttribute="trailing" constant="10" id="lDp-Vd-4p4"/>
                                                         <constraint firstAttribute="bottom" secondItem="8G8-8w-xUx" secondAttribute="bottom" constant="10" id="mYC-Q1-nks"/>
                                                         <constraint firstItem="W4p-3i-qUg" firstAttribute="leading" secondItem="5ks-AF-xxc" secondAttribute="trailing" constant="8" id="oCZ-hR-zs1"/>
@@ -788,6 +794,7 @@
                                         <connections>
                                             <outlet property="btn" destination="8G8-8w-xUx" id="wTb-F4-Waa"/>
                                             <outlet property="btnDetail" destination="zYJ-xR-67C" id="9Vz-aE-tz0"/>
+                                            <outlet property="cellBackButton" destination="udY-mW-lwr" id="WrI-2j-has"/>
                                             <outlet property="img" destination="g2J-V5-hHU" id="tEX-Qe-3UC"/>
                                             <outlet property="lblAmount" destination="W4p-3i-qUg" id="mK9-EV-Khw"/>
                                             <outlet property="lblbankName" destination="r7I-sh-fwg" id="o0h-LJ-nBy"/>

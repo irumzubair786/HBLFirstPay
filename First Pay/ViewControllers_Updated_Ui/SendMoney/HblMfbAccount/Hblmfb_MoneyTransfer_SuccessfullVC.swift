@@ -24,12 +24,13 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
     var TransactionId: String?
     var TransactionDate: String?
     var Toaccounttitle : String?
+    var AccountNo : String?
     override func viewDidLoad() {
         super.viewDidLoad()
       
         FBEvents.logEvent(title: .SendMoney_category_selection)
         FaceBookEvents.logEvent(title: .SendMoney_category_selection)
-        
+       
         btnCross.setTitle("", for: .normal)
         btnDownlload.setTitle("", for: .normal)
         btnShare.setTitle("", for: .normal)
@@ -46,6 +47,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
     @IBOutlet weak var lblTransType: UILabel!
     @IBOutlet weak var lblTransactionId: UILabel!
    
+    @IBOutlet weak var lblbeneficiaryAccountNo: UILabel!
     @IBOutlet weak var btnCross: UIButton!
     @IBOutlet weak var btnDownlload: UIButton!
     @IBOutlet weak var btnShare: UIButton!
@@ -92,7 +94,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
             lblDateTime.text = TransactionDate!
           
             lblBeneficiaryAccount.text = number!
-              
+            lblbeneficiaryAccountNo.text = AccountNo!
         }
         else if isfromHblMbfAccount == true
         {
@@ -102,7 +104,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
             lblSourceAccount.text = a
             lblDateTime.text = TransactionDate!
             lblBeneficiaryAccount.text = number!
-             
+            lblbeneficiaryAccountNo.text = AccountNo!
         }
             
 //        else if isfromOtherLocalBank == true{

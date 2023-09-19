@@ -417,8 +417,9 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
            
         var merge = "\(ToaccountTitle!)\(number!)"
         print("other wallet bank name", merge)
-         vc.number = merge
-            vc.Toaccounttitle = ToaccountTitle
+         vc.number = ToaccountTitle
+        vc.Toaccounttitle = ToaccountTitle
+        vc.AccountTitle = number
             self.navigationController?.pushViewController(vc, animated: true)
 //        }
         

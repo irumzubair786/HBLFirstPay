@@ -13,7 +13,7 @@ class DebitCardAddressVC: UIViewController {
     var fullUserName : String?
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        //        add swipe Gesture
     
         let tapGestureRecognizers = UITapGestureRecognizer(target: self, action: #selector(Movetoback(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true

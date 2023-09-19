@@ -33,6 +33,7 @@ class UnverifeidAccountMainVc: BaseClassVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         buttonBack.setTitle("", for: .normal)
         // Do any additional setup after loading the view.
     }

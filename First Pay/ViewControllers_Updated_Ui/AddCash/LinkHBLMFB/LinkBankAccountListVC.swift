@@ -64,9 +64,10 @@ class LinkBankAccountListVC: BaseClassVC {
             self.hideActivityIndicator()
             guard let data = response.data else { return }
             if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
-                //            self.cbsAccountsObj = response.result.value
+            self.cbsAccountsObj = Mapper<GetCBSAccounts>().map(JSONObject: json)
+
                 if response.response?.statusCode == 200 {
-                    
+                   
                     if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
                         if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
                             self.tableView.delegate = self

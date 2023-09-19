@@ -23,6 +23,7 @@ class otherWalletTransationSuccessfullVC: BaseClassVC {
     var Toaccounttitle : String?
     var image :UIImage?
     var number : String?
+    var AccountTitle: String?
     override func viewDidLoad() {
         super.viewDidLoad()
         btnCross.setTitle("", for: .normal)
@@ -35,6 +36,8 @@ class otherWalletTransationSuccessfullVC: BaseClassVC {
     @IBOutlet weak var lblBeneficiaryAccount: UILabel!
     @IBOutlet weak var lblTransType: UILabel!
     @IBOutlet weak var lblTransactionId: UILabel!
+    
+    @IBOutlet weak var lblBeneficiaryAccountTitle: UILabel!
     @IBOutlet weak var btnCross: UIButton!
     @IBOutlet weak var btnDownlload: UIButton!
     @IBOutlet weak var btnShare: UIButton!
@@ -87,6 +90,7 @@ class otherWalletTransationSuccessfullVC: BaseClassVC {
                     lblSourceAccount.text = merge
                     lblDateTime.text = TransactionDate!
                     lblBeneficiaryAccount.text = number!
+           lblBeneficiaryAccountTitle.text = AccountTitle!
 //               lblWalletName.text = GlobalData.Selected_bank
                   
                 }
@@ -101,7 +105,7 @@ class otherWalletTransationSuccessfullVC: BaseClassVC {
                     var merge = "\(DataManager.instance.accountTitle!) \(DataManager.instance.accountNo!)"
                              lblSourceAccount.text = merge
                     lblDateTime.text = TransactionDate!
-                    
+                    lblBeneficiaryAccountTitle.text = AccountTitle!
         
         
         
