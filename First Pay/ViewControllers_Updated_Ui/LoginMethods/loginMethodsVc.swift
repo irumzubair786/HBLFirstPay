@@ -9,11 +9,13 @@
 import UIKit
 import SwiftKeychainWrapper
 import SideMenu
+
 var flagisEnable : Bool?
 class loginMethodsVc: BaseClassVC {
    
     override func viewDidLoad() {
         super.viewDidLoad()
+//        buttonDissmiss.setTitle("", for: .normal)
         buttonback.setTitle("", for: .normal)
         viewdisble.isHidden = true
         checkIdEnable()
@@ -75,7 +77,18 @@ func checkIdEnable()
         
        
     }
-    
+    func animateViewSwipeDown() {
+        UIView.animate(withDuration: 0.0) {
+            // Change the frame of the animatedView to move it down
+            self.viewdisble.frame.origin.y += 200 // Adjust the distance as needed
+        }
+    }
+
+    @IBOutlet weak var buttonDissmiss: UIButton!
+    @IBAction func buuttonDismiss(_ sender: UIButton) {
+        animateViewSwipeDown()
+        
+    }
     @IBOutlet weak var buttonNotNow: UIButton!
     @IBOutlet weak var buttonDisable: UIButton!
     @IBOutlet weak var butttonEnableFaceid: UISwitch!

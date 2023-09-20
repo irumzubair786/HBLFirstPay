@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -231,7 +231,7 @@
                                         <rect key="frame" x="1" y="106" width="374" height="107"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y4V-Gc-ocW">
-                                                <rect key="frame" x="88" y="17" width="201" height="31"/>
+                                                <rect key="frame" x="105" y="17" width="201" height="31"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="5BY-eB-NRc"/>
@@ -258,7 +258,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TD4-Sk-JfX">
-                                                <rect key="frame" x="86" y="69" width="201" height="31"/>
+                                                <rect key="frame" x="103" y="69" width="201" height="31"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="NOT NOW">
@@ -287,13 +287,13 @@
                                             <constraint firstItem="TD4-Sk-JfX" firstAttribute="top" secondItem="y4V-Gc-ocW" secondAttribute="bottom" constant="21" id="BNa-hD-dK8"/>
                                             <constraint firstItem="TD4-Sk-JfX" firstAttribute="width" secondItem="y4V-Gc-ocW" secondAttribute="width" id="Fte-LG-QGo"/>
                                             <constraint firstItem="TD4-Sk-JfX" firstAttribute="height" secondItem="y4V-Gc-ocW" secondAttribute="height" multiplier="0.977778" constant="0.68888199999999955" id="LLt-bX-ggi"/>
-                                            <constraint firstItem="TD4-Sk-JfX" firstAttribute="leading" secondItem="QYA-ZV-HL8" secondAttribute="leading" constant="86" id="UKl-Qv-5y1"/>
-                                            <constraint firstItem="y4V-Gc-ocW" firstAttribute="leading" secondItem="QYA-ZV-HL8" secondAttribute="leading" constant="88" id="XN0-xC-S9B"/>
+                                            <constraint firstItem="TD4-Sk-JfX" firstAttribute="leading" secondItem="QYA-ZV-HL8" secondAttribute="leading" constant="103" id="UKl-Qv-5y1"/>
+                                            <constraint firstItem="y4V-Gc-ocW" firstAttribute="leading" secondItem="QYA-ZV-HL8" secondAttribute="leading" constant="105" id="XN0-xC-S9B"/>
                                             <constraint firstAttribute="height" constant="107" id="e9b-yk-hJd"/>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="QYA-ZV-HL8" firstAttribute="leading" secondItem="Mip-YZ-oUs" secondAttribute="leading" constant="1" id="2KK-sQ-erR"/>
                                     <constraint firstItem="ONa-iU-EVn" firstAttribute="top" secondItem="ThI-nF-pCP" secondAttribute="bottom" constant="7.5" id="5Do-DY-fgD"/>
@@ -315,8 +315,20 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
                                         <real key="value" value="12"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Z9-RX-gOs">
+                                <rect key="frame" x="18" y="422" width="338" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" subtitle="aaa"/>
+                                <connections>
+                                    <action selector="buuttonDismiss:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="DUD-Ca-o3F"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -338,6 +350,7 @@
                     <connections>
                         <outlet property="buttonChangePassowrd" destination="erv-qh-xGJ" id="SNH-Qg-uiX"/>
                         <outlet property="buttonDisable" destination="y4V-Gc-ocW" id="onp-YK-h6L"/>
+                        <outlet property="buttonDissmiss" destination="7Z9-RX-gOs" id="TzT-6E-8uM"/>
                         <outlet property="buttonNotNow" destination="TD4-Sk-JfX" id="a7A-PE-qge"/>
                         <outlet property="buttonback" destination="ERc-hX-JZK" id="jSB-Oj-yzD"/>
                         <outlet property="butttonEnableFaceid" destination="Vk7-cJ-0z1" id="Wy8-XE-Rp6"/>

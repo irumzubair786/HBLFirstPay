@@ -3,7 +3,7 @@
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment version="4608" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -4973,7 +4973,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GvA-ep-kNw" userLabel="Main_View">
-                                <rect key="frame" x="0.0" y="44" width="440.33333333333331" height="818"/>
+                                <rect key="frame" x="0.0" y="44" width="415" height="818"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="QAS-uI-d8G">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="96"/>
@@ -4994,7 +4994,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OTP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DTS-kw-VRL">
-                                        <rect key="frame" x="25" y="89" width="390.33333333333331" height="33"/>
+                                        <rect key="frame" x="25" y="89" width="365" height="33"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="33" id="KNu-OP-ZGc"/>
                                         </constraints>
@@ -5054,14 +5054,14 @@ other charges) from accounts maintained by the borrower at the Bank.
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vVT-Cp-J5M" customClass="OTPTextField">
-                                        <rect key="frame" x="30" y="267" width="354.33333333333331" height="45"/>
+                                        <rect key="frame" x="30" y="267" width="329" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="tIH-ru-yfu"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OTP   will be Resend after 30 Seconds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TX5-aa-FAK">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="OTP   will be Resend after 30 Seconds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TX5-aa-FAK">
                                         <rect key="frame" x="8" y="455" width="350.33333333333331" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="SJb-So-OdL"/>
@@ -5069,6 +5069,15 @@ other charges) from accounts maintained by the borrower at the Bank.
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.80000000000000004" green="0.40784313729999999" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="57Sec" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="klv-1e-4WW">
+                                        <rect key="frame" x="162" y="410" width="91" height="17.666666666666686"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17.670000000000002" id="k9Y-Z2-Qv3"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -5085,18 +5094,21 @@ other charges) from accounts maintained by the borrower at the Bank.
                                     <constraint firstItem="Gbc-sl-f0M" firstAttribute="leading" secondItem="GvA-ep-kNw" secondAttribute="leading" constant="25" id="Oym-Ry-Psm"/>
                                     <constraint firstItem="vVT-Cp-J5M" firstAttribute="top" secondItem="Gbc-sl-f0M" secondAttribute="bottom" constant="86" id="Spd-BG-YfX"/>
                                     <constraint firstItem="vVT-Cp-J5M" firstAttribute="leading" secondItem="GvA-ep-kNw" secondAttribute="leading" constant="30" id="atC-XJ-CGD"/>
+                                    <constraint firstItem="klv-1e-4WW" firstAttribute="top" secondItem="2qn-YO-5JR" secondAttribute="bottom" constant="24" id="euU-bg-0wr"/>
+                                    <constraint firstAttribute="trailing" secondItem="klv-1e-4WW" secondAttribute="trailing" constant="162" id="iGl-1r-knk"/>
                                     <constraint firstItem="Bg7-Tp-Kbv" firstAttribute="leading" secondItem="GvA-ep-kNw" secondAttribute="leading" constant="25" id="iez-ZY-jJZ"/>
                                     <constraint firstItem="vBF-PH-yd7" firstAttribute="leading" secondItem="GvA-ep-kNw" secondAttribute="leading" constant="25" id="nF9-bP-Nf3"/>
                                     <constraint firstAttribute="trailing" secondItem="TX5-aa-FAK" secondAttribute="trailing" constant="82" id="ob5-xa-jNB"/>
                                     <constraint firstItem="TX5-aa-FAK" firstAttribute="leading" secondItem="GvA-ep-kNw" secondAttribute="leading" constant="8" id="oj1-VI-Iuz"/>
                                     <constraint firstItem="2qn-YO-5JR" firstAttribute="leading" secondItem="GvA-ep-kNw" secondAttribute="leading" constant="116.66666666666666" id="rR4-ny-FZ4"/>
                                     <constraint firstItem="0NK-Do-RV0" firstAttribute="centerY" secondItem="Bg7-Tp-Kbv" secondAttribute="centerY" id="tev-uP-wGg"/>
+                                    <constraint firstItem="klv-1e-4WW" firstAttribute="leading" secondItem="GvA-ep-kNw" secondAttribute="leading" constant="162" id="uW1-fd-mEg"/>
                                     <constraint firstItem="Bg7-Tp-Kbv" firstAttribute="top" secondItem="GvA-ep-kNw" secondAttribute="top" constant="41" id="wBj-7H-RXE"/>
                                     <constraint firstItem="vBF-PH-yd7" firstAttribute="top" secondItem="DTS-kw-VRL" secondAttribute="bottom" constant="5" id="yJT-wS-zMW"/>
                                 </constraints>
                             </view>
                             <button hidden="YES" opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7A-bs-x8E">
-                                <rect key="frame" x="360.33333333333331" y="79" width="39" height="8"/>
+                                <rect key="frame" x="335" y="79" width="39" height="8"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="8" id="Uji-fM-38v"/>
@@ -5108,7 +5120,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PE6-hG-6fG">
-                                <rect key="frame" x="35" y="649" width="344.33333333333331" height="63"/>
+                                <rect key="frame" x="35" y="649" width="319" height="63"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="63" id="uci-Zz-yIx"/>
@@ -5122,7 +5134,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YXY-5v-YjH">
-                                <rect key="frame" x="316.33333333333331" y="655.66666666666663" width="50" height="50"/>
+                                <rect key="frame" x="291" y="655.66666666666663" width="50" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="Kh4-JH-fPJ"/>
@@ -5137,7 +5149,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ps7-qw-TwA">
-                                <rect key="frame" x="97.000000000000014" y="403" width="214.33333333333337" height="27"/>
+                                <rect key="frame" x="97" y="403" width="189" height="27"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="189" id="IAp-JJ-byC"/>
@@ -5151,16 +5163,6 @@ other charges) from accounts maintained by the borrower at the Bank.
                                     <action selector="Action_OTPcall:" destination="Uk6-Ro-Ias" eventType="touchUpInside" id="ukE-6J-cIv"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="57Sec" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="klv-1e-4WW">
-                                <rect key="frame" x="196.66666666666666" y="454" width="46" height="17.666666666666686"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="8MY-zO-PGl"/>
-                                    <constraint firstAttribute="height" constant="17.670000000000002" id="DK6-Di-ana"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="Line" translatesAutoresizingMaskIntoConstraints="NO" id="bXw-uc-g9b">
                                 <rect key="frame" x="215" y="589.33333333333337" width="45" height="1"/>
                                 <constraints>
@@ -5214,14 +5216,10 @@ other charges) from accounts maintained by the borrower at the Bank.
                             <constraint firstItem="GvA-ep-kNw" firstAttribute="bottom" secondItem="Y3g-ey-BDA" secondAttribute="bottom" id="3q7-2s-CdW"/>
                             <constraint firstItem="GvA-ep-kNw" firstAttribute="trailing" secondItem="Y3g-ey-BDA" secondAttribute="trailing" constant="26" id="46d-P8-WDW"/>
                             <constraint firstItem="Y3g-ey-BDA" firstAttribute="trailing" secondItem="h7A-bs-x8E" secondAttribute="trailing" constant="15" id="6en-5f-YrN"/>
-                            <constraint firstItem="klv-1e-4WW" firstAttribute="top" secondItem="ps7-qw-TwA" secondAttribute="bottom" constant="24" id="7cQ-2U-nGS"/>
-                            <constraint firstItem="klv-1e-4WW" firstAttribute="leading" secondItem="Y3g-ey-BDA" secondAttribute="leading" constant="196.66666666666666" id="8n6-ub-QuY"/>
                             <constraint firstItem="h7A-bs-x8E" firstAttribute="top" secondItem="Y3g-ey-BDA" secondAttribute="top" constant="35" id="FHm-Ba-aq7"/>
                             <constraint firstItem="Y3g-ey-BDA" firstAttribute="bottom" secondItem="PE6-hG-6fG" secondAttribute="bottom" constant="150" id="JQd-9z-KVD"/>
                             <constraint firstItem="YXY-5v-YjH" firstAttribute="leading" secondItem="PE6-hG-6fG" secondAttribute="trailing" constant="-63" id="JSn-oe-q89"/>
-                            <constraint firstItem="Y3g-ey-BDA" firstAttribute="trailing" secondItem="klv-1e-4WW" secondAttribute="trailing" constant="171.5" id="NsG-8z-jJ7"/>
                             <constraint firstItem="Y3g-ey-BDA" firstAttribute="trailing" secondItem="ps7-qw-TwA" secondAttribute="trailing" constant="103" id="QnZ-vU-Anb"/>
-                            <constraint firstItem="TX5-aa-FAK" firstAttribute="top" secondItem="klv-1e-4WW" secondAttribute="bottom" constant="27.333333333333314" id="TYU-84-Nuf"/>
                             <constraint firstItem="GvA-ep-kNw" firstAttribute="top" secondItem="Y3g-ey-BDA" secondAttribute="top" id="W3k-7U-ctI"/>
                             <constraint firstItem="PE6-hG-6fG" firstAttribute="centerY" secondItem="YXY-5v-YjH" secondAttribute="centerY" id="gEa-0b-vSF"/>
                             <constraint firstItem="ps7-qw-TwA" firstAttribute="leading" secondItem="Y3g-ey-BDA" secondAttribute="leading" constant="97" id="gG2-ay-umL"/>
@@ -5899,20 +5897,20 @@ other charges) from accounts maintained by the borrower at the Bank.
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundLogin" translatesAutoresizingMaskIntoConstraints="NO" id="d0Y-Zd-U1E">
-                                <rect key="frame" x="0.0" y="0.0" width="368" height="862"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PbT-h5-LPx">
-                                <rect key="frame" x="25" y="311" width="318" height="274"/>
+                                <rect key="frame" x="25" y="311" width="364" height="274"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-check-mark-big" translatesAutoresizingMaskIntoConstraints="NO" id="BKF-3v-GVO">
-                                        <rect key="frame" x="125.66666666666666" y="33.666666666666686" width="67" height="70"/>
+                                        <rect key="frame" x="148.66666666666666" y="33.666666666666686" width="67" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="70" id="Szm-Gl-OiC"/>
                                             <constraint firstAttribute="width" constant="67" id="c55-6q-Njh"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you want to activate your account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdY-xT-MYU">
-                                        <rect key="frame" x="31.666666666666657" y="126" width="254.99999999999997" height="21"/>
+                                        <rect key="frame" x="31.666666666666657" y="126" width="301" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="q39-ZM-8gh"/>
                                         </constraints>
@@ -5921,7 +5919,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o1d-8z-vDn">
-                                        <rect key="frame" x="42" y="177" width="234" height="35"/>
+                                        <rect key="frame" x="42" y="177" width="280" height="35"/>
                                         <color key="backgroundColor" red="1" green="0.55686274509803924" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="jXS-Aq-ndU"/>
@@ -5940,7 +5938,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Amc-nn-Fou">
-                                        <rect key="frame" x="42" y="228.66666666666663" width="234" height="35"/>
+                                        <rect key="frame" x="42" y="228.66666666666663" width="280" height="35"/>
                                         <color key="backgroundColor" red="1" green="0.5568627451" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="aIl-yT-qYb"/>
