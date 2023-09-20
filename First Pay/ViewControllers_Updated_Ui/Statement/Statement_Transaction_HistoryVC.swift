@@ -349,7 +349,12 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
             return
         }
         
-        let a = fromDateTextfield.text?.replacingOccurrences(of: "/", with: "-")
+        guard let a = fromDateTextfield.text?.replacingOccurrences(of: "/", with: "-") else {
+            return()
+        }
+        if a == "" {
+            return()
+        }
 //<<<<<<< HEAD
 //        let stringFrom = self.formattedDateFromString(dateString: a!, withFormat: "yyyy-MM-dd")
 ////        let stringFrom = a
@@ -359,11 +364,16 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
 //        print("fromdate ", stringFrom)
 //        print("fromto ", stringTo)
 //=======
-        var stringFrom = self.formattedDateFromString(dateString: a!, withFormat: "yyyy-MM-dd")
+        var stringFrom = self.formattedDateFromString(dateString: a, withFormat: "yyyy-MM-dd")
         stringFrom = "\(stringFrom!) 00:00:01"
         
-        let b = ToDateTextfiled?.text?.replacingOccurrences(of: "/", with: "-")
-        var stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
+        guard let b = ToDateTextfiled?.text?.replacingOccurrences(of: "/", with: "-") else {
+            return()
+        }
+        if b == "" {
+            return()
+        }
+        var stringTo = self.formattedDateFromString(dateString: b, withFormat: "yyyy-MM-dd")
         stringTo = "\(stringTo!) 23:59:59"
         print("fromdate ", stringFrom!)
         print("fromto ", stringTo!)

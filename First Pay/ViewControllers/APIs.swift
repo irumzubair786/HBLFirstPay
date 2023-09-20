@@ -476,7 +476,7 @@ print(str)
         case acceptFriendInvite = "WalletCreation/v1/acceptFriendInvite"
         
         case getBundleDetails = "Transactions/v1/getBundleDetails"
-        case bundleSubscription = "Transactions/v1/bundleSubscription"
+        case bundleSubscription = "Transactions/v2/bundleSubscription"
         
         case login = "FirstPayInfo/v1/login"
         case acccountLevelUpgrade = "FirstPayInfo/v1/acccountLevelUpgrade"
