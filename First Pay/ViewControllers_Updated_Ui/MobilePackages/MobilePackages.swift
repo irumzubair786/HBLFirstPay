@@ -130,7 +130,11 @@ class MobilePackages: UIViewController {
 //        "channelId" : "3"
 //    }
     
-    
+    func navigateToMobilePackagesDetails() {
+        let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesDetails") as! MobilePackagesDetails
+        
+        self.navigationController!.pushViewController(vc, animated: true)
+    }
 
     func navigateToMobilePackagesDetails(bundleDetails: BundleDetail) {
         let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesDetails") as! MobilePackagesDetails

@@ -43,7 +43,7 @@ class MobilePackagesSuccess: UIViewController {
     }
     
     @IBAction func buttonCancel(_ sender: Any) {
-        self.dismissToViewController(viewController: DashBoardVC.self)
+        self.dismiss(animated: true)
     }
     @IBAction func buttonShare(_ sender: Any) {
         let image =  self.view.convertToImage()
@@ -55,6 +55,9 @@ class MobilePackagesSuccess: UIViewController {
     
 
     func setData() {
+        if modelBundleSubscription == nil {
+            return()
+        }
         labelAmountTitle.text = "PKR \(modelBundleSubscription.data.amount)"
         labelReceivedBy.text = modelBundleSubscription.data.receivedBy
         labelOperator.text = modelBundleSubscription.data.dataOperator

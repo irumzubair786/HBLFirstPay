@@ -55,6 +55,9 @@ class MobilePackagesDetails: UIViewController {
     }
     
     func setData() {
+        if bundleDetail == nil {
+            return()
+        }
         labelPackage.text = bundleDetail.bundleName
         labelCarrier.text =  companyName
         labelPrice.text = "\(bundleDetail.bundleDefaultPrice)"
