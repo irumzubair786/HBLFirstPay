@@ -10,7 +10,10 @@ import UIKit
 import SwiftKeychainWrapper
 import Alamofire
 import ObjectMapper
-class MyAccountLimitsVc: BaseClassVC {
+import FittedSheets
+class MyAccountLimitsVc: BaseClassVC, fittedSheets {
+    static var name: String { "CategoryPicker" }
+  
     var levelCode :String?
     var totalDailyLimitDr : Int?
     var totalMonthlyLimitDr : Int?
@@ -173,10 +176,7 @@ class MyAccountLimitsVc: BaseClassVC {
     }
     @IBOutlet weak var buttonBack: UIButton!
     @IBAction func buttonBack(_ sender: UIButton) {
-//        using delegate
-//        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-//        self.present(vc, animated: true)
+
         self.dismiss(animated: true)
         
     }
@@ -254,11 +254,40 @@ class MyAccountLimitsVc: BaseClassVC {
         
         
     }
-    
+   
     func calculateValue(total:Int , userValue:Int)->Double{
         return Double((Double(userValue))/(Double(total)))
     }
-    
+    func openPicker(from parent: UIViewController, id: String, in view: UIView?,daily : String,dailyAmount: String?, dailyminValue: String? ,dailymaxValue: String?,LimitType: String? ,AmounttType: String?, tag : Int? ,section: Int? ) {
+            
+            let useInlineMode = view != nil
+            let controller = (UIStoryboard.init(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "changeLimitVC") as? changeLimitVC)!
+        controller.daily = daily
+        controller.dailyAmount = dailyAmount
+        controller.dailyminValue = dailyminValue
+        controller.dailymaxValue = dailymaxValue
+        controller.tag  = tag
+        controller.delegate = self
+        controller.section = section
+        controller.refreshScreen = {
+            self.apicall()
+        }
+        controller.LimitType = LimitType
+        controller.AmounttType =  AmounttType
+            let sheet = SheetViewController(
+                controller: controller,
+                sizes: [.percent(0.4), .fullscreen],
+                options: SheetOptions(useInlineMode: useInlineMode))
+        MyAccountLimitsVc.addSheetEventLogging(to: sheet)
+            
+            if let view = view {
+                sheet.animateIn(to: view, in: parent)
+            } else {
+                
+                parent.present(sheet, animated: true, completion: nil)
+            }
+        }
+
     @objc func buttonpress(_ sender:UIButton)
     {
         
@@ -273,22 +302,42 @@ class MyAccountLimitsVc: BaseClassVC {
         print("tag",tag)
         //        let indexPath = IndexPath(row: tag, section: sender.superview?.tag ?? 0) // assuming you set the tag of the cell view to the index path
         let cell = tableView.cellForRow(at: indexPath) as! cellMyAccountVc
-        let vc = self.storyboard!.instantiateViewController(withIdentifier: "changeLimitVC") as!   changeLimitVC
-        vc.daily = cell.labelDailyName.text
-        vc.dailyAmount = cell.labelTotalAmount.text
-        vc.dailyminValue = cell.labelConsumed.text
-        vc.dailymaxValue = cell.lblLevelLImit.text!
-//        vc.dailymaxValue = cell.labelTotalAmount.text
-        vc.LimitType = cell.labelLimitType.text
-        vc.AmounttType = cell.labelAmountType.text
-        //        vc.ReceivingLimitType = cell.labelReceivingType.text
-        vc.delegate = self
-        vc.tag = tag
-        vc.section = section
-        vc.refreshScreen = {
-            self.apicall()
-        }
-        self.present(vc, animated: true)
+        openPicker(from: self, id:  "changeLimitVC", in: nil, daily: cell.labelDailyName.text!, dailyAmount: cell.labelTotalAmount.text, dailyminValue: cell.labelConsumed.text, dailymaxValue: cell.lblLevelLImit.text!, LimitType: cell.labelLimitType.text, AmounttType: cell.labelAmountType.text, tag: tag, section: section)
+        
+////        vc.daily = cell.labelDailyName.text
+////        vc.dailyAmount = cell.labelTotalAmount.text
+////        vc.dailyminValue = cell.labelConsumed.text
+////        vc.dailymaxValue = cell.lblLevelLImit.text!
+//////        vc.dailymaxValue = cell.labelTotalAmount.text
+////        vc.LimitType = cell.labelLimitType.text
+////        vc.AmounttType = cell.labelAmountType.text
+////        //        vc.ReceivingLimitType = cell.labelReceivingType.text
+////        vc.delegate = self
+//        vc.tag = tag
+////        vc.section = section
+////        vc.refreshScreen = {
+////            self.apicall()
+////        }
+//
+
+
+        
+//        let vc = self.storyboard!.instantiateViewController(withIdentifier: "changeLimitVC") as!   changeLimitVC
+//        vc.daily = cell.labelDailyName.text
+//        vc.dailyAmount = cell.labelTotalAmount.text
+//        vc.dailyminValue = cell.labelConsumed.text
+//        vc.dailymaxValue = cell.lblLevelLImit.text!
+////        vc.dailymaxValue = cell.labelTotalAmount.text
+//        vc.LimitType = cell.labelLimitType.text
+//        vc.AmounttType = cell.labelAmountType.text
+//        //        vc.ReceivingLimitType = cell.labelReceivingType.text
+//        vc.delegate = self
+//        vc.tag = tag
+//        vc.section = section
+//        vc.refreshScreen = {
+//            self.apicall()
+//        }
+//        self.present(vc, animated: true)
         
     }
     ////    ----------getaccountlimits

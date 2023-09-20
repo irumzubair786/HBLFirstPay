@@ -17,6 +17,7 @@ target 'First Pay' do
   pod 'PinCodeTextField'
   pod 'SwiftKeychainWrapper', '~> 3.0'
   pod 'Siren', '~> 1.0.2'
+  pod 'FittedSheets'
   #  pod 'SkyFloatingLabelTextField', '~> 3.0'
   #  pod 'CardIO', '~> 5.4'
   pod 'iOSDropDown'

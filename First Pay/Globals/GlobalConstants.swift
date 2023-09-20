@@ -6,7 +6,7 @@
 //  Copyright © 2018 FMFB Pakistan. All rights reserved.
 //
 import Foundation
-
+import FittedSheets
 var transactionV1or2 = "Transactions/v2"
 class GlobalConstants {
     // Live
@@ -33,3 +33,56 @@ class GlobalOTPTypes {
     public static let REQUIRED_OTP_NO  = "N"
 }
 
+protocol Demoable {
+    static var name: String { get }
+    static func openDemo(from parent: UIViewController, in view: UIView?)
+}
+
+extension Demoable {
+    static func addSheetEventLogging(to sheet: SheetViewController) {
+        let previousDidDismiss = sheet.didDismiss
+        sheet.didDismiss = {
+            print("did dismiss")
+            previousDidDismiss?($0)
+        }
+
+        let previousShouldDismiss = sheet.shouldDismiss
+        sheet.shouldDismiss = {
+            print("should dismiss")
+            return previousShouldDismiss?($0) ?? true
+        }
+
+        let previousSizeChanged = sheet.sizeChanged
+        sheet.sizeChanged = { sheet, size, height in
+            print("Changed to \(size) with a height of \(height)")
+            previousSizeChanged?(sheet, size, height)
+        }
+    }
+}
+protocol fittedSheets {
+    static var name: String { get }
+    func openPicker(from parent: UIViewController , id : String , in view: UIView?,daily : String,dailyAmount: String?, dailyminValue: String? ,dailymaxValue: String?,LimitType: String? ,AmounttType: String?, tag : Int? ,section: Int?)
+    
+}
+
+extension fittedSheets {
+    static func addSheetEventLogging(to sheet: SheetViewController) {
+        let previousDidDismiss = sheet.didDismiss
+        sheet.didDismiss = {
+            print("did dismiss")
+            previousDidDismiss?($0)
+        }
+        
+        let previousShouldDismiss = sheet.shouldDismiss
+        sheet.shouldDismiss = {
+            print("should dismiss")
+            return previousShouldDismiss?($0) ?? true
+        }
+        
+        let previousSizeChanged = sheet.sizeChanged
+        sheet.sizeChanged = { sheet, size, height in
+            print("Changed to \(size) with a height of \(height)")
+            previousSizeChanged?(sheet, size, height)
+        }
+    }
+}

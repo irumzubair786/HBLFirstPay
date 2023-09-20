@@ -11,7 +11,7 @@ import Alamofire
 import ObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
-
+import FittedSheets
 protocol DissmissDelegate{
     func updatescreen(value: String?, tag :Int?,section:Int?)
     
@@ -19,7 +19,7 @@ protocol DissmissDelegate{
 
 
 class changeLimitVC: BaseClassVC {
-    
+   
     var delegate : DissmissDelegate?
     var tag: Int?
     var section: Int?
@@ -34,8 +34,9 @@ class changeLimitVC: BaseClassVC {
     var LimitType : String?
     var AmounttType: String?
     var refreshScreen: (()->())!
-    
-    
+    @IBAction func buttonDrawer(_ sender: UIButton) {
+  
+    }
     
     
     
@@ -44,27 +45,27 @@ class changeLimitVC: BaseClassVC {
     @IBOutlet weak var viewBackground: UIView!
     
     override func viewDidAppear(_ animated: Bool) {
-        self.view.drawBackgroundBlur(withTag: 999)
-        self.viewBackground.roundCorners(corners: [.topLeft, .topRight], radius: 30)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            
-        }
+//        self.view.drawBackgroundBlur(withTag: 999)
+//        self.viewBackground.roundCorners(corners: [.topLeft, .topRight], radius: 30)
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//
+//        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         //        add swipe Gesture
         updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        viewBackground.dropShadow1()
-        //self.view.addGestureRecognizer(tapGestureRecognizer)
+//        viewBackground.dropShadow1()
+     
         print("limit Type",LimitType)
         print("AmountType",AmounttType)
-//        print("ReceivinglimitType",ReceivingLimitType)
-//        Slider()
-        // Do any additional setup after loading the view.
+
     }
-    
+    @objc private func didSwipe(_ sender: UISwipeGestureRecognizer) {
+
+    }
     @IBOutlet weak var imgvArrow: UIImageView!
     @IBOutlet weak var slider: CustomSlider!
     @IBOutlet weak var labelMaxamount: UILabel!
@@ -94,9 +95,7 @@ class changeLimitVC: BaseClassVC {
         labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "Rs.") ?? "")"
         
         let minimumAmount = (Double("\(dailyminValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
-        
-        
-//       maximumAmount = (Double("\(dailymaxValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
+
         maximumAmount =  dailymaxValue
         maxValue = Float(maximumAmount!)
         labelminamount.text = "Rs. \(minimumAmount)"
@@ -138,7 +137,7 @@ class changeLimitVC: BaseClassVC {
 //        self.dismiss(animated: true)
         self.view.backgroundColor = .clear
         self.view.viewWithTag(999)?.removeFromSuperview()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             
             
             self.delegate?.updatescreen(value:  self.labelAmount.text, tag: self.tag, section: self.section)
@@ -156,17 +155,7 @@ class changeLimitVC: BaseClassVC {
         }
     
     
-    @IBAction func buttonDrawer(_ sender: UIButton) {
-        self.view.backgroundColor = .clear
-        self.view.viewWithTag(999)?.removeFromSuperview()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.delegate?.updatescreen(value:  self.labelAmount.text, tag: self.tag, section: self.section)
-            self.dismiss(animated: true)
-            
-        }
-
-        
-    }
+  
     @IBAction func Action_Slider(_ sender: UISlider) {
         let value = sender.value
         let val = Int(value)
