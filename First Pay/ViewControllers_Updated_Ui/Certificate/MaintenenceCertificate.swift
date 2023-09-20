@@ -56,11 +56,11 @@ class MaintenenceCertificate: BaseClassVC {
 
     @IBAction func buttonDownload(_ sender: UIButton) {
         let renderer = UIGraphicsImageRenderer(size: view.bounds.size)
-                let screenshot = renderer.image { ctx in
-                    view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
-                }
-                
-                UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
+        let screenshot = renderer.image { ctx in
+            view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
+        }
+        
+        UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
         showToast(title: "Certificate Download Successfully!")
         // Save the screenshot to the camera roll
             

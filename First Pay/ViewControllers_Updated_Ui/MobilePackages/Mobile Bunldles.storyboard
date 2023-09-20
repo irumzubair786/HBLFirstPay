@@ -145,7 +145,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Company" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBX-mS-QfH">
-                                                    <rect key="frame" x="247" y="156" width="144" height="17"/>
+                                                    <rect key="frame" x="246" y="156" width="144" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -173,7 +173,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Amount" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jBe-bX-KHO">
-                                                    <rect key="frame" x="247" y="212" width="150" height="17"/>
+                                                    <rect key="frame" x="246" y="212" width="150" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -338,10 +338,10 @@
             </objects>
             <point key="canvasLocation" x="140.57971014492756" y="-109.23913043478262"/>
         </scene>
-        <!--View Controller-->
+        <!--Mobile Packages Success-->
         <scene sceneID="hMX-Aw-5Np">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="n5m-d4-f9D" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MobilePackagesSuccess" modalPresentationStyle="fullScreen" id="n5m-d4-f9D" customClass="MobilePackagesSuccess" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="guX-uD-MgV">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -380,6 +380,9 @@
                                                 <color key="value" systemColor="systemGreenColor"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="buttonCancel:" destination="n5m-d4-f9D" eventType="touchUpInside" id="3if-J7-CqU"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Successfull" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Dq-rB-nfU">
                                         <rect key="frame" x="8" y="170" width="398" height="30"/>
@@ -601,6 +604,9 @@
                                                                 <color key="value" systemColor="systemGreenColor"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="buttonDownload:" destination="n5m-d4-f9D" eventType="touchUpInside" id="6xc-IM-HmY"/>
+                                                        </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Download" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ISe-Z3-Eje">
                                                         <rect key="frame" x="7" y="64" width="100" height="17"/>
@@ -632,6 +638,9 @@
                                                                 <color key="value" systemColor="systemGreenColor"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="buttonShare:" destination="n5m-d4-f9D" eventType="touchUpInside" id="Q2q-3r-sl2"/>
+                                                        </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="  Share" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UVJ-Bx-3ex">
                                                         <rect key="frame" x="30" y="66" width="71" height="17"/>
@@ -713,6 +722,18 @@
                             <constraint firstItem="rRH-sn-xEb" firstAttribute="leading" secondItem="erH-6G-hJK" secondAttribute="leading" id="zrC-oT-L2d"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="buttonCancel" destination="ZWC-e7-jg9" id="Y2w-EI-tyQ"/>
+                        <outlet property="buttonDownload" destination="cTV-HJ-5Et" id="57O-c7-MZK"/>
+                        <outlet property="buttonShare" destination="VHm-AS-Sbl" id="ovN-TN-5SK"/>
+                        <outlet property="labelAmount" destination="Eja-uF-Gts" id="kUc-Vf-1GX"/>
+                        <outlet property="labelFeeCharges" destination="AHL-0k-AGR" id="r0Q-5Z-wTM"/>
+                        <outlet property="labelOfferDiscount" destination="b5B-lW-KCq" id="FIz-wy-iKr"/>
+                        <outlet property="labelOperator" destination="u0w-Sy-lmW" id="EDG-h7-cCx"/>
+                        <outlet property="labelPackageName" destination="PIX-Ua-vIK" id="Cpv-s8-1an"/>
+                        <outlet property="labelReceivedBy" destination="PS8-M4-jLZ" id="wS2-HN-al1"/>
+                        <outlet property="labelSentBy" destination="0wI-1E-q8T" id="lwY-2k-V6y"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OHp-ml-uEB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

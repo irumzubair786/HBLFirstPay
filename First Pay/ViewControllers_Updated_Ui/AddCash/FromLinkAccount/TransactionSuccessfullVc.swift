@@ -37,12 +37,11 @@ class TransactionSuccessfullVc: BaseClassVC {
     @IBOutlet weak var labelTransactionAmount: UILabel!
     @IBOutlet weak var buttonDownload: UIButton!
     @IBAction func buttonShare(_ sender: UIButton) {
-        let image =  imgview.convertToImage()
-            
+        let image =  imgview.convertToImage() 
         let imageShare = [ image ]
-            let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view
-            self.present(activityViewController, animated: true, completion: nil)
+        let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     

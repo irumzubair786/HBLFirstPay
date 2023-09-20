@@ -62,6 +62,23 @@ class MobilePackagesDetails: UIViewController {
         imageViewOperator.image = companyIcon
     }
     
+    var modelBundleSubscription: ModelBundleSubscription! {
+        didSet {
+            if modelBundleSubscription.responsecode == 1 {
+                navigationToMobilePackagesSuccess()
+            }
+            else {
+                self.showAlertCustomPopup(message: modelBundleSubscription.messages, iconName: .iconError)
+            }
+        }
+    }
+    
+    func navigationToMobilePackagesSuccess() {
+        let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesSuccess") as! MobilePackagesSuccess
+        vc.modelBundleSubscription = modelBundleSubscription
+        self.navigationController!.pushViewController(vc, animated: true)
+    }
+    
     func bundleSubscription() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
@@ -70,8 +87,8 @@ class MobilePackagesDetails: UIViewController {
             "channelId" : "\(DataManager.instance.channelID)",
             "lat" : "\(DataManager.instance.Latitude ?? 0)",
             "lng" : "\(DataManager.instance.Longitude ?? 0)",
-            "mobileNo" : "03445823336",//textFieldMobileNumber.text!, //"03445823336",
-//            "mobileNo" : textFieldMobileNumber.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0"),
+//            "mobileNo" : textFieldMobileNumber.text!, //"03445823336",
+            "mobileNo" : textFieldMobileNumber.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0"),
             "bundleKey" : "\(bundleDetail.bundleKey)",
             "bundleId" : "\(bundleDetail.ubpBundleID)"
         ]
@@ -80,8 +97,8 @@ class MobilePackagesDetails: UIViewController {
             print(responseData)
             print(success)
             print(errorMsg)
-            //            let model: ModelGetLoanCharges? = APIs.decodeDataToObject(data: responseData)
-            //            self.modelGetLoanCharges = model
+            let model: ModelBundleSubscription? = APIs.decodeDataToObject(data: responseData)
+            self.modelBundleSubscription = model
         }
     }
     
@@ -169,4 +186,55 @@ extension MobilePackagesDetails: CNContactPickerDelegate {
     func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
       
     }
+}
+
+extension MobilePackagesDetails {
+    // MARK: - Welcome
+    struct ModelBundleSubscription: Codable {
+        let responsecode: Int
+        let data: ModelBundleSubscriptionData
+        let responseblock: JSONNull?
+        let messages: String
+    }
+
+    // MARK: - DataClass
+    struct ModelBundleSubscriptionData: Codable {
+        let receivedBy: String
+        let offerDiscount, amount: Int
+        let fee, packageName, dataOperator, sentBy: String
+
+        enum CodingKeys: String, CodingKey {
+            case receivedBy, offerDiscount, amount, fee, packageName
+            case dataOperator = "operator"
+            case sentBy
+        }
+    }
+
+    // MARK: - Encode/decode helpers
+
+    class JSONNull: Codable, Hashable {
+
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+
+        public var hashValue: Int {
+            return 0
+        }
+
+        public init() {}
+
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
+    }
+
 }
