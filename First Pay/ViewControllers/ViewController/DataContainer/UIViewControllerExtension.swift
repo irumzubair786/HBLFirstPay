@@ -81,3 +81,23 @@ final class TableViewContentSized: UITableView {
         return CGSize(width: UIViewNoIntrinsicMetric, height: contentSize.height)
     }
 }
+
+extension UITableView {
+    func setEmptyMessage(iconName: String) {
+        let imageView = UIImageView(image: UIImage(named: iconName))
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
+        
+        var backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
+        imageView.center = backgroundView.center
+        imageView.frame.origin.y = 50
+        backgroundView.addSubview(imageView)
+        
+        self.backgroundView = backgroundView
+    }
+    
+    func removeEmptyMessage() {
+        self.backgroundView = nil
+    }
+    
+}

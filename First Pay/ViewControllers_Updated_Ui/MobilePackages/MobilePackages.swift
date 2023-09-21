@@ -34,6 +34,7 @@ class MobilePackages: UIViewController {
     var companyNames: [String]!
     var modelGetBundleDetails: ModelGetBundleDetails? {
         didSet {
+            tableView.removeEmptyMessage()
             if modelGetBundleDetails?.responsecode == 1 {
                 companyNames = self.modelGetBundleDetails?.data.map({
                     print($0.companyName)
@@ -43,9 +44,10 @@ class MobilePackages: UIViewController {
                 collectionView.reloadData()
             }
             else {
-                self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
-                    
-                }
+//                self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
+//
+//                }
+                tableView.setEmptyMessage(iconName: "bundleEmptyMessageIcon")
             }
         }
     }
@@ -105,6 +107,7 @@ class MobilePackages: UIViewController {
         }
         tableView.reloadData()
         collectionView.reloadData()
+        
     }
     func getBundleDetails() {
         APIs.getAPI(apiName: .getBundleDetails, parameters: nil) { responseData, success, errorMsg in
@@ -227,38 +230,41 @@ extension MobilePackages: UITableViewDelegate, UITableViewDataSource {
         return UITableViewAutomaticDimension
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if companyNames == nil {
-            return 0
-        }
         
-        for (index, companyName) in companyNames.enumerated() {
-            if buttonOne.tag == 1 {
-                indexSelectedNetwork = index
-                if companyName == "TELENOR" {
-                    break
+        if companyNames != nil {
+            for (index, companyName) in companyNames.enumerated() {
+                if buttonOne.tag == 1 {
+                    indexSelectedNetwork = index
+                    if companyName == "TELENOR" {
+                        break
+                    }
                 }
-            }
-            else if buttonTwo.tag == 1 {
-                indexSelectedNetwork = index
-                if companyName == "JAZZ" {
-                    break
+                else if buttonTwo.tag == 1 {
+                    indexSelectedNetwork = index
+                    if companyName == "JAZZ" {
+                        break
+                    }
                 }
-            }
-            else if buttonThree.tag == 1 {
-                indexSelectedNetwork = index
-                if companyName == "UFONE" {
-                    break
+                else if buttonThree.tag == 1 {
+                    indexSelectedNetwork = index
+                    if companyName == "UFONE" {
+                        break
+                    }
                 }
-            }
-            else if buttonFour.tag == 1 {
-                indexSelectedNetwork = index
-                if companyName == "ZONG" {
-                    break
+                else if buttonFour.tag == 1 {
+                    indexSelectedNetwork = index
+                    if companyName == "ZONG" {
+                        break
+                    }
                 }
             }
         }
-        
-        return modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails.count ?? 0
+        let totalCellCount = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails.count ?? 0
+        tableView.removeEmptyMessage()
+        if totalCellCount == 0 {
+            tableView.setEmptyMessage(iconName: "bundleEmptyMessageIcon")
+        }
+        return totalCellCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
