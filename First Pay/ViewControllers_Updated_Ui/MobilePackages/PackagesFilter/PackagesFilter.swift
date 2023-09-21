@@ -111,7 +111,6 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
                         return()
                     }
                 }
-                
                 dictionarySelectedItems![indexPath.section]?.remove(at: indexOf)
             }
         }
