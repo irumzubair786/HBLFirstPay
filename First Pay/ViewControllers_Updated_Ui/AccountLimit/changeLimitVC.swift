@@ -90,7 +90,6 @@ class changeLimitVC: BaseClassVC {
     }
   
     func updateUI() {
-        
         labelname.text  = "Change \(daily!) Limit"
         labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "Rs.") ?? "")"
         

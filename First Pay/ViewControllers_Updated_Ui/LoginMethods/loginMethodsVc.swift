@@ -9,19 +9,24 @@
 import UIKit
 import SwiftKeychainWrapper
 import SideMenu
-
+import FittedSheets
 var flagisEnable : Bool?
-class loginMethodsVc: BaseClassVC {
-   
+protocol SwitchValueDelegate: class {
+    func switchValueChanged(newValue: Bool)
+}
+class loginMethodsVc: BaseClassVC , DisableDrawer{
+    static var name: String { "CategoryPicker" }
+    weak var delegate: SwitchValueDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
 //        buttonDissmiss.setTitle("", for: .normal)
         buttonback.setTitle("", for: .normal)
         viewdisble.isHidden = true
-        checkIdEnable()
+        
         // Do any additional setup after loading the view.
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController2), name: Notification.Name("dissmissViewController2"),object: nil)
+        checkIdEnable()
     }
     
     @objc func dissmissViewController2() {
@@ -43,12 +48,23 @@ func checkIdEnable()
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        checkIdEnable()
+        super.viewWillAppear(animated)
+        delegate?.switchValueChanged(newValue: true)
+//        checkIdEnable()
+        // Your code here
     }
+    
     @IBAction func butttonEnableFaceid(_ sender: UISwitch) {
         if butttonEnableFaceid.isOn  == false{
+//
+//            viewdisble.isHidden = false
             
-            viewdisble.isHidden = false
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "DisableBioLoginDrawerVC") as! DisableBioLoginDrawerVC
+            openPicker(from: self, id:  "DisableBioLoginDrawerVC", in: nil)
+            vc.delegate = self
+            self.present(vc, animated: true)
+            
+            
         }
         else
         {
@@ -109,11 +125,7 @@ func checkIdEnable()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.dismiss(animated: true)
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "sideMenu") as? sideMenu
-//            self.navigationController?.pushViewController(vc!, animated: true)
-//                        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-//                        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-//                        self.present(vc, animated: true)
+
         }
             
         
@@ -123,7 +135,49 @@ func checkIdEnable()
         self.dismiss(animated: true)
         
     }
+    func openPicker(from parent: UIViewController, id: String, in view: UIView?) {
+            
+            let useInlineMode = view != nil
+            let controller = (UIStoryboard.init(name: "Face:ThumbIDLogin", bundle: Bundle.main).instantiateViewController(withIdentifier: "DisableBioLoginDrawerVC") as? DisableBioLoginDrawerVC)!
+//        controller.daily = daily
+//        controller.dailyAmount = dailyAmount
+//        controller.dailyminValue = dailyminValue
+//        controller.dailymaxValue = dailymaxValue
+//        controller.tag  = tag
+//        controller.delegate = self
+//        controller.section = section
+//        controller.refreshScreen = {
+//            self.apicall()
+//        }
+//        controller.LimitType = LimitType
+//        controller.AmounttType =  AmounttType
+            let sheet = SheetViewController(
+                controller: controller,
+                sizes: [.percent(0.4), .fullscreen],
+                options: SheetOptions(useInlineMode: useInlineMode))
+        MyAccountLimitsVc.addSheetEventLogging(to: sheet)
+            
+            if let view = view {
+                sheet.animateIn(to: view, in: parent)
+            } else {
+                
+                parent.present(sheet, animated: true, completion: nil)
+            }
+        }
     
     
-    
+}
+extension loginMethodsVc: SwitchValueDelegate {
+    func switchValueChanged(newValue: Bool) {
+        if KeychainWrapper.standard.bool(forKey: "enableTouchID") == true {
+            butttonEnableFaceid.isOn
+        }
+        else
+        {
+            
+            butttonEnableFaceid.isOn = false
+        }
+        
+//       butttonEnableFaceid.isOn = newValue
+    }
 }
