@@ -21,6 +21,7 @@ class DisableBioLoginDrawerVC: BaseClassVC {
     @IBOutlet weak var buttonNotNow: UIButton!
     @IBOutlet weak var buttonDisable: UIButton!
     @IBAction func buttonDisable(_ sender: UIButton) {
+      
         delegate?.switchValueChanged(newValue: true)
                // Dismiss the second view controller
               

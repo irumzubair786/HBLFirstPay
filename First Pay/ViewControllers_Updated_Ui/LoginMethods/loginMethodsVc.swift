@@ -153,7 +153,7 @@ func checkIdEnable()
 //        controller.AmounttType =  AmounttType
             let sheet = SheetViewController(
                 controller: controller,
-                sizes: [.percent(0.4), .fullscreen],
+                sizes: [.percent(0.6), .fullscreen],
                 options: SheetOptions(useInlineMode: useInlineMode))
         MyAccountLimitsVc.addSheetEventLogging(to: sheet)
             
