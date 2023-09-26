@@ -256,6 +256,8 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
 
     @objc func changeTextInTextField() {
         
+        mobileNumberTextField.text?.removeFirst()
+        
         let text = mobileNumberTextField.text!.replacingOccurrences(of: "+92-", with: "")
           if mobileNumberTextField.text?.count == 1 && text == "0" {
               mobileNumberTextField.text = nil
@@ -316,26 +318,18 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         if (cnicTextField.text?.isEmpty)!{
             cnicTextField.text = ""
         }
-        
         var otpType : String?
-        
         let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/verifyCustResetPass"
-        
-        
         //    "osVersion": "15.5", "appVersion": "3.1.2", "deviceModel": "iPhone", "channelId": "1", "mobileNo": "03406401050", "imeiNo": "B0749FED5A5D48A38C9DBFF01F4A5663", "cnic": "3740526510394"\
-        
-        
         let a = mobileNumberTextField.text!
-        
         mobileNumber = a.replacingOccurrences(of: "-", with: "")
         mobileNumber = mobileNumber?.replacingOccurrences(of: "_", with: "")
         mobileNumber = mobileNumber?.replacingOccurrences(of: "+92", with: "0")
         let b = cnicTextField.text!
         var cnicNumber = b.replacingOccurrences(of: "-", with: "")
         cnicNumber = cnicNumber.replacingOccurrences(of: "_", with: "")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":cnicNumber,"mobileNo":(mobileNumber!),"imeiNo":DataManager.instance.imei!,"appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel] as [String : Any]
+         let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":cnicNumber,"mobileNo":(mobileNumber!),"imeiNo":DataManager.instance.imei!,"appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel] as [String : Any]
         //51
-        
         print(parameters)
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))

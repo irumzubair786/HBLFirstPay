@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PackagesFilter: UIViewController {
+class PackagesFilter: BaseClassVC {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewBackGround: UIView!
     var arraySections = ["TYPE", "VALIDITY", "PRICE"]

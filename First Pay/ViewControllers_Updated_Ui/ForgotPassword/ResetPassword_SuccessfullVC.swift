@@ -31,7 +31,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         enterPinTextField.delegate = self
         enterConfirmPinTextField.delegate = self
         enterPinTextField.isUserInteractionEnabled = true
-        enterConfirmPinTextField.isUserInteractionEnabled = true
+//        enterConfirmPinTextField.isUserInteractionEnabled = false
         self.lblMainTitle.text = "Reset Password"
         ConvertLanguage()
         lbl1.text = "Password must contain atleast 1 Upper case,numeric and special character."
@@ -41,6 +41,9 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         self.enterConfirmPinTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingDidEnd)
         
     }
+    @IBOutlet weak var lbl4: UILabel!
+    @IBOutlet weak var lbl3: UILabel!
+    @IBOutlet weak var lbl2: UILabel!
     @IBOutlet weak var Alert_view: UIView!
     @IBOutlet weak var Main_View: UIView!
     @IBOutlet weak var btn_next_arrow: UIButton!
@@ -73,7 +76,8 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         if isValidPassword() == true
         {
             movetonext()
-
+//            self.Alert_view.isHidden = false
+//            self.blur_view.isHidden = false
         }
 
             
@@ -120,42 +124,52 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
             }
         
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            let newLength:Int = (textField.text?.count)! + string.count - range.length
             if textField ==  enterPinTextField
             {
-                if enterPinTextField.text?.count ?? 0 < 6
-                {
-                    
-                    lbl1.textColor = UIColor(hexValue: 0xFF3932)
-                   
-                    if isValidPassword() == true
-                        
-                    {
-                        print("test", enterPinTextField.text)
-                        print("test2", enterConfirmPinTextField.text)
-                    }
-                    else{
-//                        lbl1.textColor = UIColor(red: -0/255.0, green: 204/255.0, blue: 150/255.0, alpha: 1.0)
-                    }
+                return newLength <= 6
+                
+            }
+            if textField == enterConfirmPinTextField{
+                return newLength <= 6
+            }
+            return newLength <= 6
+                
+                
+//                if enterPinTextField.text?.count ?? 0 < 6
+//                {
 //
-                if isValidPassword() == true
-                        {
-                    lbl1.textColor = UIColor(hexValue : 0x00CC96)
-                    
-                }
-                   else
-                        {
-                       lbl1.textColor = UIColor(hexValue: 0xFF3932)
-                       
-                       
-                   }
-                        
-                       
-                    
-                    print("test", enterPinTextField.text)
-                    print("test2", enterConfirmPinTextField.text)
-                    }
-                    
-                }
+//                    lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//
+//                    if isValidPassword() == true
+//
+//                    {
+//                        print("test", enterPinTextField.text)
+//                        print("test2", enterConfirmPinTextField.text)
+//                    }
+//                    else{
+////                        lbl1.textColor = UIColor(red: -0/255.0, green: 204/255.0, blue: 150/255.0, alpha: 1.0)
+//                    }
+////
+//                if isValidPassword() == true
+//                        {
+//                    lbl1.textColor = UIColor(hexValue : 0x00CC96)
+//
+//                }
+//                   else
+//                        {
+//                       lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//
+//
+//                   }
+//
+//
+//
+//                    print("test", enterPinTextField.text)
+//                    print("test2", enterConfirmPinTextField.text)
+//                    }
+//
+//                }
     
             
             
@@ -202,50 +216,254 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                 }
                 
             }
-            
-            let newLength:Int = (textField.text?.count)! + string.count - range.length
-            
-            if textField == enterPinTextField{
-                return newLength <= 6
-            }
-            if textField == enterConfirmPinTextField{
-                return newLength <= 6
-            }
-            return newLength <= 6
+           
     //        lbl1.textColor = UIColor.green
             
       }
-      
-        func textFieldDidEndEditing(_ textField: UITextField) {
-            
-            if textField == enterPinTextField {
-                enterConfirmPinTextField .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
-            } else if textField == enterConfirmPinTextField {
-                textField.resignFirstResponder()
-                if isValidPassword() == true{
-                  
+    
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if textField == enterPinTextField {
+            enterConfirmPinTextField .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
+        } else if textField == enterConfirmPinTextField {
+            textField.resignFirstResponder()
+            if isValidPassword() == true{
+                
+                if enterPinTextField?.text?.count == 6
+                {
+                    if isValidPassword() == true{
+                        lbl1.textColor = UIColor(hexValue : 0x00CC96)
+                        lbl1.textColor = UIColor(hexValue: 0x00CC96)
+                        lbl2.textColor = UIColor(hexValue: 0x00CC96)
+                        lbl3.textColor = UIColor(hexValue: 0x00CC96)
+                    }
+                    
                 }
+                else{
+                    lbl1.textColor = UIColor(hexValue: 0xFF3932)
+                    lbl2.textColor =  UIColor(hexValue: 0xFF3932)
+                    lbl3.textColor =  UIColor(hexValue: 0xFF3932)
+                }
+                if enterPinTextField.text == enterConfirmPinTextField.text{
+                    
+                    
+                    lbl1.textColor = UIColor(hexValue:  0x00CC96)
+                    lbl2.textColor = UIColor(hexValue: 0x00CC96)
+                    lbl3.textColor = UIColor(hexValue: 0x00CC96)
+                    lbl4.textColor = UIColor(hexValue: 0x00CC96)
+                    let image  = UIImage(named: "]greenarrow")
+                    btn_next_arrow.setImage(image, for: .normal)
+                    btnnext.isUserInteractionEnabled = true
+                    
+                    //                lbl4.textColor = UIColor.green
+                }
+                else
+                {
+                    lbl4.textColor = UIColor(hexValue:  0xFF3932)
+                    let image = UIImage(named: "grayArrow")
+                    btn_next_arrow.setImage(image, for: .normal)
+                    btnnext.isUserInteractionEnabled = false
+                }
+                if enterConfirmPinTextField?.text?.count == 0
+                {
+                    lbl4.textColor = UIColor(hexValue:  0xFF3932)
+                    let image = UIImage(named: "grayArrow")
+                    btn_next_arrow.setImage(image, for: .normal)
+                    btnnext.isUserInteractionEnabled = false
+                }
+                if enterPinTextField?.text?.count == 0
+                {
+                    lbl1.textColor = UIColor(hexValue:  0xFF3932)
+                    lbl2.textColor = UIColor(hexValue: 0xFF3932)
+                    lbl3.textColor = UIColor(hexValue:  0xFF3932)
+                    let image = UIImage(named: "grayArrow")
+                    btn_next_arrow.setImage(image, for: .normal)
+                    btnnext.isUserInteractionEnabled = false
+                }
+            }
+                
                 
             }
-      
-            if enterPinTextField.text == enterConfirmPinTextField.text{
-                let image  = UIImage(named: "]greenarrow")
-                lbl1.textColor = UIColor(hexValue : 0x00CC96)
-                
-                btn_next_arrow.setImage(image, for: .normal)
-                btnnext.isUserInteractionEnabled = true
-//                lbl4.textColor = UIColor.green
-            }
-            else if enterPinTextField.text != enterConfirmPinTextField.text
-            {
-                 lbl1.textColor = UIColor(hexValue: 0xFF3932)
-                let image = UIImage(named: "grayArrow")
-                btn_next_arrow.setImage(image, for: .normal)
-                btnnext.isUserInteractionEnabled = false
-            }
-         
             
         }
+  
+//        if enterPinTextField?.text?.count == 6
+//        {
+//            if isValidPassword() == true{
+//                lbl1.textColor = UIColor(hexValue : 0x00CC96)
+//                lbl1.textColor = UIColor(hexValue: 0x00CC96)
+//                lbl2.textColor = UIColor(hexValue: 0x00CC96)
+//                lbl3.textColor = UIColor(hexValue: 0x00CC96)
+//            }
+//
+//        }
+//        else{
+//            lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//            lbl2.textColor =  UIColor(hexValue: 0xFF3932)
+//            lbl3.textColor =  UIColor(hexValue: 0xFF3932)
+//        }
+//
+//
+//
+//        if enterPinTextField.text == enterConfirmPinTextField.text{
+//
+//
+//            lbl1.textColor = UIColor(hexValue:  0x00CC96)
+//            lbl2.textColor = UIColor(hexValue: 0x00CC96)
+//            lbl3.textColor = UIColor(hexValue: 0x00CC96)
+//            lbl4.textColor = UIColor(hexValue: 0x00CC96)
+//
+//            let image  = UIImage(named: "]greenarrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btnnext.isUserInteractionEnabled = true
+//
+////                lbl4.textColor = UIColor.green
+//        }
+//        else
+//        {
+//            lbl4.textColor = UIColor(hexValue:  0xFF3932)
+//            let image = UIImage(named: "grayArrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btnnext.isUserInteractionEnabled = false
+//        }
+//        if enterConfirmPinTextField?.text?.count == 0
+//        {
+//            lbl4.textColor = UIColor(hexValue:  0xFF3932)
+//            let image = UIImage(named: "grayArrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btnnext.isUserInteractionEnabled = false
+//        }
+//        if enterPinTextField?.text?.count == 0
+//        {
+//            lbl1.textColor = UIColor(hexValue:  0xFF3932)
+//            lbl2.textColor = UIColor(hexValue: 0xFF3932)
+//            lbl3.textColor = UIColor(hexValue:  0xFF3932)
+//           let image = UIImage(named: "grayArrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btnnext.isUserInteractionEnabled = false
+//        }
+//
+//
+//    }
+  
+   
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//    by irum
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//
+//        if enterPinTextField.text?.count == 6
+//        {
+//            enterConfirmPinTextField.isUserInteractionEnabled = true
+//        }
+//        if self.enterPinTextField.text?.count == 6  && enterConfirmPinTextField.text?.count == 6
+//        {
+//            if textField ==  enterPinTextField {
+//                enterConfirmPinTextField .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
+//            } else if textField == enterConfirmPinTextField {
+//                textField.resignFirstResponder()
+//                if isValidPassword() == true{
+//                    if enterPinTextField?.text?.count == 6
+//                    {
+//                        if isValidPassword() == true{
+//                            lbl1.textColor = UIColor(hexValue : 0x00CC96)
+//                            lbl1.textColor = UIColor(hexValue: 0x00CC96)
+//                            lbl2.textColor = UIColor(hexValue: 0x00CC96)
+//                            lbl3.textColor = UIColor(hexValue: 0x00CC96)
+//                        }
+//
+//                    }
+//                    else{
+//                        lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//                        lbl2.textColor =  UIColor(hexValue: 0xFF3932)
+//                        lbl3.textColor =  UIColor(hexValue: 0xFF3932)
+//                    }
+//
+//                    if enterPinTextField.text == enterConfirmPinTextField.text{
+//
+//
+//                        lbl1.textColor = UIColor(hexValue:  0x00CC96)
+//                        lbl2.textColor = UIColor(hexValue: 0x00CC96)
+//                        lbl3.textColor = UIColor(hexValue: 0x00CC96)
+//                        lbl4.textColor = UIColor(hexValue: 0x00CC96)
+//                        let image = UIImage(named: "]greenarrow")
+//                        btn_next_arrow.setImage(image, for: .normal)
+//                        btnnext.isUserInteractionEnabled = true
+//
+//                        //                lbl4.textColor = UIColor.green
+//                    }
+//                    else
+//                    {
+//                        lbl4.textColor = UIColor(hexValue:  0xFF3932)
+//                        let image = UIImage(named: "grayArrow")
+//                        btn_next_arrow.setImage(image, for: .normal)
+//                        btnnext.isUserInteractionEnabled = false
+//                    }
+//                    if enterConfirmPinTextField?.text?.count == 0
+//                    {
+//                        lbl4.textColor = UIColor(hexValue:  0xFF3932)
+//                        let image = UIImage(named: "grayArrow")
+//                        btn_next_arrow.setImage(image, for: .normal)
+//                        btnnext.isUserInteractionEnabled = false
+//                    }
+//                    if enterPinTextField?.text?.count == 0
+//                    {
+//                        lbl1.textColor = UIColor(hexValue:  0xFF3932)
+//                        lbl2.textColor = UIColor(hexValue: 0xFF3932)
+//                        lbl3.textColor = UIColor(hexValue:  0xFF3932)
+//                        let image = UIImage(named: "grayArrow")
+//                        btn_next_arrow.setImage(image, for: .normal)
+//                        btnnext.isUserInteractionEnabled = false
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
+//
+//
+    
+//        func textFieldDidEndEditing(_ textField: UITextField) {
+//
+//            if textField == enterPinTextField {
+//                enterConfirmPinTextField .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
+//            } else if textField == enterConfirmPinTextField {
+//                textField.resignFirstResponder()
+//                if isValidPassword() == true{
+//
+//                }
+//
+//            }
+//
+//            if enterPinTextField.text == enterConfirmPinTextField.text{
+//                let image  = UIImage(named: "]greenarrow")
+//                lbl1.textColor = UIColor(hexValue : 0x00CC96)
+//
+//                btn_next_arrow.setImage(image, for: .normal)
+//                btnnext.isUserInteractionEnabled = true
+////                lbl4.textColor = UIColor.green
+//            }
+//            else if enterPinTextField.text != enterConfirmPinTextField.text
+//            {
+//                 lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//                let image = UIImage(named: "grayArrow")
+//                btn_next_arrow.setImage(image, for: .normal)
+//                btnnext.isUserInteractionEnabled = false
+//            }
+//
+//
+//        }
       
         func isValidPassword() -> Bool {
             // least one uppercase,
@@ -281,20 +499,23 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     }
     @objc func changeTextInTextField2() {
         
-        if self.enterConfirmPinTextField.text?.count == 6 {
+        if  enterConfirmPinTextField.text?.count == 6
+        {
             
             self.enterConfirmPinTextField.resignFirstResponder()
             
         }
-        print(self.enterConfirmPinTextField.text)
+        
     }
-        func movetonext()
-                         {
-                             print("doneeeeees")
-                             setLoginPin()
-
-                             
-            }
+    
+    func movetonext()
+    {
+        print("doneeeeees")
+//        setLoginPin()
+        self.Alert_view.isHidden = false
+        self.blur_view.isHidden = false
+        
+    }
     private func setLoginPin() {
         
         if !NetworkConnectivity.isConnectedToInternet(){

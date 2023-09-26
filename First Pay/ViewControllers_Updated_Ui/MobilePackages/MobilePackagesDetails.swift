@@ -11,7 +11,7 @@ import Alamofire
 import ContactsUI
 import libPhoneNumber_iOS
 
-class MobilePackagesDetails: UIViewController {
+class MobilePackagesDetails: BaseClassVC {
 
     @IBOutlet weak var buttonBack: UIButton!
    
@@ -26,7 +26,7 @@ class MobilePackagesDetails: UIViewController {
     @IBOutlet weak var labelPrice: UILabel!
     @IBOutlet weak var labelAmount: UILabel!
     @IBOutlet weak var buttonContact: UIButton!
-
+    var fetchNetworkId : Int?
     var companyIcon: UIImage!
     var companyName: String!
     var bundleDetail: MobilePackages.BundleDetail!
@@ -41,6 +41,8 @@ class MobilePackagesDetails: UIViewController {
         
         textFieldMobileNumber.addTarget(self, action: #selector(changeNumberInTextField), for: .editingChanged)
         textFieldMobileNumber.delegate = self
+        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        imageViewButtonContinue.addGestureRecognizer(tapGestureRecognizerr)
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -53,16 +55,62 @@ class MobilePackagesDetails: UIViewController {
         contactPicker.delegate = self
         self.present(contactPicker, animated: true, completion: nil)
     }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+       
+        
+        if textFieldMobileNumber.text?.count  ==  11 || textFieldMobileNumber.text?.count == 15
+        {
+            let image = UIImage(named: "]greenarrow")
+            imageViewButtonContinue.image = image
+            imageViewButtonContinue.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+          
+        }
+        else
+        {
+            let image = UIImage(named: "grayArrow")
+            imageViewButtonContinue.image = image
+            imageViewButtonContinue.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+        }
+        
+    }
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        bundleSubscription()
+    }
     
+       
     func setData() {
         if bundleDetail == nil {
             return()
         }
+        if fetchNetworkId == 1
+        {
+            labelCarrier.text =  "Telenor"
+            imageViewOperator.image = UIImage(named: "telenor")
+        }
+        else if fetchNetworkId == 2
+        {
+            labelCarrier.text =  "Jazz"
+            imageViewOperator.image = UIImage(named: "jazz")
+        }
+        
+        else if fetchNetworkId == 3
+        {
+            labelCarrier.text =  "Zong4G"
+            imageViewOperator.image = UIImage(named: "zong")
+        }
+        else if fetchNetworkId == 4
+        {
+            labelCarrier.text =  "Ufone"
+            imageViewOperator.image = UIImage(named: "ufone")
+        }
         labelPackage.text = bundleDetail.bundleName
-        labelCarrier.text =  companyName
+//        labelCarrier.text =  companyName
         labelPrice.text = "\(bundleDetail.bundleDefaultPrice)"
         labelAmount.text = "\(bundleDetail.bundleDefaultPrice)"
-        imageViewOperator.image = companyIcon
+//        imageViewOperator.image = companyIcon
     }
     
     var modelBundleSubscription: ModelBundleSubscription! {
@@ -112,7 +160,26 @@ class MobilePackagesDetails: UIViewController {
             return
         }
         textFieldMobileNumber.text = format(with: "+92-XXX-XXXXXXX", phone: text)
+        
+        if textFieldMobileNumber.text?.count  ==  11 || textFieldMobileNumber.text?.count == 15
+        {
+            let image = UIImage(named: "]greenarrow")
+            imageViewButtonContinue.image = image
+            imageViewButtonContinue.isUserInteractionEnabled = true
+            buttonContinue.isUserInteractionEnabled = true
+            
+        }
+        else
+        {
+            let image = UIImage(named: "grayArrow")
+            imageViewButtonContinue.image = image
+            imageViewButtonContinue.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+        }
     }
+    
+    
+    
 
 }
 extension MobilePackagesDetails: UITextFieldDelegate {

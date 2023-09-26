@@ -367,6 +367,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     @IBAction func forgotAction(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "ForgotPassword", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "ForgotPassword_SetNewPassVC")
+//        let vc = storyboard.instantiateViewController(withIdentifier: "ResetPassword_SuccessfullVC")
         DataManager.instance.forgotPassword == true
         //        self.present(vc, animated: true)
         self.navigationController?.pushViewController(vc, animated: true)

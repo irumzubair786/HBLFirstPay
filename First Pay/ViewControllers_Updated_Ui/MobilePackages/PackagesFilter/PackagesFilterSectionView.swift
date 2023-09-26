@@ -15,6 +15,7 @@ class PackagesFilterSectionView: UICollectionReusableView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+       
         // Initialization code
     }
     

@@ -30,26 +30,16 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         imgNextArrow.addGestureRecognizer(tapGestureRecognizerr)
         self.newPasswordTextfield.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         self.confirmPasswordTextfield.addTarget(self, action: #selector(changeTextInTextField2), for: .editingChanged)
-        lbl1.textColor = UIColor(hexValue: 0xFF3932)
-        lbl2.textColor = UIColor(hexValue: 0xFF3932)
-        lbl3.textColor = UIColor(hexValue: 0xFF3932)
-        lbl4.textColor = UIColor(hexValue: 0xFF3932)
+//        lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//        lbl2.textColor = UIColor(hexValue: 0xFF3932)
+//        lbl3.textColor = UIColor(hexValue: 0xFF3932)
+//        lbl4.textColor = UIColor(hexValue: 0xFF3932)
 
 
     }
     @objc func changeTextInTextField2() {
         if self.newPasswordTextfield.text?.count == 6  && oldPasswordTextfield.text?.count == 6{
-//
-//            if textField ==  newPasswordTextfield {
-//                confirmPasswordTextfield .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
-//            } else if textField == confirmPasswordTextfield {
-//                textField.resignFirstResponder()
-//                if isValidPassword() == true{
-//
-//                }
-//
-//            }
-//
+
             if newPasswordTextfield?.text?.count == 6
             {
                 if isValidPassword() == true{

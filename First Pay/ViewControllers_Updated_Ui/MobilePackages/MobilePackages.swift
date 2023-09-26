@@ -67,34 +67,50 @@ class MobilePackages: UIViewController {
         getBundleDetails()
         
         selectedButton(view: viewOne, button: buttonOne)
+        
     }
     @IBAction func buttonBack(_ sender: Any) {
         self.dismiss(animated: true)
     }
-   
+    var networkId : Int?
     @IBAction func buttonSetting(_ sender: UIButton) {
         let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "PackagesFilter") as! PackagesFilter
         self.present(vc, animated: true)
     }
     @IBAction func buttonOne(_ sender: UIButton) {
+       
+        networkId = 1
+        
         selectedButton(view: viewOne, button: buttonOne)
+        
+        
     }
     @IBAction func buttonTwo(_ sender: UIButton) {
+        networkId = 2
         selectedButton(view: viewTwo, button: buttonTwo)
     }
     @IBAction func buttonThree(_ sender: UIButton) {
+    networkId = 3
+        
         selectedButton(view: viewThree, button: buttonThree)
     }
     @IBAction func buttonFour(_ sender: UIButton) {
+       networkId = 4
         selectedButton(view: viewFour, button: buttonFour)
     }
+      
+    
+    
+    
+  
+    
+    
     
     func selectedButton(view: UIView?, button: UIButton) {
         viewOne.backgroundColor = .clear
         viewTwo.backgroundColor = .clear
         viewThree.backgroundColor = .clear
         viewFour.backgroundColor = .clear
-        
         
         buttonOne.tag = 0
         buttonTwo.tag = 0
@@ -143,6 +159,7 @@ class MobilePackages: UIViewController {
         let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesDetails") as! MobilePackagesDetails
         vc.bundleDetail = bundleDetails
         vc.companyIcon = UIImage(named: arrayCompanyIcons[indexSelectedNetwork])
+        vc.fetchNetworkId = networkId
         vc.companyName = modelGetBundleDetails?.data[indexSelectedNetwork].companyName ?? ""
         self.navigationController!.pushViewController(vc, animated: true)
     }
