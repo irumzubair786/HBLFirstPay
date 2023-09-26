@@ -36,6 +36,8 @@ class UnverifeidAccountMainVc: BaseClassVC {
        
         buttonBack.setTitle("", for: .normal)
         // Do any additional setup after loading the view.
+        
+        buttonUpgradeAccount.circle()
     }
     
 

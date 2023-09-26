@@ -40,7 +40,7 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         imageNextArrow.addGestureRecognizer(tapGestureRecognizer)
         self.textFieldOTP.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         
-        
+        butttonContinue.circle()
     }
     
     func checkStatus()

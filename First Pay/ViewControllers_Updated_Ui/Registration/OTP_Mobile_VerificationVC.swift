@@ -53,6 +53,8 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         self.labelMessage.isHidden = true
         //        self.mobileRegistration()
         
+        btnContinue.circle()
+        
     }
     @IBOutlet weak var popupView: UIView!
     func getOneSignalUUIDD(){

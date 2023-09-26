@@ -26,7 +26,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         self.textFieldAmount.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         img_Next.addGestureRecognizer(tapGestureRecognizer)
-    
+        buttonContinue.circle()
         // Do any additional setup after loading the view.
     }
     var minimumValue = 1

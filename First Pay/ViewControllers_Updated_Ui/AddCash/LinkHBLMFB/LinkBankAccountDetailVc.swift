@@ -27,7 +27,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         imgNext.addGestureRecognizer(tapGestureRecognizer)
         
         self.textFieldMobileNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-
+        buttonContinue.circle()
     }
     
     @IBOutlet weak var buttonback: UIButton!

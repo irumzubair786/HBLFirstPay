@@ -52,7 +52,7 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         appendArray()
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(Send(tapGestureRecognizer:)))
         img_next.addGestureRecognizer(tapGestureRecognizerr)
-        
+        buttonContinue.circle()
         
     }
     func appendArray(){

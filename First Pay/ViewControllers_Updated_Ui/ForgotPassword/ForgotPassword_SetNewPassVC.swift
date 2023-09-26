@@ -23,6 +23,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Signup_forgotpass_landed)
+        
         super.viewDidLoad()
         mobileNumberTextField.becomeFirstResponder()
         cnicTextField.delegate = self
@@ -255,8 +256,10 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     }
 
     @objc func changeTextInTextField() {
+        if mobileNumberTextField.text != "" {
+            mobileNumberTextField.text?.removeFirst()
+        }
         
-        mobileNumberTextField.text?.removeFirst()
         
         let text = mobileNumberTextField.text!.replacingOccurrences(of: "+92-", with: "")
           if mobileNumberTextField.text?.count == 1 && text == "0" {

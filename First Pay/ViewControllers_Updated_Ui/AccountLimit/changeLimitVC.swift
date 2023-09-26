@@ -41,6 +41,7 @@ class changeLimitVC: BaseClassVC {
     
     
     
+    @IBOutlet weak var buttonContinue: UIButton!
     
     @IBOutlet weak var viewBackground: UIView!
     
@@ -61,7 +62,7 @@ class changeLimitVC: BaseClassVC {
      
         print("limit Type",LimitType)
         print("AmountType",AmounttType)
-
+        buttonContinue.circle()
     }
     @objc private func didSwipe(_ sender: UISwipeGestureRecognizer) {
 

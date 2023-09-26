@@ -18,6 +18,7 @@ class AccountUpgradeSuccessullVC: UIViewController {
         imgnext.addGestureRecognizer(tapGestureRecognizer3)
         buttonback.setTitle("", for: .normal)
         // Do any additional setup after loading the view.
+        buttonContinue.circle()
     }
     
 

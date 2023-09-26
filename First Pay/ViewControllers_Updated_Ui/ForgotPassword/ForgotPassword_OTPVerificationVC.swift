@@ -44,6 +44,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
         self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         labelMessage.isHidden = true
         // Do any additional setup after loading the view.
+        btnVerify.circle()
     }
     @IBOutlet weak var lblMobNo: UILabel!
     @IBOutlet weak var IMG_NEXT_ARROW: UIImageView!

@@ -40,6 +40,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         startTimer()
         getIMEI()
         self.otptextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        buttonCoontinue.circle()
        
     }
     @objc func timerAction() {

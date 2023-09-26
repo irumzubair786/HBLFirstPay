@@ -45,7 +45,7 @@ class RequestMoneyConfirmationVc: BaseClassVC,MFMessageComposeViewControllerDele
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imageNextArrow.addGestureRecognizer(tapGestureRecognizer)
         messageView.delegate = self
-        
+        buttonContinue.circle()
        
         // Do any additional setup after loading the view.
     }

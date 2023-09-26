@@ -35,6 +35,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     var toDate = UIDatePicker()
     
     
+    @IBAction func buttonVerify(_ sender: Any) {
+    }
+    @IBOutlet weak var buttonVerify: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         TF_CnicNo.becomeFirstResponder()
@@ -64,6 +67,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizerrr)
         btn_next.isUserInteractionEnabled = true
+        buttonVerify.circle()
         TF_CnicNo.addDoneButtonOnKeyboardWithAction { [self] in
             print("end editing")
             

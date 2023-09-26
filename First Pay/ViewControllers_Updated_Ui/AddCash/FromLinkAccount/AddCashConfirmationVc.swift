@@ -19,6 +19,7 @@ class AddCashConfirmationVc: BaseClassVC {
     var FirstPayNo : String?
     var transactionApiResponseObj : FTApiResponse?
    
+    @IBOutlet weak var buttonContinue: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         UpdateUi()
@@ -28,6 +29,7 @@ class AddCashConfirmationVc: BaseClassVC {
         img_next.isUserInteractionEnabled = true
         img_next.addGestureRecognizer(tapGestureRecognizerr)
         // Do any additional setup after loading the view.
+        buttonContinue.circle()
     }
    
     @IBOutlet weak var buttonBack: UIButton!

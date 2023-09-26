@@ -34,7 +34,7 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
 //        lbl2.textColor = UIColor(hexValue: 0xFF3932)
 //        lbl3.textColor = UIColor(hexValue: 0xFF3932)
 //        lbl4.textColor = UIColor(hexValue: 0xFF3932)
-
+        buttonContinue.circle()
 
     }
     @objc func changeTextInTextField2() {

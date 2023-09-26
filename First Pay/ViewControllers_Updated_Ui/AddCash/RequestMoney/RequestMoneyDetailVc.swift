@@ -26,6 +26,7 @@ class RequestMoneyDetailVc: BaseClassVC, UITextFieldDelegate, UITextViewDelegate
         imageNextArrow.addGestureRecognizer(tapGestureRecognizer)
         textFieldMobileNumber.delegate =  self
         self.textFieldMobileNumber.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        buttonContinue.circle()
         // Do any additional setup after loading the view.
     }
     

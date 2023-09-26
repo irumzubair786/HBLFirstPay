@@ -19,8 +19,10 @@ class BioMetricLoginVc: UIViewController {
         // Do any additional setup after loading the view.
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController), name: Notification.Name("dissmissViewController"),object: nil)
+        buttonContinue.circle()
     }
     
+    @IBOutlet weak var buttonContinue: UIButton!
     @objc func dissmissViewController() {
         self.dismiss(animated: true)
         NotificationCenter.default.post(name: Notification.Name("dissmissViewController2"), object: nil)

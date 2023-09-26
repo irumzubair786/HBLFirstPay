@@ -37,6 +37,8 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
             labelTitle.text = "ATM & POS ACCESSBILITY"
         }
         self.textfieldLast4digit.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        
+        buttonContinue.circle()
     }
     
     @IBOutlet weak var labelTitle: UILabel!

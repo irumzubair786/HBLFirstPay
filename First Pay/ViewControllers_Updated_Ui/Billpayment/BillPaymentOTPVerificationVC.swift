@@ -43,6 +43,8 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imgNextArrow.isUserInteractionEnabled = true
         imgNextArrow.addGestureRecognizer(tapGestureRecognizerr)
+        
+        buttonVerify.circle()
     }
     @IBOutlet weak var labelCount: UILabel!
     @IBOutlet weak var buttonResendOTP: UIButton!

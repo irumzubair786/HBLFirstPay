@@ -33,6 +33,7 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
 //        btn_next_arrow.isUserInteractionEnabled = true
         btn_next_arrow.addGestureRecognizer(tapGestureRecognizer)
         
+        buttonContinue.circle()
         // Do any additional setup after loading the view.
     }
     

@@ -37,6 +37,7 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
         imageNextArrow.isUserInteractionEnabled = true
         imageNextArrow.addGestureRecognizer(tapGestureRecognizerr)
         
+        buttonNext.circle()
         // Do any additional setup after loading the view.
     }
     

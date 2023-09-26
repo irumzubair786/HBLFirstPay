@@ -54,7 +54,9 @@ class CNICVerification: UIViewController {
 
         expireyDate.addTarget(self, action: #selector(self.tappedOnDate), for: .valueChanged)
         // Do any additional setup after loading the view.
+        buttonContinue.circle()
     }
+    
     
     @IBAction func selectDate(_ sender: Any) {
         tfSelectExpiryDate.becomeFirstResponder()
