@@ -49,7 +49,7 @@ class BioMetricLoginVc: UIViewController {
     
     @IBAction func buttonContinue(_ sender: UIButton) {
         let webVC = self.storyboard?.instantiateViewController(withIdentifier:"TermsandConditionsloginMethodsVc") as! TermsandConditionsloginMethodsVc
-        UserDefaults.standard.set("true", forKey: "enableTouchID")
+       
 //        KeychainWrapper.standard.set(true, forKey: "enableTouchID")
         self.present(webVC, animated: true)
 //            self.navigationController?.pushViewController(webVC, animated: true)
