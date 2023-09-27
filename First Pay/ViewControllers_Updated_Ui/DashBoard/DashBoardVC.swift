@@ -88,9 +88,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 //        imgLevel.isHidden = true
         buttonMobilepakegs.setTitle("", for: .normal)
         homeAction()
-        let tapGestureRecognizerrs = UITapGestureRecognizer(target: self, action: #selector(MovetoAccountLevel(tapGestureRecognizer:)))
-        imgLevel.isUserInteractionEnabled = true
-        imgLevel.addGestureRecognizer(tapGestureRecognizerrs)
+//        let tapGestureRecognizerrs = UITapGestureRecognizer(target: self, action: #selector(MovetoAccountLevel(tapGestureRecognizer:)))
+//        imgLevel.isUserInteractionEnabled = true
+//        imgLevel.addGestureRecognizer(tapGestureRecognizerrs)
         
         
         let tapGestureRecognizr = UITapGestureRecognizer(target: self, action: #selector(moveToDebitCard(tapGestureRecognizer:)))
