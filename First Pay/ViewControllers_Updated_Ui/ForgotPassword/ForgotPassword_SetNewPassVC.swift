@@ -256,7 +256,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
     }
 
     @objc func changeTextInTextField() {
-        if mobileNumberTextField.text != "" {
+        if mobileNumberTextField.text != "" &&  mobileNumberTextField.text?.first == "0"{
             mobileNumberTextField.text?.removeFirst()
         }
         

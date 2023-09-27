@@ -375,7 +375,7 @@ class ForgotPassword_OTPVerificationVC: BaseClassVC ,UITextFieldDelegate {
                 //            self.genRespBaseObj = response.result.value
                 if response.response?.statusCode == 200 {
                     if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-                        self.labelMessage.isHidden = false
+//                        self.labelMessage.isHidden = false
                         self.labelMessage.text = "OTP will be Resend after 30 Seconds"
                         //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
