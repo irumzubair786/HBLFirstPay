@@ -34,13 +34,11 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
     @IBAction func buttonBack(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-    
-    
+
     @IBAction func buttonOk(_ sender: UIButton) {
         self.dismiss(animated: true)
 
         NotificationCenter.default.post(name: Notification.Name("dissmissViewController"), object: nil)
-       
         
 //        let webVC = self.storyboard?.instantiateViewController(withIdentifier:"loginMethodsVc") as! loginMethodsVc
 ////            self.navigationController?.pushViewController(webVC, animated: true)

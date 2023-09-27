@@ -267,6 +267,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
               return
           }
         mobileNumberTextField.text = format(with: "+92-XXX-XXXXXXX", phone: text)
+       
         
         if mobileNumberTextField.text?.count ?? 0 < 15
         {
