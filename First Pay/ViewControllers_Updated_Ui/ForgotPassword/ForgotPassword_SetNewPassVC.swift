@@ -260,7 +260,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
             mobileNumberTextField.text?.removeFirst()
         }
         
-        
+       
         let text = mobileNumberTextField.text!.replacingOccurrences(of: "+92-", with: "")
           if mobileNumberTextField.text?.count == 1 && text == "0" {
               mobileNumberTextField.text = nil

@@ -22,7 +22,7 @@ class TermsandConditionsloginMethodsVc: BaseClassVC, UIWebViewDelegate {
         self.webViewHtmlMethod()
         buttonOk.setTitle("", for: .normal)
         blurView.isHidden = true
-      
+   
         // Do any additional setup after loading the view.
     }
     override func didReceiveMemoryWarning() {
