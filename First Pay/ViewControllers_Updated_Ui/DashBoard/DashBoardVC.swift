@@ -34,7 +34,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var banObj : GenericResponse?
     var getDebitDetailsObj : GetDebitCardModel?
     var availableLimitObj: AvailableLimitsModel?
-    var topBtnarr =  ["SendMoney", "Mobile Topup", "PayBill","First Option","DebitCard","SeeAll"]
+    var topBtnarr =  ["sendMoneyIcon", "mobileTopUpIcon", "payBillsIcon","getLoanIcon","debitCardIcon","sellAllIcon"]
+    var topBtnNameArray =  ["Send Money", "Mobile Top Up", "Pay Bills","Get Loan","Debit Card","See All"]
     var fingerPrintVerification: FingerPrintVerification!
     var fingerprintPngs : [Png]?
    
@@ -153,9 +154,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let itemsInRow = 4
-        let width = collectionView.bounds.width - 10
+        let height = collectionView.bounds.height
+        let width = collectionView.bounds.width - 5
         let cellWidth = width / CGFloat(itemsInRow)
-        return CGSize(width: cellWidth, height: 130)
+        return CGSize(width: cellWidth, height: height)
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return topBtnarr.count
@@ -165,6 +167,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         cella.btn.setTitle("", for: .normal)
         cella.btn.tag = indexPath.row
         cella.img.image = UIImage(named: topBtnarr[indexPath.row])
+        cella.lblName.text = topBtnNameArray[indexPath.row]
         cella.btn.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
         //        cella.img.image = topBtnarr[indexPath.row
         return cella
