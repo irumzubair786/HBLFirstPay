@@ -53,7 +53,8 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(Send(tapGestureRecognizer:)))
         img_next.addGestureRecognizer(tapGestureRecognizerr)
         buttonContinue.circle()
-        
+        messageTextView.delegate = self
+        Tfname.delegate = self
     }
     func appendArray(){
         for i in arrCategory{
@@ -132,15 +133,13 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
 //        self.present(vc, animated: true)
 //
     }
-
+    let RISTRICTED_CHARACTERS = "'*=+[]\\|;:'\",<>/?%"
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
         if string.rangeOfCharacter(from: .letters) != nil || string == " " {
             return true
         }
         else if !(string == "" && range.length > 0) {
-        return false
-        
+            return false
         }
         return true
     }
@@ -148,24 +147,15 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
         if text.rangeOfCharacter(from: .letters) != nil || text == " " {
-                   return true
-               }
-               else if !(text == "" && range.length > 0) {
-               return false
-               }
-        if text == "\n"
-        {
+            return true
+        }
+        else if !(text == "" && range.length > 0) {
+            return false
+        }
+        if text == "\n" {
             messageTextView.resignFirstResponder()
         }
-//        if (Tfname.text == nil) || (messageTextView.text == nil)
-//            {
-//                buttonContinue.isUserInteractionEnabled = false
-//                let image = UIImage(named: "grayArrow")
-//                img_next.image = image
-//                img_next.isUserInteractionEnabled = false
-//            }
-
-               return true
+        return true
         
     }
     func textViewDidBeginEditing(_ textView: UITextView) {
