@@ -56,13 +56,13 @@ class changeLimitVC: BaseClassVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         //        add swipe Gesture
-        updateUI()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
 //        viewBackground.dropShadow1()
      
         print("limit Type",LimitType)
         print("AmountType",AmounttType)
         buttonContinue.circle()
+        updateUI()
     }
     @objc private func didSwipe(_ sender: UISwipeGestureRecognizer) {
 
@@ -96,7 +96,7 @@ class changeLimitVC: BaseClassVC {
         
         let minimumAmount = (Double("\(dailyminValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
 
-        maximumAmount =  dailymaxValue
+        maximumAmount = dailymaxValue
         maxValue = Float(maximumAmount!)
         labelminamount.text = "Rs. \(minimumAmount)"
        
@@ -112,7 +112,8 @@ class changeLimitVC: BaseClassVC {
 //        slider.minimumValue = Float(convertdailyminValue ?? 0)
         slider.minimumValue = 0
         slider.maximumValue = Float(convertdailymaxValue ?? 0)
-        slider.value = Float(convertdailyminValue ?? 0)
+        
+        slider.value = Float(dailyAmount?.getIntegerValue() ?? "0") ?? 0
         if daily!.lowercased() == "daily " {
             slider.minimumTrackTintColor = .systemYellow
         }

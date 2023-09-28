@@ -259,9 +259,9 @@ class MyAccountLimitsVc: BaseClassVC, fittedSheets {
         return Double((Double(userValue))/(Double(total)))
     }
     func openPicker(from parent: UIViewController, id: String, in view: UIView?,daily : String,dailyAmount: String?, dailyminValue: String? ,dailymaxValue: String?,LimitType: String? ,AmounttType: String?, tag : Int? ,section: Int? ) {
-            
-            let useInlineMode = view != nil
-            let controller = (UIStoryboard.init(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "changeLimitVC") as? changeLimitVC)!
+        
+        let useInlineMode = view != nil
+        let controller = (UIStoryboard.init(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "changeLimitVC") as? changeLimitVC)!
         controller.daily = daily
         controller.dailyAmount = dailyAmount
         controller.dailyminValue = dailyminValue
@@ -274,19 +274,19 @@ class MyAccountLimitsVc: BaseClassVC, fittedSheets {
         }
         controller.LimitType = LimitType
         controller.AmounttType =  AmounttType
-            let sheet = SheetViewController(
-                controller: controller,
-                sizes: [.percent(0.45), .fullscreen],
-                options: SheetOptions(useInlineMode: useInlineMode))
+        let sheet = SheetViewController(
+            controller: controller,
+            sizes: [.percent(0.45), .fullscreen],
+            options: SheetOptions(useInlineMode: useInlineMode))
         MyAccountLimitsVc.addSheetEventLogging(to: sheet)
+        
+        if let view = view {
+            sheet.animateIn(to: view, in: parent)
+        } else {
             
-            if let view = view {
-                sheet.animateIn(to: view, in: parent)
-            } else {
-                
-                parent.present(sheet, animated: true, completion: nil)
-            }
+            parent.present(sheet, animated: true, completion: nil)
         }
+    }
 
     @objc func buttonpress(_ sender:UIButton)
     {
@@ -456,7 +456,10 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
             cell.labelTotalAmount.text = myCustomArray[indexPath.row].totalAmount
             cell.progressbar.cornerRadius = 5
             cell.buttonEdit.tag = indexPath.row
-            cell.progressbar.progress = myCustomArray[indexPath.row].percentage!
+//            cell.progressbar.progress = myCustomArray[indexPath.row].percentage!
+            
+            
+            cell.progressbar.progress = (Float((myCustomArray[indexPath.row].totalAmount ?? "0").getIntegerValue()) ?? 0) / self.getDivideValue(amount: myCustomArray[indexPath.row].totalAmount ?? "0")
             cell.labelLimitType.text = myCustomArray[indexPath.row].limitType
             cell.labelAmountType.text = myCustomArray[indexPath.row].amountType
             cell.buttonEdit.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
@@ -472,7 +475,8 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
             cell.progressbar.cornerRadius = 5
             cell.labelRemaining.text = receivingArr[indexPath.row].remaainig
             cell.progressbar.cornerRadius = 5
-            cell.progressbar.progress = receivingArr[indexPath.row].percentage!
+//            cell.progressbar.progress = receivingArr[indexPath.row].percentage!
+            cell.progressbar.progress = (Float((receivingArr[indexPath.row].totalAmount ?? "0").getIntegerValue()) ?? 0) / self.getDivideValue(amount: receivingArr[indexPath.row].totalAmount ?? "0")
             cell.labelLimitType.text = receivingArr[indexPath.row].limitType
             cell.labelAmountType.text = receivingArr[indexPath.row].amountType
             cell.buttonEdit.tag = indexPath.row
@@ -482,6 +486,32 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
             break
         }
         return cell
+    }
+    
+    func getDivideValue(amount: String) -> Float {
+        let totalDigit = amount.getIntegerValue().count
+        if totalDigit == 1 {
+            return 10
+        }
+        else if totalDigit == 2 {
+            return 100
+        }
+        else if totalDigit == 3 {
+            return 1000
+        }
+        else if totalDigit == 4 {
+            return 10000
+        }
+        else if totalDigit == 5 {
+            return 100000
+        }
+        else if totalDigit == 6 {
+            return 1000000
+        }
+        else if totalDigit == 6 {
+            return 10000000
+        }
+        return 0
     }
     
     
