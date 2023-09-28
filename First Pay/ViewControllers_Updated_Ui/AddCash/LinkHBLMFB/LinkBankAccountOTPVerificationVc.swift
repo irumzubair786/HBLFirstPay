@@ -15,7 +15,7 @@ import SwiftKeychainWrapper
 
 
 class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
-    var totalSecond = 60
+    var totalSecond = 30
     var ForTransactionConsent:Bool = false
     var timer = Timer()
     var counter = 0
@@ -25,7 +25,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     var Fetch_MobNo : String?
     var genResponseObj : GenericResponseModel?
     var fundsTransSuccessObj: FundsTransferApiResponse?
-    var TotalAmount : Float?
+    var TotalAmount : String?
     var userAccountNo : String?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +39,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         buttonResendOtVCall.isHidden = true
         startTimer()
         getIMEI()
+      
         self.otptextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         buttonCoontinue.circle()
        
@@ -48,7 +49,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
              labelCount.text = "\(counter)"
          }
     func startTimer() {
-        totalSecond = 60
+        totalSecond = 30
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {
@@ -101,10 +102,20 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         return newLength <= 4
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        let image  = UIImage(named: "]greenarrow")
-        buttonNext.setImage(image, for: .normal)
-        buttonCoontinue.isUserInteractionEnabled = true
-        buttonNext.isUserInteractionEnabled = true
+        if otptextField.text?.count == 4
+        {
+            buttonNext.setImage(UIImage(named: "]greenarrow"), for: .normal)
+            buttonNext.isUserInteractionEnabled = true
+            buttonCoontinue.isUserInteractionEnabled = true
+        }
+      
+        else
+        {
+            buttonNext.setImage(UIImage(named: "grayArrow"), for: .normal)
+            buttonNext.isUserInteractionEnabled = false
+            buttonCoontinue.isUserInteractionEnabled = false
+        }
+       
     }
     @objc func changeTextInTextField() {
         if otptextField.text?.count == 4
@@ -243,7 +254,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
                 
                 if response.response?.statusCode == 200 {
                     self.genResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
-                    
+                   
                     if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
                         let vc = self.storyboard!.instantiateViewController(withIdentifier: "POPUPSuccessfullVc") as! POPUPSuccessfullVc
                         
@@ -356,7 +367,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransactionSuccessfullVc") as! TransactionSuccessfullVc
     
-        vc.transactionAmount = "\(TotalAmount ?? 0)"
+        vc.transactionAmount = (TotalAmount!)
         vc.transactionId = fundsTransSuccessObj?.data?.authIdResponse
         vc.transactionType = "Add Cash Linked Account"
 //        changes

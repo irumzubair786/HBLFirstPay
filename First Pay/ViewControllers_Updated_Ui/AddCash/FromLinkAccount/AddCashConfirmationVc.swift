@@ -18,7 +18,7 @@ class AddCashConfirmationVc: BaseClassVC {
     var TotalAmount : Float?
     var FirstPayNo : String?
     var transactionApiResponseObj : FTApiResponse?
-   
+    var convertTotalAmountToString: Int?
     @IBOutlet weak var buttonContinue: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,13 +65,17 @@ class AddCashConfirmationVc: BaseClassVC {
     {
        
         
-        labelTransactionFee.text = "0.00"
+        labelTransactionFee.text = "Rs. 0.00"
         labelAccountTitle.text = accounttilte
         labelAccountNo.text = accontNo
         labelBankName.text = bankName
         labelFirstPayNo.text = FirstPayNo
-        labelTotalTransationAmount.text = "\(TotalAmount ?? 0)"
+        labelTotalTransationAmount.text = "Rs. \(TotalAmount ?? 0)"
+       
         amounttextfield.text = "\(TotalAmount ?? 0)"
+        convertTotalAmountToString = Int(TotalAmount!)
+        print("Converted Amount", convertTotalAmountToString)
+        
     }
     private func initiateAddCashFT() {
         
@@ -90,9 +94,11 @@ class AddCashConfirmationVc: BaseClassVC {
         else{
             userCnic = ""
         }
+//
         let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/initiateAddCashFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":DataManager.instance.accountNo!,"amount":TotalAmount!] as [String : Any]
+        
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":DataManager.instance.accountNo!,"amount":convertTotalAmountToString!,"channelId":"\(DataManager.instance.channelID)" ] as [String : Any]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
@@ -123,7 +129,7 @@ class AddCashConfirmationVc: BaseClassVC {
                     if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
                         
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
-                        vc.TotalAmount = self.TotalAmount
+                        vc.TotalAmount = "\(self.TotalAmount!)"
                         vc.userAccountNo = self.transactionApiResponseObj?.data?.accountNo
                         isfromPullFund = true
                         self.navigationController?.pushViewController(vc, animated: true

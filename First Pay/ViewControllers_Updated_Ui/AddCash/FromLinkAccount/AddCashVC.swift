@@ -303,6 +303,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":DataManager.instance.accountNo!,"amount":self.textFieldAmount.text!] as [String : Any]
         print(parameters)
+       
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
 //         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]

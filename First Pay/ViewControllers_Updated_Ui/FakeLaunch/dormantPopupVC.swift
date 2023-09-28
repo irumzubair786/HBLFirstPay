@@ -210,6 +210,11 @@ class dormantPopupVC: BaseClassVC {
                                     //                        fetchdataFromAPI()
                                     //                    }
                                 }
+                                if self.loginObj?.responsecode == nil{
+                                    if let message = self.loginObj?.messages{
+                                        self.showAlertCustomPopup(title: "", message: message)
+                                }
+                                }
                                 else{
                                     if let message = self.loginObj?.messages{
                                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
@@ -241,6 +246,7 @@ class dormantPopupVC: BaseClassVC {
                                 }
                             }
             }
+                
         }
         
     }
