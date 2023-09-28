@@ -34,7 +34,7 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
 //        enterConfirmPinTextField.isUserInteractionEnabled = false
         self.lblMainTitle.text = "Reset Password"
         ConvertLanguage()
-        lbl1.text = "Password must contain atleast 1 Upper case,numeric and special character."
+        lbl1.text = "Password must contain 6 character."
         lbl1.textColor = UIColor.gray
         btnnext.isUserInteractionEnabled = true
         self.enterPinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
