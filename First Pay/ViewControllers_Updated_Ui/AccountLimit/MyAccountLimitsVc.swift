@@ -103,14 +103,14 @@ class MyAccountLimitsVc: BaseClassVC, fittedSheets {
         var ConsumedDailyLimit = modelGetAccount?.data?.dailyReceived
         var percent = calculateValue(total: (totaldailyLimit ?? 0),userValue: ConsumedDailyLimit ?? 0)
         CommaSeprationSection1()
-        receivingArr.append(receiving(name: "Daily", limit: "Consumed Rs. \(modelGetAccount?.data?.dailyReceived ?? 0)", colour: UIColor(hexString: "#F8CC59", alpha: 1), remaining: "Remaining Rs. \(modelGetAccount?.data?.dailyCRRemaining ?? 0)",totalAmount: "Total Rs.\(DailyTotalLimit1!)", percentage:Float(percent),limitType: "D",amountType: "C", LimitLevelReceiving: Float((modelGetAccount?.data?.dailyLevelCreditLimit) ?? 0)))
+        receivingArr.append(receiving(name: "Daily", limit: "\(modelGetAccount?.data?.dailyReceived ?? 0)", colour: UIColor(hexString: "#F8CC59", alpha: 1), remaining: "Remaining Rs. \(modelGetAccount?.data?.dailyCRRemaining ?? 0)",totalAmount: "\(DailyTotalLimit1!)", percentage:Float(percent),limitType: "D",amountType: "C", LimitLevelReceiving: Float((modelGetAccount?.data?.dailyLevelCreditLimit) ?? 0)))
         
         
         var totalyMonthlyLimit = modelGetAccount?.data?.totalMonthlyLimitCR
         var  ConsumedMonthlyLimit = modelGetAccount?.data?.monthlyReceived
         var per  = calculateValue(total: Int(totalyMonthlyLimit ?? 0),userValue: Int(ConsumedMonthlyLimit ?? 0))
         
-        receivingArr.append(receiving(name: "Monthly",limit: "Consumed Rs. \(modelGetAccount?.data?.monthlyReceived ?? 0)", colour: UIColor(hexString: "#1EC884", alpha: 1), remaining: "Remaining Rs. \(modelGetAccount?.data?.monthlyCRRemaining ?? 0)",totalAmount: "Total Rs.\(MonthlyLimit1!)", percentage: Float(per),limitType: "M",amountType: "C", LimitLevelReceiving: Float(modelGetAccount?.data?.monthlyLevelCreditLimit ?? 0)))
+        receivingArr.append(receiving(name: "Monthly",limit: "\(modelGetAccount?.data?.monthlyReceived ?? 0)", colour: UIColor(hexString: "#1EC884", alpha: 1), remaining: "Remaining Rs. \(modelGetAccount?.data?.monthlyCRRemaining ?? 0)",totalAmount: "\(MonthlyLimit1!)", percentage: Float(per),limitType: "M",amountType: "C", LimitLevelReceiving: Float(modelGetAccount?.data?.monthlyLevelCreditLimit ?? 0)))
         
         print("receiving month limit",receivingArr[0].limitType )
         print("receiving month Amount",receivingArr[0].amountType )
@@ -118,7 +118,7 @@ class MyAccountLimitsVc: BaseClassVC, fittedSheets {
         var  ConsumedYearlyLimit = modelGetAccount?.data?.yearlyReceived
         var pers  = calculateValue(total: Int(totalyYearlyLimit ?? 0),userValue: Int(ConsumedYearlyLimit ?? 0))
         
-        receivingArr.append(receiving(name: "Yearly ", limit: "Consumed Rs.\(modelGetAccount?.data?.yearlyReceived ?? 0)", colour: UIColor(hexString: "#F19434", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.yearlyCRRemaining ?? 0)",totalAmount: "Total Rs.\(YearlyLimit1!)", percentage: Float(pers),limitType: "Y",amountType: "C", LimitLevelReceiving: Float(modelGetAccount?.data?.yearlyLevelCreditLimit ?? 0)))
+        receivingArr.append(receiving(name: "Yearly ", limit: "\(modelGetAccount?.data?.yearlyReceived ?? 0)", colour: UIColor(hexString: "#F19434", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.yearlyCRRemaining ?? 0)",totalAmount: "\(YearlyLimit1!)", percentage: Float(pers),limitType: "Y",amountType: "C", LimitLevelReceiving: Float(modelGetAccount?.data?.yearlyLevelCreditLimit ?? 0)))
         
     }
     
@@ -157,19 +157,19 @@ class MyAccountLimitsVc: BaseClassVC, fittedSheets {
         var percent = calculateValue(total: (totaldailyLimit ?? 0),userValue: ConsumedDailyLimit ?? 0)
         CommaSepration()
         print("total daily", DailyTotalLimit)
-        myCustomArray.append(a(name: "Daily ", limit: "Consumed Rs. \(modelGetAccount?.data?.dailyConsumed ?? 0)", colour: UIColor(hexString: "#F8CC59", alpha: 1), remaining: "Remaining Rs. \(modelGetAccount?.data?.dailyDRRemaining ?? 0)",totalAmount: "Total Rs.\(DailyTotalLimit!)", percentage: Float(percent),limitType: "D",amountType: "D", LimitLevelSending: Float(modelGetAccount?.data?.dailyLevelDebitLimit ?? 0)))
+        myCustomArray.append(a(name: "Daily ", limit: "\(modelGetAccount?.data?.dailyConsumed ?? 0)", colour: UIColor(hexString: "#F8CC59", alpha: 1), remaining: "Remaining Rs. \(modelGetAccount?.data?.dailyDRRemaining ?? 0)",totalAmount: "\(DailyTotalLimit!)", percentage: Float(percent),limitType: "D",amountType: "D", LimitLevelSending: Float(modelGetAccount?.data?.dailyLevelDebitLimit ?? 0)))
         
         var totalyMonthlyLimit = modelGetAccount?.data?.totalMonthlyLimit
         var  ConsumedMonthlyLimit = modelGetAccount?.data?.monthlyConsumed
         var per  = calculateValue(total: Int(totalyMonthlyLimit ?? 0),userValue: Int(ConsumedMonthlyLimit ?? 0))
         
-        myCustomArray.append(a(name: "Monthly ", limit: "Consumed Rs.\(modelGetAccount?.data?.monthlyConsumed ?? 0)", colour: UIColor(hexString: "#1EC884", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.monthlyDRRemaining ?? 0)",totalAmount: "Total Rs.\(MonthlyLimit!)", percentage: Float(per),limitType: "M",amountType: "D", LimitLevelSending: Float(modelGetAccount?.data?.monthlyLevelDebitLimit ?? 0)))
+        myCustomArray.append(a(name: "Monthly ", limit: "\(modelGetAccount?.data?.monthlyConsumed ?? 0)", colour: UIColor(hexString: "#1EC884", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.monthlyDRRemaining ?? 0)",totalAmount: "\(MonthlyLimit!)", percentage: Float(per),limitType: "M",amountType: "D", LimitLevelSending: Float(modelGetAccount?.data?.monthlyLevelDebitLimit ?? 0)))
         
         var totalyYearlyLimit = modelGetAccount?.data?.totalYearlyLimit
         var  ConsumedYearlyLimit = modelGetAccount?.data?.yearlyConsumed
         var pers  = calculateValue(total: Int(totalyYearlyLimit ?? 0),userValue: Int(ConsumedYearlyLimit ?? 0))
         
-        myCustomArray.append(a(name: "Yearly ", limit: "Consumed Rs.\(modelGetAccount?.data?.yearlyConsumed! ?? 0)", colour: UIColor(hexString: "#F19434", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.yearlyDRRemaining ?? 0)",totalAmount: "Total Rs.\(YearlyLimit!)", percentage: Float(pers),limitType: "Y",amountType: "D", LimitLevelSending: Float(modelGetAccount?.data?.yearlyLevelDebitLimit ?? 0)))
+        myCustomArray.append(a(name: "Yearly ", limit: "\(modelGetAccount?.data?.yearlyConsumed! ?? 0)", colour: UIColor(hexString: "#F19434", alpha: 1),remaining: "Remaining Rs. \(modelGetAccount?.data?.yearlyDRRemaining ?? 0)",totalAmount: "\(YearlyLimit!)", percentage: Float(pers),limitType: "Y",amountType: "D", LimitLevelSending: Float(modelGetAccount?.data?.yearlyLevelDebitLimit ?? 0)))
     }
     override func viewWillAppear(_ animated: Bool) {
 
@@ -446,20 +446,19 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
         case 0:
             
             cell.labelDailyName.text = myCustomArray[indexPath.row].name
-            cell.labelConsumed.text = myCustomArray[indexPath.row].limit
+            cell.labelConsumed.text = "Consumed Rs. \(myCustomArray[indexPath.row].limit ?? "0")"
             cell.lblLevelLImit.text = "\(myCustomArray[indexPath.row].LimitLevelSending!)"
             cell.progressbar.progressTintColor = myCustomArray[indexPath.row].colour
             cell.progressbar.progressViewStyle = .bar
             cell.progressbar.trackTintColor = UIColor(hexString: "#F2F6F9", alpha: 1)
             cell.labelRemaining.text = myCustomArray[indexPath.row].remaainig
 //            yy
-            cell.labelTotalAmount.text = myCustomArray[indexPath.row].totalAmount
+            cell.labelTotalAmount.text = "Total Rs. \(myCustomArray[indexPath.row].totalAmount ?? "0")"
             cell.progressbar.cornerRadius = 5
             cell.buttonEdit.tag = indexPath.row
 //            cell.progressbar.progress = myCustomArray[indexPath.row].percentage!
-            
-            
-            cell.progressbar.progress = (Float((myCustomArray[indexPath.row].totalAmount ?? "0").getIntegerValue()) ?? 0) / self.getDivideValue(amount: myCustomArray[indexPath.row].totalAmount ?? "0")
+            cell.progressbar.progress = (Float((myCustomArray[indexPath.row].limit ?? "0").getIntegerValue()) ?? 0)/(Float((myCustomArray[indexPath.row].totalAmount ?? "0").getIntegerValue()) ?? 0)
+//            cell.progressbar.progress = (Float((myCustomArray[indexPath.row].limit ?? "0").getIntegerValue()) ?? 0) / self.getDivideValue(amount: myCustomArray[indexPath.row].totalAmount ?? "0")
             cell.labelLimitType.text = myCustomArray[indexPath.row].limitType
             cell.labelAmountType.text = myCustomArray[indexPath.row].amountType
             cell.buttonEdit.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
@@ -467,8 +466,8 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
             // cell.textLabel?.text = "Receiving Limits, Row \(indexPath.row)"
             cell.labelDailyName.text = receivingArr[indexPath.row].name
             cell.lblLevelLImit.text = "\(receivingArr[indexPath.row].LimitLevelReceiving!)"
-            cell.labelTotalAmount.text = receivingArr[indexPath.row].totalAmount
-            cell.labelConsumed.text = receivingArr[indexPath.row].limit
+            cell.labelTotalAmount.text = "Total Rs. \(receivingArr[indexPath.row].totalAmount ?? "0")"
+            cell.labelConsumed.text = "Consumed Rs. \(receivingArr[indexPath.row].limit ?? "0")"
             cell.progressbar.progressTintColor = receivingArr[indexPath.row].colour
             cell.progressbar.progressViewStyle = .bar
             cell.progressbar.trackTintColor = UIColor(hexString: "#F2F6F9", alpha: 1)
@@ -476,7 +475,7 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
             cell.labelRemaining.text = receivingArr[indexPath.row].remaainig
             cell.progressbar.cornerRadius = 5
 //            cell.progressbar.progress = receivingArr[indexPath.row].percentage!
-            cell.progressbar.progress = (Float((receivingArr[indexPath.row].totalAmount ?? "0").getIntegerValue()) ?? 0) / self.getDivideValue(amount: receivingArr[indexPath.row].totalAmount ?? "0")
+            cell.progressbar.progress = (Float((receivingArr[indexPath.row].limit ?? "0").getIntegerValue()) ?? 0) / self.getDivideValue(amount: receivingArr[indexPath.row].totalAmount ?? "0")
             cell.labelLimitType.text = receivingArr[indexPath.row].limitType
             cell.labelAmountType.text = receivingArr[indexPath.row].amountType
             cell.buttonEdit.tag = indexPath.row
@@ -510,6 +509,12 @@ extension MyAccountLimitsVc: UITableViewDelegate, UITableViewDataSource{
         }
         else if totalDigit == 6 {
             return 10000000
+        }
+        else if totalDigit == 7 {
+            return 100000000
+        }
+        else if totalDigit == 8 {
+            return 1000000000
         }
         return 0
     }

@@ -93,6 +93,8 @@ class changeLimitVC: BaseClassVC {
     func updateUI() {
         labelname.text  = "Change \(daily!) Limit"
         labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "Rs.") ?? "")"
+        dailyminValue = dailyminValue?.replacingOccurrences(of: "Consumed Rs. ", with: "")
+        dailyminValue = dailyminValue?.replacingOccurrences(of: "Consumed Rs.", with: "")
         
         let minimumAmount = (Double("\(dailyminValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
 
@@ -112,8 +114,8 @@ class changeLimitVC: BaseClassVC {
 //        slider.minimumValue = Float(convertdailyminValue ?? 0)
         slider.minimumValue = 0
         slider.maximumValue = Float(convertdailymaxValue ?? 0)
-        
-        slider.value = Float(dailyAmount?.getIntegerValue() ?? "0") ?? 0
+        let dailyAmountValue = dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "").removeSpecialCharsFromString()
+        slider.value = Float(dailyAmountValue?.getIntegerValue() ?? "0") ?? 0
         if daily!.lowercased() == "daily " {
             slider.minimumTrackTintColor = .systemYellow
         }
