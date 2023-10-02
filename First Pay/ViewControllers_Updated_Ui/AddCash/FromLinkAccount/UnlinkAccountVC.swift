@@ -40,7 +40,8 @@ class UnlinkAccountVC: BaseClassVC {
     @objc func Movetoback(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
-        self.navigationController?.popViewController(animated: false)
+        self.dismiss(animated: true)
+//        self.navigationController?.popViewController(animated: false)
     }
     
     @IBOutlet weak var backView: UIView!
@@ -112,7 +113,9 @@ class UnlinkAccountVC: BaseClassVC {
                     if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
                         let vc = self.storyboard!.instantiateViewController(withIdentifier: "DelinkSuccessfullVC") as! DelinkSuccessfullVC
                         isfromPullFund = false
-                        self.navigationController?.pushViewController(vc, animated: true)
+//                        self.dismiss(animated: true)
+                        self.present(vc, animated: true)
+//                        self.navigationController?.pushViewController(vc, animated: true)
                         
                     }
                     else {

@@ -39,11 +39,12 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         buttonResendOtVCall.isHidden = true
         startTimer()
         getIMEI()
-      
+
         self.otptextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         buttonCoontinue.circle()
        
     }
+   
     @objc func timerAction() {
              counter += 1
              labelCount.text = "\(counter)"
@@ -260,12 +261,14 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
                         
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
-                    
+                   
+                  
                     else {
                         if let message = self.genResponseObj?.messages {
                             self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                             
                         }
+                        
                     }
                 }
                 else {
@@ -313,8 +316,9 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
 //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferLocal"
         let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/addCashFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":GlobalData.userAcc!,"amount":TotalAmount!,"transPurpose":"miscellaneous","accountTitle": DataManager.instance.accountTitle!,"transactionType":"PULL","otp":otptextField.text!] as [String : Any]
- 
+//        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"narration":"","cnic":userCnic!,"accountNo":GlobalData.userAcc!,"amount":TotalAmount!,"transPurpose":"miscellaneous","accountTitle": DataManager.instance.accountTitle!,"transactionType":"PULL","otp":otptextField.text!] as [String : Any]
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"accountTitle":DataManager.instance.accountTitle!,"cnic":userCnic!,"accountNo":GlobalData.userAcc!,"channelId":DataManager.instance.channelID,"transactionType":"PULL","otp":otptextField.text!,"amount":TotalAmount!] as [String : Any]
+
         print(parameters)
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
@@ -367,7 +371,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransactionSuccessfullVc") as! TransactionSuccessfullVc
     
-        vc.transactionAmount = (TotalAmount!)
+        vc.transactionAmount = TotalAmount!
         vc.transactionId = fundsTransSuccessObj?.data?.authIdResponse
         vc.transactionType = "Add Cash Linked Account"
 //        changes

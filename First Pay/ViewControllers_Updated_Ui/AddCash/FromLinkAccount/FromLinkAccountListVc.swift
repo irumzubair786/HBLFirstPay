@@ -10,7 +10,9 @@ import UIKit
 import Alamofire
 import ObjectMapper
 import SwiftKeychainWrapper
-class FromLinkAccountListVc: BaseClassVC {
+import FittedSheets
+class FromLinkAccountListVc: BaseClassVC , DrawerGesture{
+    static var name: String { "CategoryPicker" }
     var LinkedAccountsObj : getLinkedAccountModel?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +31,36 @@ class FromLinkAccountListVc: BaseClassVC {
         )
     }
     @IBOutlet weak var tableView: UITableView!
+    func openPicker(from parent: UIViewController, id: String, in view: UIView?) {
+        
+        let useInlineMode = view != nil
+        let controller = (UIStoryboard.init(name: "AddCash", bundle: Bundle.main).instantiateViewController(withIdentifier: "UnlinkAccountVC") as? UnlinkAccountVC)!
+//        controller.daily = daily
+//        controller.dailyAmount = dailyAmount
+//        controller.dailyminValue = dailyminValue
+//        controller.dailymaxValue = dailymaxValue
+//        controller.tag  = tag
+//        controller.delegate = self
+//        controller.section = section
+//        controller.refreshScreen = {
+//            self.apicall()
+        
+//        controller.LimitType = LimitType
+//        controller.AmounttType =  AmounttType
+        let sheet = SheetViewController(
+            controller: controller,
+            sizes: [.percent(0.45), .fullscreen],
+            options: SheetOptions(useInlineMode: useInlineMode))
+    FromLinkAccountListVc.addSheetEventLogging(to: sheet)
+        
+        if let view = view {
+            sheet.animateIn(to: view, in: parent)
+        } else {
+            
+            parent.present(sheet, animated: true, completion: nil)
+        }
+    }
+    
     private func getLinkAccounts() {
         
         
@@ -95,7 +127,12 @@ class FromLinkAccountListVc: BaseClassVC {
     
     @IBAction func buttonDelink(_ sender: UIButton) {
         
+        
+        
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "UnlinkAccountVC") as! UnlinkAccountVC
+        openPicker(from: self, id:  "changeLimitVC", in: nil)
+//      
+        
 //                        vc.accountTitle = cbsAccountsObj?.accdata[0].cbsAccountTitle
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -128,6 +165,7 @@ extension FromLinkAccountListVc :UITableViewDelegate, UITableViewDataSource {
         aCell.labelBankName.text = aRequest?.branchName
         aCell.buttonBackView.setTitle("", for: .normal)
         aCell.buttonBackView.tag = indexPath.row
+        aCell.buttonBackView.dropShadow1()
         aCell.buttonBackView.addTarget(self, action:  #selector(buttonpress(_:)), for: .touchUpInside)
         
         aCell.buttonDotedIcon.setTitle("", for: .normal)
@@ -147,4 +185,31 @@ extension FromLinkAccountListVc :UITableViewDelegate, UITableViewDataSource {
         
 
 }
+}
+protocol DrawerGesture {
+    static var name: String { get }
+    func openPicker(from parent: UIViewController , id : String , in view: UIView?)
+    
+}
+
+extension DrawerGesture {
+    static func addSheetEventLogging(to sheet: SheetViewController) {
+        let previousDidDismiss = sheet.didDismiss
+        sheet.didDismiss = {
+            print("did dismiss")
+            previousDidDismiss?($0)
+        }
+        
+        let previousShouldDismiss = sheet.shouldDismiss
+        sheet.shouldDismiss = {
+            print("should dismiss")
+            return previousShouldDismiss?($0) ?? true
+        }
+        
+        let previousSizeChanged = sheet.sizeChanged
+        sheet.sizeChanged = { sheet, size, height in
+            print("Changed to \(size) with a height of \(height)")
+            previousSizeChanged?(sheet, size, height)
+        }
+    }
 }

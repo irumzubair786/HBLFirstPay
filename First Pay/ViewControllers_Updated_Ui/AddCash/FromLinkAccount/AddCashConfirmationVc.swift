@@ -19,6 +19,7 @@ class AddCashConfirmationVc: BaseClassVC {
     var FirstPayNo : String?
     var transactionApiResponseObj : FTApiResponse?
     var convertTotalAmountToString: Int?
+    var otpRequired : String?
     @IBOutlet weak var buttonContinue: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,12 +45,29 @@ class AddCashConfirmationVc: BaseClassVC {
     @IBAction func buttonContinue(_ sender: UIButton) {
         FBEvents.logEvent(title: .Transactions_active)
         FaceBookEvents.logEvent(title: .Transactions_active)
+        if   otpRequired == "Y"
+        {
+            OTP()
+        }
+       else
+        {
         self.initiateAddCashFT()
+       }
+      
+
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        
-        initiateAddCashFT()
+        FBEvents.logEvent(title: .Transactions_active)
+        FaceBookEvents.logEvent(title: .Transactions_active)
+        if   otpRequired == "Y"
+        {
+            OTP()
+        }
+       else
+        {
+        self.initiateAddCashFT()
+       }
     }
     
     @IBOutlet weak var img_next: UIImageView!
@@ -76,6 +94,103 @@ class AddCashConfirmationVc: BaseClassVC {
         convertTotalAmountToString = Int(TotalAmount!)
         print("Converted Amount", convertTotalAmountToString)
         
+    }
+    func OTP() {
+        
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        showActivityIndicator()
+        
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/getOtpOrOtv"
+        var userCnic : String?
+        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+        }
+        else{
+            userCnic = ""
+        }
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters = ["mobileNo":"\(DataManager.instance.mobNo )","otpType":GlobalOTPTypes.LOAD_BALANCE_PULL ,"channelId":"\(DataManager.instance.channelID )", "cnic" : userCnic!, "otpSendType" : "OTP" ]
+        
+
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+        
+        //        print(result.apiAttribute1)
+        //        print(result.apiAttribute2)
+        
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "")"]
+
+//        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken)"]
+        //
+        print(parameters)
+        print(compelteUrl)
+        print("Headers: \(header)")
+        
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+            //            (response: DataResponse<GenericResponse>) in
+            
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
+            response in
+            self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            print(response.result)
+            print(response.response)
+            print(response.request)
+
+            //            let tempGenRespBaseObj = try? JSONDecoder().decode(GenericResponse.self, from: response.data!)
+            //            print(tempGenRespBaseObj)
+            
+            do{
+                let json = try JSONSerialization.jsonObject(with: response.data!, options: [.fragmentsAllowed])
+                
+                
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+            }
+            catch let error{
+                print("\n\n===========Error===========")
+                print("Error Code: \(error._code)")
+                print("Error Messsage: \(error.localizedDescription)")
+                if let str = String(data: data, encoding: String.Encoding.utf8){
+                    print("Print Server data:- " + str)
+                }
+                debugPrint(error)
+                print("===========================\n\n")
+                
+                debugPrint(error)
+            }
+            //            self.genRespBaseObj = response.result.value
+            if response.response?.statusCode == 200 {
+                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
+                    vc.TotalAmount = "\(self.TotalAmount!)"
+                    vc.userAccountNo = self.transactionApiResponseObj?.data?.accountNo
+                    isfromPullFund = true
+                    self.navigationController?.pushViewController(vc, animated: true
+                    )
+//                    self.VerifyOTPForTransaction()
+                    
+                }
+                else {
+                    if let message = self.genRespBaseObj?.messages {
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        
+                    }
+                }
+            }
+            else {
+                if let message = self.genRespBaseObj?.messages {
+                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                }
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
+                
+            }
+        }
     }
     private func initiateAddCashFT() {
         

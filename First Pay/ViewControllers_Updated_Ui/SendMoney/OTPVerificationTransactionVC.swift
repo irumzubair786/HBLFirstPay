@@ -57,7 +57,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
 //    showToast(title: "OTP send")
     btnResendOtp.isUserInteractionEnabled = false
     btnResendOtp.setTitleColor(.gray ,for: .normal)
-        
+       
     startTimer()
         ResendOTP()
       
@@ -171,6 +171,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             IMG_NEXT_ARROW.image = image
             btnVerify.isUserInteractionEnabled = false
         }
+  
 
     }
     @IBAction func Action_Verify(_ sender: UIButton) {

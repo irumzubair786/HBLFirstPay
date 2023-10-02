@@ -44,11 +44,14 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
     
     @IBAction func buttonContinue(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddCashConfirmationVc") as! AddCashConfirmationVc
+        
         vc.accontNo = self.LinkedAccountsObj?.data?[0].cbsAccountNo
         vc.accounttilte = self.LinkedAccountsObj?.data?[0].cbsAccountTitle
         vc.bankName = self.LinkedAccountsObj?.data?[0].branchName
         vc.FirstPayNo = self.LinkedAccountsObj?.data?[0].mobileNo
         vc.TotalAmount = Float(self.textFieldAmount.text!)
+        vc.otpRequired = self.LinkedAccountsObj?.data?[0].otpRequired
+        print("otp is required",   vc.otpRequired!)
         self.navigationController?.pushViewController(vc, animated: true
         )
 
@@ -62,6 +65,8 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         vc.bankName = self.LinkedAccountsObj?.data?[0].branchName
         vc.FirstPayNo = self.LinkedAccountsObj?.data?[0].mobileNo
         vc.TotalAmount = Float(self.textFieldAmount.text!)
+        vc.otpRequired = self.LinkedAccountsObj?.data?[0].otpRequired
+        print("otp is required",   vc.otpRequired!)
         self.navigationController?.pushViewController(vc, animated: true
         )
     }
@@ -299,6 +304,7 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
         else{
             userCnic = ""
         }
+       
         let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/initiateAddCashFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":DataManager.instance.accountNo!,"amount":self.textFieldAmount.text!] as [String : Any]
@@ -342,8 +348,6 @@ class AddCashVC: BaseClassVC, UITextFieldDelegate {
                         vc.TotalAmount = Float(self.textFieldAmount.text!)
                         self.navigationController?.pushViewController(vc, animated: true
                         )
-                        
-                        
                         
                     }
                     else {
