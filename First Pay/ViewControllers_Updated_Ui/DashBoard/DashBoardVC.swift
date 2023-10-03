@@ -77,6 +77,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         FBEvents.logEvent(title: .Homescreen_Landing)
         super.viewDidLoad()
         banapi()
+//        ScrollView not working please check it..
         collectionView.delegate = self
         collectionView.dataSource = self
        
