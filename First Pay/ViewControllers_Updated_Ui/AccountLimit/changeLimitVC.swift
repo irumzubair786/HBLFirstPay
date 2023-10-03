@@ -162,8 +162,10 @@ class changeLimitVC: BaseClassVC {
     @IBAction func Action_Slider(_ sender: UISlider) {
         let value = sender.value
         let val = Int(value)
+        var amountCommaSeperated = "\(Double(value).commaRepresentation.removeSpecialCharsFromString())"
         
-        labelAmount.text = "\(Int(value) ?? 0)"
+        amountCommaSeperated = amountCommaSeperated.components(separatedBy: ".").first!
+        labelAmount.text = "RS. \(amountCommaSeperated)"
         imgvArrow.image = UIImage(named: "]greenarrow")
     }
     
