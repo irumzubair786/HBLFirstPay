@@ -82,7 +82,7 @@ extension MobileFavouriteBunldles: UICollectionViewDataSource, UICollectionViewD
         }
         else {
             let width = collectionView.frame.width / 3 - 8
-         return CGSize(width: width, height: 100)
+            return CGSize(width: width, height: 100)
         }
     }
     

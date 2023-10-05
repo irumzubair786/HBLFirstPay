@@ -115,6 +115,8 @@ class MobilePackages: UIViewController {
         navigateToFavourite()
 return()
         let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "PackagesFilter") as! PackagesFilter
+        
+        vc.bundleFilters = (modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters)!
         self.present(vc, animated: true)
     }
     @IBAction func buttonOne(_ sender: UIButton) {

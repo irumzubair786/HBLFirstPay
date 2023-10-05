@@ -11,10 +11,22 @@ class PackagesFilter: BaseClassVC {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewBackGround: UIView!
     var arraySections = ["TYPE", "VALIDITY", "PRICE"]
+    //    var bundleFilters: [MobilePackages.BundleFilter]!
+//        var bundleFilters = [MobilePackages.BundleFilter]()
+    
+    var bundleFilters : [MobilePackages.BundleFilter]! {
+        didSet {
+            dictionaryNames[0] = bundleFilters
+        }
+    }
+    
+    
+    
     var dictionaryNames = [
-        0:["All", "Favourite", "Data", "SMS", "Super Card", "Device", "Social Media", "Upower", "Hybrid"],
-        1:["All", "Monthly", "Weekly", "Daily"],
-        2:["Height To Low", "Low To Height", ""]]
+        0: [MobilePackages.BundleFilter].self,
+        1: ["All", "Monthly", "Weekly", "Daily"],
+        2: ["Height To Low", "Low To Height", ""]
+    ] as [Int : Any]
     
     var dictionarySelectedItems = [
         0:[],
@@ -23,6 +35,9 @@ class PackagesFilter: BaseClassVC {
     ] as? [Int: [Int]]
     
     var selectedCell: Int!
+    
+
+
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -61,20 +76,26 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dictionaryNames[section]?.count ?? 0
+        return (dictionaryNames[section] as AnyObject).count ?? 0
 //        return arrayNames.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PackagesFilterCell", for: indexPath) as! PackagesFilterCell
-        let name = dictionaryNames[indexPath.section]?[indexPath.item] ?? ""
+        var name = ""
+        if indexPath.section == 0 {
+            name = (dictionaryNames[indexPath.section] as! MobilePackages.BundleFilter).filterName
+        }
+        else {
+            name = (dictionaryNames[indexPath.section] as! [String])[indexPath.item]
+        }
         if name == "" {
             cell.viewBackGround.backgroundColor = .clear
         }
         else {
             cell.viewBackGround.backgroundColor = .clrLightGraySelectionBackGround
         }
-        cell.labelName.text = "\(dictionaryNames[indexPath.section]?[indexPath.item] ?? "NA")"
+        cell.labelName.text = name
         cell.viewBackGround.backgroundColor = .clrLightGraySelectionBackGround
         cell.labelName.textColor = .clrLightGrayCalendar
         if dictionarySelectedItems != nil {
@@ -100,7 +121,6 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let itemName = dictionaryNames[indexPath.section]![indexPath.item]
         
         if (dictionarySelectedItems![indexPath.section]!).contains(indexPath.item) {
             if let indexOf = dictionarySelectedItems![indexPath.section]?.firstIndex(of: indexPath.item) {
@@ -141,7 +161,16 @@ extension PackagesFilter: UICollectionViewDelegateFlowLayout {
     //     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (dictionaryNames[indexPath.section]?[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width ?? 0) + 30, height: 40)
+        
+        var itemName = ""
+        if indexPath.section == 0 {
+            itemName = (dictionaryNames[indexPath.section] as! MobilePackages.BundleFilter).filterName
+        }
+        else {
+            itemName = (dictionaryNames[indexPath.section] as! [String])[indexPath.item]
+        }
+        
+        return CGSize(width: (itemName.size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width) + 30, height: 40)
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
