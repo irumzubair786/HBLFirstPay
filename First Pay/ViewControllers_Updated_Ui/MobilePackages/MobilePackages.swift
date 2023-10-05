@@ -51,6 +51,44 @@ class MobilePackages: UIViewController {
             }
         }
     }
+    
+    var modelGetFavourites: ModelGetFavourites? {
+        didSet {
+            if modelGetFavourites?.responsecode == 1 {
+               
+            }
+            else {
+
+            }
+        }
+    }
+    
+    var modelAddToFavourite: ModelAddToFavourite? {
+        didSet {
+            if modelAddToFavourite?.responsecode == 1 {
+               
+            }
+            else {
+
+            }
+        }
+    }
+    
+    var modelUpdateFavourite: ModelUpdateFavourite? {
+        didSet {
+            if modelGetBundleDetails?.responsecode == 1 {
+               
+            }
+            else {
+
+            }
+        }
+    }
+    
+    
+    
+    var networkId : Int?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         selectedButton(view: nil, button: buttonOne)
@@ -65,15 +103,17 @@ class MobilePackages: UIViewController {
         print(arrayNames)
         // Do any additional setup after loading the view.
         getBundleDetails()
-        
+        getFavourites()
         selectedButton(view: viewOne, button: buttonOne)
         
     }
+    
     @IBAction func buttonBack(_ sender: Any) {
         self.dismiss(animated: true)
     }
-    var networkId : Int?
     @IBAction func buttonSetting(_ sender: UIButton) {
+        navigateToFavourite()
+return()
         let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "PackagesFilter") as! PackagesFilter
         self.present(vc, animated: true)
     }
@@ -102,7 +142,11 @@ class MobilePackages: UIViewController {
     
     
     
-  
+    func navigateToFavourite() {
+        let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobileFavouriteBunldles") as! MobileFavouriteBunldles
+        vc.tempModelGetFavourites = modelGetFavourites
+        self.navigationController!.pushViewController(vc, animated: true)
+    }
     
     
     
@@ -163,12 +207,73 @@ class MobilePackages: UIViewController {
         vc.companyName = modelGetBundleDetails?.data[indexSelectedNetwork].companyName ?? ""
         self.navigationController!.pushViewController(vc, animated: true)
     }
+    
+    func addToFavourite(bundleDetail: BundleDetail) {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+            "accountNo": "033359662888528",
+            "accountImd": "220585",
+            "accountTitle": "Abdullah Butt",
+            "favouriteType": "IBT", // IBT -> Local Funds Transfer, IBFT -> IBFT, BBP -> Bill Payment, TUP -> TopUp
+            "nickName": "Abdullah Butt",
+            "favouriteAcctType": "C",  // C -> Core, W -> Wallet, B -> Bill Payment / Topup
+            "flow": "F", // D -> Direct, F -> Favourite
+            "otp": "", // Null in case of flow value 'F'
+        ]
+        APIs.postAPI(apiName: .addToFavourite, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            if success {
+                
+            }
+            let model: ModelAddToFavourite? = APIs.decodeDataToObject(data: responseData)
+            self.modelAddToFavourite = model
+        }
+    }
+    
+    func getFavourites() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)"
+        ]
+        APIs.postAPI(apiName: .getFavourites, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            if success {
+                
+            }
+            let model: ModelGetFavourites? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetFavourites = model
+        }
+    }
+    
+    func updateFavourite() {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+            "benificiaryId": "292",
+            "status": "A",   // I for Delete Benificiary, A for Update Benificiary
+            "nickName": "Butt",  // if status = 'I' nickName is null
+        ]
+        APIs.postAPI(apiName: .updateFavourite, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            if success {
+                
+            }
+            let model: ModelUpdateFavourite? = APIs.decodeDataToObject(data: responseData)
+            self.modelUpdateFavourite = model
+        }
+    }
 }
 
 extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width + 50, height: 50)
+        
+        let bundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters[indexPath.item]
+        return CGSize(width: "\(bundleFilter?.filterName ?? "")".size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width + 50, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -208,7 +313,7 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MobilePackagesDataNameCell", for: indexPath) as! MobilePackagesDataNameCell
         
-        let bundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters[indexPath.row]
+        let bundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters[indexPath.item]
         
         cell.labelName.text = "\(bundleFilter?.filterName ?? "")"
         if selectedCell != nil {
@@ -294,7 +399,7 @@ extension MobilePackages: UITableViewDelegate, UITableViewDataSource {
             self.navigateToMobilePackagesDetails(bundleDetails: tempBundleDetail)
         }
         cell.buttonFavouriteNow = { tempBundleDetail in
-
+            self.addToFavourite(bundleDetail: tempBundleDetail)
         }
         return cell
         
@@ -375,8 +480,6 @@ extension MobilePackages {
         case voice = "Voice"
     }
 
-    
-
     enum BundleValidityType: String, Codable {
         case d = "D"
         case m = "M"
@@ -391,6 +494,55 @@ extension MobilePackages {
         enum CodingKeys: String, CodingKey {
             case filterName
             case ubpBundleFilterID = "ubpBundleFilterId"
+        }
+    }
+    
+    // MARK: - ModelAddToFavourite
+    struct ModelAddToFavourite: Codable {
+        let responsecode: Int
+        let data: String
+        let responseblock: JSONNull?
+        let messages: String
+    }
+    
+    // MARK: - ModelUpdateFavourite
+    struct ModelUpdateFavourite: Codable {
+        let responsecode: Int
+        let data, responseblock: JSONNull?
+        let messages: String
+    }
+    
+    
+    // MARK: - ModelGetFavourites
+    struct ModelGetFavourites: Codable {
+        let responsecode: Int
+        let data: [ModelGetFavouritesData]
+        let responseblock: JSONNull?
+        let messages: String?
+    }
+
+    // MARK: - Datum
+    struct ModelGetFavouritesData: Codable {
+        let favouriteCategory: String?
+        let favouriteDetails: [ModelFavouriteDetail]?
+        
+    }
+
+    // MARK: - FavouriteDetail
+    struct ModelFavouriteDetail: Codable {
+        let benificiaryID: Int
+        let bankImd: String
+        let bankImdID: Int
+        let benificiaryAccountNo, benificiaryAccountTitle, benificiaryNickName: String?
+        let benificiaryBank: String?
+        let benificiaryType: String?
+        let imdIcon: String?
+
+        enum CodingKeys: String, CodingKey {
+            case benificiaryID = "benificiaryId"
+            case bankImd
+            case bankImdID = "bankImdId"
+            case benificiaryAccountNo, benificiaryAccountTitle, benificiaryNickName, benificiaryBank, benificiaryType, imdIcon
         }
     }
 
@@ -420,5 +572,6 @@ extension MobilePackages {
             try container.encodeNil()
         }
     }
+
 
 }

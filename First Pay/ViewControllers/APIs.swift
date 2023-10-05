@@ -480,6 +480,13 @@ print(str)
         
         case login = "FirstPayInfo/v1/login"
         case acccountLevelUpgrade = "FirstPayInfo/v1/acccountLevelUpgrade"
+        
+        
+        case addToFavourite = "Favourites/v1/addToFavourite"
+        case getFavourites = "Favourites/v1/getFavourites"
+        case updateFavourite = "Favourites/v1/updateFavourite"
+
+        
     }
 }
 

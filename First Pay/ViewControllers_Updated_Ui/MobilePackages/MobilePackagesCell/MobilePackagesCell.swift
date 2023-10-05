@@ -36,6 +36,7 @@ class MobilePackagesCell: UITableViewCell {
     @IBOutlet weak var labelMessagesDescription: UILabel!
     @IBOutlet weak var labelPackageDescription: UILabel!
     @IBOutlet weak var labelDiscountPercentage: UILabel!
+    @IBOutlet weak var buttonFavourite: UIButton!
     
     var buttonSubscribeNow: ((MobilePackages.BundleDetail) -> ())!
     var buttonFavouriteNow: ((MobilePackages.BundleDetail) -> ())!
@@ -86,11 +87,17 @@ class MobilePackagesCell: UITableViewCell {
         buttonSubscribeNow!(bundleDetail)
     }
     
+    @IBAction func buttonFavourite(_ sender: Any) {
+        buttonFavouriteNow(bundleDetail)
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
     }
+    
+    
+    
 }
     
 
