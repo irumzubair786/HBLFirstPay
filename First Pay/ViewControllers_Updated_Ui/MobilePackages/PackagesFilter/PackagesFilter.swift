@@ -10,20 +10,25 @@ import UIKit
 class PackagesFilter: BaseClassVC {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewBackGround: UIView!
+    @IBOutlet weak var buttonApply: UIButton!
     var arraySections = ["TYPE", "VALIDITY", "PRICE"]
     //    var bundleFilters: [MobilePackages.BundleFilter]!
 //        var bundleFilters = [MobilePackages.BundleFilter]()
     
-    var bundleFilters : [MobilePackages.BundleFilter]! {
+    var modelBundleFilters : [MobilePackages.ModelBundleFilter]! {
         didSet {
-            dictionaryNames[0] = bundleFilters
+            if modelBundleFilters != nil {
+                dictionaryNames[0] = modelBundleFilters
+                modelBundleFilters.first?.filterName
+            }
         }
     }
     
     
     
+    
     var dictionaryNames = [
-        0: [MobilePackages.BundleFilter].self,
+        0: [MobilePackages.ModelBundleFilter].self,
         1: ["All", "Monthly", "Weekly", "Daily"],
         2: ["Height To Low", "Low To Height", ""]
     ] as [Int : Any]
@@ -36,7 +41,7 @@ class PackagesFilter: BaseClassVC {
     
     var selectedCell: Int!
     
-
+    var buttonApplyApplied: (([String]) -> ())!
 
 
     override func viewDidAppear(_ animated: Bool) {
@@ -57,7 +62,11 @@ class PackagesFilter: BaseClassVC {
         // Do any additional setup after loading the view.
     }
     
-
+    @IBAction func buttonApply(_ sender: Any) {
+        self.dismiss(animated: true)
+        buttonApplyApplied?(["Hybrid"])
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -76,7 +85,7 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (dictionaryNames[section] as AnyObject).count ?? 0
+            return (dictionaryNames[section] as AnyObject).count ?? 0
 //        return arrayNames.count
     }
     
@@ -84,7 +93,7 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PackagesFilterCell", for: indexPath) as! PackagesFilterCell
         var name = ""
         if indexPath.section == 0 {
-            name = (dictionaryNames[indexPath.section] as! MobilePackages.BundleFilter).filterName
+            name = (dictionaryNames[indexPath.section] as! [MobilePackages.ModelBundleFilter])[indexPath.item].filterName ?? ""
         }
         else {
             name = (dictionaryNames[indexPath.section] as! [String])[indexPath.item]
@@ -164,7 +173,7 @@ extension PackagesFilter: UICollectionViewDelegateFlowLayout {
         
         var itemName = ""
         if indexPath.section == 0 {
-            itemName = (dictionaryNames[indexPath.section] as! MobilePackages.BundleFilter).filterName
+            itemName = (dictionaryNames[indexPath.section] as! [MobilePackages.ModelBundleFilter])[indexPath.section].filterName ?? ""
         }
         else {
             itemName = (dictionaryNames[indexPath.section] as! [String])[indexPath.item]
@@ -179,6 +188,7 @@ extension PackagesFilter: UICollectionViewDelegateFlowLayout {
             sectionHeader.labelName.text = "\(arraySections[indexPath.section])"
             if indexPath.section == 0 {
                 sectionHeader.viewClearFilter.isHidden = false
+                sectionHeader.buttonClearFilter.addTarget(self, action: #selector(buttonClearFilter), for: .touchUpInside)
             }
             else {
                 sectionHeader.viewClearFilter.isHidden = true
@@ -186,6 +196,15 @@ extension PackagesFilter: UICollectionViewDelegateFlowLayout {
             return sectionHeader
         }
         return UICollectionReusableView()
+    }
+    
+    @objc func buttonClearFilter() {
+        if dictionarySelectedItems != nil {
+            dictionarySelectedItems?[0] = []
+            dictionarySelectedItems?[1] = []
+            dictionarySelectedItems?[2] = []
+            collectionView.reloadData()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {

@@ -38,33 +38,33 @@ class MobilePackagesCell: UITableViewCell {
     @IBOutlet weak var labelDiscountPercentage: UILabel!
     @IBOutlet weak var buttonFavourite: UIButton!
     
-    var buttonSubscribeNow: ((MobilePackages.BundleDetail) -> ())!
-    var buttonFavouriteNow: ((MobilePackages.BundleDetail) -> ())!
-    var bundleDetail: MobilePackages.BundleDetail! {
+    var buttonSubscribeNow: ((MobilePackages.ModelBundleDetail) -> ())!
+    var buttonFavouriteNow: ((MobilePackages.ModelBundleDetail) -> ())!
+    var modelBundleDetail: MobilePackages.ModelBundleDetail! {
         didSet {
-            labelPackageName.text = bundleDetail.bundleName
-            labelBundleValidity.text = bundleDetail.bundleValidity ?? ""
+            labelPackageName.text = modelBundleDetail.bundleName
+            labelBundleValidity.text = modelBundleDetail.bundleValidity ?? ""
             labelTaxPrice.text = "incl. tax"
-            labelCutPrice.text = "Rs.\(bundleDetail.bundleDiscountPrice)"
-            labelPrice.text = "Rs.\(bundleDetail.bundleDefaultPrice)"
-            if bundleDetail.bundleDiscountPrice == 0 {
+            labelCutPrice.text = "Rs.\(modelBundleDetail.bundleDiscountPrice)"
+            labelPrice.text = "Rs.\(modelBundleDetail.bundleDefaultPrice)"
+            if modelBundleDetail.bundleDiscountPrice == 0 {
                 labelCutPrice.isHidden = true
             }
             else {
                 labelCutPrice.isHidden = false
                 labelCutPrice.cutPrice()
             }
-            labelData.text = bundleDetail.bundleResourceData ?? "0"
-            labelMessages.text = bundleDetail.bundleResourceOnnet ?? "0"
-            labelMessages.text = bundleDetail.bundleResourceOffnet ?? "0"
-            labelMessages.text = bundleDetail.bundleResourceSMS ?? "0"
-            labelPackageDescription.text = bundleDetail.bundleResources
+//            labelData.text = modelBundleDetail.bundleResourceData ?? "0"
+//            labelMessages.text = modelBundleDetail.bundleResourceOnnet ?? "0"
+//            labelMessages.text = modelBundleDetail.bundleResourceOffnet ?? "0"
+//            labelMessages.text = modelBundleDetail.bundleResourceSMS ?? "0"
+//            labelPackageDescription.text = modelBundleDetail.bundleResources
             viewPackageTagBackground.isHidden = true
             viewTag.isHidden = true
-            if bundleDetail.bundleDiscountPercentage != nil && bundleDetail.bundleDiscountPercentage != 0 {
+            if modelBundleDetail.bundleDiscountPercentage != nil && modelBundleDetail.bundleDiscountPercentage != 0 {
                 viewTag.isHidden = false
                 viewPackageTagBackground.isHidden = false
-                labelDiscountPercentage.text = "\(bundleDetail.bundleDiscountPercentage ?? 0)"
+                labelDiscountPercentage.text = "\(modelBundleDetail.bundleDiscountPercentage ?? 0)"
             }
         }
     }
@@ -84,11 +84,11 @@ class MobilePackagesCell: UITableViewCell {
         }
     }
     @IBAction func buttonSubscribe(_ sender: Any) {
-        buttonSubscribeNow!(bundleDetail)
+        buttonSubscribeNow!(modelBundleDetail)
     }
     
     @IBAction func buttonFavourite(_ sender: Any) {
-        buttonFavouriteNow(bundleDetail)
+        buttonFavouriteNow(modelBundleDetail)
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

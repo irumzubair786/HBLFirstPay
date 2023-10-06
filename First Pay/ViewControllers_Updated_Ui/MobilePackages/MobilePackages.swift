@@ -38,10 +38,20 @@ class MobilePackages: UIViewController {
             if modelGetBundleDetails?.responsecode == 1 {
                 companyNames = self.modelGetBundleDetails?.data.map({
                     print($0.companyName)
-                    return $0.companyName
+                    return $0.companyName ?? "NA"
                 })
-                tableView.reloadData()
-                collectionView.reloadData()
+                if buttonOne.tag == 1 {
+                    selectedButton(view: viewOne, button: buttonOne)
+                }
+                else if buttonTwo.tag == 1 {
+                    selectedButton(view: viewTwo, button: buttonTwo)
+                }
+                else if buttonThree.tag == 1 {
+                    selectedButton(view: viewThree, button: buttonThree)
+                }
+                else if buttonFour.tag == 1 {
+                    selectedButton(view: viewFour, button: buttonFour)
+                }
             }
             else {
 //                self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
@@ -89,6 +99,8 @@ class MobilePackages: UIViewController {
     
     var networkId : Int?
 
+    var searchedBundleDetails: [ModelBundleDetail]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         selectedButton(view: nil, button: buttonOne)
@@ -105,20 +117,46 @@ class MobilePackages: UIViewController {
         getBundleDetails()
         getFavourites()
         selectedButton(view: viewOne, button: buttonOne)
-        
     }
     
     @IBAction func buttonBack(_ sender: Any) {
         self.dismiss(animated: true)
     }
     @IBAction func buttonSetting(_ sender: UIButton) {
-        navigateToFavourite()
-return()
+//        navigateToFavourite()
+//return()
         let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "PackagesFilter") as! PackagesFilter
-        
-        vc.bundleFilters = (modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters)!
+
+        vc.modelBundleFilters = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters
+        vc.buttonApplyApplied = {
+            searchingData in
+            self.filterApply(searchingData: searchingData)
+        }
         self.present(vc, animated: true)
     }
+    
+    func filterApply(searchingData: [String]) {
+//        modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?[indexPath.row]
+        var tempSearchedBundleDetails = [[MobilePackages.ModelBundleDetail]]()
+
+        for searchingText in searchingData {
+            let searchRecord = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?.filter({ tempModelBundleDetail in
+                tempModelBundleDetail.bundleType?.lowercased() == searchingText.lowercased()
+            })
+            if searchRecord?.count ?? 0 > 0 {
+                tempSearchedBundleDetails.append(searchRecord!)
+            }
+        }
+        
+        let mergedRecord = tempSearchedBundleDetails.flatMap({
+            record -> [ModelBundleDetail] in
+               return record
+        })
+        
+        searchedBundleDetails = mergedRecord
+        tableView.reloadData()
+    }
+    
     @IBAction func buttonOne(_ sender: UIButton) {
        
         networkId = 1
@@ -167,17 +205,58 @@ return()
             view!.backgroundColor = .clrOrange
             button.tag = 1
         }
+        if companyNames != nil {
+            for (index, companyName) in companyNames.enumerated() {
+                if buttonOne.tag == 1 {
+                    indexSelectedNetwork = index
+                    if companyName.lowercased() == "TELENOR".lowercased() {
+                        break
+                    }
+                }
+                else if buttonTwo.tag == 1 {
+                    indexSelectedNetwork = index
+                    if companyName.lowercased() == "JAZZ".lowercased() {
+                        break
+                    }
+                }
+                else if buttonThree.tag == 1 {
+                    indexSelectedNetwork = index
+                    if companyName.lowercased() == "UFONE".lowercased() {
+                        break
+                    }
+                }
+                else if buttonFour.tag == 1 {
+                    indexSelectedNetwork = index
+                    if companyName.lowercased() == "ZONG".lowercased() {
+                        break
+                    }
+                }
+            }
+        }
+        
+        if modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails != nil {
+            searchedBundleDetails = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails
+        }
+        else {
+            searchedBundleDetails?.removeAll()
+        }
+        
         tableView.reloadData()
         collectionView.reloadData()
-        
     }
     func getBundleDetails() {
         APIs.getAPI(apiName: .getBundleDetails, parameters: nil) { responseData, success, errorMsg in
             print(responseData)
             print(success)
             print(errorMsg)
-            let model: ModelGetBundleDetails? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetBundleDetails = model
+            do {
+                let model: ModelGetBundleDetails? = try APIs.decodeDataToObject(data: responseData)
+                self.modelGetBundleDetails = model
+            }
+            catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            
         }
     }
     
@@ -201,7 +280,7 @@ return()
         self.navigationController!.pushViewController(vc, animated: true)
     }
 
-    func navigateToMobilePackagesDetails(bundleDetails: BundleDetail) {
+    func navigateToMobilePackagesDetails(bundleDetails: ModelBundleDetail) {
         let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesDetails") as! MobilePackagesDetails
         vc.bundleDetail = bundleDetails
         vc.companyIcon = UIImage(named: arrayCompanyIcons[indexSelectedNetwork])
@@ -210,7 +289,7 @@ return()
         self.navigationController!.pushViewController(vc, animated: true)
     }
     
-    func addToFavourite(bundleDetail: BundleDetail) {
+    func addToFavourite(bundleDetail: ModelBundleDetail) {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
             "cnic" : userCnic!,
@@ -274,7 +353,7 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let bundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters[indexPath.item]
+        let bundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item]
         return CGSize(width: "\(bundleFilter?.filterName ?? "")".size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width + 50, height: 50)
     }
     
@@ -282,42 +361,17 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
         if companyNames == nil {
             return 0
         }
-        for (index, companyName) in companyNames.enumerated() {
-            if buttonOne.tag == 1 {
-                indexSelectedNetwork = index
-                if companyName == "TELENOR" {
-                    break
-                }
-            }
-            else if buttonTwo.tag == 1 {
-                indexSelectedNetwork = index
-                if companyName == "JAZZ" {
-                    break
-                }
-            }
-            else if buttonThree.tag == 1 {
-                indexSelectedNetwork = index
-                if companyName == "UFONE" {
-                    break
-                }
-            }
-            else if buttonFour.tag == 1 {
-                indexSelectedNetwork = index
-                if companyName == "ZONG" {
-                    break
-                }
-            }
-        }
         
-        return modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters.count ?? 0
+        
+        return modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MobilePackagesDataNameCell", for: indexPath) as! MobilePackagesDataNameCell
         
-        let bundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters[indexPath.item]
+        let modelBundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item]
         
-        cell.labelName.text = "\(bundleFilter?.filterName ?? "")"
+        cell.labelName.text = "\(modelBundleFilter?.filterName ?? "")"
         if selectedCell != nil {
             if selectedCell == indexPath.item {
                 cell.viewBackGround.backgroundColor = .clrOrange
@@ -355,35 +409,9 @@ extension MobilePackages: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if companyNames != nil {
-            for (index, companyName) in companyNames.enumerated() {
-                if buttonOne.tag == 1 {
-                    indexSelectedNetwork = index
-                    if companyName == "TELENOR" {
-                        break
-                    }
-                }
-                else if buttonTwo.tag == 1 {
-                    indexSelectedNetwork = index
-                    if companyName == "JAZZ" {
-                        break
-                    }
-                }
-                else if buttonThree.tag == 1 {
-                    indexSelectedNetwork = index
-                    if companyName == "UFONE" {
-                        break
-                    }
-                }
-                else if buttonFour.tag == 1 {
-                    indexSelectedNetwork = index
-                    if companyName == "ZONG" {
-                        break
-                    }
-                }
-            }
-        }
-        let totalCellCount = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails.count ?? 0
+//        let totalCellCount = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?.count ?? 0
+        
+        let totalCellCount = searchedBundleDetails?.count ?? 0
         tableView.removeEmptyMessage()
         if totalCellCount == 0 {
             tableView.setEmptyMessage(iconName: "bundleEmptyMessageIcon")
@@ -395,8 +423,10 @@ extension MobilePackages: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MobilePackagesCell") as! MobilePackagesCell
         // if change internet package is true then we dont need to show subscribed package
-        let bundleDetail = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails[indexPath.row]
-        cell.bundleDetail = bundleDetail
+        let bundleDetail = searchedBundleDetails?[indexPath.row]
+//        modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?[indexPath.row]
+        
+        cell.modelBundleDetail = bundleDetail
         cell.buttonSubscribeNow = { tempBundleDetail in
             self.navigateToMobilePackagesDetails(bundleDetails: tempBundleDetail)
         }
@@ -429,75 +459,6 @@ extension UILabel {
 
 
 extension MobilePackages {
-    // MARK: - ModelGetBundleDetails
-    struct ModelGetBundleDetails: Codable {
-        let responseblock: JSONNull?
-        let responsecode: Int
-        let data: [ModelGetBundleDetailsData]
-        let messages: String
-    }
-
-    // MARK: - Datum
-    struct ModelGetBundleDetailsData: Codable {
-        let disabledIcon: String
-        let bundleDetails: [BundleDetail]
-        let companyName, enabledIcon: String
-        let bundleFilters: [BundleFilter]
-        let recordCount: Int
-    }
-
-    // MARK: - BundleDetail
-    struct BundleDetail: Codable {
-        let bundleKey, bundleResources: String
-        let bundleType: BundleType
-        let bundleResourceOffnet, bundleResourceOnnet: String?
-        let bundleResourceSMS: String?
-        let bundleResourceData: String?
-        let bundleSelfSubscription: JSONNull?
-        let bundleName: String
-        let bundleDiscountPrice: Int
-        let bundleValidityType: BundleValidityType?
-        let bundleDiscountPercentage, ubpBundleFilterID: Int?
-        let bundleSequence: JSONNull?
-        let bundleValidity: String?
-        let ubpBundleID: Int
-        let bundleDefaultPrice: Double
-
-        enum CodingKeys: String, CodingKey {
-            case bundleKey, bundleResources, bundleType, bundleResourceOffnet, bundleResourceOnnet
-            case bundleResourceSMS = "bundleResourceSms"
-            case bundleSelfSubscription, bundleName, bundleDiscountPrice, bundleValidityType, bundleDiscountPercentage
-            case ubpBundleFilterID = "ubpBundleFilterId"
-            case bundleSequence, bundleValidity, bundleResourceData
-            case ubpBundleID = "ubpBundleId"
-            case bundleDefaultPrice
-        }
-    }
-
-    enum BundleType: String, Codable {
-        case data = "Data"
-        case ec = "EC"
-        case hybrid = "Hybrid"
-        case lbc = "LBC"
-        case voice = "Voice"
-    }
-
-    enum BundleValidityType: String, Codable {
-        case d = "D"
-        case m = "M"
-        case w = "W"
-    }
-
-    // MARK: - BundleFilter
-    struct BundleFilter: Codable {
-        let filterName: String
-        let ubpBundleFilterID: Int
-
-        enum CodingKeys: String, CodingKey {
-            case filterName
-            case ubpBundleFilterID = "ubpBundleFilterId"
-        }
-    }
     
     // MARK: - ModelAddToFavourite
     struct ModelAddToFavourite: Codable {
@@ -547,6 +508,83 @@ extension MobilePackages {
             case benificiaryAccountNo, benificiaryAccountTitle, benificiaryNickName, benificiaryBank, benificiaryType, imdIcon
         }
     }
+}
+
+extension MobilePackages {
+    // MARK: - ModelGetBundleDetails
+    struct ModelGetBundleDetails: Codable {
+        let messages: String
+        let responsecode: Int
+        let responseblock: JSONNull?
+        let data: [ModelGetBundleDetailsData]
+    }
+
+    // MARK: - Datum
+    struct ModelGetBundleDetailsData: Codable {
+        let enabledIcon: String?
+        let bundleDetails: [ModelBundleDetail]?
+        let bundleFilters: [ModelBundleFilter]?
+        let companyName, disabledIcon: String?
+        let recordCount: Int?
+    }
+
+    // MARK: - BundleDetail
+    struct ModelBundleDetail: Codable {
+        let ubpBundleID, bundleDiscountPrice: Int?
+        let bundleFilterIDS: [BundleFilterID]?
+        let bundleSelfSubscription: JSONNull?
+        let bundleResources: String?
+        let bundleValidity: String?
+        let bundleSequence: Int?
+        let bundleDefaultPrice: Double
+        let bundleKey, bundleName: String?
+        let bundleValidityType: String?
+        let resourceLists: [ModelResourceList]?
+        let bundleType: String?
+        let bundleDiscountPercentage: Int?
+
+        enum CodingKeys: String, CodingKey {
+            case ubpBundleID = "ubpBundleId"
+            case bundleDiscountPrice
+            case bundleFilterIDS = "bundleFilterIds"
+            case bundleSelfSubscription, bundleResources, bundleValidity, bundleSequence, bundleDefaultPrice, bundleKey, bundleName, bundleValidityType, resourceLists, bundleType, bundleDiscountPercentage
+        }
+    }
+
+    // MARK: - BundleFilterID
+    struct BundleFilterID: Codable {
+        let bundleFilterID: Int?
+
+        enum CodingKeys: String, CodingKey {
+            case bundleFilterID = "bundleFilterId"
+        }
+    }
+
+    // MARK: - ResourceList
+    struct ModelResourceList: Codable {
+        let detail: String?
+        let type: String?
+        let dataType: String?
+        let description: String?
+
+        enum CodingKeys: String, CodingKey {
+            case detail = "Detail"
+            case type = "Type"
+            case dataType = "Data-Type"
+            case description = "Description"
+        }
+    }
+
+    // MARK: - BundleFilter
+    struct ModelBundleFilter: Codable {
+        let filterName: String?
+        let ubpBundleFilterID: Int?
+
+        enum CodingKeys: String, CodingKey {
+            case filterName
+            case ubpBundleFilterID = "ubpBundleFilterId"
+        }
+    }
 
     // MARK: - Encode/decode helpers
 
@@ -575,5 +613,48 @@ extension MobilePackages {
         }
     }
 
-
 }
+
+
+//extension MobilePackages {
+//    // MARK: - ModelGetBundleDetail
+//    struct ModelGetBundleDetail: Codable {
+//        let bundleResources: String
+//        let bundleSequence: Int
+//        let bundleFilterIDS: [BundleFilterID]
+//        let bundleName: String
+//        let bundleDefaultPrice: Double
+//        let bundleKey: String
+//        let ubpBundleID, bundleDiscountPercentage: Int
+//        let bundleType: String?
+//        let bundleSelfSubscription: JSONNull?
+//        let bundleValidity: String?
+//        let resourceLists: [ResourceList]
+//        let bundleValidityType: String?
+//        let bundleDiscountPrice: Int
+//
+//        enum CodingKeys: String, CodingKey {
+//            case bundleResources, bundleSequence
+//            case bundleFilterIDS = "bundleFilterIds"
+//            case bundleName, bundleDefaultPrice, bundleKey
+//            case ubpBundleID = "ubpBundleId"
+//            case bundleDiscountPercentage, bundleType, bundleSelfSubscription, bundleValidity, resourceLists, bundleValidityType, bundleDiscountPrice
+//        }
+//    }
+//
+//    // MARK: - ResourceList
+//    struct ResourceList: Codable {
+//        let description: String?
+//        let dataType: String?
+//        let type: String?
+//        let detail: String?
+//
+//        enum CodingKeys: String, CodingKey {
+//            case description = "Description"
+//            case dataType = "Data-Type"
+//            case type = "Type"
+//            case detail = "Detail"
+//        }
+//    }
+//
+//}

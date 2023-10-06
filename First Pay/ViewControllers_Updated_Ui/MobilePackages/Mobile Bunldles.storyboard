@@ -145,7 +145,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Company" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBX-mS-QfH">
-                                                    <rect key="frame" x="242" y="156" width="148" height="17"/>
+                                                    <rect key="frame" x="241" y="156" width="149" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -760,14 +760,27 @@
                                                     <constraint firstAttribute="width" constant="60" id="W8F-Ch-kLc"/>
                                                 </constraints>
                                             </imageView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5iS-1z-Rif">
+                                                <rect key="frame" x="336" y="18" width="68" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="c0s-Ei-D02"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Apply"/>
+                                                <connections>
+                                                    <action selector="buttonApply:" destination="869-ZD-L6d" eventType="touchUpInside" id="d1K-hr-pnP"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="5iS-1z-Rif" secondAttribute="trailing" constant="10" id="0sh-WV-onR"/>
                                             <constraint firstItem="Orh-z4-nux" firstAttribute="centerX" secondItem="yFD-5h-wGC" secondAttribute="centerX" id="3RN-4N-L2t"/>
                                             <constraint firstItem="ecP-uu-6bv" firstAttribute="centerX" secondItem="yFD-5h-wGC" secondAttribute="centerX" id="FWa-Qq-VwT"/>
                                             <constraint firstItem="Orh-z4-nux" firstAttribute="centerY" secondItem="yFD-5h-wGC" secondAttribute="centerY" constant="8" id="QRj-w0-17E"/>
                                             <constraint firstAttribute="trailing" secondItem="Orh-z4-nux" secondAttribute="trailing" id="W9R-vg-IeY"/>
                                             <constraint firstItem="ecP-uu-6bv" firstAttribute="top" secondItem="yFD-5h-wGC" secondAttribute="top" id="jGy-Vp-hnV"/>
+                                            <constraint firstItem="5iS-1z-Rif" firstAttribute="centerY" secondItem="Orh-z4-nux" secondAttribute="centerY" id="jpH-JE-vir"/>
                                             <constraint firstItem="Orh-z4-nux" firstAttribute="leading" secondItem="yFD-5h-wGC" secondAttribute="leading" id="s7t-1e-4IU"/>
                                             <constraint firstAttribute="height" constant="60" id="y7F-eb-qOY"/>
                                         </constraints>
@@ -814,13 +827,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="buttonApply" destination="5iS-1z-Rif" id="dMC-a9-dMQ"/>
                         <outlet property="collectionView" destination="3ci-Fu-AEg" id="gOP-Gp-F3H"/>
                         <outlet property="viewBackGround" destination="Q0p-Bi-b4u" id="7LB-Lt-VGk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bjm-1H-fBQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1472" y="597"/>
+            <point key="canvasLocation" x="-1472.4637681159422" y="596.65178571428567"/>
         </scene>
         <!--Mobile Packages-->
         <scene sceneID="BQw-GZ-CKB">

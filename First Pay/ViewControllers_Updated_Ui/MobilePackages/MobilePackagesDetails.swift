@@ -29,7 +29,7 @@ class MobilePackagesDetails: BaseClassVC {
     var fetchNetworkId : Int?
     var companyIcon: UIImage!
     var companyName: String!
-    var bundleDetail: MobilePackages.BundleDetail!
+    var bundleDetail: MobilePackages.ModelBundleDetail!
     var stringName = ""
 
     private let contactPicker = CNContactPickerViewController()
