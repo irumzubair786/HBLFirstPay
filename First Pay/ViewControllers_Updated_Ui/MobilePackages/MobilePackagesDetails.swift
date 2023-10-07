@@ -115,11 +115,11 @@ class MobilePackagesDetails: BaseClassVC {
     
     var modelBundleSubscription: ModelBundleSubscription! {
         didSet {
-            if modelBundleSubscription.responsecode == 1 {
+            if modelBundleSubscription?.responsecode == 1 {
                 navigationToMobilePackagesSuccess()
             }
             else {
-                self.showAlertCustomPopup(message: modelBundleSubscription.messages, iconName: .iconError)
+                self.showAlertCustomPopup(message: modelBundleSubscription?.messages ?? "General Error", iconName: .iconError)
             }
         }
     }
@@ -140,16 +140,21 @@ class MobilePackagesDetails: BaseClassVC {
             "lng" : "\(DataManager.instance.Longitude ?? 0)",
 //            "mobileNo" : textFieldMobileNumber.text!, //"03445823336",
             "mobileNo" : textFieldMobileNumber.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0"),
-            "bundleKey" : "\(bundleDetail.bundleKey)",
-            "bundleId" : "\(bundleDetail.ubpBundleID)"
+            "bundleKey" : "\(bundleDetail.bundleKey!)",
+            "bundleId" : "\(bundleDetail.ubpBundleID!)"
         ]
         
         APIs.postAPI(apiName: .bundleSubscription, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             print(responseData)
             print(success)
             print(errorMsg)
-            let model: ModelBundleSubscription? = APIs.decodeDataToObject(data: responseData)
-            self.modelBundleSubscription = model
+            do {
+                let model: ModelBundleSubscription? = try APIs.decodeDataToObject(data: responseData)
+                self.modelBundleSubscription = model
+            }
+            catch {
+                print(error.localizedDescription)
+            }
         }
     }
     
@@ -261,10 +266,10 @@ extension MobilePackagesDetails: CNContactPickerDelegate {
 extension MobilePackagesDetails {
     // MARK: - Welcome
     struct ModelBundleSubscription: Codable {
-        let responsecode: Int
-        let data: ModelBundleSubscriptionData
+        let responsecode: Int?
+        let data: ModelBundleSubscriptionData?
         let responseblock: JSONNull?
-        let messages: String
+        let messages: String?
     }
 
     // MARK: - DataClass

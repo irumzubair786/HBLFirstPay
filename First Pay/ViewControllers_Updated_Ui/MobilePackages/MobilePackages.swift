@@ -111,7 +111,6 @@ class MobilePackages: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         viewCompaniesBackGround.radius()
-        collectionView.reloadData()
         print(arrayNames)
         // Do any additional setup after loading the view.
         getBundleDetails()
@@ -125,35 +124,87 @@ class MobilePackages: UIViewController {
     @IBAction func buttonSetting(_ sender: UIButton) {
 //        navigateToFavourite()
 //return()
-        let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "PackagesFilter") as! PackagesFilter
+        let totalCellCount = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?.count ?? 0
+        if totalCellCount > 0 {
+            let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "PackagesFilter") as! PackagesFilter
 
-        vc.modelBundleFilters = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters
-        vc.buttonApplyApplied = {
-            searchingData in
-            self.filterApply(searchingData: searchingData)
+            vc.modelBundleFilters = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters
+            vc.buttonApplyApplied = { packageType, packageValidity, packagePriceRange in
+                self.selectedCell = nil
+                self.filterApply(packageType: packageType, packageValidity: packageValidity, packagePriceRange: packagePriceRange, searchFromFilterScreen: true)
+            }
+            self.present(vc, animated: true)
         }
-        self.present(vc, animated: true)
     }
     
-    func filterApply(searchingData: [String]) {
+    func filterApply(packageType: [String]? = [], packageValidity: [String]? = [], packagePriceRange: [String]? = [], searchFromFilterScreen: Bool) {
 //        modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?[indexPath.row]
         var tempSearchedBundleDetails = [[MobilePackages.ModelBundleDetail]]()
 
-        for searchingText in searchingData {
-            let searchRecord = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?.filter({ tempModelBundleDetail in
-                tempModelBundleDetail.bundleType?.lowercased() == searchingText.lowercased()
-            })
-            if searchRecord?.count ?? 0 > 0 {
-                tempSearchedBundleDetails.append(searchRecord!)
+        if let packageType {
+            for searchingText in packageType {
+                let searchRecord = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?.filter({ tempModelBundleDetail in
+                    tempModelBundleDetail.bundleType?.lowercased() == searchingText.lowercased()
+                })
+                if searchRecord?.count ?? 0 > 0 {
+                    tempSearchedBundleDetails.append(searchRecord!)
+                }
             }
         }
+        if let packageValidity {
+            for searchingText in packageValidity {
+                let searchRecord = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?.filter({ tempModelBundleDetail in
+                    tempModelBundleDetail.bundleValidityType?.lowercased() == searchingText.lowercased()
+                })
+                if searchRecord?.count ?? 0 > 0 {
+                    tempSearchedBundleDetails.append(searchRecord!)
+                }
+            }
+        }
+        
+//            let searchRecord = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?.filter({ tempModelBundleDetail in
+//                tempModelBundleDetail.bundleDefaultPrice?.lowercased() == searchingText.lowercased()
+//            })
+//            if searchRecord?.count ?? 0 > 0 {
+//                tempSearchedBundleDetails.append(searchRecord!)
+//            }
+        
         
         let mergedRecord = tempSearchedBundleDetails.flatMap({
             record -> [ModelBundleDetail] in
                return record
         })
         
-        searchedBundleDetails = mergedRecord
+        if let packagePriceRange, packagePriceRange.count > 0 {
+            var finalRecord = [MobilePackages.ModelBundleDetail]()
+            if mergedRecord.count > 0 {
+                finalRecord = mergedRecord
+            }
+            else {
+                //MARK: - we are checking if search fire from filter screen then we will check in global data
+                if searchFromFilterScreen {
+                    finalRecord = (modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails!)!
+                }
+            }
+            
+            for searchingText in packagePriceRange {
+                if searchingText.lowercased() == "Height To Low".lowercased() {
+//                    # Sort the data by price (high to low)
+                    let sortedProducts = finalRecord.sorted { $0.bundleDefaultPrice > $1.bundleDefaultPrice }
+                    searchedBundleDetails = sortedProducts
+                }
+                else if searchingText.lowercased() == "Low To Height".lowercased() {
+//                    # Sort the data by price (low to high)
+                    let sortedProducts = finalRecord.sorted { $0.bundleDefaultPrice < $1.bundleDefaultPrice }
+                    searchedBundleDetails = sortedProducts
+                }
+            }
+        }
+        else {
+            searchedBundleDetails = mergedRecord
+        }
+        
+        collectionView.reloadData()
         tableView.reloadData()
     }
     
@@ -191,6 +242,7 @@ class MobilePackages: UIViewController {
     
     
     func selectedButton(view: UIView?, button: UIButton) {
+        selectedCell = nil
         viewOne.backgroundColor = .clear
         viewTwo.backgroundColor = .clear
         viewThree.backgroundColor = .clear
@@ -245,7 +297,7 @@ class MobilePackages: UIViewController {
         collectionView.reloadData()
     }
     func getBundleDetails() {
-        APIs.getAPI(apiName: .getBundleDetails, parameters: nil) { responseData, success, errorMsg in
+        APIs.getAPI(apiName: .getBundleDetails, parameters: nil, viewController: self) { responseData, success, errorMsg in
             print(responseData)
             print(success)
             print(errorMsg)
@@ -256,7 +308,6 @@ class MobilePackages: UIViewController {
             catch let error as NSError {
                 print(error.localizedDescription)
             }
-            
         }
     }
     
@@ -350,6 +401,11 @@ class MobilePackages: UIViewController {
 }
 
 extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        DispatchQueue.main.async {
+            (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
+        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
@@ -382,19 +438,21 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
                 cell.labelName.textColor = .clrLightGrayCalendar
             }
         }
+        else {
+            cell.viewBackGround.backgroundColor = .clrLightGraySelectionBackGround
+            cell.labelName.textColor = .clrLightGrayCalendar
+        }
         
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        DispatchQueue.main.async {
-            (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
-        }
-    }
+  
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedCell = indexPath.item
-        collectionView.reloadData()
+        if let filterName = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item].filterName as? String {
+            filterApply(packageType: [filterName], searchFromFilterScreen: false)
+        }
     }
 }
 
@@ -615,46 +673,3 @@ extension MobilePackages {
 
 }
 
-
-//extension MobilePackages {
-//    // MARK: - ModelGetBundleDetail
-//    struct ModelGetBundleDetail: Codable {
-//        let bundleResources: String
-//        let bundleSequence: Int
-//        let bundleFilterIDS: [BundleFilterID]
-//        let bundleName: String
-//        let bundleDefaultPrice: Double
-//        let bundleKey: String
-//        let ubpBundleID, bundleDiscountPercentage: Int
-//        let bundleType: String?
-//        let bundleSelfSubscription: JSONNull?
-//        let bundleValidity: String?
-//        let resourceLists: [ResourceList]
-//        let bundleValidityType: String?
-//        let bundleDiscountPrice: Int
-//
-//        enum CodingKeys: String, CodingKey {
-//            case bundleResources, bundleSequence
-//            case bundleFilterIDS = "bundleFilterIds"
-//            case bundleName, bundleDefaultPrice, bundleKey
-//            case ubpBundleID = "ubpBundleId"
-//            case bundleDiscountPercentage, bundleType, bundleSelfSubscription, bundleValidity, resourceLists, bundleValidityType, bundleDiscountPrice
-//        }
-//    }
-//
-//    // MARK: - ResourceList
-//    struct ResourceList: Codable {
-//        let description: String?
-//        let dataType: String?
-//        let type: String?
-//        let detail: String?
-//
-//        enum CodingKeys: String, CodingKey {
-//            case description = "Description"
-//            case dataType = "Data-Type"
-//            case type = "Type"
-//            case detail = "Detail"
-//        }
-//    }
-//
-//}

@@ -19,7 +19,6 @@ class PackagesFilter: BaseClassVC {
         didSet {
             if modelBundleFilters != nil {
                 dictionaryNames[0] = modelBundleFilters
-                modelBundleFilters.first?.filterName
             }
         }
     }
@@ -41,7 +40,7 @@ class PackagesFilter: BaseClassVC {
     
     var selectedCell: Int!
     
-    var buttonApplyApplied: (([String]) -> ())!
+    var buttonApplyApplied: (([String], [String], [String]) -> ())!
 
 
     override func viewDidAppear(_ animated: Bool) {
@@ -64,7 +63,51 @@ class PackagesFilter: BaseClassVC {
     
     @IBAction func buttonApply(_ sender: Any) {
         self.dismiss(animated: true)
-        buttonApplyApplied?(["Hybrid"])
+        
+        var searchedDataArray = [String]()
+        
+        var packageTypeArray = [String]()
+        var packageValidityArray = [String]()
+        var packagePriceRangeArray = [String]()
+        
+        for selectedItemIfAny in dictionarySelectedItems! {
+            let selectedItem = selectedItemIfAny.value
+            if selectedItem.count > 0 {
+                if selectedItemIfAny.key == 0 {
+                    let tempModelBundleFilter = dictionaryNames[selectedItemIfAny.key] as! [MobilePackages.ModelBundleFilter]
+                    for indexNo in selectedItem {
+                        let tempName = tempModelBundleFilter[indexNo].filterName
+                        packageTypeArray.append(tempName!)
+                    }
+                }
+                else if selectedItemIfAny.key == 1 {
+                    let tempDataArray = dictionaryNames[selectedItemIfAny.key]
+                    for indexNo in selectedItem {
+                        var tempName = (dictionaryNames[selectedItemIfAny.key] as! [String])[indexNo]
+
+                        if tempName == "Daily" {
+                            tempName = "D"
+                        }
+                        else if tempName == "Weekly" {
+                            tempName = "W"
+                        }
+                        else if tempName == "Monthly" {
+                            tempName = "M"
+                        }
+                        packageValidityArray.append(tempName)
+                    }
+                }
+                else if selectedItemIfAny.key == 2 {
+                    let tempDataArray = dictionaryNames[selectedItemIfAny.key]
+                    for indexNo in selectedItem {
+                        let tempName = (dictionaryNames[selectedItemIfAny.key] as! [String])[indexNo]
+                        packagePriceRangeArray.append(tempName)
+                    }
+                }
+            }
+            print(selectedItem)
+        }
+        buttonApplyApplied?(packageTypeArray, packageValidityArray, packagePriceRangeArray)
     }
     
     /*

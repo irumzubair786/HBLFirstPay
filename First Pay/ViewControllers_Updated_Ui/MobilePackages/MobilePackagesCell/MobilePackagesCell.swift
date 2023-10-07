@@ -45,7 +45,7 @@ class MobilePackagesCell: UITableViewCell {
             labelPackageName.text = modelBundleDetail.bundleName
             labelBundleValidity.text = modelBundleDetail.bundleValidity ?? ""
             labelTaxPrice.text = "incl. tax"
-            labelCutPrice.text = "Rs.\(modelBundleDetail.bundleDiscountPrice)"
+            labelCutPrice.text = "Rs.\(modelBundleDetail.bundleDiscountPrice ?? 0)"
             labelPrice.text = "Rs.\(modelBundleDetail.bundleDefaultPrice)"
             if modelBundleDetail.bundleDiscountPrice == 0 {
                 labelCutPrice.isHidden = true
