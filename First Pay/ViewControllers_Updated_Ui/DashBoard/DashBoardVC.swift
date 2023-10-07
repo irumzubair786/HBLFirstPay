@@ -34,6 +34,11 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var banObj : GenericResponse?
     var getDebitDetailsObj : GetDebitCardModel?
     var availableLimitObj: AvailableLimitsModel?
+    let pageIndicator = UIPageControl()
+    var counter = 0
+    var banArray = [UIImage]()
+    var timerChangeBannerImage = Timer()
+    var banaryyString =  [String]()
     var topBtnarr =  ["sendMoneyIcon", "mobileTopUpIcon", "payBillsIcon","getLoanIcon","debitCardIcon","sellAllIcon"]
     var topBtnNameArray =  ["Send Money", "Mobile Top Up", "Pay Bills","Get Loan","Debit Card","See All"]
     var fingerPrintVerification: FingerPrintVerification!
@@ -67,9 +72,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 
     @IBOutlet weak var imgSeeAll: UIImageView!
     
-    override func viewDidAppear(_ animated: Bool) {
-        changeImageTimerStart()
-    }
+   
     override func viewDidDisappear(_ animated: Bool) {
         timerChangeBannerImage.invalidate()
     }
@@ -77,7 +80,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         FBEvents.logEvent(title: .Homescreen_Landing)
         super.viewDidLoad()
         banapi()
-//        ScrollView not working please check it..
         collectionView.delegate = self
         collectionView.dataSource = self
        
@@ -114,6 +116,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 
         
     }
+    @IBOutlet weak var pageView: UIPageControl!
+    @IBOutlet weak var sliderCollectionView: UICollectionView!
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBOutlet weak var imageAddCash: UIImageView!
     @IBOutlet weak var buttonLevelIcon: UIButton!
@@ -153,25 +157,58 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
  
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let itemsInRow = 4
-        let height = collectionView.bounds.height
-        let width = collectionView.bounds.width - 5
-        let cellWidth = width / CGFloat(itemsInRow)
-        return CGSize(width: cellWidth, height: height)
+        if collectionView == sliderCollectionView
+        {
+            let size = self.sliderCollectionView.frame.size
+            return CGSize(width: size.width, height: size.height)
+        }
+        else
+        {
+            let itemsInRow = 4
+            let height = collectionView.bounds.height
+            let width = collectionView.bounds.width - 5
+            let cellWidth = width / CGFloat(itemsInRow)
+            return CGSize(width: cellWidth, height: height)
+        }
+       
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return topBtnarr.count
+        if collectionView == sliderCollectionView
+        {
+            return banaryyString.count
+            
+        }
+        else
+        {
+            return topBtnarr.count
+        }
+       return 0
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cella = collectionView .dequeueReusableCell(withReuseIdentifier: "cellmainfourTransaction", for: indexPath) as! cellmainfourTransaction
-        cella.btn.setTitle("", for: .normal)
-        cella.btn.tag = indexPath.row
-        cella.img.image = UIImage(named: topBtnarr[indexPath.row])
-        cella.lblName.text = topBtnNameArray[indexPath.row]
-        cella.btn.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
-        //        cella.img.image = topBtnarr[indexPath.row
-        return cella
+        if collectionView == sliderCollectionView
+        {
+            let cell = sliderCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+            if let vc = cell.viewWithTag(111) as? UIImageView {
+                // vc.image = sliderImages[indexPath.row]
+                let imgURL = URL(string: banaryyString[indexPath.row])
+                vc.sd_setImage(with:(imgURL), placeholderImage: UIImage(named: "Button copy"))
+               
+                
+            }
+            return cell
+        }
+        else
+        {
+            let cella = collectionView .dequeueReusableCell(withReuseIdentifier: "cellmainfourTransaction", for: indexPath) as! cellmainfourTransaction
+            cella.btn.setTitle("", for: .normal)
+            cella.btn.tag = indexPath.row
+            cella.img.image = UIImage(named: topBtnarr[indexPath.row])
+            cella.lblName.text = topBtnNameArray[indexPath.row]
+            cella.btn.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
+            //        cella.img.image = topBtnarr[indexPath.row
+            return cella
+        }
+       
     }
     @objc func buttontaped(_sender:UIButton) {
         let tag = _sender.tag
@@ -348,12 +385,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         comabalanceLimit = (formatter.string(from: NSNumber(value: number)))!
     }
     
-    let pageIndicator = UIPageControl()
-    var counter = 0
-    var banArray = [UIImage]()
-    var timerChangeBannerImage = Timer()
-    var banaryyString =  [String]()
-    
+   
     @IBOutlet weak var buttonInvite: UIButton!
     
     @IBOutlet weak var imgLevel: UIImageView!
@@ -367,28 +399,55 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     @IBOutlet weak var LblMobNo: UILabel!
     @IBOutlet weak var img: UIImageView!
 
-    func changeImageTimerStart() {
-        timerChangeBannerImage.invalidate()
-        self.timerChangeBannerImage = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
-    }
+//    func changeImageTimerStart() {
+//        timerChangeBannerImage.invalidate()
+//        self.timerChangeBannerImage = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
+//    }
+//    @objc func changeImage() {
+//        if self.banaryyString.count == 0 {
+//            return()
+//        }
+//
+//        if counter < self.banaryyString.count {
+//
+//            let index = IndexPath.init(item: counter, section: 0)
+//
+//            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+//            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
+//            counter += 1
+//        } else {
+//            counter = 0
+//            let index = IndexPath.init(item: counter, section: 0)
+//            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+//            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
+//            counter = 1
+//        }
+//    }
     @objc func changeImage() {
-        if self.banaryyString.count == 0 {
-            return()
-        }
-        
-        if counter < self.banaryyString.count {
-            
+
+        if counter < banaryyString.count {
             let index = IndexPath.init(item: counter, section: 0)
-            
-            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
+            self.sliderCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+            pageView.currentPage = counter
             counter += 1
         } else {
             counter = 0
             let index = IndexPath.init(item: counter, section: 0)
-            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
+            self.sliderCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: false)
+            pageView.currentPage = counter
             counter = 1
+        }
+
+    }
+    func addDelegates(){
+        sliderCollectionView.delegate = self
+        sliderCollectionView.dataSource = self
+        }
+    func playSlider(){
+        if(!banaryyString.isEmpty){
+            DispatchQueue.main.async {
+                self.timerChangeBannerImage = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
+            }
         }
     }
 
@@ -530,16 +589,18 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             print("Result",Result!)
             print("token is :",GlobalData.banner.data[0].brandCode)
             if GlobalData.banner.responsecode == 1 {
-                for data in GlobalData.banner.data {
+                for data in GlobalData.banner.data  ?? []{
                     if data.banner != nil {
-                        self.banaryyString.append(data.banner!) //step2
+                        self.banaryyString.append(data.banner ?? "") //step2
                         
                     }
                     
                 }
                 print("ban array is",banaryyString)
                 DispatchQueue.main.async {
-                    self.changeImageTimerStart()
+                    addDelegates()
+                    self.playSlider()
+
                 }
             }
         }
@@ -1130,5 +1191,21 @@ extension DashBoardVC {
             var container = encoder.singleValueContainer()
             try container.encodeNil()
         }
+    }
+}
+
+extension DashBoardVC {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
     }
 }
