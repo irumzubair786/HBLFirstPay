@@ -148,12 +148,7 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
         else {
             name = (dictionaryNames[indexPath.section] as! [String])[indexPath.item]
         }
-        if name == "" {
-            cell.viewBackGround.backgroundColor = .clear
-        }
-        else {
-            cell.viewBackGround.backgroundColor = .clrLightGraySelectionBackGround
-        }
+        
         cell.labelName.text = name
         cell.viewBackGround.backgroundColor = .clrLightGraySelectionBackGround
         cell.labelName.textColor = .clrLightGrayCalendar
@@ -168,6 +163,10 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
                     cell.labelName.textColor = .clrLightGrayCalendar
                 }
             }
+        }
+        if name == "" {
+            cell.viewBackGround.backgroundColor = .white
+            cell.labelName.textColor = .white
         }
         
         return cell
