@@ -95,11 +95,15 @@ class MobilePackages: UIViewController {
         }
     }
     
-    
-    
     var networkId : Int?
 
     var searchedBundleDetails: [ModelBundleDetail]?
+    
+    var dictionaryFilterSelectedItems = [
+        0:[],
+        1:[],
+        2:[]
+    ] as? [Int: [Int]]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,9 +133,16 @@ class MobilePackages: UIViewController {
             let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "PackagesFilter") as! PackagesFilter
 
             vc.modelBundleFilters = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters
-            vc.buttonApplyApplied = { packageType, packageValidity, packagePriceRange in
+            vc.dictionaryFilterSelectedItems = self.dictionaryFilterSelectedItems
+            vc.buttonApplyApplied = { packageType, packageValidity, packagePriceRange, filterResponse in
+                self.dictionaryFilterSelectedItems = filterResponse
                 self.selectedCell = nil
                 self.filterApply(packageType: packageType, packageValidity: packageValidity, packagePriceRange: packagePriceRange, searchFromFilterScreen: true)
+            }
+            vc.buttonClearFilterBack = { filterResponse in
+                self.dictionaryFilterSelectedItems = filterResponse
+                self.networkId = 1
+                self.self.selectedButton(view: self.viewOne, button: self.buttonOne)
             }
             self.present(vc, animated: true)
         }
@@ -209,24 +220,19 @@ class MobilePackages: UIViewController {
     }
     
     @IBAction func buttonOne(_ sender: UIButton) {
-       
         networkId = 1
-        
         selectedButton(view: viewOne, button: buttonOne)
-        
-        
     }
     @IBAction func buttonTwo(_ sender: UIButton) {
         networkId = 2
         selectedButton(view: viewTwo, button: buttonTwo)
     }
     @IBAction func buttonThree(_ sender: UIButton) {
-    networkId = 3
-        
+        networkId = 3
         selectedButton(view: viewThree, button: buttonThree)
     }
     @IBAction func buttonFour(_ sender: UIButton) {
-       networkId = 4
+        networkId = 4
         selectedButton(view: viewFour, button: buttonFour)
     }
       
@@ -417,8 +423,6 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
         if companyNames == nil {
             return 0
         }
-        
-        
         return modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?.count ?? 0
     }
     

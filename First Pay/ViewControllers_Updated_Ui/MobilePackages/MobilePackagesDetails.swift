@@ -85,24 +85,19 @@ class MobilePackagesDetails: BaseClassVC {
         if bundleDetail == nil {
             return()
         }
-        if fetchNetworkId == 1
-        {
+        if fetchNetworkId == 1 {
             labelCarrier.text =  "Telenor"
             imageViewOperator.image = UIImage(named: "telenor")
         }
-        else if fetchNetworkId == 2
-        {
+        else if fetchNetworkId == 2 {
             labelCarrier.text =  "Jazz"
             imageViewOperator.image = UIImage(named: "jazz")
         }
-        
-        else if fetchNetworkId == 3
-        {
+        else if fetchNetworkId == 3 {
             labelCarrier.text =  "Zong4G"
             imageViewOperator.image = UIImage(named: "zong")
         }
-        else if fetchNetworkId == 4
-        {
+        else if fetchNetworkId == 4 {
             labelCarrier.text =  "Ufone"
             imageViewOperator.image = UIImage(named: "ufone")
         }

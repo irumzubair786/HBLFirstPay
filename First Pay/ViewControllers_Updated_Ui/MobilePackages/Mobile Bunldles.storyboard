@@ -740,20 +740,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qkj-Ch-4Ke">
+                                <rect key="frame" x="0.0" y="48" width="414" height="814"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                                <connections>
+                                    <action selector="buttonDismiss:" destination="869-ZD-L6d" eventType="touchUpInside" id="Ec3-KJ-AZq"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q0p-Bi-b4u">
                                 <rect key="frame" x="0.0" y="198" width="414" height="664"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yFD-5h-wGC">
-                                        <rect key="frame" x="0.0" y="12" width="414" height="60"/>
+                                        <rect key="frame" x="0.0" y="12" width="414" height="70"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FILTER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Orh-z4-nux">
-                                                <rect key="frame" x="0.0" y="27.5" width="414" height="21"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
                                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                                                 <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ecP-uu-6bv">
-                                                <rect key="frame" x="177" y="0.0" width="60" height="3"/>
+                                                <rect key="frame" x="177" y="6" width="60" height="3"/>
                                                 <color key="backgroundColor" red="0.56078431370000004" green="0.57254901960000004" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="3" id="CGF-CH-nwY"/>
@@ -761,32 +769,42 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5iS-1z-Rif">
-                                                <rect key="frame" x="336" y="18" width="68" height="40"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="c0s-Ei-D02"/>
-                                                </constraints>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="Apply"/>
+                                                <rect key="frame" x="354" y="0.0" width="40" height="70"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Apply"/>
                                                 <connections>
                                                     <action selector="buttonApply:" destination="869-ZD-L6d" eventType="touchUpInside" id="d1K-hr-pnP"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="spF-Vk-oua">
+                                                <rect key="frame" x="20" y="0.0" width="48" height="70"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Cancel"/>
+                                                <connections>
+                                                    <action selector="buttonCancel:" destination="869-ZD-L6d" eventType="touchUpInside" id="Q0Z-rD-zod"/>
                                                 </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="5iS-1z-Rif" secondAttribute="trailing" constant="10" id="0sh-WV-onR"/>
+                                            <constraint firstAttribute="trailing" secondItem="5iS-1z-Rif" secondAttribute="trailing" constant="20" id="0sh-WV-onR"/>
                                             <constraint firstItem="Orh-z4-nux" firstAttribute="centerX" secondItem="yFD-5h-wGC" secondAttribute="centerX" id="3RN-4N-L2t"/>
+                                            <constraint firstAttribute="bottom" secondItem="5iS-1z-Rif" secondAttribute="bottom" id="7DW-LR-Tvd"/>
+                                            <constraint firstItem="spF-Vk-oua" firstAttribute="top" secondItem="yFD-5h-wGC" secondAttribute="top" id="Cc5-PX-l7w"/>
+                                            <constraint firstAttribute="bottom" secondItem="Orh-z4-nux" secondAttribute="bottom" id="EV0-ZI-zHa"/>
                                             <constraint firstItem="ecP-uu-6bv" firstAttribute="centerX" secondItem="yFD-5h-wGC" secondAttribute="centerX" id="FWa-Qq-VwT"/>
-                                            <constraint firstItem="Orh-z4-nux" firstAttribute="centerY" secondItem="yFD-5h-wGC" secondAttribute="centerY" constant="8" id="QRj-w0-17E"/>
+                                            <constraint firstItem="5iS-1z-Rif" firstAttribute="top" secondItem="yFD-5h-wGC" secondAttribute="top" id="HVQ-8l-Pdf"/>
                                             <constraint firstAttribute="trailing" secondItem="Orh-z4-nux" secondAttribute="trailing" id="W9R-vg-IeY"/>
-                                            <constraint firstItem="ecP-uu-6bv" firstAttribute="top" secondItem="yFD-5h-wGC" secondAttribute="top" id="jGy-Vp-hnV"/>
-                                            <constraint firstItem="5iS-1z-Rif" firstAttribute="centerY" secondItem="Orh-z4-nux" secondAttribute="centerY" id="jpH-JE-vir"/>
+                                            <constraint firstItem="spF-Vk-oua" firstAttribute="leading" secondItem="yFD-5h-wGC" secondAttribute="leading" constant="20" id="bE4-b0-izl"/>
+                                            <constraint firstAttribute="bottom" secondItem="spF-Vk-oua" secondAttribute="bottom" id="dBs-qt-rf0"/>
+                                            <constraint firstItem="ecP-uu-6bv" firstAttribute="top" secondItem="yFD-5h-wGC" secondAttribute="top" constant="6" id="jGy-Vp-hnV"/>
                                             <constraint firstItem="Orh-z4-nux" firstAttribute="leading" secondItem="yFD-5h-wGC" secondAttribute="leading" id="s7t-1e-4IU"/>
-                                            <constraint firstAttribute="height" constant="60" id="y7F-eb-qOY"/>
+                                            <constraint firstAttribute="height" constant="70" id="y7F-eb-qOY"/>
+                                            <constraint firstItem="Orh-z4-nux" firstAttribute="top" secondItem="yFD-5h-wGC" secondAttribute="top" id="zvg-KM-Vv6"/>
                                         </constraints>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3ci-Fu-AEg" customClass="CollectionViewContentSized" customModule="FirstPay" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="72" width="374" height="592"/>
+                                        <rect key="frame" x="20" y="82" width="374" height="582"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="F1H-jb-iFr">
                                             <size key="itemSize" width="128" height="128"/>
@@ -820,14 +838,20 @@
                         <viewLayoutGuide key="safeArea" id="Wx0-ud-Ho9"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Wx0-ud-Ho9" firstAttribute="bottom" secondItem="qkj-Ch-4Ke" secondAttribute="bottom" id="9A5-M1-0sq"/>
                             <constraint firstItem="Wx0-ud-Ho9" firstAttribute="bottom" secondItem="Q0p-Bi-b4u" secondAttribute="bottom" id="M4q-SO-ECP"/>
+                            <constraint firstItem="qkj-Ch-4Ke" firstAttribute="top" secondItem="Wx0-ud-Ho9" secondAttribute="top" id="R6s-h5-lw3"/>
+                            <constraint firstItem="qkj-Ch-4Ke" firstAttribute="leading" secondItem="Wx0-ud-Ho9" secondAttribute="leading" id="W1W-1c-y7f"/>
                             <constraint firstItem="Wx0-ud-Ho9" firstAttribute="trailing" secondItem="Q0p-Bi-b4u" secondAttribute="trailing" id="iHe-Gy-6v8"/>
                             <constraint firstItem="Q0p-Bi-b4u" firstAttribute="top" secondItem="Wx0-ud-Ho9" secondAttribute="top" constant="150" id="pj9-1C-ozi"/>
+                            <constraint firstItem="Wx0-ud-Ho9" firstAttribute="trailing" secondItem="qkj-Ch-4Ke" secondAttribute="trailing" id="seX-02-2YN"/>
                             <constraint firstItem="Q0p-Bi-b4u" firstAttribute="leading" secondItem="Wx0-ud-Ho9" secondAttribute="leading" id="vJ4-o1-2TY"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="buttonApply" destination="5iS-1z-Rif" id="dMC-a9-dMQ"/>
+                        <outlet property="buttonCancel" destination="spF-Vk-oua" id="ea8-FG-4Y9"/>
+                        <outlet property="buttonDismiss" destination="qkj-Ch-4Ke" id="kr5-ia-lOL"/>
                         <outlet property="collectionView" destination="3ci-Fu-AEg" id="gOP-Gp-F3H"/>
                         <outlet property="viewBackGround" destination="Q0p-Bi-b4u" id="7LB-Lt-VGk"/>
                     </connections>

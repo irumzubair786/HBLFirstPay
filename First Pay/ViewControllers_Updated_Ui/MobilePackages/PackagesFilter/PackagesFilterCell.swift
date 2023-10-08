@@ -18,7 +18,4 @@ class PackagesFilterCell: UICollectionViewCell {
             self.viewBackGround.circle()
         }
     }
-    
-    
-
 }

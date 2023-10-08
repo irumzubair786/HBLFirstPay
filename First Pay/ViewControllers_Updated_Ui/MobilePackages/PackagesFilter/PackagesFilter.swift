@@ -11,6 +11,9 @@ class PackagesFilter: BaseClassVC {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var buttonApply: UIButton!
+    @IBOutlet weak var buttonDismiss: UIButton!
+    @IBOutlet weak var buttonCancel: UIButton!
+    
     var arraySections = ["TYPE", "VALIDITY", "PRICE"]
     //    var bundleFilters: [MobilePackages.BundleFilter]!
 //        var bundleFilters = [MobilePackages.BundleFilter]()
@@ -23,16 +26,13 @@ class PackagesFilter: BaseClassVC {
         }
     }
     
-    
-    
-    
     var dictionaryNames = [
         0: [MobilePackages.ModelBundleFilter].self,
         1: ["All", "Monthly", "Weekly", "Daily"],
         2: ["Height To Low", "Low To Height", ""]
     ] as [Int : Any]
     
-    var dictionarySelectedItems = [
+    var dictionaryFilterSelectedItems = [
         0:[],
         1:[],
         2:[]
@@ -40,7 +40,8 @@ class PackagesFilter: BaseClassVC {
     
     var selectedCell: Int!
     
-    var buttonApplyApplied: (([String], [String], [String]) -> ())!
+    var buttonApplyApplied: (([String], [String], [String], [Int: [Int]]?) -> ())!
+    var buttonClearFilterBack: (([Int: [Int]]) -> ())!
 
 
     override func viewDidAppear(_ animated: Bool) {
@@ -61,6 +62,12 @@ class PackagesFilter: BaseClassVC {
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func buttonDismiss(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
+    @IBAction func buttonCancel(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
     @IBAction func buttonApply(_ sender: Any) {
         self.dismiss(animated: true)
         
@@ -70,7 +77,7 @@ class PackagesFilter: BaseClassVC {
         var packageValidityArray = [String]()
         var packagePriceRangeArray = [String]()
         
-        for selectedItemIfAny in dictionarySelectedItems! {
+        for selectedItemIfAny in dictionaryFilterSelectedItems! {
             let selectedItem = selectedItemIfAny.value
             if selectedItem.count > 0 {
                 if selectedItemIfAny.key == 0 {
@@ -107,7 +114,7 @@ class PackagesFilter: BaseClassVC {
             }
             print(selectedItem)
         }
-        buttonApplyApplied?(packageTypeArray, packageValidityArray, packagePriceRangeArray)
+        buttonApplyApplied?(packageTypeArray, packageValidityArray, packagePriceRangeArray, dictionaryFilterSelectedItems)
     }
     
     /*
@@ -150,9 +157,9 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
         cell.labelName.text = name
         cell.viewBackGround.backgroundColor = .clrLightGraySelectionBackGround
         cell.labelName.textColor = .clrLightGrayCalendar
-        if dictionarySelectedItems != nil {
-            if dictionarySelectedItems![indexPath.section]!.count > 0 {
-                if (dictionarySelectedItems![indexPath.section]!).contains(indexPath.item) {
+        if dictionaryFilterSelectedItems != nil {
+            if dictionaryFilterSelectedItems![indexPath.section]!.count > 0 {
+                if (dictionaryFilterSelectedItems![indexPath.section]!).contains(indexPath.item) {
                     cell.viewBackGround.backgroundColor = .clrOrange
                     cell.labelName.textColor = .white
                 }
@@ -174,31 +181,31 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if (dictionarySelectedItems![indexPath.section]!).contains(indexPath.item) {
-            if let indexOf = dictionarySelectedItems![indexPath.section]?.firstIndex(of: indexPath.item) {
+        if (dictionaryFilterSelectedItems![indexPath.section]!).contains(indexPath.item) {
+            if let indexOf = dictionaryFilterSelectedItems![indexPath.section]?.firstIndex(of: indexPath.item) {
                 if indexPath.section == 0 || indexPath.section == 1 {
                     if indexPath.item == 0 {
-                        dictionarySelectedItems![indexPath.section] = []
+                        dictionaryFilterSelectedItems![indexPath.section] = []
                         collectionView.reloadData()
                         return()
                     }
                 }
-                dictionarySelectedItems![indexPath.section]?.remove(at: indexOf)
+                dictionaryFilterSelectedItems![indexPath.section]?.remove(at: indexOf)
             }
         }
         else {
             if indexPath.section == 0 || indexPath.section == 1 {
                 if indexPath.item == 0 {
-                    dictionarySelectedItems![indexPath.section] = []
-                    dictionarySelectedItems![indexPath.section]?.append(indexPath.item)
+                    dictionaryFilterSelectedItems![indexPath.section] = []
+                    dictionaryFilterSelectedItems![indexPath.section]?.append(indexPath.item)
                     collectionView.reloadData()
                     return()
                 }
-                if let indexOf = dictionarySelectedItems![indexPath.section]?.firstIndex(of: 0) {
-                    dictionarySelectedItems![indexPath.section]?.remove(at: indexOf)
+                if let indexOf = dictionaryFilterSelectedItems![indexPath.section]?.firstIndex(of: 0) {
+                    dictionaryFilterSelectedItems![indexPath.section]?.remove(at: indexOf)
                 }
             }
-            dictionarySelectedItems![indexPath.section]?.append(indexPath.item)
+            dictionaryFilterSelectedItems![indexPath.section]?.append(indexPath.item)
         }
         
         collectionView.reloadData()
@@ -242,10 +249,11 @@ extension PackagesFilter: UICollectionViewDelegateFlowLayout {
     }
     
     @objc func buttonClearFilter() {
-        if dictionarySelectedItems != nil {
-            dictionarySelectedItems?[0] = []
-            dictionarySelectedItems?[1] = []
-            dictionarySelectedItems?[2] = []
+        if dictionaryFilterSelectedItems != nil {
+            dictionaryFilterSelectedItems?[0] = []
+            dictionaryFilterSelectedItems?[1] = []
+            dictionaryFilterSelectedItems?[2] = []
+            buttonClearFilterBack?(dictionaryFilterSelectedItems!)
             collectionView.reloadData()
         }
     }
