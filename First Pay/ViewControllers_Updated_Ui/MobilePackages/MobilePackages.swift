@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import Kingfisher
 
 class MobilePackages: UIViewController {
     @IBOutlet weak var viewOne: UIView!
@@ -25,10 +26,12 @@ class MobilePackages: UIViewController {
     
     @IBOutlet weak var viewCompaniesBackGround: UIView!
     @IBOutlet weak var buttonSetting: UIButton!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewDataType: UICollectionView!
+    @IBOutlet weak var collectionViewNetwork: UICollectionView!
+    
 
     var indexSelectedNetwork = 0
-    var selectedCell: Int!
+    var indexSelectedDataTypeCell: Int!
     var arrayCompanyIcons = ["telenor", "jazz", "ufone", "zong"]
     var arrayNames = ["ios", "Android", "Apple", "Nokia Phone", "One Plus Phone"]
     var companyNames: [String]!
@@ -41,16 +44,16 @@ class MobilePackages: UIViewController {
                     return $0.companyName ?? "NA"
                 })
                 if buttonOne.tag == 1 {
-                    selectedButton(view: viewOne, button: buttonOne)
+                    selectedNetwork(view: viewOne, button: buttonOne)
                 }
                 else if buttonTwo.tag == 1 {
-                    selectedButton(view: viewTwo, button: buttonTwo)
+                    selectedNetwork(view: viewTwo, button: buttonTwo)
                 }
                 else if buttonThree.tag == 1 {
-                    selectedButton(view: viewThree, button: buttonThree)
+                    selectedNetwork(view: viewThree, button: buttonThree)
                 }
                 else if buttonFour.tag == 1 {
-                    selectedButton(view: viewFour, button: buttonFour)
+                    selectedNetwork(view: viewFour, button: buttonFour)
                 }
             }
             else {
@@ -107,11 +110,13 @@ class MobilePackages: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        selectedButton(view: nil, button: buttonOne)
+        selectedNetwork(view: nil, button: buttonOne)
         MobilePackagesCell.register(tableView: tableView)
-        MobilePackagesDataNameCell.register(collectionView: collectionView)
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        MobilePackagesDataNameCell.register(collectionView: collectionViewDataType)
+        MobilePackagesTelcoCell.register(collectionView: collectionViewNetwork)
+        
+        collectionViewDataType.dataSource = self
+        collectionViewDataType.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
         viewCompaniesBackGround.radius()
@@ -119,7 +124,7 @@ class MobilePackages: UIViewController {
         // Do any additional setup after loading the view.
         getBundleDetails()
         getFavourites()
-        selectedButton(view: viewOne, button: buttonOne)
+        selectedNetwork(view: viewOne, button: buttonOne)
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -136,13 +141,13 @@ class MobilePackages: UIViewController {
             vc.dictionaryFilterSelectedItems = self.dictionaryFilterSelectedItems
             vc.buttonApplyApplied = { packageType, packageValidity, packagePriceRange, filterResponse in
                 self.dictionaryFilterSelectedItems = filterResponse
-                self.selectedCell = nil
+                self.indexSelectedDataTypeCell = nil
                 self.filterApply(packageType: packageType, packageValidity: packageValidity, packagePriceRange: packagePriceRange, searchFromFilterScreen: true)
             }
             vc.buttonClearFilterBack = { filterResponse in
                 self.dictionaryFilterSelectedItems = filterResponse
                 self.networkId = 1
-                self.self.selectedButton(view: self.viewOne, button: self.buttonOne)
+                self.self.selectedNetwork(view: self.viewOne, button: self.buttonOne)
             }
             self.present(vc, animated: true)
         }
@@ -215,25 +220,26 @@ class MobilePackages: UIViewController {
             searchedBundleDetails = mergedRecord
         }
         
-        collectionView.reloadData()
+        collectionViewDataType.reloadData()
+        collectionViewNetwork.reloadData()
         tableView.reloadData()
     }
     
     @IBAction func buttonOne(_ sender: UIButton) {
         networkId = 1
-        selectedButton(view: viewOne, button: buttonOne)
+        selectedNetwork(view: viewOne, button: buttonOne)
     }
     @IBAction func buttonTwo(_ sender: UIButton) {
         networkId = 2
-        selectedButton(view: viewTwo, button: buttonTwo)
+        selectedNetwork(view: viewTwo, button: buttonTwo)
     }
     @IBAction func buttonThree(_ sender: UIButton) {
         networkId = 3
-        selectedButton(view: viewThree, button: buttonThree)
+        selectedNetwork(view: viewThree, button: buttonThree)
     }
     @IBAction func buttonFour(_ sender: UIButton) {
         networkId = 4
-        selectedButton(view: viewFour, button: buttonFour)
+        selectedNetwork(view: viewFour, button: buttonFour)
     }
       
     
@@ -247,50 +253,50 @@ class MobilePackages: UIViewController {
     
     
     
-    func selectedButton(view: UIView?, button: UIButton) {
-        selectedCell = nil
-        viewOne.backgroundColor = .clear
-        viewTwo.backgroundColor = .clear
-        viewThree.backgroundColor = .clear
-        viewFour.backgroundColor = .clear
+    func selectedNetwork(view: UIView?, button: UIButton?) {
+        indexSelectedDataTypeCell = nil
+//        viewOne.backgroundColor = .clear
+//        viewTwo.backgroundColor = .clear
+//        viewThree.backgroundColor = .clear
+//        viewFour.backgroundColor = .clear
+//
+//        buttonOne.tag = 0
+//        buttonTwo.tag = 0
+//        buttonThree.tag = 0
+//        buttonFour.tag = 0
         
-        buttonOne.tag = 0
-        buttonTwo.tag = 0
-        buttonThree.tag = 0
-        buttonFour.tag = 0
-        
-        if view != nil {
-            view!.backgroundColor = .clrOrange
-            button.tag = 1
-        }
-        if companyNames != nil {
-            for (index, companyName) in companyNames.enumerated() {
-                if buttonOne.tag == 1 {
-                    indexSelectedNetwork = index
-                    if companyName.lowercased() == "TELENOR".lowercased() {
-                        break
-                    }
-                }
-                else if buttonTwo.tag == 1 {
-                    indexSelectedNetwork = index
-                    if companyName.lowercased() == "JAZZ".lowercased() {
-                        break
-                    }
-                }
-                else if buttonThree.tag == 1 {
-                    indexSelectedNetwork = index
-                    if companyName.lowercased() == "UFONE".lowercased() {
-                        break
-                    }
-                }
-                else if buttonFour.tag == 1 {
-                    indexSelectedNetwork = index
-                    if companyName.lowercased() == "ZONG".lowercased() {
-                        break
-                    }
-                }
-            }
-        }
+//        if view != nil {
+//            view!.backgroundColor = .clrOrange
+//            button.tag = 1
+//        }
+//        if companyNames != nil {
+//            for (index, companyName) in companyNames.enumerated() {
+//                if buttonOne.tag == 1 {
+//                    indexSelectedNetwork = index
+//                    if companyName.lowercased() == "TELENOR".lowercased() {
+//                        break
+//                    }
+//                }
+//                else if buttonTwo.tag == 1 {
+//                    indexSelectedNetwork = index
+//                    if companyName.lowercased() == "JAZZ".lowercased() {
+//                        break
+//                    }
+//                }
+//                else if buttonThree.tag == 1 {
+//                    indexSelectedNetwork = index
+//                    if companyName.lowercased() == "UFONE".lowercased() {
+//                        break
+//                    }
+//                }
+//                else if buttonFour.tag == 1 {
+//                    indexSelectedNetwork = index
+//                    if companyName.lowercased() == "ZONG".lowercased() {
+//                        break
+//                    }
+//                }
+//            }
+//        }
         
         if modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails != nil {
             searchedBundleDetails = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails
@@ -300,7 +306,8 @@ class MobilePackages: UIViewController {
         }
         
         tableView.reloadData()
-        collectionView.reloadData()
+        collectionViewNetwork.reloadData()
+        collectionViewDataType.reloadData()
     }
     func getBundleDetails() {
         APIs.getAPI(apiName: .getBundleDetails, parameters: nil, viewController: self) { responseData, success, errorMsg in
@@ -340,7 +347,8 @@ class MobilePackages: UIViewController {
     func navigateToMobilePackagesDetails(bundleDetails: ModelBundleDetail) {
         let vc = UIStoryboard(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesDetails") as! MobilePackagesDetails
         vc.bundleDetail = bundleDetails
-        vc.companyIcon = UIImage(named: arrayCompanyIcons[indexSelectedNetwork])
+//        vc.companyIcon = UIImage(named: arrayCompanyIcons[indexSelectedNetwork])
+        vc.companyIcon = "\(GlobalConstants.BASE_URL)\(modelGetBundleDetails?.data[indexSelectedNetwork].enabledIcon ?? "")"
         vc.fetchNetworkId = networkId
         vc.companyName = modelGetBundleDetails?.data[indexSelectedNetwork].companyName ?? ""
         self.navigationController!.pushViewController(vc, animated: true)
@@ -408,55 +416,116 @@ class MobilePackages: UIViewController {
 
 extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        DispatchQueue.main.async {
-            (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
+        if collectionView == self.collectionViewDataType {
+            DispatchQueue.main.async {
+                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
+            }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let bundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item]
-        return CGSize(width: "\(bundleFilter?.filterName ?? "")".size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width + 50, height: 50)
+        if collectionView == self.collectionViewDataType {
+            let bundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item]
+            return CGSize(width: "\(bundleFilter?.filterName ?? "")".size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width + 50, height: 40)
+        }
+        else if collectionView == collectionViewNetwork {
+            return CGSize(width: collectionViewNetwork.frame.size.width / 4, height: collectionView.frame.height)
+        }
+        else {
+            return CGSize(width: 70, height: collectionView.frame.height)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if companyNames == nil {
             return 0
         }
-        return modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?.count ?? 0
+        if collectionView == self.collectionViewDataType {
+            return modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?.count ?? 0
+        }
+        else if collectionView == collectionViewNetwork {
+            return self.modelGetBundleDetails?.data.count ?? 0
+        }
+        else {
+            return modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?[collectionView.tag].resourceLists?.count ?? 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MobilePackagesDataNameCell", for: indexPath) as! MobilePackagesDataNameCell
-        
-        let modelBundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item]
-        
-        cell.labelName.text = "\(modelBundleFilter?.filterName ?? "")"
-        if selectedCell != nil {
-            if selectedCell == indexPath.item {
-                cell.viewBackGround.backgroundColor = .clrOrange
-                cell.labelName.textColor = .white
+        if collectionView == self.collectionViewDataType {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MobilePackagesDataNameCell", for: indexPath) as! MobilePackagesDataNameCell
+            
+            let modelBundleFilter =  modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item]
+            
+            cell.labelName.text = "\(modelBundleFilter?.filterName ?? "")"
+            if indexSelectedDataTypeCell != nil {
+                if indexSelectedDataTypeCell == indexPath.item {
+                    cell.viewBackGround.backgroundColor = .clrOrange
+                    cell.labelName.textColor = .white
+                }
+                else {
+                    cell.viewBackGround.backgroundColor = .clrLightGraySelectionBackGround
+                    cell.labelName.textColor = .clrLightGrayCalendar
+                }
             }
             else {
                 cell.viewBackGround.backgroundColor = .clrLightGraySelectionBackGround
                 cell.labelName.textColor = .clrLightGrayCalendar
             }
+            
+            return cell
+        }
+        else if collectionView == collectionViewNetwork {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MobilePackagesTelcoCell", for: indexPath) as! MobilePackagesTelcoCell
+            cell.viewDevider.isHidden = indexPath.item == 0
+            
+            cell.viewBottomLine.backgroundColor = .clear
+            
+            var url = URL(string: "\(GlobalConstants.BASE_URL)\(modelGetBundleDetails?.data[indexPath.item].disabledIcon ?? "")")
+            if indexPath.item == indexSelectedNetwork {
+                cell.viewBottomLine.backgroundColor = .clrOrange
+                url = URL(string: "\(GlobalConstants.BASE_URL)\(modelGetBundleDetails?.data[indexPath.item].enabledIcon ?? "")")
+            }
+            
+            if let url {
+                cell.imageViewIcon.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil, completionHandler: { image, error, cacheType, imageURL in
+                    if (image != nil){
+                        cell.imageViewIcon.image = image
+                    }
+                    else {
+//                        cell.imageViewIcon.image = UIImage.init(named: "user")
+                    }
+                })
+            }
+            
+            return cell
         }
         else {
-            cell.viewBackGround.backgroundColor = .clrLightGraySelectionBackGround
-            cell.labelName.textColor = .clrLightGrayCalendar
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MobileSubPackagesCell", for: indexPath) as! MobileSubPackagesCell
+            
+            cell.modelResourceList = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?[collectionView.tag].resourceLists?[indexPath.item]
+            
+            return cell
+        }
+    }
+  
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if collectionView == collectionViewNetwork {
+//            networkId = self.modelGetBundleDetails?.data[indexPath.item].
+            indexSelectedNetwork = indexPath.item
+            selectedNetwork(view: nil, button: nil)
+        }
+        else if collectionView == self.collectionViewDataType {
+            indexSelectedDataTypeCell = indexPath.item
+            if let filterName = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item].filterName as? String {
+                filterApply(packageType: [filterName], searchFromFilterScreen: false)
+            }
+        }
+        else {
+            
         }
         
-        return cell
-    }
-    
-  
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedCell = indexPath.item
-        if let filterName = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item].filterName as? String {
-            filterApply(packageType: [filterName], searchFromFilterScreen: false)
-        }
     }
 }
 
@@ -494,6 +563,11 @@ extension MobilePackages: UITableViewDelegate, UITableViewDataSource {
         }
         cell.buttonFavouriteNow = { tempBundleDetail in
             self.addToFavourite(bundleDetail: tempBundleDetail)
+        }
+        if cell.modelBundleDetail.resourceLists?.count ?? 0 > 0 {
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            cell.collectionView.tag = indexPath.row
         }
         return cell
         

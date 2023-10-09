@@ -27,7 +27,7 @@ class MobilePackagesDetails: BaseClassVC {
     @IBOutlet weak var labelAmount: UILabel!
     @IBOutlet weak var buttonContact: UIButton!
     var fetchNetworkId : Int?
-    var companyIcon: UIImage!
+    var companyIcon: String!
     var companyName: String!
     var bundleDetail: MobilePackages.ModelBundleDetail!
     var stringName = ""
@@ -102,10 +102,22 @@ class MobilePackagesDetails: BaseClassVC {
             imageViewOperator.image = UIImage(named: "ufone")
         }
         labelPackage.text = bundleDetail.bundleName
-//        labelCarrier.text =  companyName
-        labelPrice.text = "\(bundleDetail.bundleDefaultPrice)"
+        labelCarrier.text =  companyName
+        labelPrice.text = "Rs. \(bundleDetail.bundleDefaultPrice)"
         labelAmount.text = "\(bundleDetail.bundleDefaultPrice)"
 //        imageViewOperator.image = companyIcon
+        
+        var url = URL(string: companyIcon)
+        if let url {
+            imageViewOperator.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil, completionHandler: { image, error, cacheType, imageURL in
+                if (image != nil){
+                    self.imageViewOperator.image = image
+                }
+                else {
+//                        cell.imageViewIcon.image = UIImage.init(named: "user")
+                }
+            })
+        }
     }
     
     var modelBundleSubscription: ModelBundleSubscription! {

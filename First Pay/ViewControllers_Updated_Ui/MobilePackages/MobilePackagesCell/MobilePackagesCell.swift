@@ -37,6 +37,7 @@ class MobilePackagesCell: UITableViewCell {
     @IBOutlet weak var labelPackageDescription: UILabel!
     @IBOutlet weak var labelDiscountPercentage: UILabel!
     @IBOutlet weak var buttonFavourite: UIButton!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     var buttonSubscribeNow: ((MobilePackages.ModelBundleDetail) -> ())!
     var buttonFavouriteNow: ((MobilePackages.ModelBundleDetail) -> ())!
@@ -54,17 +55,21 @@ class MobilePackagesCell: UITableViewCell {
                 labelCutPrice.isHidden = false
                 labelCutPrice.cutPrice()
             }
-//            labelData.text = modelBundleDetail.bundleResourceData ?? "0"
-//            labelMessages.text = modelBundleDetail.bundleResourceOnnet ?? "0"
-//            labelMessages.text = modelBundleDetail.bundleResourceOffnet ?? "0"
-//            labelMessages.text = modelBundleDetail.bundleResourceSMS ?? "0"
+            //            labelData.text = modelBundleDetail.bundleResourceData ?? "0"
+            //            labelMessages.text = modelBundleDetail.bundleResourceOnnet ?? "0"
+            //            labelMessages.text = modelBundleDetail.bundleResourceOffnet ?? "0"
+            //            labelMessages.text = modelBundleDetail.bundleResourceSMS ?? "0"
             labelPackageDescription.text = modelBundleDetail.bundleResources
             viewPackageTagBackground.isHidden = true
             viewTag.isHidden = true
             if modelBundleDetail.bundleDiscountPercentage != nil && modelBundleDetail.bundleDiscountPercentage != 0 {
                 viewTag.isHidden = false
                 viewPackageTagBackground.isHidden = false
-                labelDiscountPercentage.text = "\(modelBundleDetail.bundleDiscountPercentage ?? 0)"
+                labelDiscountPercentage.text = "\(modelBundleDetail.bundleDiscountPercentage ?? 0)% Off"
+            }
+            if modelBundleDetail.resourceLists?.count ?? 0 > 0 {
+                MobileSubPackagesCell.register(collectionView: collectionView)
+                collectionView.reloadData()
             }
         }
     }
@@ -82,6 +87,9 @@ class MobilePackagesCell: UITableViewCell {
         DispatchQueue.main.async {
             self.viewBackground.setShadow(radius: 20)
         }
+        
+        
+        
     }
     @IBAction func buttonSubscribe(_ sender: Any) {
         buttonSubscribeNow!(modelBundleDetail)
@@ -95,9 +103,5 @@ class MobilePackagesCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    
-    
-    
 }
-    
 
