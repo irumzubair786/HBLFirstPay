@@ -58,7 +58,7 @@ class MobilePackagesCell: UITableViewCell {
 //            labelMessages.text = modelBundleDetail.bundleResourceOnnet ?? "0"
 //            labelMessages.text = modelBundleDetail.bundleResourceOffnet ?? "0"
 //            labelMessages.text = modelBundleDetail.bundleResourceSMS ?? "0"
-//            labelPackageDescription.text = modelBundleDetail.bundleResources
+            labelPackageDescription.text = modelBundleDetail.bundleResources
             viewPackageTagBackground.isHidden = true
             viewTag.isHidden = true
             if modelBundleDetail.bundleDiscountPercentage != nil && modelBundleDetail.bundleDiscountPercentage != 0 {
