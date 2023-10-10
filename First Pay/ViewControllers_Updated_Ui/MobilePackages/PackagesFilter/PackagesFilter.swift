@@ -50,7 +50,13 @@ class PackagesFilter: BaseClassVC {
         viewBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
     }
     override func viewWillDisappear(_ animated: Bool) {
-        applyFilters()
+        var isFilterNeedToApply = false
+        if dictionaryFilterSelectedItems?[0]?.count ?? 0 > 0 || dictionaryFilterSelectedItems?[1]?.count ?? 0 > 0 || dictionaryFilterSelectedItems?[2]?.count ?? 0 > 0 {
+            isFilterNeedToApply = true
+        }
+        if isFilterNeedToApply {
+            applyFilters()
+        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,7 +137,6 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return (dictionaryNames[section] as AnyObject).count ?? 0
-//        return arrayNames.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -168,28 +173,41 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.layoutSubviews()
+        cell.layoutIfNeeded()
         DispatchQueue.main.async {
 //            (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        var name = ""
+        if indexPath.section == 0 {
+            name = (dictionaryNames[indexPath.section] as! [MobilePackages.ModelBundleFilter])[indexPath.item].filterName ?? ""
+        }
+        else {
+            name = (dictionaryNames[indexPath.section] as! [String])[indexPath.item]
+        }
+
         if (dictionaryFilterSelectedItems![indexPath.section]!).contains(indexPath.item) {
             if let indexOf = dictionaryFilterSelectedItems![indexPath.section]?.firstIndex(of: indexPath.item) {
                 if indexPath.section == 0 || indexPath.section == 1 {
-                    if indexPath.item == 0 {
+                    if name.lowercased() == "all".lowercased() {
                         dictionaryFilterSelectedItems![indexPath.section] = []
                         collectionView.reloadData()
                         return()
                     }
+                    dictionaryFilterSelectedItems![indexPath.section]?.remove(at: indexOf)
                 }
-                dictionaryFilterSelectedItems![indexPath.section]?.remove(at: indexOf)
+                else if indexPath.section == 2 {
+                    dictionaryFilterSelectedItems![indexPath.section] = []
+                    dictionaryFilterSelectedItems![indexPath.section]?.append(indexPath.item)
+                }
             }
         }
         else {
             if indexPath.section == 0 || indexPath.section == 1 {
-                if indexPath.item == 0 {
+                if name.lowercased() == "all".lowercased() {
                     dictionaryFilterSelectedItems![indexPath.section] = []
                     dictionaryFilterSelectedItems![indexPath.section]?.append(indexPath.item)
                     collectionView.reloadData()
@@ -198,8 +216,12 @@ extension PackagesFilter: UICollectionViewDataSource, UICollectionViewDelegate {
                 if let indexOf = dictionaryFilterSelectedItems![indexPath.section]?.firstIndex(of: 0) {
                     dictionaryFilterSelectedItems![indexPath.section]?.remove(at: indexOf)
                 }
+                dictionaryFilterSelectedItems![indexPath.section]?.append(indexPath.item)
             }
-            dictionaryFilterSelectedItems![indexPath.section]?.append(indexPath.item)
+            else if indexPath.section == 2 {
+                dictionaryFilterSelectedItems![indexPath.section] = []
+                dictionaryFilterSelectedItems![indexPath.section]?.append(indexPath.item)
+            }
         }
         
         collectionView.reloadData()
@@ -217,7 +239,7 @@ extension PackagesFilter: UICollectionViewDelegateFlowLayout {
         
         var itemName = ""
         if indexPath.section == 0 {
-            itemName = (dictionaryNames[indexPath.section] as! [MobilePackages.ModelBundleFilter])[indexPath.section].filterName ?? ""
+            itemName = (dictionaryNames[indexPath.section] as! [MobilePackages.ModelBundleFilter])[indexPath.item].filterName ?? ""
         }
         else {
             itemName = (dictionaryNames[indexPath.section] as! [String])[indexPath.item]

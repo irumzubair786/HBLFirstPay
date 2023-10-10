@@ -42,22 +42,23 @@ class MobilePackages: UIViewController {
         didSet {
             tableView.removeEmptyMessage()
             if modelGetBundleDetails?.responsecode == 1 {
-                companyNames = self.modelGetBundleDetails?.data.map({
-                    print($0.companyName)
-                    return $0.companyName ?? "NA"
-                })
-                if buttonOne.tag == 1 {
-                    selectedNetwork(view: viewOne, button: buttonOne)
-                }
-                else if buttonTwo.tag == 1 {
-                    selectedNetwork(view: viewTwo, button: buttonTwo)
-                }
-                else if buttonThree.tag == 1 {
-                    selectedNetwork(view: viewThree, button: buttonThree)
-                }
-                else if buttonFour.tag == 1 {
-                    selectedNetwork(view: viewFour, button: buttonFour)
-                }
+//                companyNames = self.modelGetBundleDetails?.data.map({
+//                    print($0.companyName)
+//                    return $0.companyName ?? "NA"
+//                })
+//                if buttonOne.tag == 1 {
+//                    selectedNetwork(view: viewOne, button: buttonOne)
+//                }
+//                else if buttonTwo.tag == 1 {
+//                    selectedNetwork(view: viewTwo, button: buttonTwo)
+//                }
+//                else if buttonThree.tag == 1 {
+//                    selectedNetwork(view: viewThree, button: buttonThree)
+//                }
+//                else if buttonFour.tag == 1 {
+//                    selectedNetwork(view: viewFour, button: buttonFour)
+//                }
+                selectedNetwork(view: viewOne, button: buttonOne)
             }
             else {
 //                self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
@@ -460,9 +461,9 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if companyNames == nil {
-            return 0
-        }
+//        if companyNames == nil {
+//            return 0
+//        }
         if collectionView == self.collectionViewDataType {
             let totalBundleFilterCount = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?.count ?? 0
             viewBackGroundDataType.isHidden = !(modelGetBundleDetails?.data[indexSelectedNetwork].recordCount ?? 0 > 0)
