@@ -14,6 +14,7 @@ class MobilePackages: UIViewController {
     @IBOutlet weak var viewTwo: UIView!
     @IBOutlet weak var viewThree: UIView!
     @IBOutlet weak var viewFour: UIView!
+    @IBOutlet weak var viewBackGroundDataType: UIView!
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -23,6 +24,8 @@ class MobilePackages: UIViewController {
     @IBOutlet weak var buttonTwo: UIButton!
     @IBOutlet weak var buttonThree: UIButton!
     @IBOutlet weak var buttonFour: UIButton!
+    
+    @IBOutlet weak var buttonAllDataType: UIButton!
     
     @IBOutlet weak var viewCompaniesBackGround: UIView!
     @IBOutlet weak var buttonSetting: UIButton!
@@ -108,6 +111,12 @@ class MobilePackages: UIViewController {
         2:[]
     ] as? [Int: [Int]]
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        buttonAllDataType.backgroundColor = .clrLightGraySelectionBackGround
+        buttonAllDataType.setTitleColor(.clrLightGrayCalendar, for: .normal)
+        buttonAllDataType.circle()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         selectedNetwork(view: nil, button: buttonOne)
@@ -130,6 +139,15 @@ class MobilePackages: UIViewController {
     @IBAction func buttonBack(_ sender: Any) {
         self.dismiss(animated: true)
     }
+    @IBAction func buttonAllDataType(_ sender: Any) {
+        dictionaryFilterSelectedItems?[0] = []
+        dictionaryFilterSelectedItems?[1] = []
+        dictionaryFilterSelectedItems?[2] = []
+        clearFilters(filterResponse: dictionaryFilterSelectedItems!)
+        buttonAllDataType.backgroundColor = .clrOrange
+        buttonAllDataType.setTitleColor(.white, for: .normal)
+        
+    }
     @IBAction func buttonSetting(_ sender: UIButton) {
 //        navigateToFavourite()
 //return()
@@ -145,12 +163,16 @@ class MobilePackages: UIViewController {
                 self.filterApply(packageType: packageType, packageValidity: packageValidity, packagePriceRange: packagePriceRange, searchFromFilterScreen: true)
             }
             vc.buttonClearFilterBack = { filterResponse in
-                self.dictionaryFilterSelectedItems = filterResponse
-                self.networkId = 1
-                self.self.selectedNetwork(view: self.viewOne, button: self.buttonOne)
+                self.clearFilters(filterResponse: filterResponse)
             }
             self.present(vc, animated: true)
         }
+    }
+    
+    func clearFilters(filterResponse: [Int: [Int]]) {
+        self.dictionaryFilterSelectedItems = filterResponse
+        self.networkId = 1
+        self.selectedNetwork(view: self.viewOne, button: self.buttonOne)
     }
     
     func filterApply(packageType: [String]? = [], packageValidity: [String]? = [], packagePriceRange: [String]? = [], searchFromFilterScreen: Bool) {
@@ -441,7 +463,14 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
             return 0
         }
         if collectionView == self.collectionViewDataType {
-            return modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?.count ?? 0
+            let totalBundleFilterCount = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?.count ?? 0
+            if totalBundleFilterCount > 0 {
+                viewBackGroundDataType.isHidden = false
+            }
+            else {
+                viewBackGroundDataType.isHidden = true
+            }
+            return totalBundleFilterCount
         }
         else if collectionView == collectionViewNetwork {
             return self.modelGetBundleDetails?.data.count ?? 0
@@ -517,6 +546,9 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
             selectedNetwork(view: nil, button: nil)
         }
         else if collectionView == self.collectionViewDataType {
+            buttonAllDataType.backgroundColor = .clrLightGraySelectionBackGround
+            buttonAllDataType.setTitleColor(.clrLightGrayCalendar, for: .normal)
+            
             indexSelectedDataTypeCell = indexPath.item
             if let filterName = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexPath.item].filterName as? String {
                 filterApply(packageType: [filterName], searchFromFilterScreen: false)

@@ -85,7 +85,7 @@ class MobilePackagesCell: UITableViewCell {
         viewPackageTagBackground.roundCorners(corners: [.topRight, .bottomRight], radius: 20)
         
         DispatchQueue.main.async {
-            self.viewBackground.setShadow(radius: 20)
+            self.viewBackground.setShadowThin(radius: 20)
         }
         
         
