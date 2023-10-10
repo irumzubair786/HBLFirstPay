@@ -9,7 +9,9 @@
 import UIKit
 
 class FakeLaunchScreenVc: UIViewController {
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     override func viewDidLoad() {
         super.viewDidLoad()
 //                testVC()

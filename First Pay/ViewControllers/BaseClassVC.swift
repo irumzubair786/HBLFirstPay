@@ -30,6 +30,9 @@ class BaseClassVC: UIViewController {
      private var plainDataLive = "UserId=TFMB&Password=YpBTLdMMkfWQdFSM&FirstName=\(DataManager.instance.firstName ?? "")&LastName=\(DataManager.instance.lastName ?? "")&Phone=\(DataManager.instance.accountNo ?? "")"
     
     private var golootloController:GolootloWebController!
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     func Changelanguage()
    {
        
@@ -44,7 +47,9 @@ class BaseClassVC: UIViewController {
    }
     override func viewDidLoad() {
         super.viewDidLoad()
+         // Chan
         Changelanguage()
+        
         let delegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
         self.rootVC = delegate.window?.rootViewController
         DataManager.instance.Longitude = 41.40338
@@ -825,5 +830,14 @@ private struct JailBrokenHelper {
                 "/bin/bash",
                 "/Library/MobileSubstrate/MobileSubstrate.dylib"
         ]
+    }
+}
+extension UIApplication {
+    class var statusBarBackgroundColor: UIColor? {
+        get {
+            return (shared.value(forKey: "statusBar") as? UIView)?.backgroundColor
+        } set {
+            (shared.value(forKey: "statusBar") as? UIView)?.backgroundColor = newValue
+        }
     }
 }

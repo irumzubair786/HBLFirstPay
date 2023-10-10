@@ -61,7 +61,9 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         // Hide your button here
         btnContinue.isHidden = false
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     @objc func changeTextInTextField() {
         print("end editing")
         let text = TF_Mobileno.text!.replacingOccurrences(of: "+92-", with: "")
@@ -311,6 +313,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
            }
         
     }
+    
     var mobileNumber : String?
     private func  mobileRegistration() {
 

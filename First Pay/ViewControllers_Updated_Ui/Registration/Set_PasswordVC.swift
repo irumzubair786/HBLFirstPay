@@ -156,6 +156,9 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
         }
     }
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
 //        green
 //    #00CC96
     

@@ -517,6 +517,9 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
             }
         }
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     func  mobileRegistration() {
         
         if !NetworkConnectivity.isConnectedToInternet(){

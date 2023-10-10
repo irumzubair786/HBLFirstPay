@@ -13,6 +13,7 @@ class GlobalConstants {
 //        public static let BASE_URL = "https://bb.hblmfb.com/"
     // Stagging
      public static let BASE_URL = "http://bbuat.hblmfb.com/"
+    
 }
 
 class GlobalOTPTypes {
@@ -31,7 +32,6 @@ class GlobalOTPTypes {
     public static let LOAD_BALANCE_PULL  = "PULL"
     public static let REQUIRED_OTP_YES  = "Y"
     public static let REQUIRED_OTP_NO  = "N"
-    
     
 }
 
@@ -61,12 +61,12 @@ extension Demoable {
         }
     }
 }
+
 protocol fittedSheets {
     static var name: String { get }
     func openPicker(from parent: UIViewController , id : String , in view: UIView?,daily : String,dailyAmount: String?, dailyminValue: String? ,dailymaxValue: String?,LimitType: String? ,AmounttType: String?, tag : Int? ,section: Int?)
     
 }
-
 extension fittedSheets {
     static func addSheetEventLogging(to sheet: SheetViewController) {
         let previousDidDismiss = sheet.didDismiss

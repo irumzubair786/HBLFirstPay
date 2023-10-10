@@ -44,6 +44,9 @@ class FakeLoginVc: UIViewController {
         updateUI()
         banapi ()
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
 //        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
 //           swipeGesture.direction = .right
 //           img.addGestureRecognizer(swipeGesture)

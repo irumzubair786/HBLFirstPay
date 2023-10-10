@@ -48,6 +48,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         IQKeyboardManager.shared().isEnabled = true
+//        UIApplication.statusBarBackgroundColor = .red
+//        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+//           if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
+//                statusBar.backgroundColor = UIColor.red
+//            }
+            UIApplication.shared.statusBarStyle = .lightContent
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//
+//        window?.backgroundColor = UIColor.red
         
 //        UserDefaults.standard.setValue("1430150995593", forKey: "userCnic")
         if !UserDefaults.standard.bool(forKey: "firstTimeLaunchOccurred"){

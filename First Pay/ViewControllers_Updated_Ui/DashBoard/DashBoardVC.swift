@@ -76,6 +76,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     override func viewDidDisappear(_ animated: Bool) {
         timerChangeBannerImage.invalidate()
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
+    
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Homescreen_Landing)
         super.viewDidLoad()

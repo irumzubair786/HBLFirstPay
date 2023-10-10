@@ -556,7 +556,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         blurView.isHidden = true
     }
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     @objc func City_view_show(tapGestureRecognizer: UITapGestureRecognizer)
     {
         

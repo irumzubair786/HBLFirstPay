@@ -40,7 +40,9 @@ class City_selectionVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate {
        
     }
     //MARK: - API CALL
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     private func getCities(){
         
         

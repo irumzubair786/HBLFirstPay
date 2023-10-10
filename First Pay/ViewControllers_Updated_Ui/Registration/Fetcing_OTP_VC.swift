@@ -27,7 +27,9 @@ class Fetcing_OTP_VC: BaseClassVC {
 //        mobileRegistration()
         // Do any additional setup after loading the view.
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
 
     @IBOutlet weak var lblPhoneNo: UILabel!
     //MARK: - Get IP Address

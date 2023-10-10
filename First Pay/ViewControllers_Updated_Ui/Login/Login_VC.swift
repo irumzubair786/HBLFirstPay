@@ -64,7 +64,9 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     override func viewWillAppear(_ animated: Bool) {
         UITextField.appearance().tintColor = .clear
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     override func viewDidLoad() {
         super.viewDidLoad()
         checkFaceIdActive()
