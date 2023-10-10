@@ -18,12 +18,15 @@ class AddCashConfirmationVc: BaseClassVC {
     var TotalAmount : Float?
     var FirstPayNo : String?
     var transactionApiResponseObj : FTApiResponse?
-    var convertTotalAmountToString: Int?
+    var convertTotalAmountToString: String?
     var otpRequired : String?
+    var numberFormatter = NumberFormatter()
+    
     @IBOutlet weak var buttonContinue: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         UpdateUi()
+        numberFormatter.numberStyle = .decimal
         buttonViewLine.setTitle("", for: .normal)
         buttonBack.setTitle("", for: .normal)
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
@@ -91,9 +94,19 @@ class AddCashConfirmationVc: BaseClassVC {
         labelTotalTransationAmount.text = "Rs. \(TotalAmount ?? 0)"
        
         amounttextfield.text = "\(TotalAmount ?? 0)"
-        convertTotalAmountToString = Int(TotalAmount!)
+        convertTotalAmountToString = String(TotalAmount!)
         print("Converted Amount", convertTotalAmountToString)
-        
+        C0nvertValue()
+    }
+    func C0nvertValue()
+    {
+        if let formattedString = self.numberFormatter.string(from: NSNumber(value: self.TotalAmount!)) {
+            print(formattedString)
+            self.convertTotalAmountToString = formattedString
+
+            print("formattedString", formattedString)
+            // This will print "3.14"
+        }
     }
     func OTP() {
         
@@ -112,7 +125,7 @@ class AddCashConfirmationVc: BaseClassVC {
             userCnic = ""
         }
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["mobileNo":"\(DataManager.instance.mobNo )","otpType":GlobalOTPTypes.LOAD_BALANCE_PULL ,"channelId":"\(DataManager.instance.channelID )", "cnic" : userCnic!, "otpSendType" : "OTP" ]
+        let parameters = ["mobileNo":DataManager.instance.accountNo! ,"otpType":GlobalOTPTypes.LOAD_BALANCE_PULL ,"channelId":"\(DataManager.instance.channelID )", "cnic" : userCnic!, "otpSendType" : "OTP" ]
         
 
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
@@ -167,7 +180,10 @@ class AddCashConfirmationVc: BaseClassVC {
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
-                    vc.TotalAmount = "\(self.TotalAmount!)"
+                    
+//                    vc.TotalAmount = "\(self.TotalAmount!)"
+                  
+                    vc.TotalAmount = self.convertTotalAmountToString
                     vc.userAccountNo = self.transactionApiResponseObj?.data?.accountNo
                     isfromPullFund = true
                     self.navigationController?.pushViewController(vc, animated: true
@@ -244,7 +260,8 @@ class AddCashConfirmationVc: BaseClassVC {
                     if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
                         
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
-                        vc.TotalAmount = "\(self.TotalAmount!)"
+//                        vc.TotalAmount = "\(self.TotalAmount!)"
+                        vc.TotalAmount = self.convertTotalAmountToString
                         vc.userAccountNo = self.transactionApiResponseObj?.data?.accountNo
                         isfromPullFund = true
                         self.navigationController?.pushViewController(vc, animated: true
@@ -268,3 +285,4 @@ class AddCashConfirmationVc: BaseClassVC {
         }
     }
 }
+
