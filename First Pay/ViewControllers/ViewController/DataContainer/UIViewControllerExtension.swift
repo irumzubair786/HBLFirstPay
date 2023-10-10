@@ -90,7 +90,7 @@ extension UITableView {
         
         var backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
         imageView.center = backgroundView.center
-        imageView.frame.origin.y = 50
+        imageView.frame.origin.y = backgroundView.frame.midX - 50
         backgroundView.addSubview(imageView)
         
         self.backgroundView = backgroundView

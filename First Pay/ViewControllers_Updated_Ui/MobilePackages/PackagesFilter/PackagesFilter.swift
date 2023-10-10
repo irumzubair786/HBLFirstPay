@@ -49,6 +49,9 @@ class PackagesFilter: BaseClassVC {
         collectionView.reloadData()
         viewBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        applyFilters()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
@@ -70,9 +73,11 @@ class PackagesFilter: BaseClassVC {
     }
     @IBAction func buttonApply(_ sender: Any) {
         self.dismiss(animated: true)
-        
+        applyFilters()
+    }
+    
+    func applyFilters() {
         var searchedDataArray = [String]()
-        
         var packageTypeArray = [String]()
         var packageValidityArray = [String]()
         var packagePriceRangeArray = [String]()
@@ -116,16 +121,6 @@ class PackagesFilter: BaseClassVC {
         }
         buttonApplyApplied?(packageTypeArray, packageValidityArray, packagePriceRangeArray, dictionaryFilterSelectedItems)
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
@@ -228,7 +223,7 @@ extension PackagesFilter: UICollectionViewDelegateFlowLayout {
             itemName = (dictionaryNames[indexPath.section] as! [String])[indexPath.item]
         }
         
-        return CGSize(width: (itemName.size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width) + 30, height: 40)
+        return CGSize(width: (itemName.size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width) + 40, height: 40)
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

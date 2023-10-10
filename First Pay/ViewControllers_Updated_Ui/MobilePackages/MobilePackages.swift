@@ -134,6 +134,7 @@ class MobilePackages: UIViewController {
         getBundleDetails()
         getFavourites()
         selectedNetwork(view: viewOne, button: buttonOne)
+        viewBackGroundDataType.isHidden = true
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -464,12 +465,8 @@ extension MobilePackages: UICollectionViewDataSource, UICollectionViewDelegate, 
         }
         if collectionView == self.collectionViewDataType {
             let totalBundleFilterCount = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?.count ?? 0
-            if totalBundleFilterCount > 0 {
-                viewBackGroundDataType.isHidden = false
-            }
-            else {
-                viewBackGroundDataType.isHidden = true
-            }
+            viewBackGroundDataType.isHidden = !(modelGetBundleDetails?.data[indexSelectedNetwork].recordCount ?? 0 > 0)
+            
             return totalBundleFilterCount
         }
         else if collectionView == collectionViewNetwork {
