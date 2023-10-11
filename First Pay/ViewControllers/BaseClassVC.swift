@@ -32,7 +32,8 @@ class BaseClassVC: UIViewController {
     private var golootloController:GolootloWebController!
     override var preferredStatusBarStyle: UIStatusBarStyle {
             return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
-        }
+    }
+    
     func Changelanguage()
    {
        

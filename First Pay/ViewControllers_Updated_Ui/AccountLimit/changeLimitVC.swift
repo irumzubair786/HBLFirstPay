@@ -17,7 +17,6 @@ protocol DissmissDelegate{
     
 }
 
-
 class changeLimitVC: BaseClassVC {
    
     var delegate : DissmissDelegate?
@@ -35,7 +34,6 @@ class changeLimitVC: BaseClassVC {
     var AmounttType: String?
     var refreshScreen: (()->())!
     @IBAction func buttonDrawer(_ sender: UIButton) {
-  
     }
     
     
