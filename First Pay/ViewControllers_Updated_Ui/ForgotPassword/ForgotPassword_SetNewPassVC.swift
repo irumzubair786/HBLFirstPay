@@ -47,6 +47,9 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
         
         
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+           return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+       }
     var phoneArr = ["0301","0302","0303","0304","0305","0306","0307","0308","0309","0310","0311", "0312","0313","0314","0315","0316","0317","0318","0319","0320","0321","0322","0323","0324","0325","0331","0332","0333","0334","0335","0336","0339","0340","0341","0342","0343","0344","0345","0346","0347","0348","0349","0355"]
     
     @IBOutlet weak var mobileNumberTextField: UITextField!
@@ -266,7 +269,7 @@ class ForgotPassword_SetNewPassVC:BaseClassVC , UITextFieldDelegate {
               return
              
           }
-        
+        cnicTextField.becomeFirstResponder()
         mobileNumberTextField.text = format(with: "+92-XXX-XXXXXXX", phone: text)
        
         

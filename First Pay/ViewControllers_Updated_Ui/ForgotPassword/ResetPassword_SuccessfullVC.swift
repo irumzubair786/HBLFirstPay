@@ -82,7 +82,9 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
 
             
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+           return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+       }
     
     @IBAction func Action_loginAgain(_ sender: UIButton) {
         
@@ -809,3 +811,4 @@ private func navigateToHome(){
     
     
 }
+

@@ -313,7 +313,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     
     func passwordShow(isShow: Bool) {
         if isShow {
-            show_text.setImage(UIImage(named: "eyeOrange"), for: .normal)
+            show_text.setImage(UIImage(named: "eye 2"), for: .normal)
+            show_text.contentMode = .scaleAspectFit
             show_text.tag = 1
             labelOne.isHidden = false
             labelTwo.isHidden = false

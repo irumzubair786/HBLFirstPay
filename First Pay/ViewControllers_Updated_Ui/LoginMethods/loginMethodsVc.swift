@@ -22,7 +22,7 @@ class loginMethodsVc: BaseClassVC , DisableDrawer{
 //        buttonDissmiss.setTitle("", for: .normal)
         buttonback.setTitle("", for: .normal)
         viewdisble.isHidden = true
-        
+       
         // Do any additional setup after loading the view.
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController2), name: Notification.Name("dissmissViewController2"),object: nil)
