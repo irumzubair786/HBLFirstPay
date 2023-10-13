@@ -51,6 +51,21 @@ extension String {
 //        return String(self.filter {okayChars.contains($0)})
         return stringResponseIntegerValues
     }
+    func getStringValue() -> String {
+        let okayChars : Set<Character> =
+            Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ")
+       
+        let stringResponseIntegerValuesArray = self.components(separatedBy: ".")
+        var stringResponseIntegerValues = ""
+        if stringResponseIntegerValuesArray.count > 2 {
+            stringResponseIntegerValues = String(stringResponseIntegerValuesArray[1].filter {okayChars.contains($0)})
+        }
+        else if stringResponseIntegerValuesArray.count > 0 {
+            stringResponseIntegerValues = String(stringResponseIntegerValuesArray.first!.filter {okayChars.contains($0)})
+        }
+//        return String(self.filter {okayChars.contains($0)})
+        return stringResponseIntegerValues
+    }
 }
 extension Double {
     func twoDecimal() -> String {
