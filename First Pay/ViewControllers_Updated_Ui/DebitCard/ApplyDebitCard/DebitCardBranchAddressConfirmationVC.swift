@@ -67,7 +67,7 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
         labelCardFee.text = "\(debitCardFee!)"
         labelTotalFee.text = "\(debitCardFeeDeliveryCharges!)"
         labelMobileNumber.text = DataManager.instance.accountNo
-        
+       
         
     }
     // MARK: - Api Call

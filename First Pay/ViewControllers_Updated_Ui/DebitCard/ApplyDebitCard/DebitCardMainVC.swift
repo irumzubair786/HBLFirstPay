@@ -88,7 +88,8 @@ class DebitCardMainVC: BaseClassVC {
                     //     let fullNameArr = fullName?.components(separatedBy: " ")/*fullName?.split{$0 == " "}.map(String.init)*/
                     debitCardFee = Float(self.checkDebitCardObj?.data?.dcCharges ?? "")
                     debitCardFeeDeliveryCharges = Float(self.checkDebitCardObj?.data?.dcChargesWithDelivery ?? "")
-                    homeAddrss = self.checkDebitCardObj?.data?.address
+//                    change address here..
+//                    homeAddrss = self.checkDebitCardObj?.data?.address
                     userDebitCardName = self.checkDebitCardObj?.data?.customerName
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardNameSelectionVC") as!  DebitCardNameSelectionVC
                     vc.fullUserName = fullName!

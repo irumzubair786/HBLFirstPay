@@ -148,6 +148,7 @@ class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
             return
         }
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardPostalAddressConfirmationVC") as!  DebitCardPostalAddressConfirmationVC
+      
         vc.fullUserName = self.fullUserName!
         vc.address = self.textView.text!
         self.navigationController?.pushViewController(vc, animated: true)

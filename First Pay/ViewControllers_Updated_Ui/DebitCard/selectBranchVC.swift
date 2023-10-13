@@ -79,6 +79,7 @@ class selectBranchVC: BaseClassVC, UISearchBarDelegate {
                             temp.id = i.branchId!
                             temp.code = i.branchCode!
                             temp.name = i.branchDescr!
+                            temp.Address = i.address1 ?? i.address2 ?? ""
                             self.getBranch.append(temp)
                         }
                         
@@ -115,6 +116,7 @@ class selectBranchVC: BaseClassVC, UISearchBarDelegate {
             {
                 branchID = i.id
                 branchCode = i.code
+                homeAddrss = i.Address
                 
             }
                 
@@ -130,11 +132,12 @@ class selectBranchVC: BaseClassVC, UISearchBarDelegate {
         GlobalData.selectedBranchCode = branchCode
         GlobalData.debitCardUserName = fullname!
         print("city id get",  GlobalData.selectedBranch)
-        
+        print("branch address",homeAddrss)
         FBEvents.logEvent(title: .Debit_orderconfirm_screen)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardBranchAddressConfirmationVC") as!  DebitCardBranchAddressConfirmationVC
+            
             self.navigationController?.pushViewController(vc, animated: true)
             //        vc.fullUserName = fullName!
 //            self.present(vc, animated: true)
@@ -152,6 +155,7 @@ class myBranch
     var name = ""
     var id = 0
     var code = ""
+    var Address = ""
 }
 extension selectBranchVC: UITableViewDelegate, UITableViewDataSource
 {
