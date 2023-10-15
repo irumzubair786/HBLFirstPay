@@ -51,6 +51,20 @@ extension String {
 //        return String(self.filter {okayChars.contains($0)})
         return stringResponseIntegerValues
     }
+    func getIntegerValueFromFirstIndex() -> String {
+        //let okayChars : Set<Character> =
+//            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_".characters)
+        let okayChars : Set<Character> =
+            Set("1234567890")
+        let stringResponseIntegerValuesArray = self.components(separatedBy: ".")
+        var stringResponseIntegerValues = ""
+        if stringResponseIntegerValuesArray.count > 0 {
+            stringResponseIntegerValues = String(stringResponseIntegerValuesArray[1].filter {okayChars.contains($0)})
+        }
+        
+//        return String(self.filter {okayChars.contains($0)})
+        return stringResponseIntegerValues
+    }
     func getStringValue() -> String {
         let okayChars : Set<Character> =
             Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ")

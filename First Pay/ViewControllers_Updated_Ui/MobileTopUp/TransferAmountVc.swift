@@ -99,8 +99,9 @@ class TransferAmountVc: BaseClassVC , UITextFieldDelegate{
             amountTextField.text = text
             if amountTextField.text != "" {
                 text = amountTextField.text!.replacingOccurrences(of: "", with: "")
-                let minAmount = Int(myarr.first!.valueamount.getIntegerValue())! - 1
-                let maxAmount = (Int(myarr.last!.valueamount.getIntegerValue()) ?? 0) + 1
+                
+                let minAmount = Int(myarr.first!.valueamount.getIntegerValueFromFirstIndex())! - 1
+                let maxAmount = (Int(myarr.last!.valueamount.getIntegerValueFromFirstIndex()) ?? 0) + 1
 
                 let selectedColor = (Int(text!)! > minAmount && Int(text!)! < maxAmount) ? UIColor.clrGreen : UIColor.clrLightRed
                 amountTextField.textColor = selectedColor
