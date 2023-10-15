@@ -22,7 +22,7 @@ class FakeLaunchScreenVc: UIViewController {
             
             guard let  FirsTimeLogin = UserDefaults.standard.string(forKey:  "FirstTimeLogin")else
             {
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "First_ScreenVc") as! First_ScreenVc
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "SplashWalkThroughPageControll") as! SplashWalkThroughPageControll
                 self.navigationController?.pushViewController(vc, animated: true)
                 return
             }

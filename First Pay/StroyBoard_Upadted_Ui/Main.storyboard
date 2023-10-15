@@ -4586,7 +4586,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q4d-Sv-OTj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4826" y="-2050"/>
+            <point key="canvasLocation" x="-5207" y="-2052"/>
         </scene>
         <!--First Screen Vc-->
         <scene sceneID="MU3-ng-UZB">
@@ -4596,7 +4596,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WalkThrough 5" translatesAutoresizingMaskIntoConstraints="NO" id="L9h-Be-GJ9">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WalkThrough 5" translatesAutoresizingMaskIntoConstraints="NO" id="L9h-Be-GJ9">
                                 <rect key="frame" x="0.0" y="0.0" width="430" height="898"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zoF-79-rN8">
@@ -4636,6 +4636,59 @@ other charges) from accounts maintained by the borrower at the Bank.
             </objects>
             <point key="canvasLocation" x="-4175.1999999999998" y="-2051.4242878560722"/>
         </scene>
+        <!--Splash Walk Through Page Controll-->
+        <scene sceneID="gin-oe-pOD">
+            <objects>
+                <viewController storyboardIdentifier="SplashWalkThroughPageControll" id="TOZ-Yg-sB6" customClass="SplashWalkThroughPageControll" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ehf-nr-gRZ">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dGv-XF-gbb">
+                                <rect key="frame" x="0.0" y="59" width="430" height="839"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="z29-eu-Qsw">
+                                <rect key="frame" x="0.0" y="852" width="430" height="26"/>
+                                <color key="pageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="currentPageIndicatorTintColor" systemColor="systemGreenColor"/>
+                            </pageControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUR-d1-B84">
+                                <rect key="frame" x="230" y="752" width="200" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="hdU-mK-zaH"/>
+                                    <constraint firstAttribute="height" constant="100" id="lN8-cO-7sf"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <connections>
+                                    <action selector="btnNextPage:" destination="TOZ-Yg-sB6" eventType="touchUpInside" id="XpQ-85-a33"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="FQG-W0-1Jv"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="FQG-W0-1Jv" firstAttribute="bottom" secondItem="dGv-XF-gbb" secondAttribute="bottom" id="9yE-p6-m77"/>
+                            <constraint firstItem="z29-eu-Qsw" firstAttribute="top" secondItem="gUR-d1-B84" secondAttribute="bottom" id="FNp-Gd-PfC"/>
+                            <constraint firstItem="dGv-XF-gbb" firstAttribute="top" secondItem="FQG-W0-1Jv" secondAttribute="top" id="GI2-Kk-Y7M"/>
+                            <constraint firstItem="FQG-W0-1Jv" firstAttribute="trailing" secondItem="z29-eu-Qsw" secondAttribute="trailing" id="Nay-v6-Otb"/>
+                            <constraint firstItem="FQG-W0-1Jv" firstAttribute="bottom" secondItem="z29-eu-Qsw" secondAttribute="bottom" constant="20" id="Ofb-H3-BIq"/>
+                            <constraint firstItem="FQG-W0-1Jv" firstAttribute="trailing" secondItem="dGv-XF-gbb" secondAttribute="trailing" id="T84-E9-R8S"/>
+                            <constraint firstItem="dGv-XF-gbb" firstAttribute="leading" secondItem="FQG-W0-1Jv" secondAttribute="leading" id="acj-Bv-RV1"/>
+                            <constraint firstItem="FQG-W0-1Jv" firstAttribute="trailing" secondItem="gUR-d1-B84" secondAttribute="trailing" id="baf-RI-bbV"/>
+                            <constraint firstItem="z29-eu-Qsw" firstAttribute="leading" secondItem="FQG-W0-1Jv" secondAttribute="leading" id="mZP-8c-nk8"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnNextPage" destination="gUR-d1-B84" id="OZ8-bn-AhA"/>
+                        <outlet property="pagecontrol" destination="z29-eu-Qsw" id="BLo-DD-YQb"/>
+                        <outlet property="vcontainer" destination="dGv-XF-gbb" id="CIe-cs-EBz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yAC-LB-YGP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3425" y="-2721"/>
+        </scene>
         <!--Second Screen Vc-->
         <scene sceneID="kzo-41-epf">
             <objects>
@@ -4672,7 +4725,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                 <rect key="frame" x="280" y="106" width="87" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img3" translatesAutoresizingMaskIntoConstraints="NO" id="sDS-WM-oHx">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img3" translatesAutoresizingMaskIntoConstraints="NO" id="sDS-WM-oHx">
                                 <rect key="frame" x="0.0" y="0.0" width="430" height="890"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybX-8F-FCW">
@@ -6049,11 +6102,11 @@ other charges) from accounts maintained by the borrower at the Bank.
         <scene sceneID="ysD-IJ-2No">
             <objects>
                 <viewController storyboardIdentifier="City_selectionVC" id="FaY-pK-Lut" customClass="City_selectionVC" customModule="FirstPay" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="k2F-go-5WB">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="k2F-go-5WB">
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ksq-9n-7gA">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ksq-9n-7gA">
                                 <rect key="frame" x="0.0" y="15" width="430" height="883"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
@@ -6074,7 +6127,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                                     <constraint firstItem="THt-zf-bsh" firstAttribute="width" secondItem="LH1-vi-E9w" secondAttribute="width" id="b0a-QE-TZs"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8vc-qU-zWG">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8vc-qU-zWG">
                                 <rect key="frame" x="0.0" y="403" width="430" height="495"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select City" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="39d-za-nil">
@@ -6704,8 +6757,8 @@ other charges) from accounts maintained by the borrower at the Bank.
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WalkThrough 6" translatesAutoresizingMaskIntoConstraints="NO" id="HQw-Qg-I30">
-                                <rect key="frame" x="0.0" y="59" width="430" height="839"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WalkThrough 6" translatesAutoresizingMaskIntoConstraints="NO" id="HQw-Qg-I30">
+                                <rect key="frame" x="0.0" y="0.0" width="430" height="898"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qCD-sF-LNw">
                                 <rect key="frame" x="305" y="770" width="109" height="100"/>
@@ -6726,11 +6779,11 @@ other charges) from accounts maintained by the borrower at the Bank.
                         <viewLayoutGuide key="safeArea" id="q2c-8u-p0Z"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="HQw-Qg-I30" firstAttribute="top" secondItem="q2c-8u-p0Z" secondAttribute="top" id="9UF-jt-EUK"/>
                             <constraint firstItem="HQw-Qg-I30" firstAttribute="leading" secondItem="q2c-8u-p0Z" secondAttribute="leading" id="AdI-w2-GQV"/>
                             <constraint firstItem="HQw-Qg-I30" firstAttribute="bottom" secondItem="q2c-8u-p0Z" secondAttribute="bottom" id="P8m-5X-NKe"/>
                             <constraint firstItem="q2c-8u-p0Z" firstAttribute="bottom" secondItem="qCD-sF-LNw" secondAttribute="bottom" constant="28" id="TAz-7U-Wva"/>
                             <constraint firstItem="HQw-Qg-I30" firstAttribute="trailing" secondItem="q2c-8u-p0Z" secondAttribute="trailing" id="e0b-bB-m7c"/>
+                            <constraint firstItem="HQw-Qg-I30" firstAttribute="top" secondItem="Te2-Kb-yxy" secondAttribute="top" id="gbd-x1-IIe"/>
                             <constraint firstItem="q2c-8u-p0Z" firstAttribute="trailing" secondItem="qCD-sF-LNw" secondAttribute="trailing" constant="16" id="zmu-xd-8bA"/>
                         </constraints>
                     </view>
@@ -6741,7 +6794,7 @@ other charges) from accounts maintained by the borrower at the Bank.
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2x5-he-cFl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2820.289855072464" y="-2051.0869565217395"/>
+            <point key="canvasLocation" x="-2821.3953488372094" y="-2051.716738197425"/>
         </scene>
         <!--Splash Screen Login-->
         <scene sceneID="xaa-vE-eGr">
