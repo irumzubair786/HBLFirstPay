@@ -31,6 +31,9 @@ class MobilePackagesSuccess: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        FBEvents.logEvent(title: .Bundles_confirm_receipt)
+        FaceBookEvents.logEvent(title: .Bundles_confirm_receipt)
+        
         setData()
     }
     @IBAction func buttonDownload(_ sender: Any) {

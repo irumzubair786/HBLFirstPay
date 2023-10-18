@@ -229,6 +229,20 @@ struct FBEvents {
         case BioMetric_Sccanining
         case BioMetric_Sccanining_Successful
         
+//        Mobile Bundles
+        case Bundles_HS_click
+        case Bundles_SA_click
+        case Bundles_list_landing
+        case Bundles_list_attempt
+        case Bundles_list_success
+        case Bundles_list_failure
+        case Bundles_confirm_landing
+        case Bundles_confirm_attempt
+        case Bundles_confirm_success
+        case Bundles_confirm_failure
+        case Bundles_confirm_receipt
+        case Bundles_error_popup
+
         
         
         

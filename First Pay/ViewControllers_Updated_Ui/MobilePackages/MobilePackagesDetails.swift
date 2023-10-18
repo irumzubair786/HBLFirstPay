@@ -35,6 +35,9 @@ class MobilePackagesDetails: BaseClassVC {
     private let contactPicker = CNContactPickerViewController()
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .Bundles_confirm_landing)
+        FaceBookEvents.logEvent(title: .Bundles_confirm_landing)
+        
         viewBackGroundContinueButton.circle()
         // Do any additional setup after loading the view.
         setData()
@@ -49,6 +52,9 @@ class MobilePackagesDetails: BaseClassVC {
         self.navigationController?.popViewController(animated: true)
     }
     @IBAction func buttonContinue(_ sender: Any) {
+        FBEvents.logEvent(title: .Bundles_confirm_attempt)
+        FaceBookEvents.logEvent(title: .Bundles_confirm_attempt)
+        
         bundleSubscription()
     }
     @IBAction func buttonContact(_ sender: Any) {
@@ -123,10 +129,21 @@ class MobilePackagesDetails: BaseClassVC {
     var modelBundleSubscription: ModelBundleSubscription! {
         didSet {
             if modelBundleSubscription?.responsecode == 1 {
+                FBEvents.logEvent(title: .Bundles_confirm_success)
+                FaceBookEvents.logEvent(title: .Bundles_confirm_success)
+                
                 navigationToMobilePackagesSuccess()
             }
             else {
-                self.showAlertCustomPopup(message: modelBundleSubscription?.messages ?? "General Error", iconName: .iconError)
+                
+                
+                FBEvents.logEvent(title: .Bundles_confirm_failure)
+                FaceBookEvents.logEvent(title: .Bundles_confirm_failure)
+                
+                self.showAlertCustomPopup(message: modelBundleSubscription?.messages ?? "General Error", iconName: .iconError) {_ in
+                    FBEvents.logEvent(title: .Bundles_error_popup)
+                    FaceBookEvents.logEvent(title: .Bundles_error_popup)
+                }
             }
         }
     }

@@ -192,6 +192,14 @@ extension OtherServices_VC : UICollectionViewDelegate , UICollectionViewDataSour
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionViewMobileLoad == collectionView {
+            //MARK Apply this condition when click on mobile bundles
+            FBEvents.logEvent(title: .Bundles_SA_click)
+            FaceBookEvents.logEvent(title: .Bundles_SA_click)
+        }
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
             
             

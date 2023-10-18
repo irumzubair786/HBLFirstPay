@@ -42,6 +42,9 @@ class MobilePackages: UIViewController {
         didSet {
             tableView.removeEmptyMessage()
             if modelGetBundleDetails?.responsecode == 1 {
+                FBEvents.logEvent(title: .Bundles_list_success)
+                FaceBookEvents.logEvent(title: .Bundles_list_success)
+                
 //                companyNames = self.modelGetBundleDetails?.data.map({
 //                    print($0.companyName)
 //                    return $0.companyName ?? "NA"
@@ -61,6 +64,8 @@ class MobilePackages: UIViewController {
                 selectedNetwork(view: viewOne, button: buttonOne)
             }
             else {
+                FBEvents.logEvent(title: .Bundles_list_failure)
+                FaceBookEvents.logEvent(title: .Bundles_list_failure)
 //                self.showAlertCustomPopup(title: "Error!", message: modelGetBundleDetails?.messages, iconName: .iconError) { _ in
 //
 //                }
@@ -120,6 +125,9 @@ class MobilePackages: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .Bundles_list_landing)
+        FaceBookEvents.logEvent(title: .Bundles_list_landing)
+        
         selectedNetwork(view: nil, button: buttonOne)
         MobilePackagesCell.register(tableView: tableView)
         MobilePackagesDataNameCell.register(collectionView: collectionViewDataType)
@@ -589,6 +597,8 @@ extension MobilePackages: UITableViewDelegate, UITableViewDataSource {
         
         cell.modelBundleDetail = bundleDetail
         cell.buttonSubscribeNow = { tempBundleDetail in
+            FBEvents.logEvent(title: .Bundles_list_attempt)
+            FaceBookEvents.logEvent(title: .Bundles_list_attempt)
             self.navigateToMobilePackagesDetails(bundleDetails: tempBundleDetail)
         }
         cell.buttonFavouriteNow = { tempBundleDetail in
