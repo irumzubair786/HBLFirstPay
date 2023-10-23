@@ -236,12 +236,12 @@ class MobilePackages: UIViewController {
             }
             
             for searchingText in packagePriceRange {
-                if searchingText.lowercased() == "Height To Low".lowercased() {
+                if searchingText.lowercased() == "High To Low".lowercased() {
 //                    # Sort the data by price (high to low)
                     let sortedProducts = finalRecord.sorted { $0.bundleDefaultPrice > $1.bundleDefaultPrice }
                     searchedBundleDetails = sortedProducts
                 }
-                else if searchingText.lowercased() == "Low To Height".lowercased() {
+                else if searchingText.lowercased() == "Low To High".lowercased() {
 //                    # Sort the data by price (low to high)
                     let sortedProducts = finalRecord.sorted { $0.bundleDefaultPrice < $1.bundleDefaultPrice }
                     searchedBundleDetails = sortedProducts

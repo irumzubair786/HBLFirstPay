@@ -29,7 +29,7 @@ class PackagesFilter: BaseClassVC {
     var dictionaryNames = [
         0: [MobilePackages.ModelBundleFilter].self,
         1: ["All", "Monthly", "Weekly", "Daily"],
-        2: ["Height To Low", "Low To Height", ""]
+        2: ["High To Low", "Low To High", ""]
     ] as [Int : Any]
     
     var dictionaryFilterSelectedItems = [
