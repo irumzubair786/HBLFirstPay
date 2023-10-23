@@ -19,9 +19,6 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="M4Z-VA-DCQ" kind="relationship" relationship="rootViewController" id="GXu-ha-i2U"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FHy-Yy-6hW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -113,7 +110,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="31j-cf-ZjK">
-                                                    <rect key="frame" x="147" y="64" width="67" height="43"/>
+                                                    <rect key="frame" x="173" y="64" width="67" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="OPERATOR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiZ-nK-7V0">
@@ -243,16 +240,16 @@
                                             <rect key="frame" x="0.0" y="488" width="414" height="76"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Idc-L1-mat">
-                                                    <rect key="frame" x="60" y="8" width="294" height="60"/>
+                                                    <rect key="frame" x="80" y="8" width="253" height="60"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CONTINUE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aj-rD-tEw">
-                                                            <rect key="frame" x="20" y="24" width="55.5" height="12"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PAY NOW" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aj-rD-tEw">
+                                                            <rect key="frame" x="20" y="24" width="49" height="12"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grayArrow" translatesAutoresizingMaskIntoConstraints="NO" id="zti-Xm-Pbq">
-                                                            <rect key="frame" x="234" y="10" width="40" height="40"/>
+                                                            <rect key="frame" x="203" y="9" width="40" height="40"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="3ca-dI-82f"/>
                                                                 <constraint firstAttribute="height" constant="40" id="9Ci-eH-6os"/>
@@ -263,13 +260,13 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="3VS-gd-REJ"/>
                                                         <constraint firstItem="9aj-rD-tEw" firstAttribute="leading" secondItem="Idc-L1-mat" secondAttribute="leading" constant="20" id="Taf-y6-0oL"/>
-                                                        <constraint firstItem="zti-Xm-Pbq" firstAttribute="centerY" secondItem="Idc-L1-mat" secondAttribute="centerY" id="aMe-Id-E5c"/>
-                                                        <constraint firstAttribute="trailing" secondItem="zti-Xm-Pbq" secondAttribute="trailing" constant="20" id="ct4-LX-4uh"/>
+                                                        <constraint firstItem="zti-Xm-Pbq" firstAttribute="centerY" secondItem="Idc-L1-mat" secondAttribute="centerY" constant="-1" id="aMe-Id-E5c"/>
+                                                        <constraint firstAttribute="trailing" secondItem="zti-Xm-Pbq" secondAttribute="trailing" constant="10" id="ct4-LX-4uh"/>
                                                         <constraint firstItem="9aj-rD-tEw" firstAttribute="centerY" secondItem="Idc-L1-mat" secondAttribute="centerY" id="rst-RM-oWR"/>
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIU-PW-2Gf">
-                                                    <rect key="frame" x="60" y="8" width="294" height="60"/>
+                                                    <rect key="frame" x="80" y="8" width="253" height="60"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <connections>
                                                         <action selector="buttonContinue:" destination="M4Z-VA-DCQ" eventType="touchUpInside" id="0qv-L0-Wft"/>
@@ -280,12 +277,12 @@
                                             <constraints>
                                                 <constraint firstItem="Idc-L1-mat" firstAttribute="top" secondItem="YTT-8Y-yao" secondAttribute="top" constant="8" id="1cB-Nm-gIv"/>
                                                 <constraint firstAttribute="bottom" secondItem="Idc-L1-mat" secondAttribute="bottom" constant="8" id="7Zg-Ki-pv7"/>
-                                                <constraint firstAttribute="trailing" secondItem="Idc-L1-mat" secondAttribute="trailing" constant="60" id="JK2-WH-45y"/>
+                                                <constraint firstAttribute="trailing" secondItem="Idc-L1-mat" secondAttribute="trailing" constant="81" id="JK2-WH-45y"/>
                                                 <constraint firstItem="Idc-L1-mat" firstAttribute="centerY" secondItem="YTT-8Y-yao" secondAttribute="centerY" id="RNN-y8-R4P"/>
                                                 <constraint firstItem="XIU-PW-2Gf" firstAttribute="top" secondItem="Idc-L1-mat" secondAttribute="top" id="cOw-vJ-Mbm"/>
                                                 <constraint firstItem="XIU-PW-2Gf" firstAttribute="trailing" secondItem="Idc-L1-mat" secondAttribute="trailing" id="fjw-zQ-kPF"/>
                                                 <constraint firstItem="XIU-PW-2Gf" firstAttribute="bottom" secondItem="Idc-L1-mat" secondAttribute="bottom" id="oBJ-ak-eGZ"/>
-                                                <constraint firstItem="Idc-L1-mat" firstAttribute="leading" secondItem="YTT-8Y-yao" secondAttribute="leading" constant="60" id="rlQ-B8-pSZ"/>
+                                                <constraint firstItem="Idc-L1-mat" firstAttribute="leading" secondItem="YTT-8Y-yao" secondAttribute="leading" constant="80" id="rlQ-B8-pSZ"/>
                                                 <constraint firstItem="XIU-PW-2Gf" firstAttribute="leading" secondItem="Idc-L1-mat" secondAttribute="leading" id="vH7-mV-5DR"/>
                                                 <constraint firstItem="Idc-L1-mat" firstAttribute="centerX" secondItem="YTT-8Y-yao" secondAttribute="centerX" id="xqF-Yv-m2w"/>
                                             </constraints>
@@ -335,7 +332,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZKt-hX-YcH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140.57971014492756" y="-109.23913043478262"/>
+            <point key="canvasLocation" x="140.57971014492756" y="-109.82142857142857"/>
         </scene>
         <!--Mobile Packages Success-->
         <scene sceneID="hMX-Aw-5Np">
@@ -381,7 +378,7 @@
                                             <action selector="buttonCancel:" destination="n5m-d4-f9D" eventType="touchUpInside" id="3if-J7-CqU"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Successfull" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Dq-rB-nfU">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Successfull" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Dq-rB-nfU">
                                         <rect key="frame" x="8" y="189" width="398" height="30"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                         <nil key="textColor"/>
@@ -449,7 +446,7 @@
                                             <constraint firstAttribute="width" constant="135" id="dj5-mZ-WMZ"/>
                                             <constraint firstAttribute="height" constant="23" id="ucS-hO-AgC"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -715,6 +712,7 @@
                             <constraint firstItem="rRH-sn-xEb" firstAttribute="leading" secondItem="erH-6G-hJK" secondAttribute="leading" id="zrC-oT-L2d"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="yqg-Kk-tiD"/>
                     <connections>
                         <outlet property="buttonCancel" destination="ZWC-e7-jg9" id="Y2w-EI-tyQ"/>
                         <outlet property="buttonDownload" destination="cTV-HJ-5Et" id="57O-c7-MZK"/>
@@ -1368,7 +1366,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="FJD-NV-Ce3" kind="relationship" relationship="rootViewController" id="4Tx-Ew-hvT"/>
+                        <segue destination="FJD-NV-Ce3" kind="relationship" relationship="rootViewController" id="Hpm-2B-YWC"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dpc-RH-iYx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

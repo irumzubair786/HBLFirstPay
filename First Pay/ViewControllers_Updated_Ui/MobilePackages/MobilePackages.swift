@@ -144,6 +144,7 @@ class MobilePackages: UIViewController {
         getFavourites()
         selectedNetwork(view: viewOne, button: buttonOne)
         viewBackGroundDataType.isHidden = true
+      
     }
     
     @IBAction func buttonBack(_ sender: Any) {

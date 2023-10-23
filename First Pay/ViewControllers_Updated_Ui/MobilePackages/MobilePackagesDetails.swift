@@ -109,8 +109,10 @@ class MobilePackagesDetails: BaseClassVC {
         }
         labelPackage.text = bundleDetail.bundleName
         labelCarrier.text =  companyName
-        labelPrice.text = "Rs. \(bundleDetail.bundleDefaultPrice)"
-        labelAmount.text = "\(bundleDetail.bundleDefaultPrice)"
+        var ConvertValueToInt = Int(bundleDetail.bundleDefaultPrice)
+        labelPrice.text = "Rs. \(ConvertValueToInt)"
+        print("ConvertValueToInt",ConvertValueToInt)
+        labelAmount.text = "\(ConvertValueToInt)"
 //        imageViewOperator.image = companyIcon
         
         var url = URL(string: companyIcon)

@@ -47,7 +47,11 @@ class MobilePackagesCell: UITableViewCell {
             labelBundleValidity.text = modelBundleDetail.bundleValidity ?? ""
             labelTaxPrice.text = "incl. tax"
             labelCutPrice.text = "Rs.\(modelBundleDetail.bundleDiscountPrice ?? 0)"
-            labelPrice.text = "Rs.\(modelBundleDetail.bundleDefaultPrice)"
+            var ConvertValueToInt = Int(modelBundleDetail.bundleDefaultPrice)
+            labelPrice.text = "Rs. \(ConvertValueToInt)"
+            print("ConvertValueToInt",ConvertValueToInt)
+          
+//            labelPrice.text = "Rs.\(modelBundleDetail.bundleDefaultPrice)"
             if modelBundleDetail.bundleDiscountPrice == 0 {
                 labelCutPrice.isHidden = true
             }
