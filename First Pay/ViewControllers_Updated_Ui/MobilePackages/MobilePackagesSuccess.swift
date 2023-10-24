@@ -61,13 +61,19 @@ class MobilePackagesSuccess: UIViewController {
             return()
         }
         labelAmountTitle.text = "PKR \(modelBundleSubscription.data?.amount ?? 0)"
-        labelReceivedBy.text = modelBundleSubscription.data?.receivedBy
+        labelReceivedBy.text = format(with: "+92 XXX XXXXXXX", phone: modelBundleSubscription.data?.receivedBy ?? "")
         labelOperator.text = modelBundleSubscription.data?.dataOperator
         labelPackageName.text = modelBundleSubscription.data?.packageName
-        labelSentBy.text = modelBundleSubscription.data?.sentBy
-        labelAmount.text = "Rs. \(modelBundleSubscription.data?.amount ?? 0)"
-        labelFeeCharges.text = "Rs. \(modelBundleSubscription.data?.fee ?? "")"
-        labelOfferDiscount.text = "Rs. \(modelBundleSubscription.data?.offerDiscount ?? 0)"
+        labelSentBy.text = format(with: "+92-XXX-XXXXXXX", phone: modelBundleSubscription.data?.sentBy ?? "")
+        labelAmount.text = "Rs. \(modelBundleSubscription.data?.amount ?? 0).00"
+        labelFeeCharges.text = "Rs. \(modelBundleSubscription.data?.fee ?? "").00"
+        if modelBundleSubscription.data?.offerDiscount ?? 0 == 0 {
+            labelOfferDiscount.text = "-Rs. \(modelBundleSubscription.data?.offerDiscount ?? 0).00"
+        }
+        else {
+            labelOfferDiscount.text = "Rs. \(modelBundleSubscription.data?.offerDiscount ?? 0).00"
+        }
+        
     }
     private func showToast(title:String){
         Toast(text:title, duration: Delay.long).show()

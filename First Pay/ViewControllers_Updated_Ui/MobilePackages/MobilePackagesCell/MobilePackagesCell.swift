@@ -46,7 +46,7 @@ class MobilePackagesCell: UITableViewCell {
             labelPackageName.text = modelBundleDetail.bundleName
             labelBundleValidity.text = modelBundleDetail.bundleValidity ?? ""
             labelTaxPrice.text = "incl. tax"
-            labelCutPrice.text = "Rs.\(modelBundleDetail.bundleDiscountPrice ?? 0)"
+            labelCutPrice.text = "Rs. \(modelBundleDetail.bundleDiscountPrice ?? 0)"
             var ConvertValueToInt = Int(modelBundleDetail.bundleDefaultPrice)
             labelPrice.text = "Rs. \(ConvertValueToInt)"
             print("ConvertValueToInt",ConvertValueToInt)
