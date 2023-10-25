@@ -60,11 +60,20 @@ class MobilePackagesSuccess: UIViewController {
         if modelBundleSubscription == nil {
             return()
         }
+        var receivedByNumber = modelBundleSubscription.data?.receivedBy ?? ""
+        var sentByNumber = modelBundleSubscription.data?.sentBy ?? ""
+//        if receivedByNumber.first == "0" {
+//            receivedByNumber = receivedByNumber.replace(string: "", replacement: "92")
+//        }
+//        if sentByNumber.first == "0" {
+//            sentByNumber = sentByNumber.replace(string: "", replacement: "92")
+//        }
+        
         labelAmountTitle.text = "PKR \(modelBundleSubscription.data?.amount ?? 0)"
-        labelReceivedBy.text = format(with: "+92 XXX XXXXXXX", phone: modelBundleSubscription.data?.receivedBy ?? "")
+        labelReceivedBy.text = format(with: "XXXX XXXXXXX", phone: receivedByNumber)
         labelOperator.text = modelBundleSubscription.data?.dataOperator
         labelPackageName.text = modelBundleSubscription.data?.packageName
-        labelSentBy.text = format(with: "+92-XXX-XXXXXXX", phone: modelBundleSubscription.data?.sentBy ?? "")
+        labelSentBy.text = format(with: "XXXX-XXXXXXX", phone: sentByNumber)
         labelAmount.text = "Rs. \(modelBundleSubscription.data?.amount ?? 0).00"
         labelFeeCharges.text = "Rs. \(modelBundleSubscription.data?.fee ?? "").00"
         if modelBundleSubscription.data?.offerDiscount ?? 0 == 0 {
