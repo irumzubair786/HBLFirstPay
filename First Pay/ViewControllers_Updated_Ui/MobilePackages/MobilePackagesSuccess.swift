@@ -69,7 +69,7 @@ class MobilePackagesSuccess: UIViewController {
 //            sentByNumber = sentByNumber.replace(string: "", replacement: "92")
 //        }
         
-        labelAmountTitle.text = "PKR \(modelBundleSubscription.data?.amount ?? 0)"
+        labelAmountTitle.text = "PKR \(modelBundleSubscription.data?.amount ?? 0).00"
         labelReceivedBy.text = format(with: "XXXX XXXXXXX", phone: receivedByNumber)
         labelOperator.text = modelBundleSubscription.data?.dataOperator
         labelPackageName.text = modelBundleSubscription.data?.packageName
