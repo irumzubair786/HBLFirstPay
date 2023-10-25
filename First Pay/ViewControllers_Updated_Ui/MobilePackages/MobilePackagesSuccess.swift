@@ -60,8 +60,8 @@ class MobilePackagesSuccess: UIViewController {
         if modelBundleSubscription == nil {
             return()
         }
-        var receivedByNumber = modelBundleSubscription.data?.receivedBy ?? ""
-        var sentByNumber = modelBundleSubscription.data?.sentBy ?? ""
+        let receivedByNumber = modelBundleSubscription.data?.receivedBy ?? ""
+        let sentByNumber = modelBundleSubscription.data?.sentBy ?? ""
 //        if receivedByNumber.first == "0" {
 //            receivedByNumber = receivedByNumber.replace(string: "", replacement: "92")
 //        }
