@@ -75,7 +75,7 @@ class MobilePackagesSuccess: UIViewController {
         labelPackageName.text = modelBundleSubscription.data?.packageName
         labelSentBy.text = format(with: "XXXX-XXXXXXX", phone: sentByNumber)
         labelAmount.text = "Rs. \(modelBundleSubscription.data?.amount ?? 0).00"
-        labelFeeCharges.text = "Rs. \(modelBundleSubscription.data?.fee ?? "").00"
+        labelFeeCharges.text = "Rs. \(modelBundleSubscription.data?.fee ?? "")"
         if modelBundleSubscription.data?.offerDiscount ?? 0 == 0 {
             labelOfferDiscount.text = "-Rs. \(modelBundleSubscription.data?.offerDiscount ?? 0).00"
         }
