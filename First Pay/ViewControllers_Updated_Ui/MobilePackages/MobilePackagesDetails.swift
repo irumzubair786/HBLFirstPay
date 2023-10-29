@@ -109,10 +109,10 @@ class MobilePackagesDetails: BaseClassVC {
         }
         labelPackage.text = bundleDetail.bundleName
         labelCarrier.text =  companyName
-        var ConvertValueToInt = Int(bundleDetail.bundleDefaultPrice)
-        labelPrice.text = "Rs. \(ConvertValueToInt)"
-        print("ConvertValueToInt",ConvertValueToInt)
-        labelAmount.text = "\(ConvertValueToInt)"
+        let convertValueToInt = Int(bundleDetail.bundleDefaultPrice)
+        labelPrice.text = "Rs. \(convertValueToInt)"
+        print("ConvertValueToInt", convertValueToInt)
+        labelAmount.text = "\(convertValueToInt)"
 //        imageViewOperator.image = companyIcon
         
         var url = URL(string: companyIcon)
@@ -137,8 +137,6 @@ class MobilePackagesDetails: BaseClassVC {
                 navigationToMobilePackagesSuccess()
             }
             else {
-                
-                
                 FBEvents.logEvent(title: .Bundles_confirm_failure)
                 FaceBookEvents.logEvent(title: .Bundles_confirm_failure)
                 
@@ -171,16 +169,16 @@ class MobilePackagesDetails: BaseClassVC {
         ]
         
         APIs.postAPI(apiName: .bundleSubscription, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            print(responseData)
+            print(responseData as Any)
             print(success)
             print(errorMsg)
             do {
                 let model: ModelBundleSubscription? = try APIs.decodeDataToObject(data: responseData)
                 self.modelBundleSubscription = model
-            }
-            catch {
+            } catch {
                 print(error.localizedDescription)
             }
+            
         }
     }
     
@@ -300,12 +298,13 @@ extension MobilePackagesDetails {
 
     // MARK: - DataClass
     struct ModelBundleSubscriptionData: Codable {
-        let receivedBy: String
-        let offerDiscount, amount: Int
-        let fee, packageName, dataOperator, sentBy: String
+        let receivedBy: String?
+        let offerDiscount, amount: Int?
+        let fee, packageName, dataOperator, sentBy: String?
+        let responseDescr: String?
 
         enum CodingKeys: String, CodingKey {
-            case receivedBy, offerDiscount, amount, fee, packageName
+            case receivedBy, offerDiscount, amount, fee, packageName, responseDescr
             case dataOperator = "operator"
             case sentBy
         }

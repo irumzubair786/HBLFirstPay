@@ -45,11 +45,15 @@ class MobilePackagesCell: UITableViewCell {
         didSet {
             labelPackageName.text = modelBundleDetail.bundleName
             labelBundleValidity.text = modelBundleDetail.bundleValidity ?? ""
+
+            if modelBundleDetail.bundleValidity ?? "" == "30 Days" {
+                labelBundleValidity.text = "30 Days Package"
+            }
             labelTaxPrice.text = "incl. tax"
             labelCutPrice.text = "Rs. \(modelBundleDetail.bundleDiscountPrice ?? 0)"
-            var ConvertValueToInt = Int(modelBundleDetail.bundleDefaultPrice)
-            labelPrice.text = "Rs. \(ConvertValueToInt)"
-            print("ConvertValueToInt",ConvertValueToInt)
+            let convertValueToInt = Int(modelBundleDetail.bundleDefaultPrice)
+            labelPrice.text = "Rs. \(convertValueToInt)"
+            print("ConvertValueToInt", convertValueToInt)
           
 //            labelPrice.text = "Rs.\(modelBundleDetail.bundleDefaultPrice)"
             if modelBundleDetail.bundleDiscountPrice == 0 {

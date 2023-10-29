@@ -77,10 +77,10 @@ class MobilePackagesSuccess: UIViewController {
         labelAmount.text = "Rs. \(modelBundleSubscription.data?.amount ?? 0).00"
         labelFeeCharges.text = "Rs. \(modelBundleSubscription.data?.fee ?? "")"
         if modelBundleSubscription.data?.offerDiscount ?? 0 == 0 {
-            labelOfferDiscount.text = "-Rs. \(modelBundleSubscription.data?.offerDiscount ?? 0).00"
+            labelOfferDiscount.text = "Rs. \(modelBundleSubscription.data?.offerDiscount ?? 0).00"
         }
         else {
-            labelOfferDiscount.text = "Rs. \(modelBundleSubscription.data?.offerDiscount ?? 0).00"
+            labelOfferDiscount.text = "-Rs. \(modelBundleSubscription.data?.offerDiscount ?? 0).00"
         }
         
     }
