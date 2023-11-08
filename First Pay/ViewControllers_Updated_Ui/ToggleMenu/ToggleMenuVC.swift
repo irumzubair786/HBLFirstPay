@@ -199,6 +199,19 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         
         if cell.buttonSidebar.tag == 3
         {
+            let vc = UIStoryboard(name: "MyApproval", bundle: Bundle.main).instantiateViewController(withIdentifier: "MYApprovalVC") as! MYApprovalVC
+            
+            
+
+            self.present(vc, animated: true)
+        }
+        
+        
+        
+        
+        
+        if cell.buttonSidebar.tag == 4
+        {
             let vc = UIStoryboard(name: "MaintenanceCertificate", bundle: Bundle.main).instantiateViewController(withIdentifier: "MaintenenceCertificate") as! MaintenenceCertificate
             vc.documentData = createPDF()
 
@@ -206,7 +219,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         }
         
         
-        if cell.buttonSidebar.tag == 4
+        if cell.buttonSidebar.tag == 5
         {
             
             let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
@@ -219,7 +232,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         }
         
        
-        if cell.buttonSidebar.tag == 5
+        if cell.buttonSidebar.tag == 6
         {
             let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
           vc.forHTML = true
@@ -228,12 +241,12 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
             self.present(vc, animated: true)
 //            self.navigationController?.pushViewController(vc, animated: true)
         }
-      if cell.buttonSidebar.tag == 6
+      if cell.buttonSidebar.tag == 7
         {
           let vc = UIStoryboard(name: "ContactUs", bundle: Bundle.main).instantiateViewController(withIdentifier: "ContactUSVC") as! ContactUSVC
           self.present(vc, animated: true)
         }
-        if cell.buttonSidebar.tag ==  7
+        if cell.buttonSidebar.tag ==  8
         {
             popUpLogout()
         }
@@ -456,9 +469,9 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     var sideMenuOpen = false
     let pickerAccountType = UIPickerView()
     
-    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","My Transactions", "Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
+    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","My Transactions", "MY Arroval","Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
    //Group 427321287.transactions 1
-       var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","transactions 1","Maintenance Certoficate","FAQ","Terms and","Group 427321287","Logout"]
+       var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","transactions 1","myApproval","Maintenance Certoficate","FAQ","Terms and","Group 427321287","Logout"]
    
        
     
