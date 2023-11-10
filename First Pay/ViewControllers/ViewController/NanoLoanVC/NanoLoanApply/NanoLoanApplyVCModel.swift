@@ -55,16 +55,16 @@ extension NanoLoanApplyViewController {
     
     // MARK: - Datum
     struct ModelNanoLoanEligibilityCheckData: Codable {
-        let repaymentFrequency: String
+        let repaymentFrequency: String?
             let noOfDays: JSONNull?
             let minAmount, nlProductID: Int
             let loanAmount: JSONNull?
             let markupfee: Int
             let redirect: JSONNull?
-            let maxAmount: Int
+            let maxAmount: Int?
             let markupAmountPerDay: JSONNull?
-            let nlProductDescr: String
-            let avgAmount: Int
+            let nlProductDescr: String?
+            let avgAmount: Int?
             let processingFeeAmount: JSONNull?
 
             enum CodingKeys: String, CodingKey {
