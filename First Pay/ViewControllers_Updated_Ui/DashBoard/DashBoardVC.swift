@@ -142,7 +142,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @IBOutlet weak var buttonMobilepakegs: UIButton!
     @IBAction func buttonMobilepakegs(_ sender: UIButton) {
-        return()
+//        return()
         FBEvents.logEvent(title: .Bundles_HS_click)
         FaceBookEvents.logEvent(title: .Bundles_HS_click)
         let vc = UIStoryboard.init(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesNavigationController")

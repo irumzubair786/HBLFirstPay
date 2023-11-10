@@ -311,6 +311,8 @@
 		6A293E262AAA3C09000A910A /* VeridiumFingerSelector.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A293E0C2AAA3B15000A910A /* VeridiumFingerSelector.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A2ADC3A2ABB4EC800B4DAF0 /* MobilePackagesSuccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2ADC392ABB4EC800B4DAF0 /* MobilePackagesSuccess.swift */; };
 		6A3FA2F92AD156B70057AE55 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FA2F82AD156B70057AE55 /* File.swift */; };
+		6A8310B22AFBB28200C85D76 /* ZakatExemption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8310B12AFBB28200C85D76 /* ZakatExemption.swift */; };
+		6A8310B52AFBB34E00C85D76 /* Savings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A8310B42AFBB34E00C85D76 /* Savings.storyboard */; };
 		6AEA04422AB4398D00835967 /* BiometricScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEA04412AB4398D00835967 /* BiometricScannerViewController.swift */; };
 		6AEAB3862ADC11B100A052DF /* SplashWalkThroughPageControll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEAB3852ADC11B100A052DF /* SplashWalkThroughPageControll.swift */; };
 		A205FC2F25C1945C0077F9BF /* ReferredList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A205FC2E25C1945C0077F9BF /* ReferredList.swift */; };
@@ -835,6 +837,8 @@
 		6A293E0F2AAA3B16000A910A /* VeridiumAnalytics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = VeridiumAnalytics.xcframework; sourceTree = "<group>"; };
 		6A2ADC392ABB4EC800B4DAF0 /* MobilePackagesSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilePackagesSuccess.swift; sourceTree = "<group>"; };
 		6A3FA2F82AD156B70057AE55 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		6A8310B12AFBB28200C85D76 /* ZakatExemption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZakatExemption.swift; sourceTree = "<group>"; };
+		6A8310B42AFBB34E00C85D76 /* Savings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Savings.storyboard; sourceTree = "<group>"; };
 		6AEA04412AB4398D00835967 /* BiometricScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricScannerViewController.swift; sourceTree = "<group>"; };
 		6AEAB3852ADC11B100A052DF /* SplashWalkThroughPageControll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashWalkThroughPageControll.swift; sourceTree = "<group>"; };
 		71650C08900D4FC1F0338914 /* Pods_First_Pay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_First_Pay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1591,6 +1595,7 @@
 		189DD24A29D9A4F800BBF940 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				6A8310B32AFBB31900C85D76 /* Savings */,
 				189DD26429D9A4F800BBF940 /* DataContainer */,
 				18B34C8429EEF718002CA7A7 /* InviteFriends */,
 				189DD27B29D9A50B00BBF940 /* NanoLoan.storyboard */,
@@ -2101,6 +2106,23 @@
 			path = MobileFavouriteBunldlesCell;
 			sourceTree = "<group>";
 		};
+		6A8310B02AFBB27200C85D76 /* ZakatExemption */ = {
+			isa = PBXGroup;
+			children = (
+				6A8310B12AFBB28200C85D76 /* ZakatExemption.swift */,
+			);
+			path = ZakatExemption;
+			sourceTree = "<group>";
+		};
+		6A8310B32AFBB31900C85D76 /* Savings */ = {
+			isa = PBXGroup;
+			children = (
+				6A8310B02AFBB27200C85D76 /* ZakatExemption */,
+				6A8310B42AFBB34E00C85D76 /* Savings.storyboard */,
+			);
+			path = Savings;
+			sourceTree = "<group>";
+		};
 		A26FDE4425D3A2DE0039D506 /* transactioncCellclasses */ = {
 			isa = PBXGroup;
 			children = (
@@ -2537,6 +2559,7 @@
 				3530B7542844D3AC00786A34 /* BBFAQs.html in Resources */,
 				18A98B7E29545FE200932696 /* ContactUs.storyboard in Resources */,
 				1888B60929A4B1F80028619D /* AddCash.storyboard in Resources */,
+				6A8310B52AFBB34E00C85D76 /* Savings.storyboard in Resources */,
 				187FD7542A88B157000509D4 /* PackagesFilterSectionView.xib in Resources */,
 				18695C262A42E8A700AE61A0 /* Mobile Bunldles.storyboard in Resources */,
 				184D3603296D650400B21BA1 /* SendMoney.storyboard in Resources */,
@@ -2952,6 +2975,7 @@
 				1858FBF429CB091C0007875A /* cellFromLinkedAccountListVc.swift in Sources */,
 				A273C2CB265E1DB7004324AA /* GetDiscountsModel.swift in Sources */,
 				6AEA04422AB4398D00835967 /* BiometricScannerViewController.swift in Sources */,
+				6A8310B22AFBB28200C85D76 /* ZakatExemption.swift in Sources */,
 				A207831D219AE9D400F7014F /* NetworkList.swift in Sources */,
 				189F45A52A0A347C0059F496 /* InviteFriendUsers.swift in Sources */,
 				A23BA75721C25A75008D8A49 /* AvailableLimitsModel.swift in Sources */,

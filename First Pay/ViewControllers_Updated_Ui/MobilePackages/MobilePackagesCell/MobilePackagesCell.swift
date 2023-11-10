@@ -79,6 +79,12 @@ class MobilePackagesCell: UITableViewCell {
                 MobileSubPackagesCell.register(collectionView: collectionView)
                 collectionView.reloadData()
             }
+            if modelBundleDetail.favouriteBundle ?? "" == "N" {
+                buttonFavourite.setImage(UIImage(named: "unFav"), for: .normal)
+            }
+            else {
+                buttonFavourite.setImage(UIImage(named: "starPackages"), for: .normal)
+            }
         }
     }
     override func awakeFromNib() {

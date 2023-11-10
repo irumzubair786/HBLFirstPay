@@ -483,8 +483,13 @@ print(str)
         
         
         case addToFavourite = "Favourites/v1/addToFavourite"
+
         case getFavourites = "Favourites/v1/getFavourites"
         case updateFavourite = "Favourites/v1/updateFavourite"
+        
+        
+        case addBundleToFavourite = "Transactions/v1/addBundleToFavourite"
+
 
         
     }

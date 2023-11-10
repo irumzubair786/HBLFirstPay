@@ -61,7 +61,14 @@ class MobilePackages: UIViewController {
 //                else if buttonFour.tag == 1 {
 //                    selectedNetwork(view: viewFour, button: buttonFour)
 //                }
-                selectedNetwork(view: viewOne, button: buttonOne)
+                if self.indexSelectedDataTypeCell != nil {
+                    if let filterName = modelGetBundleDetails?.data[indexSelectedNetwork].bundleFilters?[indexSelectedDataTypeCell].filterName as? String {
+                        filterApply(packageType: [filterName], searchFromFilterScreen: false)
+                    }
+                }
+                else {
+                    selectedNetwork(view: viewOne, button: buttonOne)
+                }
             }
             else {
                 FBEvents.logEvent(title: .Bundles_list_failure)
@@ -88,7 +95,8 @@ class MobilePackages: UIViewController {
     var modelAddToFavourite: ModelAddToFavourite? {
         didSet {
             if modelAddToFavourite?.responsecode == 1 {
-               
+                getBundleDetails()
+                getFavourites()
             }
             else {
 
@@ -193,7 +201,12 @@ class MobilePackages: UIViewController {
         if let packageType {
             for searchingText in packageType {
                 let searchRecord = modelGetBundleDetails?.data[indexSelectedNetwork].bundleDetails?.filter({ tempModelBundleDetail in
-                    tempModelBundleDetail.bundleType?.lowercased() == searchingText.lowercased()
+                    if searchingText.lowercased() == "Favourite".lowercased() {
+                        return tempModelBundleDetail.favouriteBundle?.lowercased() == "Y".lowercased()
+                    }
+                    else {
+                        return tempModelBundleDetail.bundleType?.lowercased() == searchingText.lowercased()
+                    }
                 })
                 if searchRecord?.count ?? 0 > 0 {
                     tempSearchedBundleDetails.append(searchRecord!)
@@ -343,7 +356,14 @@ class MobilePackages: UIViewController {
         collectionViewDataType.reloadData()
     }
     func getBundleDetails() {
-        APIs.getAPI(apiName: .getBundleDetails, parameters: nil, viewController: self) { responseData, success, errorMsg in
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)"
+        ]
+        
+        APIs.postAPI(apiName: .getBundleDetails, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             print(responseData)
             print(success)
             print(errorMsg)
@@ -389,27 +409,49 @@ class MobilePackages: UIViewController {
     
     func addToFavourite(bundleDetail: ModelBundleDetail) {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+
         let parameters: Parameters = [
             "cnic" : userCnic!,
             "imei" : DataManager.instance.imei!,
             "channelId" : "\(DataManager.instance.channelID)",
-            "accountNo": "033359662888528",
-            "accountImd": "220585",
-            "accountTitle": "Abdullah Butt",
-            "favouriteType": "IBT", // IBT -> Local Funds Transfer, IBFT -> IBFT, BBP -> Bill Payment, TUP -> TopUp
-            "nickName": "Abdullah Butt",
-            "favouriteAcctType": "C",  // C -> Core, W -> Wallet, B -> Bill Payment / Topup
-            "flow": "F", // D -> Direct, F -> Favourite
-            "otp": "", // Null in case of flow value 'F'
+            "bundleId": "\(bundleDetail.ubpBundleID ?? 0)",
+            "status": bundleDetail.favouriteBundle ?? "N" == "Y" ? "I" : "A"
+                //"A",
+//            "flow": "F", // D -> Direct, F -> Favourite
+
         ]
-        APIs.postAPI(apiName: .addToFavourite, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .addBundleToFavourite, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             if success {
-                
+
             }
             let model: ModelAddToFavourite? = APIs.decodeDataToObject(data: responseData)
             self.modelAddToFavourite = model
         }
     }
+    
+//    func addToFavourite(bundleDetail: ModelBundleDetail) {
+//        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+//        let parameters: Parameters = [
+//            "cnic" : userCnic!,
+//            "imei" : DataManager.instance.imei!,
+//            "channelId" : "\(DataManager.instance.channelID)",
+//            "accountNo": "033359662888528",
+//            "accountImd": "220585",
+//            "accountTitle": "Abdullah Butt",
+//            "favouriteType": "IBT", // IBT -> Local Funds Transfer, IBFT -> IBFT, BBP -> Bill Payment, TUP -> TopUp
+//            "nickName": "Abdullah Butt",
+//            "favouriteAcctType": "C",  // C -> Core, W -> Wallet, B -> Bill Payment / Topup
+//            "flow": "F", // D -> Direct, F -> Favourite
+//            "otp": "", // Null in case of flow value 'F'
+//        ]
+//        APIs.postAPI(apiName: .addToFavourite, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+//            if success {
+//
+//            }
+//            let model: ModelAddToFavourite? = APIs.decodeDataToObject(data: responseData)
+//            self.modelAddToFavourite = model
+//        }
+//    }
     
     func getFavourites() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
@@ -639,10 +681,9 @@ extension MobilePackages {
     
     // MARK: - ModelAddToFavourite
     struct ModelAddToFavourite: Codable {
-        let responsecode: Int
-        let data: String
-        let responseblock: JSONNull?
-        let messages: String
+        let messages: String?
+        let responsecode: Int?
+        let responseblock, data: JSONNull?
     }
     
     // MARK: - ModelUpdateFavourite
@@ -704,6 +745,9 @@ extension MobilePackages {
         let companyName, disabledIcon: String?
         let recordCount: Int?
     }
+    struct bundleFilterIds: Codable {
+        let bundleFilterId: Int?
+    }
 
     // MARK: - BundleDetail
     struct ModelBundleDetail: Codable {
@@ -718,13 +762,14 @@ extension MobilePackages {
         let bundleValidityType: String?
         let resourceLists: [ModelResourceList]?
         let bundleType: String?
+        let favouriteBundle: String?
         let bundleDiscountPercentage: Int?
 
         enum CodingKeys: String, CodingKey {
             case ubpBundleID = "ubpBundleId"
             case bundleDiscountPrice
             case bundleFilterIDS = "bundleFilterIds"
-            case bundleSelfSubscription, bundleResources, bundleValidity, bundleSequence, bundleDefaultPrice, bundleKey, bundleName, bundleValidityType, resourceLists, bundleType, bundleDiscountPercentage
+            case bundleSelfSubscription, bundleResources, bundleValidity, bundleSequence, bundleDefaultPrice, bundleKey, bundleName, bundleValidityType, resourceLists, bundleType, bundleDiscountPercentage,favouriteBundle
         }
     }
 
