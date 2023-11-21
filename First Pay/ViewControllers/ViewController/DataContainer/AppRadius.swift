@@ -29,16 +29,21 @@ extension UIView {
     }
     
     @discardableResult
-    func radiusLineDashedStroke(pattern: [NSNumber]? = [4,4], radius: CGFloat? = 12, color: UIColor? = .red) -> CALayer {
+    func radiusLineDashedStroke(pattern: [NSNumber]? = [4,4], radius: CGFloat? = 12, borderWidth: CGFloat? = 2, color: UIColor? = .red) -> CALayer {
         let borderLayer = CAShapeLayer()
+
         
         borderLayer.strokeColor = color?.cgColor
         borderLayer.lineDashPattern = pattern
+        borderLayer.lineWidth = borderWidth!
         borderLayer.frame = bounds
         borderLayer.fillColor = nil
         borderLayer.path = UIBezierPath(roundedRect: bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: radius!, height: radius!)).cgPath
         
         layer.addSublayer(borderLayer)
+        self.clipsToBounds = true
+        self.cornerRadius = radius!
+        
         return borderLayer
     }
     func setShadow(radius: CGFloat? = 6){

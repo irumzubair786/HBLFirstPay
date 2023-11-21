@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="Iqb-Ke-i3e" customClass="SavingsCalculatorAmountCell" customModule="FirstPay" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="98" height="46"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                <rect key="frame" x="0.0" y="0.0" width="98" height="46"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x8f-o4-WYg">
+                        <rect key="frame" x="2" y="2" width="94" height="42"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="18"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4j-Qv-mNA">
+                        <rect key="frame" x="6" y="4" width="86" height="38"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="100"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" systemColor="systemGreenColor"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </button>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="x8f-o4-WYg" firstAttribute="leading" secondItem="Iqb-Ke-i3e" secondAttribute="leading" constant="2" id="57W-vy-iIb"/>
+                <constraint firstAttribute="bottom" secondItem="x8f-o4-WYg" secondAttribute="bottom" constant="2" id="5EQ-Zn-hLy"/>
+                <constraint firstAttribute="bottom" secondItem="Y4j-Qv-mNA" secondAttribute="bottom" constant="4" id="OMR-hU-XMo"/>
+                <constraint firstItem="Y4j-Qv-mNA" firstAttribute="leading" secondItem="Iqb-Ke-i3e" secondAttribute="leading" constant="6" id="Y3g-uw-ZE8"/>
+                <constraint firstItem="Y4j-Qv-mNA" firstAttribute="top" secondItem="Iqb-Ke-i3e" secondAttribute="top" constant="4" id="ZNw-J6-d1i"/>
+                <constraint firstAttribute="trailing" secondItem="Y4j-Qv-mNA" secondAttribute="trailing" constant="6" id="erI-JR-gdb"/>
+                <constraint firstAttribute="trailing" secondItem="x8f-o4-WYg" secondAttribute="trailing" constant="2" id="uND-jt-hGB"/>
+                <constraint firstItem="x8f-o4-WYg" firstAttribute="top" secondItem="Iqb-Ke-i3e" secondAttribute="top" constant="2" id="zBH-My-Twq"/>
+            </constraints>
+            <size key="customSize" width="98" height="46"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="backView" destination="x8f-o4-WYg" id="Iok-O0-Pcc"/>
+                <outlet property="btnAmount" destination="Y4j-Qv-mNA" id="aVr-hV-mIe"/>
+            </connections>
+            <point key="canvasLocation" x="103.81679389312977" y="-60.563380281690144"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

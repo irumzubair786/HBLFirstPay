@@ -347,7 +347,6 @@ extension TransferAmountVc: UICollectionViewDelegate, UICollectionViewDataSource
             cell.btnAmount.backgroundColor = .clear
         }
         
-        
         cell.btnAmount.tag = indexPath.row
         cell.btnAmount.setTitle(myarr[indexPath.row].valueamount, for: .normal)
         cell.btnAmount.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
