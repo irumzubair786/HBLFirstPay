@@ -59,14 +59,19 @@ class NanoLoanSuccessfullVC: UIViewController {
     }
     @IBAction func buttonCancel(_ sender: Any) {
         if isPushViewControllerTemp {
-            dismissToViewController(viewController: NanoLoanMyLoans.self)
+            dismissToViewController(viewController: AddCashMainVc.self)
         }
         else {
             self.dismiss(animated: true)
         }
     }
     @IBAction func buttonGetNewLoan(_ sender: Any) {
-        dismissToViewController(viewController: NanoLoanMyLoans.self)
+        if isPushViewControllerTemp {
+            dismissToViewController(viewController: AddCashMainVc.self)
+        }
+        else {
+            self.dismiss(animated: true)
+        }
     }
     @IBAction func buttonDownLoad(_ sender: Any) {
         let myImageScreenShot: UIImage? = self.view.getScreenshot()
