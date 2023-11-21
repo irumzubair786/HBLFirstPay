@@ -40,6 +40,8 @@ class NanoLoanContainer: UIViewController {
         loadFirstController()
         
         getActiveLoan()
+        isPushViewControllerTemp = isPushViewController
+
     }
     
     func loadFirstController() {
@@ -143,12 +145,13 @@ class NanoLoanContainer: UIViewController {
         openHistoryViewController()
     }
     @IBAction func buttonBack(_ sender: Any) {
-        if isPushViewController {
-            self.navigationController?.popViewController(animated: true)
-        }
-        else {
-            self.dismiss(animated: true)
-        }
+        self.navigationController?.popViewController(animated: true)
+//        if isPushViewController {
+//            self.navigationController?.popViewController(animated: true)
+//        }
+//        else {
+//            self.dismiss(animated: true)
+//        }
     }
     
     func resetTitleAndLine(currentTitle: UILabel, currentLine: UIImageView) {
@@ -191,7 +194,6 @@ class NanoLoanContainer: UIViewController {
         APIs.postAPI(apiName: .getActiveLoan, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
             self.modelGetActiveLoan = model
-
         }
     }
     

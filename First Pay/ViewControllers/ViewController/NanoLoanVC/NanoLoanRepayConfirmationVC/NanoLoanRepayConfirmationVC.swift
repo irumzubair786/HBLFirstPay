@@ -111,9 +111,7 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     
     func openNanoLoanRepaySucessfullVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanRepaySucessfullVC") as! NanoLoanRepaySucessfullVC
-        DispatchQueue.main.async {
-            vc.modelPayActiveLoan = self.modelPayActiveLoan
-        }
+        vc.modelPayActiveLoan = self.modelPayActiveLoan
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

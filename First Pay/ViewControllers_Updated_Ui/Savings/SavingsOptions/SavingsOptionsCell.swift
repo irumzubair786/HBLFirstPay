@@ -10,6 +10,7 @@ import UIKit
 
 class SavingsOptionsCell: UITableViewCell {
 
+    @IBOutlet weak var viewRightImage: UIView!
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var imageViewIcon: UIImageView!
     @IBOutlet weak var imageViewForwardArrow: UIImageView!

@@ -170,6 +170,7 @@ class AddCashMainVc: BaseClassVC {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
         vc.isPushViewController = true
         self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     private func getLinkAccounts() {
         

@@ -124,7 +124,7 @@ class NanoLoanConfirmationVC: UIViewController {
     
     func openNanoLoanConfirmationVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanSuccessfullVC") as! NanoLoanSuccessfullVC
-        
+        vc.modelApplyLoan = modelApplyLoan
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

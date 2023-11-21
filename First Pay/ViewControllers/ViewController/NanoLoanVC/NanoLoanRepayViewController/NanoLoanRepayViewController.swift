@@ -95,6 +95,12 @@ class NanoLoanRepayViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        DispatchQueue.main.async {
+            self.viewBenifitRepaying.circle()
+            self.viewBenifitRepaying.radiusLineDashedStroke(radius: self.viewBenifitRepaying.frame.height / 2, color: .clrGreen)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,11 +115,6 @@ class NanoLoanRepayViewController: UIViewController {
         viewDescriptionIfDueDateBackground.backgroundColor = .clrLightRedWithOccupacy05
         
         viewMarkupCalendar.radius(radius: 18)
-        DispatchQueue.main.async {
-            self.viewBenifitRepaying.circle()
-            self.viewBenifitRepaying.radiusLineDashedStroke(radius: self.viewBenifitRepaying.frame.height / 2, color: .clrGreen)
-        }
-        
     }
     @IBAction func buttonMarkupCalendar(_ sender: Any) {
         openMarkupCalendar()

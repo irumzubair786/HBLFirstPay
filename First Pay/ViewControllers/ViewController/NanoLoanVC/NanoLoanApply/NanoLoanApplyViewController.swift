@@ -30,6 +30,7 @@ class NanoLoanApplyViewController: UIViewController {
     
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var textFieldAmount: UITextField!
+    let amountArray = ["PKR 1000", "PKR 2500", "PKR 5000"]
     var selectedAmountIndex: Int? {
         didSet {
             let text = "\(getLoanAmount(index: selectedAmountIndex!))"
@@ -93,6 +94,7 @@ class NanoLoanApplyViewController: UIViewController {
         FBEvents.logEvent(title: .Loans_apply_landing)
         FaceBookEvents.logEvent(title: .Loans_apply_landing)
         // Do any additional setup after loading the view.
+        textFieldAmount.delegate = self
         textFieldAmount.text = "PKR "
         viewBackGround.isHidden = true
         
@@ -100,6 +102,7 @@ class NanoLoanApplyViewController: UIViewController {
         viewEnterLoanAmount.radius()
         ApplyAmountCell.register(collectionView: collectionViewLoanAmounts)
         textFieldAmount.addTarget(self, action: #selector(changeAmountInTextField), for: .editingChanged)
+        
         DispatchQueue.main.async {
             self.viewBenifitRepaying.circle()
             self.viewBenifitRepaying.radiusLineDashedStroke(radius: self.viewBenifitRepaying.frame.height / 2, color: .clrGreen)
@@ -125,7 +128,9 @@ class NanoLoanApplyViewController: UIViewController {
         getLoanCharges()
     }
     @IBAction func buttonCreditLimitImprove(_ sender: Any) {
+        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanImproveCreditLimit") as! NanoLoanImproveCreditLimit
         
+        self.present(vc, animated: true)
     }
     func nanoLoanEligibilityCheck() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
@@ -187,7 +192,16 @@ class NanoLoanApplyViewController: UIViewController {
         }
     }
 }
-
+extension NanoLoanApplyViewController: UITextFieldDelegate {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+    }
+}
 
 
 extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -199,9 +213,8 @@ extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionV
         let cellWidth = width / CGFloat(itemsInRow)
         return CGSize(width: cellWidth, height: 50)
     }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return amountArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -245,8 +258,6 @@ extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionV
             return 0
         }
     }
-    
-    
 }
 
 

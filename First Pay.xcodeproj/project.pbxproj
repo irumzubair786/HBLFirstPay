@@ -318,6 +318,8 @@
 		6A4922502B077DC400FAFB10 /* SavingPlansCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A49224E2B077DC400FAFB10 /* SavingPlansCell.xib */; };
 		6A8310B22AFBB28200C85D76 /* ZakatExemption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8310B12AFBB28200C85D76 /* ZakatExemption.swift */; };
 		6A8310B52AFBB34E00C85D76 /* Savings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A8310B42AFBB34E00C85D76 /* Savings.storyboard */; };
+		6AAB29B22B0CB56F002D97C5 /* NanoLoanImproveCreditLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAB29B12B0CB56F002D97C5 /* NanoLoanImproveCreditLimit.swift */; };
+		6AAB29B52B0CC248002D97C5 /* NanoLoanMyLoans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAB29B42B0CC248002D97C5 /* NanoLoanMyLoans.swift */; };
 		6AC846FB2B00C1ED00982356 /* SavingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC846FA2B00C1ED00982356 /* SavingsOptions.swift */; };
 		6AC846FE2B00C33C00982356 /* SavingsOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC846FC2B00C33C00982356 /* SavingsOptionsCell.swift */; };
 		6AC846FF2B00C33C00982356 /* SavingsOptionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AC846FD2B00C33C00982356 /* SavingsOptionsCell.xib */; };
@@ -862,6 +864,8 @@
 		6A49224E2B077DC400FAFB10 /* SavingPlansCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SavingPlansCell.xib; sourceTree = "<group>"; };
 		6A8310B12AFBB28200C85D76 /* ZakatExemption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZakatExemption.swift; sourceTree = "<group>"; };
 		6A8310B42AFBB34E00C85D76 /* Savings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Savings.storyboard; sourceTree = "<group>"; };
+		6AAB29B12B0CB56F002D97C5 /* NanoLoanImproveCreditLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NanoLoanImproveCreditLimit.swift; sourceTree = "<group>"; };
+		6AAB29B42B0CC248002D97C5 /* NanoLoanMyLoans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NanoLoanMyLoans.swift; sourceTree = "<group>"; };
 		6AC846FA2B00C1ED00982356 /* SavingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsOptions.swift; sourceTree = "<group>"; };
 		6AC846FC2B00C33C00982356 /* SavingsOptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsOptionsCell.swift; sourceTree = "<group>"; };
 		6AC846FD2B00C33C00982356 /* SavingsOptionsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SavingsOptionsCell.xib; sourceTree = "<group>"; };
@@ -1675,7 +1679,9 @@
 		189DD25529D9A4F800BBF940 /* NanoLoanVC */ = {
 			isa = PBXGroup;
 			children = (
+				6AAB29B32B0CC23C002D97C5 /* NanoLoanMyLoans */,
 				189DD25C29D9A4F800BBF940 /* NanoLoanContainer.swift */,
+				6AAB29B02B0CB55A002D97C5 /* NanoLoanImproveCreditLimit */,
 				189DD25D29D9A4F800BBF940 /* NanoLoanApply */,
 				1897CD9029DB38F5001C30AC /* NanoLoanConfirmationVC */,
 				18E661A329DB4C0700106A28 /* NanoLoanSuccessful */,
@@ -2190,6 +2196,22 @@
 				6A8310B02AFBB27200C85D76 /* ZakatExemption */,
 			);
 			path = Savings;
+			sourceTree = "<group>";
+		};
+		6AAB29B02B0CB55A002D97C5 /* NanoLoanImproveCreditLimit */ = {
+			isa = PBXGroup;
+			children = (
+				6AAB29B12B0CB56F002D97C5 /* NanoLoanImproveCreditLimit.swift */,
+			);
+			path = NanoLoanImproveCreditLimit;
+			sourceTree = "<group>";
+		};
+		6AAB29B32B0CC23C002D97C5 /* NanoLoanMyLoans */ = {
+			isa = PBXGroup;
+			children = (
+				6AAB29B42B0CC248002D97C5 /* NanoLoanMyLoans.swift */,
+			);
+			path = NanoLoanMyLoans;
 			sourceTree = "<group>";
 		};
 		6AC846F92B00C1CA00982356 /* SavingsOptions */ = {
@@ -3000,6 +3022,7 @@
 				A21632A221F09FB1003EBD45 /* UtilityBillCompaniesModel.swift in Sources */,
 				18E661A829DB569F00106A28 /* NanoLoanRepayConfirmationVC.swift in Sources */,
 				1869309F299D01C000D0E677 /* DeactivateConfirmationVC.swift in Sources */,
+				6AAB29B52B0CC248002D97C5 /* NanoLoanMyLoans.swift in Sources */,
 				184104F1296D96380034E5EB /* Hblmfb_MoneyTransfer_SuccessfullVC.swift in Sources */,
 				180D4FD429E6BB24007C3276 /* changeLimitVC.swift in Sources */,
 				A2C2005625D51B1F00183587 /* PreTopUpCell.swift in Sources */,
@@ -3171,6 +3194,7 @@
 				A2848EE42199687E00B36D56 /* GlobalConstants.swift in Sources */,
 				1842A7A129543D7300153CE9 /* cellBillPayment.swift in Sources */,
 				A26CBBA924C6CEEF00C790B5 /* InstalmentDetailsTableViewCell.swift in Sources */,
+				6AAB29B22B0CB56F002D97C5 /* NanoLoanImproveCreditLimit.swift in Sources */,
 				A217829022002789005A4135 /* UtilityBillPaymentSuccessModel.swift in Sources */,
 				6A49224C2B077DA800FAFB10 /* SavingPlans.swift in Sources */,
 				18E3852E2A7432BF00BBA6B6 /* AddressUpdate.swift in Sources */,
