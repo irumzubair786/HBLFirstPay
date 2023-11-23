@@ -123,7 +123,9 @@ class NanoLoanRepayViewController: UIViewController {
         openNanoLoanBenifitVC()
     }
     @IBAction func buttonRepayNow(_ sender: Any) {
-        getActiveLoanToPay()
+        DispatchQueue.main.async {
+            self.getActiveLoanToPay()
+        }
     }
     
     func getActiveLoanToPay() {
@@ -144,10 +146,8 @@ class NanoLoanRepayViewController: UIViewController {
     
     func openNanoLoanRepayConfirmationVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanRepayConfirmationVC") as! NanoLoanRepayConfirmationVC
-        DispatchQueue.main.async {
-            vc.modelGetActiveLoanToPay = self.modelGetActiveLoanToPay
-            vc.modelGetActiveLoan = self.modelGetActiveLoan
-        }
+        vc.modelGetActiveLoanToPay = self.modelGetActiveLoanToPay
+        vc.modelGetActiveLoan = self.modelGetActiveLoan
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

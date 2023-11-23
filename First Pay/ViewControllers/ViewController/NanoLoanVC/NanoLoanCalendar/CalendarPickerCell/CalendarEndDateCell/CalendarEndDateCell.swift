@@ -142,8 +142,13 @@ class CalendarEndDateCell: UICollectionViewCell {
                 labelStatus.text = "End DATE"
                 self.labelStatus.radius(color: .clrLightRed)
                 self.labelDate.radius(color: .clrLightRed)
+                self.labelStatus.backgroundColor = .clrLightRedWithOccupacy20
+                self.labelDate.backgroundColor = .clrLightRedWithOccupacy20
                 self.labelStatus.circle()
                 self.labelDate.circle()
+                
+
+                
                 DispatchQueue.main.async {
                     
                 }

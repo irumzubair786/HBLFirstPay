@@ -72,6 +72,7 @@ class CalendarLoanDateCell: UICollectionViewCell {
         labelStatus.isHidden = true
         labelPrice.isHidden = false
         self.viewDateBackGround.isHidden = false
+        self.viewDateBackGround.backgroundColor = .clrLightGrayCalendarWithOccupacy05
         DispatchQueue.main.async {
             self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
         }

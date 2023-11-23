@@ -66,7 +66,6 @@ class CalendarDefaultDateCell: UICollectionViewCell {
 //        self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
         labelDate.textColor = .clrTextNormal
         labelStatus.textColor = .clrTextNormal
-        
         labelPrice.text = "Rs. \(modelDate.markup)"
     }
     func defaultCalendarDate() {
@@ -79,6 +78,9 @@ class CalendarDefaultDateCell: UICollectionViewCell {
         labelStatus.isHidden = true
         labelPrice.isHidden = true
         self.viewDateBackGround.isHidden = true
+        
+//        self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
+//        self.viewDateBackGround.backgroundColor = .clrLightGrayCalendarWithOccupacy05
     }
     
 }

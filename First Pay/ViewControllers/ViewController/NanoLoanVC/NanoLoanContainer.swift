@@ -145,13 +145,12 @@ class NanoLoanContainer: UIViewController {
         openHistoryViewController()
     }
     @IBAction func buttonBack(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-//        if isPushViewController {
-//            self.navigationController?.popViewController(animated: true)
-//        }
-//        else {
-//            self.dismiss(animated: true)
-//        }
+        if isPushViewController {
+            self.navigationController?.popViewController(animated: true)
+        }
+        else {
+            self.dismiss(animated: true)
+        }
     }
     
     func resetTitleAndLine(currentTitle: UILabel, currentLine: UIImageView) {

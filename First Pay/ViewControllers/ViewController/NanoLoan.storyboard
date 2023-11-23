@@ -299,7 +299,7 @@
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ddm-8b-QGw">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="285" height="45"/>
                                                                                         <subviews>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PAYABLE TOTAL AMOUNT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQ3-s2-5TR">
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOTAL PAYABLE AMOUNT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQ3-s2-5TR">
                                                                                                 <rect key="frame" x="0.0" y="12" width="250" height="21.5"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                                                 <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -329,7 +329,7 @@
                                                                                             <constraint firstAttribute="height" constant="45" id="07p-V1-6ec"/>
                                                                                         </constraints>
                                                                                     </stackView>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RS. 5440.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yEO-vi-W9y">
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yEO-vi-W9y">
                                                                                         <rect key="frame" x="0.0" y="45" width="285" height="45"/>
                                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
                                                                                         <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -723,7 +723,7 @@ Please Pay on the earliest to avoid additional late fees &amp; being reported to
                                                                         </constraints>
                                                                     </imageView>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4bg-sP-Adi">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="255" height="30"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="255" height="60"/>
                                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                         <connections>
                                                                             <action selector="buttonRepayNow:" destination="RUL-87-kft" eventType="touchUpInside" id="ueN-38-hSN"/>
@@ -736,6 +736,7 @@ Please Pay on the earliest to avoid additional late fees &amp; being reported to
                                                                     <constraint firstAttribute="trailing" secondItem="GFe-bb-m0m" secondAttribute="trailing" constant="20" id="6Hl-1M-ziw"/>
                                                                     <constraint firstItem="Szj-F5-jpo" firstAttribute="leading" secondItem="AML-0S-gR2" secondAttribute="leading" constant="20" id="Hz4-KV-u1F"/>
                                                                     <constraint firstItem="GFe-bb-m0m" firstAttribute="centerY" secondItem="AML-0S-gR2" secondAttribute="centerY" id="K1t-uO-F5o"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="4bg-sP-Adi" secondAttribute="bottom" id="jvd-Zu-fL5"/>
                                                                     <constraint firstAttribute="trailing" secondItem="4bg-sP-Adi" secondAttribute="trailing" id="lvy-d1-2L7"/>
                                                                     <constraint firstItem="4bg-sP-Adi" firstAttribute="leading" secondItem="AML-0S-gR2" secondAttribute="leading" id="oUj-7x-dMO"/>
                                                                     <constraint firstItem="4bg-sP-Adi" firstAttribute="top" secondItem="AML-0S-gR2" secondAttribute="top" id="pLf-U1-msO"/>
@@ -950,7 +951,7 @@ Please Pay on the earliest to avoid additional late fees &amp; being reported to
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t4E-Gy-Llb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="800.79999999999995" y="-0.44977511244377816"/>
+            <point key="canvasLocation" x="412" y="-836"/>
         </scene>
         <!--Nano Loan Repay ConfirmationVC-->
         <scene sceneID="CZ6-vw-Pgg">
@@ -1055,7 +1056,7 @@ Please Pay on the earliest to avoid additional late fees &amp; being reported to
                                                                                     </label>
                                                                                 </subviews>
                                                                             </stackView>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RS. 5440.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NYr-gI-3vU">
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NYr-gI-3vU">
                                                                                 <rect key="frame" x="0.0" y="40" width="335" height="40"/>
                                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
                                                                                 <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -1333,7 +1334,7 @@ Please Pay on the earliest to avoid additional late fees &amp; being reported to
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eaa-Wg-WY6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1425" y="775"/>
+            <point key="canvasLocation" x="604" y="775"/>
         </scene>
         <!--Nano Loan SuccessfullVC-->
         <scene sceneID="osq-GC-qKO">
@@ -1474,7 +1475,7 @@ Please Pay on the earliest to avoid additional late fees &amp; being reported to
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VXT-Nq-F6j">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="255" height="36"/>
                                                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                                                <string key="text">Amount Repaid
+                                                                                                <string key="text">Total Amount
 </string>
                                                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                                                                 <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -1810,12 +1811,19 @@ on Due Date</string>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xKJ-R0-mfF">
                                                                 <rect key="frame" x="87.5" y="0.0" width="200" height="60"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GET NEW LOAN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jhe-SR-nxs">
-                                                                        <rect key="frame" x="20" y="24" width="160" height="12"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SEE DETAILS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jhe-SR-nxs">
+                                                                        <rect key="frame" x="67" y="24" width="66" height="12"/>
                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
                                                                         <color key="textColor" red="0.94509803920000002" green="0.58039215690000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group 427320824" translatesAutoresizingMaskIntoConstraints="NO" id="9CK-LA-4ud">
+                                                                        <rect key="frame" x="138" y="25" width="15" height="10"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="10" id="Iii-uE-Mgj"/>
+                                                                            <constraint firstAttribute="width" constant="15" id="oNu-fO-fFw"/>
+                                                                        </constraints>
+                                                                    </imageView>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hzn-V7-to5">
                                                                         <rect key="frame" x="0.0" y="0.0" width="200" height="60"/>
                                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -1829,13 +1837,13 @@ on Due Date</string>
                                                                     <constraint firstAttribute="bottom" secondItem="Hzn-V7-to5" secondAttribute="bottom" id="B1r-FD-G7Z"/>
                                                                     <constraint firstAttribute="height" constant="60" id="BWD-FY-Tmk"/>
                                                                     <constraint firstAttribute="trailing" secondItem="Hzn-V7-to5" secondAttribute="trailing" id="OaU-2f-2ne"/>
-                                                                    <constraint firstItem="Jhe-SR-nxs" firstAttribute="leading" secondItem="xKJ-R0-mfF" secondAttribute="leading" constant="20" symbolic="YES" id="TJF-8F-O5U"/>
                                                                     <constraint firstItem="Hzn-V7-to5" firstAttribute="leading" secondItem="xKJ-R0-mfF" secondAttribute="leading" id="gFE-xw-EJ2"/>
-                                                                    <constraint firstItem="Jhe-SR-nxs" firstAttribute="leading" secondItem="xKJ-R0-mfF" secondAttribute="leading" constant="20" id="hJH-nC-VlX"/>
+                                                                    <constraint firstItem="9CK-LA-4ud" firstAttribute="leading" secondItem="Jhe-SR-nxs" secondAttribute="trailing" constant="5" id="hvr-SU-dXi"/>
                                                                     <constraint firstAttribute="width" constant="200" id="ij8-BN-ohs"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="Jhe-SR-nxs" secondAttribute="trailing" constant="20" id="l33-uf-6fg"/>
                                                                     <constraint firstItem="Hzn-V7-to5" firstAttribute="top" secondItem="xKJ-R0-mfF" secondAttribute="top" id="rWg-pF-Zzb"/>
+                                                                    <constraint firstItem="Jhe-SR-nxs" firstAttribute="centerX" secondItem="xKJ-R0-mfF" secondAttribute="centerX" id="wMc-zz-xVU"/>
                                                                     <constraint firstItem="Jhe-SR-nxs" firstAttribute="centerY" secondItem="xKJ-R0-mfF" secondAttribute="centerY" id="wbj-zx-leW"/>
+                                                                    <constraint firstItem="9CK-LA-4ud" firstAttribute="centerY" secondItem="Jhe-SR-nxs" secondAttribute="centerY" id="yKM-uq-m2t"/>
                                                                 </constraints>
                                                             </view>
                                                         </subviews>
@@ -1918,7 +1926,7 @@ on Due Date</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cit-2k-ozl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3060" y="-0.44977511244377816"/>
+            <point key="canvasLocation" x="604" y="9"/>
         </scene>
         <!--Nano Loan Apply View Controller-->
         <scene sceneID="kEg-Gd-rpW">
@@ -2145,7 +2153,7 @@ Repay early and save on daily markup amount.</string>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="forwardButtonGreenIcon" translatesAutoresizingMaskIntoConstraints="NO" id="o1W-dQ-rX6">
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="forwardButtonGray" translatesAutoresizingMaskIntoConstraints="NO" id="o1W-dQ-rX6">
                                                                         <rect key="frame" x="195" y="10" width="40" height="40"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="2Zx-KG-3DQ"/>
@@ -2154,6 +2162,7 @@ Repay early and save on daily markup amount.</string>
                                                                     </imageView>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UGo-6D-r67">
                                                                         <rect key="frame" x="0.0" y="0.0" width="255" height="60"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                         <connections>
                                                                             <action selector="buttonApply:" destination="6oL-3E-wuT" eventType="touchUpInside" id="6vY-cv-N67"/>
@@ -2485,7 +2494,7 @@ Repay early and save on daily markup amount.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dgm-wm-9zq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2168.8000000000002" y="1660.1199400299852"/>
+            <point key="canvasLocation" x="1425" y="1505"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="6Nf-fi-azd">
@@ -2619,13 +2628,13 @@ Repay early and save on daily markup amount.</string>
                                                                                         </constraints>
                                                                                     </view>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Due Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfa-2s-6u6">
-                                                                                        <rect key="frame" x="38" y="9.5" width="146.5" height="11"/>
+                                                                                        <rect key="frame" x="38" y="9.5" width="41.5" height="11"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                                         <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="24 - Nov - 2022" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gP9-1k-Qkz">
-                                                                                        <rect key="frame" x="192.5" y="8" width="92.5" height="14.5"/>
+                                                                                        <rect key="frame" x="87.5" y="8" width="197.5" height="14.5"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                                                                         <color key="textColor" red="0.93333333330000001" green="0.38431372549999998" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
@@ -2697,13 +2706,13 @@ Repay early and save on daily markup amount.</string>
                                                                                         </constraints>
                                                                                     </view>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Loan Availed Amount" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJA-vy-Z8D">
-                                                                                        <rect key="frame" x="38" y="9.5" width="94.5" height="11"/>
+                                                                                        <rect key="frame" x="38" y="9.5" width="192" height="11"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                                         <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="24 Days" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uN2-4y-EkA">
-                                                                                        <rect key="frame" x="140.5" y="8" width="144.5" height="14.5"/>
+                                                                                        <rect key="frame" x="238" y="8" width="47" height="14.5"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                                                                         <color key="textColor" red="0.0" green="0.80000000000000004" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
@@ -2874,7 +2883,7 @@ Repay early and save on daily markup amount.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fk5-rf-616" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3145" y="765"/>
+            <point key="canvasLocation" x="4138" y="-1614"/>
         </scene>
         <!--Nano Loan History View Controller-->
         <scene sceneID="idE-FS-1h6">
@@ -2917,7 +2926,7 @@ Repay early and save on daily markup amount.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uv9-Dx-JUh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-289" y="775"/>
+            <point key="canvasLocation" x="-1711" y="2182"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mwk-ml-Exy">
@@ -3564,7 +3573,7 @@ complete this transaction.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XH4-Hi-Eas" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1425" y="1680"/>
+            <point key="canvasLocation" x="3410" y="-1614"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="yZq-Fe-s8g">
@@ -3579,7 +3588,7 @@ complete this transaction.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BD9-gN-aht" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-56.799999999999997" y="0.44977511244377816"/>
+            <point key="canvasLocation" x="-290" y="-890"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Jcm-tf-Bdq">
@@ -3927,7 +3936,7 @@ complete this transaction.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hu4-Z5-iNQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4791.1999999999998" y="-0.44977511244377816"/>
+            <point key="canvasLocation" x="4791" y="-1614"/>
         </scene>
         <!--Nano Loan ConfirmationVC-->
         <scene sceneID="43x-Gg-xpJ">
@@ -4010,41 +4019,33 @@ complete this transaction.</string>
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="597"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="h0E-xk-FJm">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="918.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="893.5"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ePX-13-0lO">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="175"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="guD-JR-3dR">
-                                                                <rect key="frame" x="20" y="20" width="335" height="135"/>
+                                                                <rect key="frame" x="20" y="20" width="335" height="110"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="apv-93-Aa2">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="135"/>
+                                                                        <rect key="frame" x="0.0" y="20" width="335" height="70"/>
                                                                         <subviews>
-                                                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="LLF-ZL-QXt">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="45"/>
-                                                                                <subviews>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APPLIED LOAN AMOUNT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KE-O3-r16">
-                                                                                        <rect key="frame" x="0.0" y="14" width="335" height="17"/>
-                                                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                                                                        <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                                                        <nil key="highlightedColor"/>
-                                                                                    </label>
-                                                                                </subviews>
-                                                                                <constraints>
-                                                                                    <constraint firstAttribute="height" constant="45" id="f0E-eK-qj5"/>
-                                                                                </constraints>
-                                                                            </stackView>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APPLIED LOAN AMOUNT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KE-O3-r16">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="35"/>
+                                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                                                <color key="textColor" red="0.12549019610000001" green="0.1529411765" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mA-SH-knL">
-                                                                                <rect key="frame" x="0.0" y="45" width="335" height="45"/>
+                                                                                <rect key="frame" x="0.0" y="35" width="335" height="35"/>
                                                                                 <string key="text">PKR 1,000
 </string>
                                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                                                                 <color key="textColor" red="0.0" green="0.80000000000000004" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lrO-Sx-o1Q">
-                                                                                <rect key="frame" x="0.0" y="90" width="335" height="45"/>
+                                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lrO-Sx-o1Q">
+                                                                                <rect key="frame" x="0.0" y="70" width="335" height="0.0"/>
                                                                                 <string key="text">You can Apply a loan between Rs. 1000-5000
 </string>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
@@ -4056,11 +4057,11 @@ complete this transaction.</string>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
-                                                                    <constraint firstItem="apv-93-Aa2" firstAttribute="top" secondItem="guD-JR-3dR" secondAttribute="top" id="3bt-9X-sLL"/>
+                                                                    <constraint firstItem="apv-93-Aa2" firstAttribute="top" secondItem="guD-JR-3dR" secondAttribute="top" constant="20" id="3bt-9X-sLL"/>
                                                                     <constraint firstAttribute="trailing" secondItem="apv-93-Aa2" secondAttribute="trailing" id="5yZ-69-OOA"/>
                                                                     <constraint firstItem="apv-93-Aa2" firstAttribute="leading" secondItem="guD-JR-3dR" secondAttribute="leading" id="hRZ-OK-ocv"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="apv-93-Aa2" secondAttribute="bottom" id="qzD-5Y-v3V"/>
-                                                                    <constraint firstAttribute="height" constant="135" id="wij-D3-518"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="apv-93-Aa2" secondAttribute="bottom" constant="20" id="qzD-5Y-v3V"/>
+                                                                    <constraint firstAttribute="height" constant="110" id="wij-D3-518"/>
                                                                 </constraints>
                                                             </view>
                                                         </subviews>
@@ -4068,13 +4069,13 @@ complete this transaction.</string>
                                                         <constraints>
                                                             <constraint firstAttribute="trailing" secondItem="guD-JR-3dR" secondAttribute="trailing" constant="20" id="eBt-rN-dEZ"/>
                                                             <constraint firstItem="guD-JR-3dR" firstAttribute="top" secondItem="ePX-13-0lO" secondAttribute="top" constant="20" id="eHH-GY-K6h"/>
-                                                            <constraint firstAttribute="height" constant="175" id="emD-DJ-jfM"/>
+                                                            <constraint firstAttribute="height" constant="150" id="emD-DJ-jfM"/>
                                                             <constraint firstAttribute="bottom" secondItem="guD-JR-3dR" secondAttribute="bottom" constant="20" id="fIR-sp-1jN"/>
                                                             <constraint firstItem="guD-JR-3dR" firstAttribute="leading" secondItem="ePX-13-0lO" secondAttribute="leading" constant="20" id="fWm-wY-zdD"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1l-yy-ur2">
-                                                        <rect key="frame" x="0.0" y="175" width="375" height="50.5"/>
+                                                        <rect key="frame" x="0.0" y="150" width="375" height="50.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r2S-9g-9hK">
                                                                 <rect key="frame" x="20" y="12" width="335" height="26.5"/>
@@ -4095,7 +4096,7 @@ deducted upfront from the applied loan amount.</string>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Evw-di-apl">
-                                                        <rect key="frame" x="0.0" y="225.5" width="375" height="424"/>
+                                                        <rect key="frame" x="0.0" y="200.5" width="375" height="424"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="JFN-hm-SBe">
                                                                 <rect key="frame" x="20" y="20" width="335" height="384"/>
@@ -4243,14 +4244,14 @@ Due Date</string>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhP-LQ-0QA">
-                                                        <rect key="frame" x="0.0" y="649.5" width="375" height="20"/>
+                                                        <rect key="frame" x="0.0" y="624.5" width="375" height="20"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="caS-9U-eod"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GST-ve-Cij">
-                                                        <rect key="frame" x="0.0" y="669.5" width="375" height="76"/>
+                                                        <rect key="frame" x="0.0" y="644.5" width="375" height="76"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UF4-tx-Acq">
                                                                 <rect key="frame" x="87.5" y="8" width="200" height="60"/>
@@ -4301,7 +4302,7 @@ Due Date</string>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nqo-QF-j4J">
-                                                        <rect key="frame" x="0.0" y="745.5" width="375" height="123"/>
+                                                        <rect key="frame" x="0.0" y="720.5" width="375" height="123"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XIV-sF-FzM">
                                                                 <rect key="frame" x="20" y="20" width="335" height="83"/>
@@ -4333,7 +4334,7 @@ Due Date</string>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6k3-DG-uKW">
-                                                        <rect key="frame" x="0.0" y="868.5" width="375" height="50"/>
+                                                        <rect key="frame" x="0.0" y="843.5" width="375" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="MsK-Ca-Ks2"/>
@@ -4396,7 +4397,7 @@ Due Date</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="st6-gs-MCp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2364" y="0.44977511244377816"/>
+            <point key="canvasLocation" x="-290" y="9"/>
         </scene>
         <!--Nano Loan Repay SucessfullVC-->
         <scene sceneID="eHc-pV-Y4z">
@@ -4762,12 +4763,22 @@ Due Date</string>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ygl-lh-gqL">
                                                                 <rect key="frame" x="87.5" y="8" width="200" height="60"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GET NEW LOAN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRd-l6-VCV">
-                                                                        <rect key="frame" x="20" y="24" width="160" height="12"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SEE DETAILS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRd-l6-VCV">
+                                                                        <rect key="frame" x="67" y="23" width="66" height="14"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="14" id="DSB-HF-lGw"/>
+                                                                        </constraints>
                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
                                                                         <color key="textColor" red="0.94509803920000002" green="0.58039215690000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group 427320824" translatesAutoresizingMaskIntoConstraints="NO" id="ygd-Kn-Usy">
+                                                                        <rect key="frame" x="138" y="25" width="15" height="10"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="15" id="6PQ-Ap-f5w"/>
+                                                                            <constraint firstAttribute="height" constant="10" id="Mns-lp-9lm"/>
+                                                                        </constraints>
+                                                                    </imageView>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ou9-hg-UHg">
                                                                         <rect key="frame" x="0.0" y="0.0" width="200" height="60"/>
                                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -4780,13 +4791,13 @@ Due Date</string>
                                                                 <constraints>
                                                                     <constraint firstItem="ou9-hg-UHg" firstAttribute="top" secondItem="Ygl-lh-gqL" secondAttribute="top" id="9Xn-qp-sgL"/>
                                                                     <constraint firstItem="ou9-hg-UHg" firstAttribute="leading" secondItem="Ygl-lh-gqL" secondAttribute="leading" id="Hmk-oj-eLc"/>
-                                                                    <constraint firstItem="VRd-l6-VCV" firstAttribute="centerY" secondItem="Ygl-lh-gqL" secondAttribute="centerY" id="M7W-aI-cqM"/>
+                                                                    <constraint firstItem="VRd-l6-VCV" firstAttribute="centerY" secondItem="Ygl-lh-gqL" secondAttribute="centerY" id="LeM-gk-jfB"/>
+                                                                    <constraint firstItem="ygd-Kn-Usy" firstAttribute="leading" secondItem="VRd-l6-VCV" secondAttribute="trailing" constant="5" id="M1I-HU-VEF"/>
+                                                                    <constraint firstItem="VRd-l6-VCV" firstAttribute="centerX" secondItem="Ygl-lh-gqL" secondAttribute="centerX" id="U5a-5q-Co3"/>
                                                                     <constraint firstAttribute="trailing" secondItem="ou9-hg-UHg" secondAttribute="trailing" id="aNZ-hu-hlQ"/>
-                                                                    <constraint firstItem="VRd-l6-VCV" firstAttribute="leading" secondItem="Ygl-lh-gqL" secondAttribute="leading" constant="20" id="bLO-El-DQ5"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="VRd-l6-VCV" secondAttribute="trailing" constant="20" id="eNA-aw-RyM"/>
+                                                                    <constraint firstItem="ygd-Kn-Usy" firstAttribute="centerY" secondItem="VRd-l6-VCV" secondAttribute="centerY" id="fhw-aD-RHa"/>
                                                                     <constraint firstAttribute="bottom" secondItem="ou9-hg-UHg" secondAttribute="bottom" id="sIP-cC-bkW"/>
                                                                     <constraint firstAttribute="width" constant="200" id="ta7-J7-MxF"/>
-                                                                    <constraint firstItem="VRd-l6-VCV" firstAttribute="leading" secondItem="Ygl-lh-gqL" secondAttribute="leading" constant="20" symbolic="YES" id="uya-AW-flL"/>
                                                                     <constraint firstAttribute="height" constant="60" id="zAe-N5-R6N"/>
                                                                 </constraints>
                                                             </view>
@@ -4858,7 +4869,7 @@ Due Date</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1D9-bx-8am" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2121" y="775"/>
+            <point key="canvasLocation" x="1425" y="775"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="rpy-hE-Lwr">
@@ -5569,6 +5580,7 @@ through one step process.</string>
         <image name="cancelIcon" width="149" height="149"/>
         <image name="dotGray" width="927" height="8"/>
         <image name="downloadIcon" width="307" height="329"/>
+        <image name="forwardButtonGray" width="114" height="114"/>
         <image name="forwardButtonGray2nd" width="73" height="73"/>
         <image name="forwardButtonGreenIcon" width="153" height="153"/>
         <image name="forwardGreenIcon" width="41" height="41"/>

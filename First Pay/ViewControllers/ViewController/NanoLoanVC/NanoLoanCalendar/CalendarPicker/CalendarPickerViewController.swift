@@ -482,6 +482,14 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
             cell.day = day
             return cell
         }
+        else if type.0 == "default" {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarLoanDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarLoanDateCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            return cell
+        }
         else {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CalendarDefaultDateCell.reuseIdentifier,

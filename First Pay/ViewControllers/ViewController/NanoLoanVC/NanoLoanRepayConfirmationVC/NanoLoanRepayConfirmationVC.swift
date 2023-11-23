@@ -79,17 +79,16 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     }
     
     func setData() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if let getActiveLoanToPay = self.modelGetActiveLoanToPay?.data {
-                //                labelLoanNumber.text = "\(currentLoan.loanNo)"
-                self.labelAmount.text = "Rs. \((getActiveLoanToPay.payableTotalAmount ?? 0).twoDecimal())"
-                self.labelLoanNumber.text = "\(getActiveLoanToPay.loanNumber ?? "")"
-                self.labelLoanAvailedAmount.text = "Rs. \((getActiveLoanToPay.loanAvailedAmount ?? 0).twoDecimal())"
-                self.labelDueDate.text = getActiveLoanToPay.dueDate
-                self.labelProcessingFee.text = "\((getActiveLoanToPay.processingFee ?? 0).twoDecimal())"
-                self.labelMarkupCharged.text = "Rs. \((getActiveLoanToPay.outstandingMarkupAmount ?? 0).twoDecimal())"
-                self.viewBackGroundTotalAmount.radiusLineDashedStroke()
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { }
+        if let getActiveLoanToPay = self.modelGetActiveLoanToPay?.data {
+            //                labelLoanNumber.text = "\(currentLoan.loanNo)"
+            self.labelAmount.text = "Rs. \((getActiveLoanToPay.payableTotalAmount ?? 0).twoDecimal())"
+            self.labelLoanNumber.text = "\(getActiveLoanToPay.loanNumber ?? "")"
+            self.labelLoanAvailedAmount.text = "Rs. \((getActiveLoanToPay.loanAvailedAmount ?? 0).twoDecimal())"
+            self.labelDueDate.text = getActiveLoanToPay.dueDate
+            self.labelProcessingFee.text = "\((getActiveLoanToPay.processingFee ?? 0).twoDecimal())"
+            self.labelMarkupCharged.text = "Rs. \((getActiveLoanToPay.outstandingMarkupAmount ?? 0).twoDecimal())"
+            self.viewBackGroundTotalAmount.radiusLineDashedStroke()
         }
     }
     func payActiveLoan() {
@@ -119,24 +118,24 @@ class NanoLoanRepayConfirmationVC: UIViewController {
 extension NanoLoanRepayConfirmationVC {
     // MARK: - ModelPayActiveLoan
     struct ModelPayActiveLoan: Codable {
-        let responsecode: Int
+        let responsecode: Int?
         let data: ModelPayActiveLoanData?
         let responseblock: JSONNull?
-        let messages: String
+        let messages: String?
     }
 
     // MARK: - DataClass
     struct ModelPayActiveLoanData: Codable {
-        let loanAvailedAmount: Int
-        let statusDescr: String
-        let processingFee: Int
-        let payableTotalAmount: Double
+        let loanAvailedAmount: Int?
+        let statusDescr: String?
+        let processingFee: Int?
+        let payableTotalAmount: Double?
         let loanNumber: JSONNull?
-        let outstandingMarkupAmount: Double
-        let status, daysTillDueDate, nlDisbursementID: Int
-        let dateTime: String
+        let outstandingMarkupAmount: Double?
+        let status, daysTillDueDate, nlDisbursementID: Int?
+        let dateTime: String?
         let dueDate: JSONNull?
-        let transRefNum: Int
+        let transRefNum: Int?
         
         enum CodingKeys: String, CodingKey {
             case loanAvailedAmount, statusDescr, processingFee, payableTotalAmount, loanNumber, outstandingMarkupAmount, status, daysTillDueDate

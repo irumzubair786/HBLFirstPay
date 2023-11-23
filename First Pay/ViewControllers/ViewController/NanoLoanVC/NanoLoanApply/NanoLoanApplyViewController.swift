@@ -110,7 +110,7 @@ class NanoLoanApplyViewController: UIViewController {
     }
     func validationError() -> Bool {
         let text = textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: "")
-        if text == "" {
+        if text == "" || text == "PKR" {
             return true
         }
         let minAmount = (modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0) - 1
@@ -170,11 +170,9 @@ class NanoLoanApplyViewController: UIViewController {
     
     func openConfirmationLoanVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanConfirmationVC") as! NanoLoanConfirmationVC
-        DispatchQueue.main.async {
-            vc.selectedAmount = Int(self.textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: ""))
-            vc.modelNanoLoanEligibilityCheck = self.modelNanoLoanEligibilityCheck
-            vc.modelGetLoanCharges = self.modelGetLoanCharges
-        }
+        vc.selectedAmount = Int(self.textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: ""))
+        vc.modelNanoLoanEligibilityCheck = self.modelNanoLoanEligibilityCheck
+        vc.modelGetLoanCharges = self.modelGetLoanCharges
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -187,8 +185,19 @@ class NanoLoanApplyViewController: UIViewController {
             let maxAmount = (modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0) + 1
 
             let selectedColor = (Int(text)! > minAmount && Int(text)! < maxAmount) ? UIColor.clrGreen : UIColor.clrLightRed
-            
+           
+            imageViewForwordButtonGray.image = selectedColor == .clrGreen ? UIImage(named: "forwardButtonGreenIcon") : UIImage(named: "forwardButtonGray")
             textFieldAmount.attributedText = attributedText(textField: textFieldAmount, withString: textFieldAmount.text!, boldString: text, boldStringColor: selectedColor)
+//            if selectedColor != .clrGreen {
+//                selectedAmountIndex = nil
+//                collectionViewLoanAmounts.reloadData()
+//            }
+        }
+        else {
+            textFieldAmount.text = "PKR"
+            imageViewForwordButtonGray.image = UIImage(named: "forwardButtonGray")
+//            selectedAmountIndex = nil
+//            collectionViewLoanAmounts.reloadData()
         }
     }
 }

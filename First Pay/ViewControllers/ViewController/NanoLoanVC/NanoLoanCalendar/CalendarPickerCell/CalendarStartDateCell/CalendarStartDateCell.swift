@@ -49,8 +49,6 @@ class CalendarStartDateCell: UICollectionViewCell {
               self.labelDate.text = (day.number)
               accessibilityLabel = accessibilityDateFormatter.string(from: day.date)
               self.updateStatus()
-              
-//              updateSelectionStatus()
           }
         
       }
@@ -97,7 +95,7 @@ class CalendarStartDateCell: UICollectionViewCell {
             labelDate.textColor = .clrTextNormal
             labelPrice.textColor = .clrTextNormal
             self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
-            self.viewDateBackGround.backgroundColor = .white
+            self.viewDateBackGround.backgroundColor = .clrLightGrayCalendarWithOccupacy05
         }
     }
     func defaultCalendarDate() {
@@ -117,17 +115,6 @@ class CalendarStartDateCell: UICollectionViewCell {
 
 // MARK: - Appearance
 private extension CalendarDateCollectionViewCell {
-  // 1
-  func updateSelectionStatus() {
-    guard let day = day else { return }
-      
-//    if day.isSelected {
-//      applySelectedStyle()
-//    } else {
-//      applyDefaultStyle(isWithinDisplayedMonth: day.isWithinDisplayedMonth)
-//    }
-  }
-
   // 2
   var isSmallScreenSize: Bool {
     let isCompact = traitCollection.horizontalSizeClass == .compact
