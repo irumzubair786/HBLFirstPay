@@ -335,6 +335,10 @@
 		6AF3674E2B0BE70900CF6CF5 /* SavingsCalculatorAmountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF3674C2B0BE70900CF6CF5 /* SavingsCalculatorAmountCell.swift */; };
 		6AF3674F2B0BE70900CF6CF5 /* SavingsCalculatorAmountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AF3674D2B0BE70900CF6CF5 /* SavingsCalculatorAmountCell.xib */; };
 		6AF367522B0C7FE600CF6CF5 /* SavingsLowBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF367512B0C7FE600CF6CF5 /* SavingsLowBalance.swift */; };
+		6AF88A162B10982200E287DA /* CalendarAfterDueDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF88A142B10982200E287DA /* CalendarAfterDueDateCell.swift */; };
+		6AF88A172B10982200E287DA /* CalendarAfterDueDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AF88A152B10982200E287DA /* CalendarAfterDueDateCell.xib */; };
+		6AF88A1B2B1098AD00E287DA /* CalendarOverDueDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF88A192B1098AD00E287DA /* CalendarOverDueDateCell.swift */; };
+		6AF88A1C2B1098AD00E287DA /* CalendarOverDueDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AF88A1A2B1098AD00E287DA /* CalendarOverDueDateCell.xib */; };
 		A205FC2F25C1945C0077F9BF /* ReferredList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A205FC2E25C1945C0077F9BF /* ReferredList.swift */; };
 		A20616B12641BAAA00182C8A /* ResponselastTransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20616B02641BAAA00182C8A /* ResponselastTransactionModel.swift */; };
 		A206E37A24CAB04600D2E3B9 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A206E37924CAB04600D2E3B9 /* WeatherModel.swift */; };
@@ -881,6 +885,10 @@
 		6AF3674C2B0BE70900CF6CF5 /* SavingsCalculatorAmountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsCalculatorAmountCell.swift; sourceTree = "<group>"; };
 		6AF3674D2B0BE70900CF6CF5 /* SavingsCalculatorAmountCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SavingsCalculatorAmountCell.xib; sourceTree = "<group>"; };
 		6AF367512B0C7FE600CF6CF5 /* SavingsLowBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsLowBalance.swift; sourceTree = "<group>"; };
+		6AF88A142B10982200E287DA /* CalendarAfterDueDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAfterDueDateCell.swift; sourceTree = "<group>"; };
+		6AF88A152B10982200E287DA /* CalendarAfterDueDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarAfterDueDateCell.xib; sourceTree = "<group>"; };
+		6AF88A192B1098AD00E287DA /* CalendarOverDueDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarOverDueDateCell.swift; sourceTree = "<group>"; };
+		6AF88A1A2B1098AD00E287DA /* CalendarOverDueDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarOverDueDateCell.xib; sourceTree = "<group>"; };
 		71650C08900D4FC1F0338914 /* Pods_First_Pay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_First_Pay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8532F7B1E1600C2DD238457B /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D18AC7765C412318CF2910B /* Pods-First Pay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-First Pay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-First Pay/Pods-First Pay.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1646,9 +1654,9 @@
 		189DD24B29D9A4F800BBF940 /* NanoLoanCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				189DD25029D9A4F800BBF940 /* CalendarPicker */,
 				18D8C3AE29E7442700E39184 /* CalendarPickerCell */,
 				189DD24C29D9A4F800BBF940 /* Models */,
-				189DD25029D9A4F800BBF940 /* CalendarPicker */,
 			);
 			path = NanoLoanCalendar;
 			sourceTree = "<group>";
@@ -1935,6 +1943,8 @@
 		18D8C3AE29E7442700E39184 /* CalendarPickerCell */ = {
 			isa = PBXGroup;
 			children = (
+				6AF88A182B10989700E287DA /* CalendarOverDueDateCell */,
+				6AF88A132B1097FD00E287DA /* CalendarAfterDueDateCell */,
 				18E0610C29E831A100EB8986 /* CalendarLoanDateCell */,
 				18E0610B29E8318A00EB8986 /* CalendarCurrentDateCell */,
 				18E0610A29E8317600EB8986 /* CalendarDefaultDateCell */,
@@ -2253,6 +2263,24 @@
 				6AF367512B0C7FE600CF6CF5 /* SavingsLowBalance.swift */,
 			);
 			path = SavingsLowBalance;
+			sourceTree = "<group>";
+		};
+		6AF88A132B1097FD00E287DA /* CalendarAfterDueDateCell */ = {
+			isa = PBXGroup;
+			children = (
+				6AF88A142B10982200E287DA /* CalendarAfterDueDateCell.swift */,
+				6AF88A152B10982200E287DA /* CalendarAfterDueDateCell.xib */,
+			);
+			path = CalendarAfterDueDateCell;
+			sourceTree = "<group>";
+		};
+		6AF88A182B10989700E287DA /* CalendarOverDueDateCell */ = {
+			isa = PBXGroup;
+			children = (
+				6AF88A192B1098AD00E287DA /* CalendarOverDueDateCell.swift */,
+				6AF88A1A2B1098AD00E287DA /* CalendarOverDueDateCell.xib */,
+			);
+			path = CalendarOverDueDateCell;
 			sourceTree = "<group>";
 		};
 		A26FDE4425D3A2DE0039D506 /* transactioncCellclasses */ = {
@@ -2661,6 +2689,7 @@
 				3530B7582844D3BB00786A34 /* Book Me-Terms and Conditions - Updated.pdf in Resources */,
 				18E385302A7432DC00BBA6B6 /* AddressUpdate.storyboard in Resources */,
 				35B07C4A28F3E09900114BD0 /* tcUrdu.html in Resources */,
+				6AF88A172B10982200E287DA /* CalendarAfterDueDateCell.xib in Resources */,
 				18F854642A2DE91D00FF374F /* GoogleService-Info.plist in Resources */,
 				AF61DDF42AD1AF21001A35B8 /* Dash_Board.storyboard in Resources */,
 				182AD15E2A038E300057BADF /* ATMLocator.storyboard in Resources */,
@@ -2708,6 +2737,7 @@
 				184258502A29DFED00D130A7 /* TouchID.pdf in Resources */,
 				183D8C0329E1F68900DED6C9 /* Face:ThumbIDLogin.storyboard in Resources */,
 				184D3601296D5F6000B21BA1 /* SendMoney_Local_Hblmfb.storyboard in Resources */,
+				6AF88A1C2B1098AD00E287DA /* CalendarOverDueDateCell.xib in Resources */,
 				6A4922502B077DC400FAFB10 /* SavingPlansCell.xib in Resources */,
 				182A13BD2966BACD00DAD866 /* MiniStatement.storyboard in Resources */,
 				189DD27129D9A4F800BBF940 /* NanoLoanHistoryPastLoanCell.xib in Resources */,
@@ -3062,6 +3092,7 @@
 				AF61DDEE2AD1AE2D001A35B8 /* FakeLoginVc.swift in Sources */,
 				184C8AA429E1C05700BB319E /* UnVerifiedAccountVC.swift in Sources */,
 				1839CB182A1C86960013BC2E /* PostPaidVC.swift in Sources */,
+				6AF88A162B10982200E287DA /* CalendarAfterDueDateCell.swift in Sources */,
 				A206E37A24CAB04600D2E3B9 /* WeatherModel.swift in Sources */,
 				1837C10329A73F430064212A /* AddCashConfirmationVc.swift in Sources */,
 				A281ABDF244B3A0B0067409B /* MoviesSeatModel.swift in Sources */,
@@ -3222,6 +3253,7 @@
 				1858FBFA29CB0F790007875A /* getLinkAccountModel.swift in Sources */,
 				1837C10129A73F1C0064212A /* AddCashVC.swift in Sources */,
 				6AF3674B2B0BE0C000CF6CF5 /* SavingsCalculator.swift in Sources */,
+				6AF88A1B2B1098AD00E287DA /* CalendarOverDueDateCell.swift in Sources */,
 				35E4A0AA26D3811B00A83EA1 /* APIs.swift in Sources */,
 				A2848EFE21996AB500B36D56 /* CustomActivityIndicator.swift in Sources */,
 			);

@@ -69,7 +69,7 @@ class NanoLoanApplyViewController: UIViewController {
                     labelLoanAmountDescription.text = "You can Apply a loan between Rs. \((modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0).twoDecimal()) - \((modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0).twoDecimal())"
                     
                     labelOtherDescription.text = "Enjoy the lowest markup rate of \((modelNanoLoanEligibilityCheck?.data?.first?.markupfee ?? 0).twoDecimal())% monthly on loans. Repay early and save on daily markup amount."
-                                        collectionViewLoanAmounts.reloadData()
+                    collectionViewLoanAmounts.reloadData()
                 }
                 else {
 
@@ -228,7 +228,7 @@ extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ApplyAmountCell", for: indexPath) as! ApplyAmountCell
-        cell.labelAmount.text = "PKR \(getLoanAmount(index: indexPath.item).twoDecimal())"
+        cell.labelAmount.text = "PKR \(getLoanAmount(index: indexPath.item))"
         if selectedAmountIndex != nil && indexPath.item == selectedAmountIndex {
             cell.viewBackGround.backgroundColor = .clrOrange
             cell.labelAmount.textColor = .white
