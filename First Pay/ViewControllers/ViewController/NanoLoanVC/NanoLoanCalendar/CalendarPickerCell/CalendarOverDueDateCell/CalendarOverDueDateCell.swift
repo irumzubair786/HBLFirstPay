@@ -12,6 +12,7 @@ class CalendarOverDueDateCell: UICollectionViewCell {
     
     static let reuseIdentifier = String(describing: CalendarOverDueDateCell.self)
     
+    @IBOutlet weak var viewBackGroundPrice: UIView!
     @IBOutlet weak var viewDateBackGround: UIView!
     @IBOutlet weak var viewMainBackGround: UIView!
     @IBOutlet weak var labelStatus: UILabel!
@@ -93,7 +94,7 @@ class CalendarOverDueDateCell: UICollectionViewCell {
             labelPrice.textColor = .clrLightRed
             labelDate.textColor = .clrLightRed
 
-            labelPrice.text = "Rs. \(modelDate.markup)"
+            labelPrice.text = "Rs. \("\(modelDate.markup)".getIntegerValue())"
             labelStatus.text = "OVER DUE"
             self.labelStatus.radius(color: .clrLightRed)
             self.labelStatus.backgroundColor = .clrLightRedWithOccupacy20

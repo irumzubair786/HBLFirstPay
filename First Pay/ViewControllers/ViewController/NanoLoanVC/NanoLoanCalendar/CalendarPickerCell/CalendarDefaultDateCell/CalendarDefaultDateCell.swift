@@ -11,7 +11,9 @@ import UIKit
 class CalendarDefaultDateCell: UICollectionViewCell {
 
     static let reuseIdentifier = String(describing: CalendarDefaultDateCell.self)
-    
+
+    @IBOutlet weak var viewBackGroundStatus: UIView!
+    @IBOutlet weak var viewBackGroundPrice: UIView!
     @IBOutlet weak var viewDateBackGround: UIView!
     @IBOutlet weak var viewMainBackGround: UIView!
     @IBOutlet weak var labelStatus: UILabel!
@@ -60,13 +62,12 @@ class CalendarDefaultDateCell: UICollectionViewCell {
     func foundRecord(modelDate: CalendarPickerViewController.ModelGetSchCalendarDateValue) {
         defaultCalendarDate()
         accessibilityHint = nil
-//        labelStatus.isHidden = true
         labelPrice.isHidden = false
         self.viewDateBackGround.isHidden = true
 //        self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
         labelDate.textColor = .clrTextNormal
         labelStatus.textColor = .clrTextNormal
-        labelPrice.text = "Rs. \(modelDate.markup)"
+        labelPrice.text = "Rs. \("\(modelDate.markup)".getIntegerValue())"
     }
     func defaultCalendarDate() {
         if self.viewDateBackGround == nil {
@@ -75,7 +76,7 @@ class CalendarDefaultDateCell: UICollectionViewCell {
         labelDate.textColor = .lightGray
         labelStatus.text = nil
         labelPrice.text = nil
-        labelStatus.isHidden = true
+        viewBackGroundStatus.isHidden = true
         labelPrice.isHidden = true
         self.viewDateBackGround.isHidden = true
         

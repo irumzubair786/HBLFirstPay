@@ -12,6 +12,8 @@ class CalendarLoanDateCell: UICollectionViewCell {
 
     static let reuseIdentifier = String(describing: CalendarLoanDateCell.self)
     
+    @IBOutlet weak var viewBackGroundStatus: UIView!
+    @IBOutlet weak var viewBackGroundPrice: UIView!
     @IBOutlet weak var viewDateBackGround: UIView!
     @IBOutlet weak var viewMainBackGround: UIView!
     @IBOutlet weak var labelStatus: UILabel!
@@ -40,6 +42,7 @@ class CalendarLoanDateCell: UICollectionViewCell {
 
         labelPrice.text = ""
         labelStatus.text = ""
+        
     }
     var day: Day? {
       didSet {
@@ -67,17 +70,18 @@ class CalendarLoanDateCell: UICollectionViewCell {
         defaultCalendarDate()
         accessibilityHint = nil
         
-        labelPrice.text = "Rs. \(modelDate.markup)"
-        
+        labelPrice.text = "Rs. \("\(modelDate.markup)".getIntegerValue())"
+
         labelStatus.isHidden = true
         labelPrice.isHidden = false
         self.viewDateBackGround.isHidden = false
         self.viewDateBackGround.backgroundColor = .clrLightGrayCalendarWithOccupacy05
         DispatchQueue.main.async {
-            self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
+            self.viewBackGroundStatus.isHidden = true
+            self.viewDateBackGround.radiusLineDashedStroke(color: .clrGray)
         }
-        labelDate.textColor = .clrTextNormal
-        labelStatus.textColor = .clrTextNormal        
+        labelDate.textColor = .clrLightGrayCalendar
+        labelStatus.textColor = .clrLightGrayCalendar
         ifCurrentDate()
     }
     
@@ -99,10 +103,9 @@ class CalendarLoanDateCell: UICollectionViewCell {
         if self.viewDateBackGround == nil {
             return
         }
-        labelDate.textColor = .lightGray
+        labelDate.textColor = .clrLightGrayCalendar
         labelStatus.text = nil
         labelPrice.text = nil
-        labelStatus.isHidden = true
         labelPrice.isHidden = true
         self.viewDateBackGround.isHidden = true
     }

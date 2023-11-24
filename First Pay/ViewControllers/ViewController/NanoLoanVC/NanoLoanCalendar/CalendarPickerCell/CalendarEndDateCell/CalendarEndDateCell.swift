@@ -78,10 +78,11 @@ class CalendarEndDateCell: UICollectionViewCell {
         labelDate.textColor = .clrLightRed
 
         if modelDate?.markup != nil {
-            labelPrice.text = "Rs. \(modelDate?.markup ?? 0)"
+            labelPrice.text = "Rs. \("\(modelDate!.markup)".getIntegerValue())"
+            
         }
         else {
-            labelPrice.text = "Rs. 0.00"
+            labelPrice.text = "Rs. 0"
         }
         labelStatus.text = "END DATE"
         self.labelStatus.backgroundColor = .clrLightRedWithOccupacy20

@@ -12,6 +12,7 @@ class CalendarAfterDueDateCell: UICollectionViewCell {
     
     static let reuseIdentifier = String(describing: CalendarAfterDueDateCell.self)
     
+    @IBOutlet weak var viewBackGroundPrice: UIView!
     @IBOutlet weak var viewDateBackGround: UIView!
     @IBOutlet weak var viewMainBackGround: UIView!
     @IBOutlet weak var labelStatus: UILabel!
@@ -67,8 +68,8 @@ class CalendarAfterDueDateCell: UICollectionViewCell {
         defaultCalendarDate()
         accessibilityHint = nil
         
-        labelPrice.text = "Rs. \(modelDate.markup)"
-        
+        labelPrice.text = "Rs. \("\(modelDate.markup)".getIntegerValue())"
+
         labelStatus.isHidden = true
         labelPrice.isHidden = false
         self.viewDateBackGround.isHidden = false

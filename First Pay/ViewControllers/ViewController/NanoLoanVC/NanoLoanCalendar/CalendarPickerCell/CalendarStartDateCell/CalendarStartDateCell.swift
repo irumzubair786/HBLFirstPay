@@ -12,6 +12,7 @@ class CalendarStartDateCell: UICollectionViewCell {
 
     static let reuseIdentifier = String(describing: CalendarStartDateCell.self)
     
+    @IBOutlet weak var viewBackGroundPrice: UIView!
     @IBOutlet weak var viewDateBackGround: UIView!
     @IBOutlet weak var viewMainBackGround: UIView!
     @IBOutlet weak var labelStatus: UILabel!
@@ -69,7 +70,7 @@ class CalendarStartDateCell: UICollectionViewCell {
         defaultCalendarDate()
         accessibilityHint = nil
         
-        labelPrice.text = "Rs. \(modelDate.markup)"
+        labelPrice.text = "Rs. \("\(modelDate.markup)".getIntegerValue())"
         labelStatus.text = "START DATE"
         
         labelPrice.isHidden = false
@@ -92,9 +93,9 @@ class CalendarStartDateCell: UICollectionViewCell {
             self.viewDateBackGround.backgroundColor = .clrGreenWithOccupacy05
         }
         else {
-            labelDate.textColor = .clrTextNormal
-            labelPrice.textColor = .clrTextNormal
-            self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
+            labelDate.textColor = .clrGray
+            labelPrice.textColor = .clrGray
+            self.viewDateBackGround.radiusLineDashedStroke(color: .clrGray)
             self.viewDateBackGround.backgroundColor = .clrLightGrayCalendarWithOccupacy05
         }
     }
