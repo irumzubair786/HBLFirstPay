@@ -62,11 +62,15 @@ class NanoLoanRepayConfirmationVC: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        viewBackGroundTotalAmount.radius()
+        self.viewBackGroundTotalAmount.radiusLineDashedStroke()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         FBEvents.logEvent(title: .Loans_repayconfirm_landing)
         FaceBookEvents.logEvent(title: .Loans_repayconfirm_landing)
-        viewBackGroundTotalAmount.radius()
+        
         viewBackGroundRepayNowButton.circle()
         setData()
     }
@@ -82,13 +86,13 @@ class NanoLoanRepayConfirmationVC: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { }
         if let getActiveLoanToPay = self.modelGetActiveLoanToPay?.data {
             //                labelLoanNumber.text = "\(currentLoan.loanNo)"
+            
             self.labelAmount.text = "Rs. \((getActiveLoanToPay.payableTotalAmount ?? 0).twoDecimal())"
             self.labelLoanNumber.text = "\(getActiveLoanToPay.loanNumber ?? "")"
             self.labelLoanAvailedAmount.text = "Rs. \((getActiveLoanToPay.loanAvailedAmount ?? 0).twoDecimal())"
             self.labelDueDate.text = getActiveLoanToPay.dueDate
             self.labelProcessingFee.text = "\((getActiveLoanToPay.processingFee ?? 0).twoDecimal())"
             self.labelMarkupCharged.text = "Rs. \((getActiveLoanToPay.outstandingMarkupAmount ?? 0).twoDecimal())"
-            self.viewBackGroundTotalAmount.radiusLineDashedStroke()
         }
     }
     func payActiveLoan() {

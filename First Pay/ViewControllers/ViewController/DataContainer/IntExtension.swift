@@ -10,12 +10,21 @@ import Foundation
 
 extension Int {
     func twoDecimal() -> String {
-        let value = Double(self)
-        let valueString = String(format: "%.2f", value)
-        let commaSeperateValue = Double(valueString)?.commaRepresentation
+//        let value = Double(self)
+//        let commaSeperateValue = value.formattedWithSeparator
+//
+//        let valueString = String(format: "%.2f", commaSeperateValue).removeSpecialCharsFromString()
+//        return "\(valueString ?? "0.0")"
+
         
-        print("\(commaSeperateValue ?? "")".removeSpecialCharsFromString())
-        return "\(commaSeperateValue ?? "")".removeSpecialCharsFromString()
+        let balanceValue = Double(self)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.minimumFractionDigits = 2
+        numberFormatter.maximumFractionDigits = 2
+        let formattedNumber = numberFormatter.string(from: NSNumber(value:balanceValue ))
+        
+        return "\(formattedNumber ?? "0.0")"
     }
 }
 
@@ -83,10 +92,20 @@ extension String {
 }
 extension Double {
     func twoDecimal() -> String {
-        let value = self
-        let valueString = String(format: "%.2f", value)
-        let commaSeperateValue = Double(valueString)?.commaRepresentation
-        return "\(commaSeperateValue ?? "")".replace(string: "$", replacement: "")
+//        let value = self
+//        let valueString = String(format: "%.2f", value)
+//        let commaSeperateValue = Double(valueString)?.formattedWithSeparator
+//        return "\(commaSeperateValue ?? "")"
+
+        
+        let balanceValue = Double(self)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.minimumFractionDigits = 2
+        numberFormatter.maximumFractionDigits = 2
+        let formattedNumber = numberFormatter.string(from: NSNumber(value:balanceValue ))
+        
+        return "\(formattedNumber ?? "0.0")"
     }
     
     private static var commaFormatter: NumberFormatter = {
@@ -99,4 +118,45 @@ extension Double {
     internal var commaRepresentation: String {
         return Double.commaFormatter.string(from: NSNumber(value: self)) ?? ""
     }
+}
+
+
+extension Double {
+//    func twoDecimal() -> String {
+//        let value = self
+//        let valueString = String(format: "%.2f", value).removeSpecialCharsFromString()
+////        let commaSeperateValue = Double(valueString)?.commaRepresentation
+//
+//        var amount = "\(valueString)".replace(string: "$", replacement: "")
+//        amount = "\(amount)".replace(string: "Rs ", replacement: "")
+//
+//        let resultValue = Double(amount)!.formattedWithSeparator
+//        print(resultValue)
+//        return "\(resultValue)"
+//    }
+//
+//    private static var commaFormatter: NumberFormatter = {
+//        let formatter = NumberFormatter()
+//        formatter.numberStyle = .currency
+//
+//        return formatter
+//    }()
+//
+//    internal var commaRepresentation: String {
+//        return Double.commaFormatter.string(from: Double(self) as NSNumber) ?? ""
+//    }
+}
+
+extension Formatter {
+    static let withSeparator: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+//        formatter.groupingSeparator = " "
+        formatter.groupingSeparator = ","
+        return formatter
+    }()
+}
+
+extension Numeric {
+    var formattedWithSeparator: String { Formatter.withSeparator.string(for: self) ?? "" }
 }
