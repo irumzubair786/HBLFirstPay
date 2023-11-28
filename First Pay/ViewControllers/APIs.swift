@@ -490,8 +490,9 @@ print(str)
         
         case addBundleToFavourite = "Transactions/v1/addBundleToFavourite"
 
-
-        
+// MYApproval
+        case getReceivedRequest = "FirstPayInfo/v1/getReceivedRequests"
+        case updateRequestStatus = "FirstPayInfo/v1/updateRequestStatus"
     }
 }
 

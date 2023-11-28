@@ -73,6 +73,7 @@ extension SavingsCalculator: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SavingsCalculatorAmountCell", for: indexPath) as! SavingsCalculatorAmountCell
         
+        
          
 //        if(myarr[indexPath.row].isSeleccted == true) {
 //            cell.btnAmount.setTitleColor(.white, for: .normal)
