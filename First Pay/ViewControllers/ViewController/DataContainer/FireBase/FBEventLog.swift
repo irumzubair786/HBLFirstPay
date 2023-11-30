@@ -243,6 +243,9 @@ struct FBEvents {
         case Bundles_confirm_receipt
         case Bundles_error_popup
 
+        //        MY Approval
+                case Request_Money_Selection
+        
         
         
         

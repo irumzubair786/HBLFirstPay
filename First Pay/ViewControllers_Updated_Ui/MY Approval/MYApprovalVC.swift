@@ -16,6 +16,8 @@ var accountNo : String?
 var Amount : Int?
 var accountName: String?
 class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
+    var amount : Double?
+    var ComaSepAmount :String?
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        if let count = self.myStatementObj?.ministatement?.count{
 //            return count
@@ -32,7 +34,13 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
          
         cell.btnCancel.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
         cell.lblName.text = modelReceivedRequest?.data[indexPath.row].accountTitle
-        cell.lblAmount.text = "\(modelReceivedRequest?.data[indexPath.row].amount ?? 0)"
+        
+      
+        amount = Double((modelReceivedRequest?.data[indexPath.row].amount)!)
+        CommaSepration()
+//        var a: Double?
+//        a = Double(ComaSepAmount!)
+        cell.lblAmount.text = "Rs, \(ComaSepAmount!).00"
         cell.lblMessage.text = modelReceivedRequest?.data[indexPath.row].comments
 //        requesterMoneyId = modelReceivedRequest?.data[indexPath.row].requesterMoneyID
         cell.btnSent.addTarget(self, action: #selector(buttontapedSent), for: .touchUpInside)
@@ -42,13 +50,29 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
         
         
     }
+    func CommaSepration()
+    {
+        var number = (amount!)
+        var formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        ComaSepAmount = (formatter.string(from: NSNumber(value: number)))!
+       
+    }
+    
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+//        getReceivedReq()
+    }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         emptyReceivedView.isHidden = true
         emptySentView.isHidden = true
-        
+        sentView.isHidden = true
 //        tableView.reloadData()
 //
         imgSent.isHidden = true
@@ -69,22 +93,38 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
     
     @IBOutlet weak var emptyReceivedView: UIView!
     @IBOutlet weak var imgReceived: UIImageView!
-    
-  
     @IBOutlet weak var emptySentView: UIView!
     @IBOutlet weak var imgSent: UIImageView!
     @IBOutlet weak var buttonSent: UIButton!
     @IBOutlet weak var buttonReceived: UIButton!
+    @IBOutlet weak var tableViewSent: UITableView!
+    @IBOutlet weak var sentView: UIView!
+    
+    
+    
+    
+    
+    
     @IBAction func buttonReceived(_ sender: UIButton) {
         tableView.reloadData()
         imgSent.isHidden = true
         imgReceived.isHidden = false
     }
     
+    
+    
+    
+    
+    
+    
     @IBAction func buttonSent(_ sender: UIButton) {
         tableView.reloadData()
         imgReceived.isHidden = true
         imgSent.isHidden = false
+        
+        
+        
+        
     }
     
     
@@ -113,18 +153,16 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
     {
         let tag = _sender.tag
         let cell = tableView.cellForRow(at: IndexPath(row: tag, section: 0)) as! CellMYApprovalVC
-       
+        requesterMoneyId = modelReceivedRequest?.data[tag].requesterMoneyID
         accountNo = modelReceivedRequest?.data[tag].accountNo ?? ""
         Amount = modelReceivedRequest?.data[tag].amount ?? 0
         accountName = modelReceivedRequest?.data[tag].accountTitle ?? ""
         print("accountNo", accountNo, Amount , accountName)
 //        move to next vc
-        
+        let vc = storyboard?.instantiateViewController(withIdentifier: "RequestMoneyTransferVC") as! RequestMoneyTransferVC
+        self.present(vc, animated: true)
+       
     }
-    
-    
-    
-    
     
     @IBAction func buttonCellSent(_ sender: UIButton) {
     }
@@ -136,7 +174,7 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
             "channelId": "\(DataManager.instance.channelID)",
             "imei": DataManager.instance.imei!
         ]
-
+          
         APIs.postAPI(apiName: .getReceivedRequest, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             
             let model: GetReceivedRequest? = APIs.decodeDataToObject(data: responseData)
@@ -162,16 +200,21 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
 //    ------------------updateRequestStatus
     
     func updateRequestStatus() {
-        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        var userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        userCnic = DataManager.instance.userCnic
         let parameters: Parameters = [
-            "cnic": userCnic!,
+            "cnic": UserDefaults.standard.string(forKey: "userCnic")!,
             "channelId": "\(DataManager.instance.channelID)",
             "imei": DataManager.instance.imei!,
 //            "tempStatus": "R",
             "status" : "A",
-            "requestId" : requesterMoneyId!
+            "requestId" : "\(requesterMoneyId!)"
         ]
-        print(parameters)
+       
+//        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+//        let paramsencoded = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+//
+//        print(paramsencoded)
         APIs.postAPI(apiName: .updateRequestStatus, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             
             let model: UpdateRequestStatus? = APIs.decodeDataToObject(data: responseData)
@@ -182,6 +225,8 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
         didSet {
             if modelupdateRequestStatus?.responsecode == 1 {
                
+                
+                self.showAlertCustomPopup(title: "Success", message: modelReceivedRequest?.messages, iconName: .iconSuccess)
                 tableView.reloadData()
             }
             else {
