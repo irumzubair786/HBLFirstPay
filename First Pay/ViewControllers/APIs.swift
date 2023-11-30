@@ -493,6 +493,8 @@ print(str)
 // MYApproval
         case getReceivedRequest = "FirstPayInfo/v1/getReceivedRequests"
         case updateRequestStatus = "FirstPayInfo/v1/updateRequestStatus"
+        case getSentRequest =
+        "FirstPayInfo/v1/getSentRequest"
     }
 }
 

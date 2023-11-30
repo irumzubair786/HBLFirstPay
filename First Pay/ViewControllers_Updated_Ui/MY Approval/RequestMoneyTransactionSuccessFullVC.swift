@@ -49,10 +49,11 @@ class RequestMoneyTransactionSuccessFullVC: BaseClassVC {
 //        let vc = storyboard?.instantiateViewController(withIdentifier: "MYApprovalVC") as! MYApprovalVC
 //        self.present(vc, animated: true)
 //
-        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+      let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
       let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-                       self.present(vc, animated: true)
-//        self.dismiss(animated: false)
+        
+      self.present(vc, animated: true)
+//        self.dismiss(animated: true)
 //        accountUpGradeSuccessfull!()
         
     }

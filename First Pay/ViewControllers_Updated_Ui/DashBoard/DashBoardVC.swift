@@ -117,8 +117,14 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 //        getActiveLoan()
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector:#selector(homeAction), name: Notification.Name("updateAccountLevel"),object: nil)
-
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController), name: Notification.Name("MoveToHome"),object: nil)
         
+    }
+    
+    @objc func dissmissViewController() {
+        self.dismiss(animated: true)
+        NotificationCenter.default.post(name: Notification.Name("MoveToHome"), object: nil)
     }
     @IBOutlet weak var pageView: UIPageControl!
     @IBOutlet weak var sliderCollectionView: UICollectionView!

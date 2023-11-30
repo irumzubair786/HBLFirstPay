@@ -41,6 +41,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         lblEmail.text = ""
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(batteryLevelChanged), name: Notification.Name("batteryLevelChanged"), object: nil)
+        
         //        let date = Date()
         //        let df = DateFormatter()
         //        df.dateFormat = "yyyy-MM-dd"
@@ -469,7 +470,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     var sideMenuOpen = false
     let pickerAccountType = UIPickerView()
     
-    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","My Transactions", "MY Arroval","Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
+    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","My Transactions", "My Approvals","Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
    //Group 427321287.transactions 1
        var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","transactions 1","myApproval","Maintenance Certoficate","FAQ","Terms and","Group 427321287","Logout"]
    

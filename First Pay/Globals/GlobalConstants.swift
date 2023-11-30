@@ -12,7 +12,8 @@ class GlobalConstants {
 //     Live
 //        public static let BASE_URL = "https://bb.hblmfb.com/"
     // Stagging
-     public static let BASE_URL = "http://bbuat.hblmfb.com/"
+        public static let BASE_URL = "http://bbuat.hblmfb.com/"
+   
     
 }
 
