@@ -22,6 +22,7 @@ class CellMYApprovalVC: UITableViewCell {
     }
     @IBOutlet weak var lblName: UILabel!
     
+    @IBOutlet weak var buttonDeclined: UIButton!
     
     @IBOutlet weak var lblMessage: UILabel!
     @IBOutlet weak var lblAmount: UILabel!

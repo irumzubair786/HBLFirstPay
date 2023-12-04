@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+var isfRomRewuestSent : Bool?
 class RequestMoneyTransactionSuccessFullVC: BaseClassVC {
     var image :UIImage?
     var name: String?
@@ -30,6 +30,10 @@ class RequestMoneyTransactionSuccessFullVC: BaseClassVC {
         super.viewDidLoad()
         btnCross.setTitle("", for: .normal)
         UpdateUi()
+        
+        
+        
+        
         // Do any additional setup after loading the view.
     }
     @IBOutlet weak var lblDateTime: UILabel!
@@ -44,19 +48,28 @@ class RequestMoneyTransactionSuccessFullVC: BaseClassVC {
     @IBOutlet weak var btnShare: UIButton!
     @IBOutlet weak var lblamount: UILabel!
     @IBAction func Action_Cross(_ sender: UIButton) {
-//
        
-//        let vc = storyboard?.instantiateViewController(withIdentifier: "MYApprovalVC") as! MYApprovalVC
-//        self.present(vc, animated: true)
-//
-      let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-      let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-        
-      self.present(vc, animated: true)
-//        self.dismiss(animated: true)
-//        accountUpGradeSuccessfull!()
+        self.dismiss(animated: true)
+        NotificationCenter.default.post(name: Notification.Name("ConfirmationScreenDismiss"), object: nil)
+       
+//        NotificationCenter.default.post(name: Notification.Name("move"), object: nil)
+//        self.dismiss(animated: true,completion: nil)
+//        goToMainPageVC ()
         
     }
+    var window: UIWindow?
+    
+    func goToMainPageVC () {
+        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC") as! MainPageVC
+        window?.rootViewController = vc
+//        self.dismiss(animated:true)
+       self.present(vc, animated: true, completion: nil)
+        
+    }
+    
+
+    
     
     func UpdateUi()
     {

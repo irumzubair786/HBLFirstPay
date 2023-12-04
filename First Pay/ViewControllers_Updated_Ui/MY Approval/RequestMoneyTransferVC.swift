@@ -26,7 +26,16 @@ class RequestMoneyTransferVC: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         img_next_arrow.isUserInteractionEnabled = true
         img_next_arrow.addGestureRecognizer(tapGestureRecognizer)
+        //        step 2 to move direct dashboard
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController2), name: Notification.Name("RequestMoneyTransferVCDismiss"),object: nil)
+
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func dissmissViewController2() {
+        self.dismiss(animated: true)
+        NotificationCenter.default.post(name: Notification.Name("MyApprovalVCDissmiss"), object: nil)
     }
     
     @IBOutlet weak var buttonTf: UIButton!

@@ -201,16 +201,11 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         if cell.buttonSidebar.tag == 3
         {
             let vc = UIStoryboard(name: "MyApproval", bundle: Bundle.main).instantiateViewController(withIdentifier: "MYApprovalVC") as! MYApprovalVC
-            
-            
 
             self.present(vc, animated: true)
+           
         }
-        
-        
-        
-        
-        
+      
         if cell.buttonSidebar.tag == 4
         {
             let vc = UIStoryboard(name: "MaintenanceCertificate", bundle: Bundle.main).instantiateViewController(withIdentifier: "MaintenenceCertificate") as! MaintenenceCertificate

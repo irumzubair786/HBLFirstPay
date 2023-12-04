@@ -22,7 +22,21 @@ class ConfirmationScreen: BaseClassVC {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         img_next_arrow.isUserInteractionEnabled = true
         img_next_arrow.addGestureRecognizer(tapGestureRecognizer)
+        //        step 3 to move direct dashboard
+        
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController), name: Notification.Name("ConfirmationScreenDismiss"),object: nil)
+        
+        
+        
+        
         // Do any additional setup after loading the view.
+    }
+    
+    
+    @objc func dissmissViewController() {
+        self.dismiss(animated: true)
+        NotificationCenter.default.post(name: Notification.Name("RequestMoneyTransferVCDismiss"), object: nil)
     }
     @IBAction func backButton(_ sender: UIButton) {
         self.dismiss(animated: true)
@@ -161,7 +175,7 @@ class ConfirmationScreen: BaseClassVC {
         vc.AccountNo =  DataManager.instance.accountNo!
        
         vc.Toaccounttitle = accountName!
-        self.present(vc, animated: true)
+        self.present(vc, animated: true, completion: nil)
 //        self.navigationController?.pushViewController(vc, animated: true)
         
         

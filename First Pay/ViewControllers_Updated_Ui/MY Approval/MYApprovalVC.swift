@@ -29,11 +29,50 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
         }
         
     }
-    
+    var window: UIWindow?
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == tableViewReceived
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellMYApprovalVC") as! CellMYApprovalVC
+            
+            cell.btnCancel.isHidden = true
+            cell.btnSent.isHidden = true
+            cell.buttonDeclined.isHidden = true
+            let status = modelReceivedRequest?.data[indexPath.row].status
+            if status == "P"
+            {
+                cell.btnCancel.isHidden = false
+                cell.btnSent.isHidden = false
+            }
+            else if status == "R"
+            {
+                cell.btnCancel.isHidden = true
+                cell.btnSent.isHidden = true
+                cell.buttonDeclined.isHidden = false
+                cell.buttonDeclined.setTitle("Declined", for: .normal)
+                cell.buttonDeclined.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 246/255, alpha: 1)
+                cell.buttonDeclined.setTitleColor(UIColor(hexString: "#8F92A1"),  for: .normal)
+                
+                
+                
+            }
+            else if status == "A"
+            {
+                cell.btnCancel.isHidden = true
+                cell.btnSent.isHidden = true
+                cell.buttonDeclined.isHidden = false
+                cell.buttonDeclined.setTitle("Sent", for: .normal)
+                cell.buttonDeclined.backgroundColor = UIColor(red: 233/255, green: 250/255, blue: 245/255, alpha: 1)
+                cell.buttonDeclined.setTitleColor(UIColor(hexString: "#00CC96"),  for: .normal)
+                
+                
+            }
+            else
+            {
+                cell.btnCancel.isHidden = true
+                cell.btnSent.isHidden = true
+                cell.buttonDeclined.isHidden = true
+            }
             cell.btnCancel.tag = indexPath.row
             cell.btnSent.tag = indexPath.row
             cell.btnCancel.setTitle("", for: .normal)
@@ -106,8 +145,6 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
        
     }
     
-    
-    
     override func viewWillAppear(_ animated: Bool) {
 //        getReceivedReq()
     }
@@ -119,10 +156,23 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
 //        tableView.reloadData()
         tableViewSent.rowHeight = 100
         imgSent.isHidden = true
+        isfRomRewuestSent = true
         getReceivedReq()
-       
-        // Do any additional setup after loading the view.
+//        step 1 to move direct dashboard
+        
+//        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController3), name: Notification.Name("MyApprovalVCDissmiss"),object: nil)
+        
+
     }
+    @objc func dissmissViewController3() {
+       
+        self.dismiss(animated: true)
+        
+        print("move to dashboard")
+
+    }
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
             return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
@@ -131,8 +181,36 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
     @IBOutlet weak var backBUtton: UIButton!
     @IBOutlet weak var tableViewReceived: UITableView!
     @IBAction func backBUtton(_ sender: UIButton) {
-        self.dismiss(animated:true)
+        
+//        if isfRomRewuestSent == true{
+//            goToMainPageVC ()
+////            let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+////          let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC") as! MainPageVC
+////
+////
+////                 self.present(vc, animated: true, completion: nil)
+////            self.navigationController?.popViewController(animated: true)
+////            self.dismiss(animated: true)
+//        }
+//        else
+//        {
+            self.dismiss(animated:true)
+//        }
+        
+       
     }
+    func goToMainPageVC () {
+        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+      let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC") as! MainPageVC
+            window?.rootViewController = vc
+//        self.dismiss(animated:true)
+        self.present(vc, animated: true, completion: nil)
+        
+        
+
+        }
+    
+    
     @IBOutlet weak var emptyReceivedView: UIView!
     @IBOutlet weak var imgReceived: UIImageView!
     @IBOutlet weak var emptySentView: UIView!
@@ -141,11 +219,6 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
     @IBOutlet weak var buttonReceived: UIButton!
     @IBOutlet weak var tableViewSent: UITableView!
     @IBOutlet weak var sentView: UIView!
-    
-    
-    
-    
-    
     
     @IBAction func buttonReceived(_ sender: UIButton) {
         startAnimatingReceived()
@@ -202,14 +275,7 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
         getSentReq()
         imgReceived.isHidden = true
         imgSent.isHidden = false
-        
-        
-        
-        
     }
-    
-    
-    
     
     @IBAction func buttonCellCancel(_ sender: UIButton) {
         
@@ -225,11 +291,11 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
         
         requesterMoneyId = modelReceivedRequest?.data[tag].requesterMoneyID
         print("requesterMoneyId", requesterMoneyId)
+        
          updateRequestStatus()
 //        tableView.reloadData()
         
     }
-    
     @objc func buttontapedSent(_sender:UIButton)
     {
         let tag = _sender.tag
@@ -279,10 +345,6 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
         
     //    ------------------------end
 
-    
-    
-    
-    
 //    -------------------getReceivedRequest API
     func getReceivedReq() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
@@ -344,17 +406,15 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
             if modelupdateRequestStatus?.responsecode == 1 {
                
                 print("Success")
-//                self.showAlertCustomPopup(title: "Success", message: modelReceivedRequest?.messages, iconName: .iconSuccess)
-//                move to home
-//                self.dismiss(animated: true)
-                let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-              let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC") as! MainPageVC
-                
-//             self.present(vc, animated: true)
-                self.dismiss(animated: true)
-                
-//                NotificationCenter.default.post(name: Notification.Name("MoveToHome"), object: nil)
-//                tableViewReceived.reloadData()
+                self.showAlertCustomPopup(title: "Success", message: modelReceivedRequest?.messages, iconName: .iconSuccess, completion: { _ in
+                    //
+                    let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+                  let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC") as! MainPageVC
+                    
+        //                 self.present(vc, animated: true)
+                    
+                    self.dismiss(animated: true)
+                })
             }
             else {
                 self.showAlertCustomPopup(title: "Error", message: modelupdateRequestStatus?.messages, iconName: .iconError)

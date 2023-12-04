@@ -49,14 +49,13 @@ class MainPageVC: BaseClassVC {
         
        
         if let presentedViewController = self.presentedViewController {
-
-            // yourViewController is currently presenting a view controller modally
-        } else {
-            // yourViewController is not presenting a view controller modally
+            print("jenfkjw")
             
+            
+        } else {
             present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
         }
-//        self.navigationController?.pushViewController(vc, animated: true)
+    
     }
     var modelExpiredCnicVerification: ModelExpiredCnicVerification? {
         didSet {
