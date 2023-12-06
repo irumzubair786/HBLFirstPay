@@ -83,7 +83,9 @@ extension NanoLoanHistoryViewController: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanHistoryDetails") as! NanoLoanHistoryDetails
+        vc.modelCurrentLoan = modelGetActiveLoan?.data?.loanHistory[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
     }
    
 }

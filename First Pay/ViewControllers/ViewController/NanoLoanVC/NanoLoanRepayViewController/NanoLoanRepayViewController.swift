@@ -176,9 +176,9 @@ extension NanoLoanRepayViewController {
     // MARK: - DataClass
     struct ModelGetActiveLoanToPayData: Codable {
         let loanNumber: String?
-        let statusDescr, dateTime: JSONNull?
+        let statusDescr, dateTime: String?
         let loanAvailedAmount, processingFee, daysTillDueDate: Int?
-        let transRefNum: JSONNull?
+        let transRefNum: String?
         let status: Int?
         let outstandingMarkupAmount: Double?
         let dueDate: String?

@@ -17,6 +17,12 @@ class SavingPlansCell: UITableViewCell {
     @IBOutlet weak var labelPackageName: UILabel!
     @IBOutlet weak var buttonSubscribe: UIButton!
     
+    var modelGetSavingProductsData: SavingPlans.ModelGetSavingProductsData? {
+        didSet {
+            labelPackageName.text = modelGetSavingProductsData?.svgProductDescr ?? ""
+            labelPackageDescription.text = modelGetSavingProductsData?.svgProductSubConfigDescr ?? ""
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

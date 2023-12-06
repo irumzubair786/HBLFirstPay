@@ -72,7 +72,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 
     @IBOutlet weak var imgSeeAll: UIImageView!
     
-   
+    @IBOutlet weak var buttonSavings: UIButton!
+    
     override func viewDidDisappear(_ animated: Bool) {
         timerChangeBannerImage.invalidate()
     }
@@ -147,9 +148,9 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
-
-    
-    
+    @IBAction func buttonSavings(_ sender: Any) {
+        openSavingScreens()
+    }
     
     @IBOutlet weak var labelSeeAll: UILabel!
     
@@ -162,6 +163,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
+    
+    func openSavingScreens() {
+        let vc = UIStoryboard.init(name: "Savings", bundle: nil).instantiateViewController(withIdentifier: "SavingPlans")
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
+    }
+    
     func AddCash(){
         let tapGestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(btnAddCash(tapGestureRecognizer:)))
         imageAddCash.isUserInteractionEnabled = true
