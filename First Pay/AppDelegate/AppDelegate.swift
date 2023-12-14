@@ -93,12 +93,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //
 //                  }
 //              }
-//
 
         //OneSignal START
         // Remove this method to stop OneSignal Debugging
         //              OneSignal.Debug.setLogLevel(.LL_VERBOSE)
-        
         // OneSignal initialization
         OneSignal.initialize("12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d", withLaunchOptions: launchOptions)
         

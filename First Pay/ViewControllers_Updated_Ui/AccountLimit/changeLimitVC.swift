@@ -35,10 +35,7 @@ class changeLimitVC: BaseClassVC {
     var refreshScreen: (()->())!
     @IBAction func buttonDrawer(_ sender: UIButton) {
     }
-    
-    
-    
-    
+   
     @IBOutlet weak var buttonContinue: UIButton!
     
     @IBOutlet weak var viewBackground: UIView!
@@ -62,8 +59,8 @@ class changeLimitVC: BaseClassVC {
         buttonContinue.circle()
         updateUI()
     }
+    
     @objc private func didSwipe(_ sender: UISwipeGestureRecognizer) {
-
     }
     @IBOutlet weak var imgvArrow: UIImageView!
     @IBOutlet weak var slider: CustomSlider!

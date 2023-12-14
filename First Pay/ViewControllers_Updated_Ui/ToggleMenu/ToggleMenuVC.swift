@@ -242,7 +242,17 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
           let vc = UIStoryboard(name: "ContactUs", bundle: Bundle.main).instantiateViewController(withIdentifier: "ContactUSVC") as! ContactUSVC
           self.present(vc, animated: true)
         }
+        
         if cell.buttonSidebar.tag ==  8
+        {
+//          move to notification
+            let vc = UIStoryboard(name: "NotificationsSettings", bundle: Bundle.main).instantiateViewController(withIdentifier: "NotificationSettingVC") as! NotificationSettingVC
+            self.present(vc, animated: true)
+            
+        }
+        
+        
+        if cell.buttonSidebar.tag ==  9
         {
             popUpLogout()
         }
@@ -465,9 +475,9 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     var sideMenuOpen = false
     let pickerAccountType = UIPickerView()
     
-    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","My Transactions", "My Approvals","Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
+    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","My Transactions", "My Approvals","Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Notifications Settings","Log Out"]
    //Group 427321287.transactions 1
-       var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","transactions 1","myApproval","Maintenance Certoficate","FAQ","Terms and","Group 427321287","Logout"]
+       var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","transactions 1","myApproval","Maintenance Certoficate","FAQ","Terms and","Group 427321287","path0-7","Logout"]
    
        
     

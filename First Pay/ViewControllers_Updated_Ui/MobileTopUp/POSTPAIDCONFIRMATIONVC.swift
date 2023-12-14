@@ -68,11 +68,11 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         }
         
         if array.contains(".") {
-            labelAmount.text = comabalanceLimit
+//            labelAmount.text = comabalanceLimit
         }
         else {
 //            \(Int(amounttextField.text!)?.twoDecimal() ?? "0")"
-            labelAmount.text = comabalanceLimit
+//            labelAmount.text = comabalanceLimit
         }
         if amounttextField.text?.count ?? 0 > 0
         {
@@ -335,7 +335,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
         showActivityIndicator()
         let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/topUp"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany": GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":labelAmount.text!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otptextField.text!,"addBeneficiary":"","utilityBillCompanyId": GlobalData.Select_operator_id!] as [String : Any]
+        let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany": GlobalData.Select_operator_code,"beneficiaryAccountTitle":"","utilityConsumerNo":phoneNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":amounttextField.text!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otptextField.text!,"addBeneficiary":"","utilityBillCompanyId": GlobalData.Select_operator_id!] as [String : Any]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(parameters)
@@ -383,7 +383,7 @@ class POSTPAIDCONFIRMATIONVC: BaseClassVC ,UITextFieldDelegate{
     func navigatezToConfirmationVC()
     {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "TransferAmountConfirmationVc") as! TransferAmountConfirmationVc
-        vc.amount = "\(labelAmount.text!)"
+        vc.amount = "\(amounttextField.text!)"
         vc.phoneNumber = phoneNumber
         self.present(vc, animated: true)
 //        self.navigationController?.pushViewController(vc, animated: false)

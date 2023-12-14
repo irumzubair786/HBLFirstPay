@@ -10,7 +10,6 @@ import UIKit
 import Alamofire
 import ObjectMapper
 import Foundation
-import Alamofire
 var requesterMoneyId : Int?
 var accountNo : String?
 var Amount : Int?
@@ -163,7 +162,7 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
 //        NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController3), name: Notification.Name("MyApprovalVCDissmiss"),object: nil)
         
-
+//
     }
     @objc func dissmissViewController3() {
        

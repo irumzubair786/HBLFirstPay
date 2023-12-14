@@ -15,7 +15,7 @@ import SwiftKeychainWrapper
 
 
 class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
-    var totalSecond = 30
+    var totalSecond = 0
     var ForTransactionConsent:Bool = false
     var timer = Timer()
     var counter = 0
@@ -35,10 +35,11 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         buttonNext.setTitle("", for: .normal)
         buttonNext.isUserInteractionEnabled = false
         buttonCoontinue.isUserInteractionEnabled = false
-        self.labelMessage.isHidden = true
+       
         buttonResendOtVCall.isHidden = true
         startTimer()
         getIMEI()
+        print("otpScreenTimeOutWithoutRegistrartion", otpScreenTimeOutWithoutRegistrartion ?? 0)
 
         self.otptextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         buttonCoontinue.circle()
@@ -50,7 +51,8 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
              labelCount.text = "\(counter)"
          }
     func startTimer() {
-        totalSecond = 30
+//        totalSecond = 30
+        totalSecond =  otpScreenTimeOutWithoutRegistrartion ?? 0
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {
@@ -72,7 +74,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     {
         buttonResendOtP.isUserInteractionEnabled = true
         count +=  1
-        buttonResendOtP.setTitleColor(.black, for: .normal)
+        buttonResendOtP.setTitleColor(.orange, for: .normal)
         timer.invalidate()
         if count < 3
         {
@@ -144,12 +146,12 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
     
     @IBOutlet weak var buttonBack: UIButton!
   
-    @IBOutlet weak var labelMessage: UILabel!
+    
     @IBAction func buttonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
        
     }
-    @IBAction func otptextField(_ sender: OTPTextField) {
+    @IBAction func otptextField(_ sender: UITextField) {
         if otptextField?.text?.count == 4
         {
             buttonNext.setImage(UIImage(named: "]greenarrow"), for: .normal)
@@ -167,7 +169,7 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
         
     }
     
-    @IBOutlet weak var otptextField: OTPTextField!
+    @IBOutlet weak var otptextField: UITextField!
     @IBOutlet weak var labelMobNo: UILabel!
     @IBOutlet weak var buttonNext: UIButton!
     @IBOutlet weak var buttonCoontinue: UIButton!
@@ -423,10 +425,10 @@ class LinkBankAccountOTPVerificationVc: BaseClassVC ,UITextFieldDelegate  {
                     if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
                         
 //                        self.labelMessage.isHidden = false
-                        self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+                        
                         //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-                            self.labelMessage.isHidden = true
+                           
                             //                        self.blurView.isHidden = true
                             //                        self.popupView.isHidden = true
                         }

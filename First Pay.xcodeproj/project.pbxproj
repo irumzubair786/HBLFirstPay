@@ -499,6 +499,10 @@
 		AF997F202AFBAAD000D1AC93 /* ConfirmationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF997F1F2AFBAAD000D1AC93 /* ConfirmationScreen.swift */; };
 		AF997F242AFBAB0800D1AC93 /* RequestMoneyTransactionSuccessFullVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF997F232AFBAB0800D1AC93 /* RequestMoneyTransactionSuccessFullVC.swift */; };
 		AF997F262AFBAB3900D1AC93 /* MyApproval.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF997F252AFBAB3900D1AC93 /* MyApproval.storyboard */; };
+		AFA24DF62B2B143D007995DB /* NotificationsSettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFA24DF52B2B143D007995DB /* NotificationsSettings.storyboard */; };
+		AFA24DF82B2B1BF0007995DB /* NotificationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA24DF72B2B1BF0007995DB /* NotificationSettingVC.swift */; };
+		AFA24DFA2B2B2361007995DB /* languageSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA24DF92B2B2361007995DB /* languageSelectionVC.swift */; };
+		AFA24E002B2B5356007995DB /* cellLanguageSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA24DFF2B2B5356007995DB /* cellLanguageSelection.swift */; };
 		AFD713E72AA5B1CD00490508 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
@@ -1059,6 +1063,10 @@
 		AF997F1F2AFBAAD000D1AC93 /* ConfirmationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationScreen.swift; sourceTree = "<group>"; };
 		AF997F232AFBAB0800D1AC93 /* RequestMoneyTransactionSuccessFullVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestMoneyTransactionSuccessFullVC.swift; sourceTree = "<group>"; };
 		AF997F252AFBAB3900D1AC93 /* MyApproval.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MyApproval.storyboard; path = "First Pay/ViewControllers_Updated_Ui/MyApproval/MyApproval.storyboard"; sourceTree = SOURCE_ROOT; };
+		AFA24DF52B2B143D007995DB /* NotificationsSettings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NotificationsSettings.storyboard; sourceTree = "<group>"; };
+		AFA24DF72B2B1BF0007995DB /* NotificationSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingVC.swift; sourceTree = "<group>"; };
+		AFA24DF92B2B2361007995DB /* languageSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = languageSelectionVC.swift; sourceTree = "<group>"; };
+		AFA24DFF2B2B5356007995DB /* cellLanguageSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellLanguageSelection.swift; sourceTree = "<group>"; };
 		F6DB9EFF47AABFB5E9A5FC64 /* Pods-First Pay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-First Pay.release.xcconfig"; path = "Pods/Target Support Files/Pods-First Pay/Pods-First Pay.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1905,6 +1913,7 @@
 		18D130D42941E00E000C396E /* ViewControllers_Updated_Ui */ = {
 			isa = PBXGroup;
 			children = (
+				AFA24DF42B2B1419007995DB /* NotificationSettings */,
 				AF997F1C2AFBAA6E00D1AC93 /* MY Approval */,
 				18E3852C2A7432AB00BBA6B6 /* UpdateAddress */,
 				18695C242A42E88300AE61A0 /* MobilePackages */,
@@ -2605,6 +2614,17 @@
 			path = "MY Approval";
 			sourceTree = "<group>";
 		};
+		AFA24DF42B2B1419007995DB /* NotificationSettings */ = {
+			isa = PBXGroup;
+			children = (
+				AFA24DF52B2B143D007995DB /* NotificationsSettings.storyboard */,
+				AFA24DF72B2B1BF0007995DB /* NotificationSettingVC.swift */,
+				AFA24DF92B2B2361007995DB /* languageSelectionVC.swift */,
+				AFA24DFF2B2B5356007995DB /* cellLanguageSelection.swift */,
+			);
+			path = NotificationSettings;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2697,6 +2717,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18B97BAA2A1A3D3700E119EF /* BB.pdf in Resources */,
+				AFA24DF62B2B143D007995DB /* NotificationsSettings.storyboard in Resources */,
 				A2848EB621995A4D00B36D56 /* LaunchScreen.storyboard in Resources */,
 				18776FFC29FA8EF000F16C58 /* BBFAQs.pdf in Resources */,
 				3530B7612844D3F900786A34 /* Committee Terms and Conditions Urdu with HBLMFB.html in Resources */,
@@ -2995,6 +3016,7 @@
 				1816E553294E3D64002392C6 /* City_selectionVC.swift in Sources */,
 				A2AA083F24C558B6005487E7 /* CommitteeDetailsModel.swift in Sources */,
 				189DD28929D9BA0800BBF940 /* CalendarPickerHeaderView.swift in Sources */,
+				AFA24DF82B2B1BF0007995DB /* NotificationSettingVC.swift in Sources */,
 				186F1C582996399800E05BCC /* DebitCardPostalAddressConfirmationVC.swift in Sources */,
 				A265AE8E268455970035910C /* TestCheckLoanEligiblityModel.swift in Sources */,
 				187FD7552A88B157000509D4 /* PackagesFilter.swift in Sources */,
@@ -3108,11 +3130,13 @@
 				1862D105295B4B700037EFD4 /* setLoginPinModel.swift in Sources */,
 				18B34CC129EF2DEF002CA7A7 /* InviteFriendsAddNumber.swift in Sources */,
 				188869E129F134310068B72F /* ImageOrNameExtension.swift in Sources */,
+				AFA24DFA2B2B2361007995DB /* languageSelectionVC.swift in Sources */,
 				AF61DDEE2AD1AE2D001A35B8 /* FakeLoginVc.swift in Sources */,
 				184C8AA429E1C05700BB319E /* UnVerifiedAccountVC.swift in Sources */,
 				1839CB182A1C86960013BC2E /* PostPaidVC.swift in Sources */,
 				6AF88A162B10982200E287DA /* CalendarAfterDueDateCell.swift in Sources */,
 				A206E37A24CAB04600D2E3B9 /* WeatherModel.swift in Sources */,
+				AFA24E002B2B5356007995DB /* cellLanguageSelection.swift in Sources */,
 				1837C10329A73F430064212A /* AddCashConfirmationVc.swift in Sources */,
 				A281ABDF244B3A0B0067409B /* MoviesSeatModel.swift in Sources */,
 				A211FE5024CFEAAC00092E7E /* DiscountsTableViewCell.swift in Sources */,
@@ -3452,7 +3476,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 114;
-
 				DEVELOPMENT_TEAM = YP6FSM85P6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3499,7 +3522,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 114;
-
 				DEVELOPMENT_TEAM = YP6FSM85P6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

@@ -216,10 +216,19 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         {
             let cell = sliderCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
             if let vc = cell.viewWithTag(111) as? UIImageView {
-                // vc.image = sliderImages[indexPath.row]
-                let imgURL = URL(string: banaryyString[indexPath.row])
-                vc.sd_setImage(with:(imgURL), placeholderImage: UIImage(named: "Button copy"))
-               
+              
+//                let imgURL = URL(string: banaryyString[indexPath.row])
+//                vc.sd_setImage(with:(imgURL), placeholderImage: UIImage(named: ""))
+                if let urlString = banaryyString[indexPath.row].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                    if let imgURL = URL(string: urlString) {
+                        // Use imgURL for your purposes
+                        vc.sd_setImage(with:(imgURL), placeholderImage: UIImage(named: ""))
+                    } else {
+                        print("Invalid URL")
+                    }
+                } else {
+                    print("Encoding failed")
+                }
                 
             }
             return cell
@@ -305,9 +314,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
 //                    "fingerTemplate" : 10,
 //                    "templateType" : "nn"
 //                ]]
-//
-//
-//                self.acccountLevelUpgrade(fingerprints: decode)
+//        //        self.acccountLevelUpgrade(fingerprints: decode)
 //                return
 //                fingerPrintVerification = FingerPrintVerification()
 //                DispatchQueue.main.async {
@@ -316,6 +323,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                 self.navigateToBiometricFlow()
                 //                dummy finger print api calling
                 //                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
+                
             }
            else {
                getActiveLoan()
@@ -353,7 +361,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
         }
     }
-    
     func nanoLoanEligibilityCheck() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
@@ -366,8 +373,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             self.modelNanoLoanEligibilityCheck = model
         }
     }
-    
-    
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
             
@@ -379,8 +384,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
         }
     }
-   
-
     func getActiveLoan() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         

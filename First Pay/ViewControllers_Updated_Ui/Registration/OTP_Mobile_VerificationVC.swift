@@ -17,13 +17,13 @@ import Foundation
 import OTPTextField
 import CoreLocation
 //import OneSignal
-
+var otpScreenTimeOutRegistraryion : Int?
 var genericResponseObj : GenericResponse?
 class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     var genericResponseObj : GenericResponse?
     var mobileRegistrationObj : mobileRegistrationModel?
     var mobileVerificationObj : mobileVerificationModel?
-    var totalSecond = 60
+    var totalSecond = 0
     var timer = Timer()
     var counter = 0
     var count = 0
@@ -37,7 +37,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         btnResendOtp.isUserInteractionEnabled = false
         btnResendotpCall.isHidden = true
         startTimer()
-        labelMessage.isHidden = true
+        
         dismissKeyboard()
         //        var a = DataManager.instance.mobNo
         //        a = a.substring(from: 1)
@@ -50,7 +50,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         //        btnResendotpCall.isUserInteractionEnabled = false
         btn_next_arrow.isUserInteractionEnabled = false
         self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
-        self.labelMessage.isHidden = true
+       
         //        self.mobileRegistration()
         
         btnContinue.circle()
@@ -145,12 +145,12 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     @IBOutlet weak var lbl_mobileno: UILabel!
     @IBOutlet weak var lbl_countResendotptime: UILabel!
     @IBOutlet weak var btnResendOtp: UIButton!
-    @IBOutlet weak var TF_otp: OTPTextField!
+    @IBOutlet weak var TF_otp: UITextField!
     @IBOutlet weak var btnContinue: UIButton!
     @IBOutlet weak var btnResendotpCall: UIButton!
     
     @IBOutlet weak var btn_next_arrow: UIButton!
-    @IBOutlet weak var labelMessage: UILabel!
+   
     //    -------------------------------
     //    Actions
     //    --------------------------------
@@ -182,8 +182,9 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         lbl_countResendotptime.text = "\(counter)"
     }
     func startTimer() {
-        totalSecond = 30
-        
+//        totalSecond = 30
+        totalSecond =  otpScreenTimeOutRegistraryion ?? 0
+        print("otpScreenTimeOutRegistraryion", otpScreenTimeOutRegistraryion)
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {
@@ -235,17 +236,33 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         return true;
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let alphanumericCharacterSet = CharacterSet.alphanumerics
+                
+                for scalar in string.unicodeScalars {
+                    if !alphanumericCharacterSet.contains(scalar) {
+                        return false // Reject the input
+                    }
+                }
         
+        let allowedCharacters = string
+                let characterSet = CharacterSet(charactersIn: allowedCharacters)
+
+                if string.rangeOfCharacter(from: characterSet.inverted) != nil {
+                    return false // Disallow input of invalid characters
+                }
+
         let newLength = (textField.text?.count)! + string.count - range.length
-        
+//        if let text = TF_otp.text {
+//            TF_otp.text = text.uppercased()
+//        }
         if textField == TF_otp
         {
             TF_otp.isUserInteractionEnabled = true
-            return newLength <= 4
+            return newLength <= 15
             
         }
-        
-        return newLength <= 4
+      
+        return newLength <= 15
     }
     //    func textFieldDidEndEditing(_ textField: UITextField) {
     //
@@ -268,7 +285,7 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     
     @objc func changeTextInTextField() {
         
-        if TF_otp.text?.count == 4
+        if TF_otp.text?.count == 15
         {
             let image = UIImage(named:"]greenarrow")
             btn_next_arrow.setImage(image, for: .normal)
@@ -339,10 +356,10 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
                 if response.response?.statusCode == 200 {
                     if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
                         //                    self.labelMessage.isHidden = false
-                        self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+                      
                         //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-                            self.labelMessage.isHidden = true
+                           
                             //                        self.blurView.isHidden = true
                             //                        self.popupView.isHidden = true
                         }

@@ -59,9 +59,6 @@ class TransferAmountConfirmationVc: BaseClassVC {
         lblTransactionType.text = GlobalData.topup
     }
     
-    
-    
-    
     @IBOutlet weak var back: UIButton!
     @IBAction func Action_back(_ sender: UIButton) {
         dismissViewController()

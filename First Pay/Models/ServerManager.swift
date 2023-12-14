@@ -40,9 +40,9 @@ struct APIPath {
     //original ur
     public static let  baseUrl = GlobalConstants.BASE_URL
     
-    public static let  BASE_URLLive = "http://bbuat.hblmfb.com/"
-    static let baseurlUat =  "https://bb.hblmfb.com/"
-    static let staggingurl = "http://bbuat.fmfb.pk/irisrest/"
+//    public static let  BASE_URLLive = "http://bbuat.hblmfb.com/"
+//    static let baseurlUat =  "https://bb.hblmfb.com/"
+//    static let staggingurl = "http://bbuat.fmfb.pk/irisrest/"
     // static let baseurl =  "http://bbuat.fmfb.pk/nanoloan/"
     //  static var baseurl = "http://bbuat.fmfb.pk/irisrest/"
     //testing url

@@ -17,7 +17,7 @@ import Foundation
 import OTPTextField
 class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
     var fundsTransSuccessObj: FundsTransferApiResponse?
-    var totalSecond = 60
+    var totalSecond = 0
     var ForTransactionConsent:Bool = false
     var timer = Timer()
     var counter = 0
@@ -75,8 +75,9 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
              lbl_countResendotptime.text = "\(counter)"
          }
     func startTimer() {
-        totalSecond = 30
-       
+//        totalSecond = 30
+        totalSecond = otpScreenTimeOutWithoutRegistrartion ?? 0
+        
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {

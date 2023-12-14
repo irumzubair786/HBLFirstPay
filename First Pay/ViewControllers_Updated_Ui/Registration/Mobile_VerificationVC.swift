@@ -358,9 +358,13 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
                     FBEvents.logEvent(title: .Signup_login_success)
                     
                     if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
+                        
                         if let accessToken = self.mobileRegistrationObj?.data?.token{
                             DataManager.instance.AuthToken = accessToken
+                            
+                            
                         }
+                        otpScreenTimeOutRegistraryion = Int(self.mobileRegistrationObj?.data?.OTPTimeOut ?? "")
                         let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
                         OTPVerifyVC.mobileNo = self.TF_Mobileno.text!
                         DataManager.instance.mobNo =  self.mobileNumber!

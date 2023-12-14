@@ -496,7 +496,13 @@ print(str)
         case updateRequestStatus = "FirstPayInfo/v1/updateRequestStatus"
         case getSentRequest =
         "FirstPayInfo/v1/getSentRequest"
+        
+//    NotificationsSettings
+        case getPrefLangForSms = "FirstPayInfo/v1/getPrefLangForSms"
+        
+        
     }
+
 }
 
 

@@ -14,7 +14,7 @@ import SwiftKeychainWrapper
 import SwiftyRSA
 class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     var genResponse : GenericResponse?
-    var totalSecond = 60
+    var totalSecond = 0
     var timer = Timer()
     var counter = 0
     var count = 0
@@ -130,8 +130,8 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
              labelCount.text = "\(counter)"
          }
     func startTimer() {
-        totalSecond = 60
-       
+//        totalSecond = 60
+        totalSecond =  otpScreenTimeOutWithoutRegistrartion ?? 0
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {

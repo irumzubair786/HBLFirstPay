@@ -21,7 +21,7 @@ import PasswordTextField
 import CoreLocation
 import OneSignalFramework
 import FingerprintSDK
-
+var otpScreenTimeOutWithoutRegistrartion : Int?
 class Login_VC: BaseClassVC, UITextFieldDelegate  {
     var homeObj : HomeModel?
     var concateString = ""
@@ -129,7 +129,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
     
     @objc func changeTextInTextField() {
         checkFields(filedNo: self.pinTextField.text?.count ?? 0)
-        
+       
         if self.pinTextField.text?.count == 6 {
             UserDefaults.standard.set(self.pinTextField.text, forKey: "userKey")
             //             let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
@@ -616,7 +616,8 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                                 DataManager.instance.accessToken = accessToken
                                 DataManager.instance.accountType = self.loginObj?.data?.customerHomeScreens?[0].accountType
                                 DataManager.instance.customerId = self.loginObj?.data?.customerHomeScreens?[0].customerId
-                                print("\(accessToken)")
+                                otpScreenTimeOutWithoutRegistrartion = Int(self.loginObj?.data?.otpScreenTimeOut ?? "")
+                                print("\(otpScreenTimeOutWithoutRegistrartion)")
                                 if let passKey = self.pinTextField.text{
                                     let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
                                     print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
@@ -632,6 +633,7 @@ class Login_VC: BaseClassVC, UITextFieldDelegate  {
                                 self.navigationController?.pushViewController(vc, animated: true)
                                 //                            self.present(vc, animated: true)
                             }
+                            
                             else
                             {
                                 self.saveInDataManager()

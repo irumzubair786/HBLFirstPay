@@ -62,11 +62,8 @@ class FakeLoginVc: UIViewController {
 //            // e.g., imageView.image = UIImage(named: "newImage")
 //        }
 //    }
-    
     @IBOutlet weak var pageView: UIPageControl!
-    
     @IBOutlet weak var sliderCollectionView: UICollectionView!
-    
     @IBOutlet weak var buttonLogin: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var buttonLoginAll: UIButton!
@@ -175,6 +172,7 @@ class FakeLoginVc: UIViewController {
                     }
                     
                 }
+                
                 print("ban array is",banaryyString)
                 DispatchQueue.main.async {
                     addDelegates()
@@ -240,10 +238,20 @@ extension FakeLoginVc: UICollectionViewDelegate, UICollectionViewDataSource {
         {
             let cell = sliderCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
             if let vc = cell.viewWithTag(111) as? UIImageView {
-                // vc.image = sliderImages[indexPath.row]
-                let imgURL = URL(string: banaryyString[indexPath.row])
-                vc.sd_setImage(with:(imgURL), placeholderImage: UIImage(named: "Button copy"))
                
+//                let imgURL = URL(string: banaryyString[indexPath.row])
+//                vc.sd_setImage(with:(imgURL), placeholderImage: UIImage(named: ""))
+               
+                if let urlString = banaryyString[indexPath.row].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                    if let imgURL = URL(string: urlString) {
+                        // Use imgURL for your purposes
+                        vc.sd_setImage(with:(imgURL), placeholderImage: UIImage(named: ""))
+                    } else {
+                        print("Invalid URL")
+                    }
+                } else {
+                    print("Encoding failed")
+                }
                 
             }
             return cell

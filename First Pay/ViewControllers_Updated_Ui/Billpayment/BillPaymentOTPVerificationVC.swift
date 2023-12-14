@@ -15,7 +15,7 @@ import ObjectMapper
 import SwiftKeychainWrapper
 
 class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
-    var totalSecond = 60
+    var totalSecond = 0
     var timer = Timer()
     var counter = 0
     var count = 0
@@ -96,8 +96,8 @@ class BillPaymentOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     }
     
     func startTimer() {
-        totalSecond = 10
-       
+//        totalSecond = 10
+        totalSecond =  otpScreenTimeOutWithoutRegistrartion ?? 0
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {

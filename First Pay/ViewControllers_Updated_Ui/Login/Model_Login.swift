@@ -31,7 +31,7 @@ struct login : Mappable {
 struct DataUser : Mappable {
     var token : String?
     var customerHomeScreens : [HomeScreen]?
-
+    var otpScreenTimeOut : String?
     init?(map: Map) {
 
     }
@@ -40,6 +40,7 @@ struct DataUser : Mappable {
 
         token <- map["token"]
         customerHomeScreens <- map["customerHomeScreens"]
+        otpScreenTimeOut <- map["otpScreenTimeOut"]
     }
 
 }
@@ -70,6 +71,7 @@ struct HomeScreen : Mappable {
     var emailVerified : String?
     var accountDormant : String?
     var loginHistoryId: Int?
+   
     
     init?(map: Map) {
 
@@ -103,6 +105,7 @@ struct HomeScreen : Mappable {
         accountDormant <- map["accountDormant"]
         loginHistoryId <- map["loginHistoryId"]
         accountDiscrepant <- map["accountDiscrepant"]
+//        otpScreenTimeOut <- map["otpScreenTimeOut"]
     }
 
 }
