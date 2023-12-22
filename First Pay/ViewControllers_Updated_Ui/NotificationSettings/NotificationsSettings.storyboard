@@ -94,7 +94,7 @@
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="qPU-Cd-8ie"/>
                                                             <constraint firstAttribute="height" constant="21" id="vt8-pP-1hb"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -223,8 +223,8 @@
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="OsT-Ef-zUo">
-                                        <rect key="frame" x="0.0" y="67" width="414" height="128"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="OsT-Ef-zUo">
+                                        <rect key="frame" x="0.0" y="67" width="414" height="195"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellLanguageSelection" rowHeight="165" id="9kj-CH-FvU" customClass="cellLanguageSelection" customModule="FirstPay" customModuleProvider="target">
@@ -239,25 +239,22 @@
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tmN-wp-S1t">
-                                                                    <rect key="frame" x="9" y="20" width="29" height="30"/>
+                                                                    <rect key="frame" x="16" y="26" width="19" height="20"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <state key="normal" title="Button"/>
                                                                     <buttonConfiguration key="configuration" style="plain">
                                                                         <backgroundConfiguration key="background" image="circleGray 1"/>
                                                                     </buttonConfiguration>
-                                                                    <connections>
-                                                                        <action selector="radioButon1:" destination="y42-NU-GJJ" eventType="touchUpInside" id="ULR-6B-vtq"/>
-                                                                    </connections>
                                                                 </button>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOx-p8-dQD">
                                                                     <rect key="frame" x="63" y="25" width="104" height="21"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dontLine2" translatesAutoresizingMaskIntoConstraints="NO" id="zJn-Fe-CHv">
-                                                                    <rect key="frame" x="12" y="67" width="371" height="22"/>
+                                                                    <rect key="frame" x="16" y="40" width="371" height="22"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 </imageView>
                                                             </subviews>
@@ -275,17 +272,17 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="OsT-Ef-zUo" firstAttribute="top" secondItem="gfw-ta-s5n" secondAttribute="bottom" constant="12.333333333333314" id="1Y1-mw-xRm"/>
                                     <constraint firstAttribute="bottom" secondItem="OsT-Ef-zUo" secondAttribute="bottom" id="5HH-gg-ZnQ"/>
                                     <constraint firstAttribute="height" constant="262" id="b5s-U7-wmr"/>
                                     <constraint firstItem="gfw-ta-s5n" firstAttribute="centerY" secondItem="dXJ-Ew-gSZ" secondAttribute="centerY" multiplier="0.3" id="cen-22-YgS"/>
                                     <constraint firstItem="gfw-ta-s5n" firstAttribute="centerX" secondItem="dXJ-Ew-gSZ" secondAttribute="centerX" id="d3t-Yc-L99"/>
+                                    <constraint firstItem="OsT-Ef-zUo" firstAttribute="centerX" secondItem="gfw-ta-s5n" secondAttribute="centerX" id="orF-2P-YUO"/>
+                                    <constraint firstItem="OsT-Ef-zUo" firstAttribute="leading" secondItem="dXJ-Ew-gSZ" secondAttribute="leading" id="x47-Xp-oTt"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
                                         <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                        <real key="value" value="12"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -298,6 +295,9 @@
                             <constraint firstItem="dXJ-Ew-gSZ" firstAttribute="leading" secondItem="B4Q-4i-SPA" secondAttribute="leading" id="YbL-vK-shM"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="OsT-Ef-zUo" id="ksz-fh-egH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2U8-lY-hHd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

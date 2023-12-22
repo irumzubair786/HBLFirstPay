@@ -499,7 +499,7 @@ print(str)
         
 //    NotificationsSettings
         case getPrefLangForSms = "FirstPayInfo/v1/getPrefLangForSms"
-        
+        case setPrefLangForSms = "FirstPayInfo/v1/setPrefLangForSms"
         
     }
 

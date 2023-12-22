@@ -18,10 +18,11 @@ import SideMenu
 import FingerprintSDK
 
 var isfromReactivateCard :Bool?
+var MainTitle : String?
 var isFromDeactivate : Bool?
 var isFromChangePin : Bool?
 var isfromActivate : Bool?
-//var isfromServics : Bool?
+var isfromServics : Bool?
 var isfromATMON : Bool?
 var isfromATMOFF : Bool?
 var isfromPOSON : Bool?
@@ -43,7 +44,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     var topBtnNameArray =  ["Send Money", "Mobile Top Up", "Pay Bills","Get Loan","Debit Card","See All"]
     var fingerPrintVerification: FingerPrintVerification!
     var fingerprintPngs : [Png]?
-   
+      @IBOutlet weak var blurView: UIVisualEffectView!
     var modelAcccountLevelUpgradeResponse: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? {
         didSet {
             print(modelAcccountLevelUpgradeResponse)
@@ -84,6 +85,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Homescreen_Landing)
         super.viewDidLoad()
+        
         banapi()
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -769,10 +771,8 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
          let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-        
         print(result.apiAttribute1)
         print(result.apiAttribute2)
-        
         print(params)
         print(compelteUrl)
         print(header)
@@ -791,79 +791,119 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                 print(self.getDebitDetailsObj)
                 
                 if response.response?.statusCode == 200 {
-                    
+               
                     if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
-                        if self.getDebitDetailsObj?.debitCardData != nil{
-                            GlobalData.accountDebitCardId = self.getDebitDetailsObj?.debitCardData?[0].accountDebitCardId
+                        if self.getDebitDetailsObj?.data != nil{
+                            GlobalData.accountDebitCardId = self.getDebitDetailsObj?.data.accountDebitCardId
                             
-                            if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ActivateCard"
-                            {
-                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
-                                self.present(vc, animated: true)
-                            }
-                            else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "DeactivateCard"
+                            if self.getDebitDetailsObj?.data.apiFlow == "NewCard"
                             {
                                 
                                 let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
-                                isFromDeactivate  = true
+                                let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
                                 self.present(vc, animated: true)
                                 
-                                
                             }
-                            else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ReactivateCard"
+                            
+                            
+                            else
                             {
-                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
-                                isfromReactivateCard = true
-                                self.present(vc, animated: true)
-                            }
-                            
-                        }
-                        else
-                        {
-                            
-                            if self.getDebitDetailsObj?.newCarddata != nil{
-                                if
-                                    self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
+                                if self.getDebitDetailsObj?.data.apiFlow == "ActivateCard"
+                                                            {
+                                                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                                           isfromReactivateCard = false
+                                                                self.present(vc, animated: true)
+                                                            }
+                                
+                                
+                                else if self.getDebitDetailsObj?.data.apiFlow == "DeactivateCard"
                                 {
-                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                                    let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
-                                    self.present(vc, animated: true)
-                                }
-                                else if self.getDebitDetailsObj?.newCarddata?.apiFlow == "DeactivateCard"
-                                {
-                                    
                                     let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
                                     let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                                    isFromDeactivate  = true
+                                    isfromReactivateCard = false
+                                    isfromActivateCard = false
                                     self.present(vc, animated: true)
-                                    
+
                                 }
-                            }
-                            
+//
+                                else if self.getDebitDetailsObj?.data.apiFlow == " ReactivateCard"
+                                {
+                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+//
+                                    let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                                    isfromReactivateCard = true
+//
+                                    
+                                    self.present(vc, animated: true)}}}
                         }
-                        
                     }
-                    else {
-                        if let message = self.getDebitDetailsObj?.messages{
-                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                            
-                            
-                        }
-                    }
-                }
+                
                 else {
                     if let message = self.getDebitDetailsObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                        
                     }
-                    //                print(response.result.value)
-                    //                print(response.response?.statusCode)
                 }
+            }
+            else {
+                if let message = self.getDebitDetailsObj?.messages{
+                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                    
+                }
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
             }
         }
     }
+                    
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            //                            GlobalData.accountDebitCardId = self.getDebitDetailsObj?.debitCardData?[0].accountDebitCardId
+                            //                            if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ActivateCard"
+                            //                            {
+                            //                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                            //                                self.present(vc, animated: true)
+                            //                            }
+                            //                            else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "DeactivateCard"
+                            //                            {
+                            //                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                            //                                isFromDeactivate  = true
+                            //                                self.present(vc, animated: true)
+                            //
+                            //                            }
+                            //                            else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ReactivateCard"
+                            //                            {
+                            //                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                            //                                isfromReactivateCard = true
+                            //                                self.present(vc, animated: true)}}
+                            //                        else
+                            //                        {
+                            //                            if self.getDebitDetailsObj?.newCarddata != nil{
+                            //                                if
+                            //                                    self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
+                            //                                {
+                            //                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                    let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
+                            //                                    self.present(vc, animated: true)
+                            //                                }
+                            //                                else if self.getDebitDetailsObj?.newCarddata?.apiFlow == "DeactivateCard"
+                            //                                {
+                            //                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                    let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                            //                                    self.present(vc, animated: true)
+                            //                                }}}
+                    
+    
     ////    ----------getaccountlimits
         private func getAvailableLimits() {
       //
@@ -871,7 +911,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                   self.showToast(title: "No Internet Available")
                   return
               }
-      
+          
               showActivityIndicator()
               var userCnic : String?
               if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
@@ -902,8 +942,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
       
       
               NetworkManager.sharedInstance.enableCertificatePinning()
-      
-      
               NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
 //                  (response: DataResponse<AvailableLimitsModel>) in
       

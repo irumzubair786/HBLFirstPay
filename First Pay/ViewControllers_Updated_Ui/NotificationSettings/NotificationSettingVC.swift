@@ -11,19 +11,30 @@ import FittedSheets
 import ObjectMapper
 import Alamofire
 
-class NotificationSettingVC: BaseClassVC, BottomSheets {
-    func openPicker(from parent: UIViewController, id: Int, in view: UIView?, tag: Int?) {
+protocol DataDelegate: AnyObject {
+    func receiveData(data: String)
+    
+}
+
+class NotificationSettingVC: BaseClassVC, BottomSheets, DataDelegate {
+    
+    func receiveData(data: String) {
+        print("Data received in ClassA: \(data)")
+        labelSelectedLanguage.text = data
+    }
+    
+    func openPicker(from parent: UIViewController, in view: UIView?, valu: String?) {
         let useInlineMode = view != nil
         let controller = (UIStoryboard.init(name: "NotificationsSettings", bundle: Bundle.main).instantiateViewController(withIdentifier: "languageSelectionVC") as? languageSelectionVC)!
-        controller.id = 1
-        controller.tag = 2
+       
+        
        
         let sheet = SheetViewController(
             controller: controller,
-            sizes: [.percent(0.45), .fullscreen],
+            sizes: [.percent(0.35), .fullscreen],
             options: SheetOptions(useInlineMode: useInlineMode))
         NotificationSettingVC.addSheetEventLogging(to: sheet)
-        
+        controller.valueDelegate = self
         if let view = view {
             sheet.animateIn(to: view, in: parent)
         } else {
@@ -31,15 +42,30 @@ class NotificationSettingVC: BaseClassVC, BottomSheets {
             parent.present(sheet, animated: true, completion: nil)
         }
     }
-    
+    var ValueDelegate: String?
     static var name: String { "CategoryPicker" }
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonback.setTitle("", for: .normal)
         buttonDropdown.setTitle("", for: .normal)
-        // Do any additional setup after loading the view.
+        func receiveData(data: String){
+            labelSelectedLanguage.text = data
+            print("receive data from class b", data)
+        }
+        getPrefLangFor()
     }
+
+       
+        // Do any additional setup after loading the view.
     
+    override func viewWillAppear(_ animated: Bool) {
+        func receiveData(data: String){
+            labelSelectedLanguage.text = data
+            print("receive data from class b", data)
+        }
+        
+        getPrefLangFor()
+    }
     @IBOutlet weak var buttonback: UIButton!
     
     @IBAction func buttonback(_ sender: UIButton) {
@@ -51,7 +77,11 @@ class NotificationSettingVC: BaseClassVC, BottomSheets {
     @IBOutlet weak var buttonDropdown: UIButton!
     
     @IBAction func buttonDropdown(_ sender: UIButton) {
-        getPrefLangFor()
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "languageSelectionVC") as! languageSelectionVC
+        openPicker(from: self, in: nil, valu: nil)
+//             vc.valueDelegate = self
+   ////                vc.Array = modelgetPrefLangForSms?.data.language
+                   self.present(vc, animated: true)
        
         
     }
@@ -73,11 +103,7 @@ class NotificationSettingVC: BaseClassVC, BottomSheets {
     var modelgetPrefLangForSms: getPrefLangForSmsModel? {
         didSet {
             if modelgetPrefLangForSms?.responsecode == 1 {
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "languageSelectionVC") as! languageSelectionVC
-                openPicker(from: self, id: 0, in: nil, tag: 2)
-                
-                self.present(vc, animated: true)
-              
+             labelSelectedLanguage.text = modelgetPrefLangForSms?.data.language
             }
             else {
                 self.showAlertCustomPopup(title: "Error", message: modelgetPrefLangForSms?.messages, iconName: .iconError)
@@ -103,6 +129,7 @@ extension NotificationSettingVC
     // MARK: - DataClass
     struct DataClass: Codable {
         let language: String
+        
     }
     
     // MARK: - Encode/decode helpers

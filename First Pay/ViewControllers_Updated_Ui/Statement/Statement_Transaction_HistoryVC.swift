@@ -36,15 +36,22 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         aCell.btn.setTitle("", for: .normal)
         let aStatement = self.myStatementObj?.ministatement![indexPath.row]
         //        getDataStatemnt = self.myStatementObj?.ministatement![indexPath.row]
-        aCell.lblbankName.text = aStatement?.transDocsDescr
-        aCell.lbldate.text = aStatement?.transDate
+//        aCell.lblbankName.text = aStatement?.transDocsDescr
+//        aCell.lbldate.text = (aStatement?.transDate ?? "") + "| \()"
+        
         
         aCell.lblAmount.text = " Rs.\(aStatement?.txnAmt! ?? 0)"
         if aStatement?.amountType == "C"{
             
+            
 //            aCell.lblAmount.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
             aCell.img.image = #imageLiteral(resourceName: "Arrow Icon-1")
-            aCell.lblbankName.text = aStatement?.sourceBank
+            aCell.lblbankName.text = aStatement?.transDocsDescr
+//            amountType
+            aCell.lbldate.text = (aStatement?.transDate ?? "") + " | Credit"
+            
+            
+            
             //            self.miniStatementObj?.ministatement?[0].sourceBank
             //
         }
@@ -52,7 +59,8 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
             //            aCell.lblType.text = "Debit"
 //            aCell.lblAmount.textColor = #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1)
             aCell.img.image = #imageLiteral(resourceName: "Arrow Icon")
-            aCell.lblbankName.text = aStatement?.sourceBank
+            aCell.lblbankName.text = aStatement?.transDocsDescr
+            aCell.lbldate.text = (aStatement?.transDate ?? "") + " | Debit"
             
             //
         }

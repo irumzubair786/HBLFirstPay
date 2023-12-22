@@ -1,8 +1,8 @@
 //
-//  DeavtivateDebitCardMainVC.swift
+//  ReactivateMainVC.swift
 //  First Pay
 //
-//  Created by Irum Butt on 15/02/2023.
+//  Created by Irum Zubair on 21/12/2023.
 //  Copyright © 2023 FMFB Pakistan. All rights reserved.
 //
 
@@ -11,63 +11,44 @@ import Alamofire
 import ObjectMapper
 import SwiftKeychainWrapper
 import ObjectMapper
-class DeavtivateDebitCardMainVC: BaseClassVC {
+class ReactivateMainVC: BaseClassVC {
     var getDebitDetailsObj : GetDebitCardModel?
-    @IBOutlet weak var buttonBack: UIButton!
+    var genResponse : GenericResponse?
     override func viewDidLoad() {
         super.viewDidLoad()
-        buttonChangePin.setTitle("", for: .normal)
-        buttonBack.setTitle("", for: .normal)
-        buttonDeactivate.setTitle("", for: .normal)
-        buttonDebitServices.setTitle("", for: .normal)
         getDebitCard()
+        buttonBack.setTitle("", for: .normal)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
+        Reactivate.addGestureRecognizer(tapGestureRecognizer)
+        let tapGestureRecognizers = UITapGestureRecognizer(target: self, action: #selector(MovetoOrderNow(tapGestureRecognizer:)))
+        orderNewCard.addGestureRecognizer(tapGestureRecognizers)
         // Do any additional setup after loading the view.
     }
-    
-    
-    
-    @IBAction func buttonBack(_ sender: UIButton) {
-        self.dismiss(animated: true)
-//        self.navigationController?.popViewController(animated: true)
-    }
-    @IBOutlet weak var buttonDeactivate: UIButton!
-    @IBAction func buttonChangePin(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
-        isFromChangePin = true
-        isFromDeactivate = false
-        isfromReactivateCard = false
-        isfromServics = false
-        self.navigationController?.pushViewController(vc, animated: true)
-        
-        
-    }
-    @IBAction func buttonDeactivate(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeactivateConfirmationVC") as! DeactivateConfirmationVC
-        isFromDeactivate = true
-        isFromChangePin = false
-        isfromServics = false
-        isfromReactivateCard = false
-        self.navigationController?.pushViewController(vc, animated: true)
-        
-    }
-    
-    @IBOutlet weak var buttonDebitServices: UIButton!
-    @IBAction func buttonDebitServices(_ sender: UIButton) {
-        
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "debitCardServicesVc") as! debitCardServicesVc
-        isFromDeactivate = false
-        isFromChangePin = false
-        isfromServics = true
-        isfromReactivateCard = false
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    
+
     @IBOutlet weak var labeldate: UILabel!
-    @IBOutlet weak var buttonChangePin: UIButton!
-    
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var labelCardNumber: UILabel!
+    
+    @IBOutlet weak var buttonBack: UIButton!
+    @IBOutlet weak var Reactivate: UIView!
+    
+    @IBOutlet weak var orderNewCard: UIView!
+    
+    @IBAction func buttonBack(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        
+    }
+    
+    @objc func MovetoOrderNow(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        
+        
+        
+    }
+   
     func getValueFromAPI()
     {
         if let anObject =  self.getDebitDetailsObj?.data
@@ -181,5 +162,5 @@ class DeavtivateDebitCardMainVC: BaseClassVC {
             }
         }
     }
- 
+
 }

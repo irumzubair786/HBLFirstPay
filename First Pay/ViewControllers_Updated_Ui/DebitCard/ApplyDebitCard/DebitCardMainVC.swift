@@ -78,7 +78,8 @@ class DebitCardMainVC: BaseClassVC {
             guard let data = response.data else { return }
                         if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
             self.checkDebitCardObj = Mapper<GetDebitCardCheckModel>().map(JSONObject: json)
-            
+                        
+
 //            self.checkDebitCardObj = response.result.value
             if response.response?.statusCode == 200 {
                 FBEvents.logEvent(title: .Debit_ordername_success)

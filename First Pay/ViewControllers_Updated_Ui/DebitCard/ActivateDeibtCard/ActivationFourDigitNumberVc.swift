@@ -32,10 +32,23 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
         {
             labelTitle.text = "ATM & POS ACCESSBILITY"
         }
-        if (isfromPOSON == true ) || (isfromATMOFF == true)
+       else  if (isfromPOSON == true ) || (isfromATMOFF == true)
         {
             labelTitle.text = "ATM & POS ACCESSBILITY"
         }
+       else  if isFromDeactivate == true
+        {
+        labelTitle.text = "DEACTIVATE MY CARD"
+        }
+       else if isfromActivateCard == true
+        {
+            labelTitle.text = "ACTIVATE MY CARD"
+        }
+       else if isFromChangePin == true{
+           
+           labelTitle.text = "UPDATE MY PIN"
+        }
+        
         self.textfieldLast4digit.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         
         buttonContinue.circle()
@@ -45,9 +58,10 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var labelMainTitle: UILabel!
     
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer) {
-
+        
         if isFromChangePin == true
         {
+            
             
             isFromChangePin = true
             getDebitCardsCall()
@@ -62,31 +76,41 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
             isFromDeactivate = true
             getDebitCardsCall()
         }
-        if isfromATMON == true || isfromPOSON == true{
+        if isfromServics == true
+        {
+            if isfromATMON == true || isfromPOSON == true{
+                
+//                call here
+            let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+            
+            vc.cardId = cardId
+            vc.channel = serviceFlag
+            vc.accountDebitcardId =  GlobalData.accountDebitCardId
+            GlobalData.debitCardlastfourDigit = textfieldLast4digit.text!
+            vc.lastFourDigit = textfieldLast4digit.text!
+            vc.status = status
+            vc.isfromFirstTimeEnter = true
+                
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else  if  isfromATMOFF == true || isfromPOSOFF == true
+        {
+            FBEvents.logEvent(title: .Debit_activateotp_attempt)
+            
             let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
             vc.cardId = cardId
             vc.channel = serviceFlag
             vc.accountDebitcardId =  GlobalData.accountDebitCardId
-            vc.lastFourDigit = textfieldLast4digit.text!
             vc.status = status
+            vc.lastFourDigit = textfieldLast4digit.text!
+            //          isfromDisableService = true
+            vc.isfromFirstTimeEnter = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
-      else  if  isfromATMOFF == true || isfromPOSOFF == true
-        {
-          FBEvents.logEvent(title: .Debit_activateotp_attempt)
-
-          let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
-          vc.cardId = cardId
-          vc.channel = serviceFlag
-          vc.accountDebitcardId =  GlobalData.accountDebitCardId
-          vc.status = status
-          vc.lastFourDigit = textfieldLast4digit.text!
-          //          isfromDisableService = true
-          self.navigationController?.pushViewController(vc, animated: true)
-      }
-        else{
-            getDebitCardsCall()
-        }
+    }
+//        else{
+//            getDebitCardsCall()
+//        }
     }
     
     @IBAction func buttonBack(_ sender: UIButton) {
@@ -100,13 +124,53 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
     @IBAction func buttonContinue(_ sender: UIButton) {
         if isFromChangePin == true
         {
+            
+            
             isFromChangePin = true
             getDebitCardsCall()
         }
-        else{
+        
+        if isfromReactivateCard == true{
+            isFromDeactivate = false
+            getDebitCardsCall()
+        }
+        if isFromDeactivate == true
+        {
             isFromDeactivate = true
             getDebitCardsCall()
         }
+        if isfromServics == true
+        {
+            if isfromATMON == true || isfromPOSON == true{
+                
+//                call here
+            let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+            
+            vc.cardId = cardId
+            vc.channel = serviceFlag
+            vc.accountDebitcardId =  GlobalData.accountDebitCardId
+            GlobalData.debitCardlastfourDigit = textfieldLast4digit.text!
+            vc.lastFourDigit = textfieldLast4digit.text!
+            vc.status = status
+            vc.isfromFirstTimeEnter = true
+                
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else  if  isfromATMOFF == true || isfromPOSOFF == true
+        {
+            FBEvents.logEvent(title: .Debit_activateotp_attempt)
+            
+            let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+            vc.cardId = cardId
+            vc.channel = serviceFlag
+            vc.accountDebitcardId =  GlobalData.accountDebitCardId
+            vc.status = status
+            vc.lastFourDigit = textfieldLast4digit.text!
+            //          isfromDisableService = true
+            vc.isfromFirstTimeEnter = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
         
         
     }
@@ -215,7 +279,16 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
                 if response.response?.statusCode == 200 {
                     
                     if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        
+                       
+                        
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as!  ActivationDebitCardOTPVerificationVC
+                        vc.cardId = self.cardId
+                        vc.channel = serviceFlag
+                        GlobalData.debitCardChannel = serviceFlag
+                        vc.accountDebitcardId =  GlobalData.accountDebitCardId
+                        vc.lastFourDigit = self.textfieldLast4digit.text!
+                        vc.status = self.status
                         self.navigationController?.pushViewController(vc, animated: true)
                         
                         
@@ -238,4 +311,7 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
             }
         }
     }
+   
+
+    
 }

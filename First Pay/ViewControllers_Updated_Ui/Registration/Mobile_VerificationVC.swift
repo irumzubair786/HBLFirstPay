@@ -362,7 +362,6 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
                         if let accessToken = self.mobileRegistrationObj?.data?.token{
                             DataManager.instance.AuthToken = accessToken
                             
-                            
                         }
                         otpScreenTimeOutRegistraryion = Int(self.mobileRegistrationObj?.data?.OTPTimeOut ?? "")
                         let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC

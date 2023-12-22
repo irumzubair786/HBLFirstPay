@@ -259,10 +259,12 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
         {
             TF_otp.isUserInteractionEnabled = true
             return newLength <= 15
+//            return newLength <= 4
             
         }
       
         return newLength <= 15
+//        return newLength <= 4
     }
     //    func textFieldDidEndEditing(_ textField: UITextField) {
     //
@@ -284,8 +286,8 @@ class OTP_Mobile_VerificationVC: BaseClassVC ,UITextFieldDelegate{
     //    }
     
     @objc func changeTextInTextField() {
-        
-        if TF_otp.text?.count == 15
+//        if TF_otp.text?.count == 15
+        if TF_otp.text?.count == 4 || TF_otp.text?.count == 15
         {
             let image = UIImage(named:"]greenarrow")
             btn_next_arrow.setImage(image, for: .normal)

@@ -116,7 +116,7 @@ struct FBEvents {
         case Debit_activatepincreate_success
         case Debit_activatepincreate_failure
         case Debit_activate_success
-        
+        case Debit_activate_orderNew_card
         //MARK: - Homescreen
         case Homescreen_Landing
         case Homescreen_Cashpoints_click

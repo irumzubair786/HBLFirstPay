@@ -12,6 +12,10 @@ struct GlobalData
 {
     static var accountDebitCardId :Int?
     static var debitCardUserFullName :String?
+    static var debitCardStatus :String?
+    static var debitCardChannel :String?
+    static var cardId :String?
+    static var debitCardlastfourDigit :String?
     static var selectedBranch = ""
     static var selectedBranchId :Int?
     static var selectedBranchCode : String?

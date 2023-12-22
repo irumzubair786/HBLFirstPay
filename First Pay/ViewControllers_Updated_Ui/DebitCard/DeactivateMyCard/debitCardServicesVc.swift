@@ -44,7 +44,7 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     override func viewWillAppear(_ animated: Bool) {
-        
+        getdebitcardservices()
     }
     @objc func changeTextInTextField() {
         print("end editing")
@@ -78,15 +78,74 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
     }
     
     @IBOutlet weak var switchATM: UISwitch!
-    
+//    func a()
+//    {
+//        let consentAlert = UIAlertController(title: "", message: "Are you sure  you want to disable ATM services on FirstPay DebitCard?", preferredStyle: UIAlertControllerStyle.alert)
+//        
+//        consentAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
+//            serviceFlag = "ATM"
+//            let switchState = !sender.isOn
+//            if switchATM.isOn {
+//                selectstatus = "A"
+//                switchFlag = true
+//    //            move to new
+//             
+//                let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
+//                isfromATMON = true
+//                vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
+//                vc.channel = serviceFlag
+//                vc.accountDebitcardId = self.accountDebitCardId
+//                vc.lastFourDigit = txtfield.text!
+//                self.selectstatus = "A"
+//                vc.status = selectstatus
+//                self.switchATM.isOn = switchState
+//                GlobalData.debitCardlastfourDigit = txtfield.text!
+//                isFromChangePin = false
+//                isfromActivate = false
+//                isFromDeactivate = false
+//                self.navigationController?.pushViewController(vc, animated: true)
+//            }
+//            
+//            else {
+//                
+//                selectstatus = "I"
+//                switchFlag = false
+//                let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
+//                isfromATMOFF = true
+//                
+//                vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
+//                vc.channel = serviceFlag
+//                vc.accountDebitcardId = self.accountDebitCardId
+//                vc.lastFourDigit = txtfield.text!
+//                GlobalData.debitCardlastfourDigit = txtfield.text!
+//                vc.status = selectstatus
+//                isFromChangePin = false
+//                isfromActivate = false
+//                isFromDeactivate = false
+//                self.navigationController?.pushViewController(vc, animated: true)
+//    //            self.updateChannelStatus()
+//            }
+//
+//
+//        }))
+//            
+//        consentAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
+//            self.navigationController?.popViewController(animated: true)
+////            self.dismiss(animated: true, completion:nil)
+//        }))
+//    //        UserDefaults.standard.set()
+//        self.present(consentAlert, animated: true, completion: nil)
+//    }
+   
     @IBAction func switchATM(_ sender: UISwitch) {
+        
         serviceFlag = "ATM"
         let switchState = !sender.isOn
         if switchATM.isOn {
             selectstatus = "A"
             switchFlag = true
 //            move to new
-         
+
             let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
             isfromATMON = true
             vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
@@ -96,21 +155,29 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
             self.selectstatus = "A"
             vc.status = selectstatus
             self.switchATM.isOn = switchState
+            GlobalData.debitCardlastfourDigit = txtfield.text!
+            isFromChangePin = false
+            isfromActivate = false
+            isFromDeactivate = false
             self.navigationController?.pushViewController(vc, animated: true)
         }
-        
+
         else {
-            
+
             selectstatus = "I"
             switchFlag = false
             let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as! ActivationFourDigitNumberVc
             isfromATMOFF = true
-            
+
             vc.cardId = servicesOBj?.data?.accountDebitCard?.cardId ?? ""
             vc.channel = serviceFlag
             vc.accountDebitcardId = self.accountDebitCardId
             vc.lastFourDigit = txtfield.text!
+            GlobalData.debitCardlastfourDigit = txtfield.text!
             vc.status = selectstatus
+            isFromChangePin = false
+            isfromActivate = false
+            isFromDeactivate = false
             self.navigationController?.pushViewController(vc, animated: true)
 //            self.updateChannelStatus()
         }
@@ -136,6 +203,10 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
             self.switchATM.isOn = true
             self.selectstatus = "A"
             vc.status = selectstatus
+            GlobalData.debitCardlastfourDigit = txtfield.text!
+            isFromChangePin = false
+            isfromActivate = false
+            isFromDeactivate = false
             self.navigationController?.pushViewController(vc, animated: true)
         }
         else
@@ -150,6 +221,10 @@ class debitCardServicesVc: BaseClassVC, UITextFieldDelegate {
             vc.accountDebitcardId = self.accountDebitCardId
             vc.lastFourDigit = txtfield.text!
             vc.status = selectstatus
+            GlobalData.debitCardlastfourDigit = txtfield.text!
+            isFromChangePin = false
+            isfromActivate = false
+            isFromDeactivate = false
             self.navigationController?.pushViewController(vc, animated: true)
 //            self.SendotpinterfaceenableForDisable()
         }

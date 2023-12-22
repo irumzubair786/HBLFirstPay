@@ -180,14 +180,37 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     
     @IBAction func butttonContinue(_ sender: UIButton) {
 //        movetoNext()
+//
+        if isFromChangePin == true || isFromDeactivate == true || isfromReactivateCard == true {
 
-        UpdateChannelStatus()
+//            api call
+            debitCardVerificationCall()
+        }
+        else
+        {
+            if isfromServics == true{
+                UpdateChannelStatus()
+            }
+            
+        }
+        
 //
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
     {
        
-        UpdateChannelStatus()
+        if  isFromChangePin == true || isFromDeactivate == true || isfromReactivateCard == true   {
+//            api call
+            debitCardVerificationCall()
+        }
+        else
+        {
+            if isfromServics == true{
+                UpdateChannelStatus()
+            }
+            
+        }
+        
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -223,6 +246,7 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
     
     @IBOutlet weak var labelMainTitle: UILabel!
     @IBOutlet weak var imageNextArrow: UIImageView!
+    
     
     private func debitCardVerificationCall() {
         
@@ -285,7 +309,6 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
                         if isFromDeactivate == true {
                             //                        apicalldeactivate
                             self.changeDCStatus()
-                            
                         }
                         
                         if isfromReactivateCard == true
@@ -294,13 +317,20 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
                             self.navigationController?.pushViewController(vc, animated: true)
                             
                         }
+                        
                         if isFromChangePin == true{
                             let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardSetPinVC") as!  ActivationDebitCardSetPinVC
                             self.navigationController?.pushViewController(vc, animated: true)
                         }
+                        
+//                        if (isfromATMON ==  true || (isfromPOSON != nil) == true)
+//                        {
+//                            UpdateChannelStatus()
+//                        }
+                        
                         else
                         {
-                            
+                            self.UpdateChannelStatus()
                             //
                             //                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardSetPinVC") as!  ActivationDebitCardSetPinVC
                             //                        self.navigationController?.pushViewController(vc, animated: true)
@@ -428,10 +458,10 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         
         showActivityIndicator()
         
-        
+//        GlobalData.debitCardChannel
         let compelteUrl = GlobalConstants.BASE_URL + "DebitCard/v1/updateChannelStatus"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["imei":"\(DataManager.instance.imei ?? "")","cnic":userCnic ?? "" ,"channelId":"\(DataManager.instance.channelID )","cardid": cardId  ?? "","channel": channel ?? "" ,"status": status ?? "","otp": textFieldOTP.text! , "accountDebitCardId": "\(accountDebitcardId ?? 0 )", "dcLastDigits": lastFourDigit ?? ""]
+        let parameters = ["imei":"\(DataManager.instance.imei ?? "")","cnic":userCnic! ?? "" ,"channelId":DataManager.instance.channelID ,"cardid": GlobalData.cardId!  ?? "","channel": channel! ,"status": GlobalData.debitCardStatus! ?? "","otp": textFieldOTP.text! , "accountDebitCardId": "\(GlobalData.accountDebitCardId! )", "dcLastDigits": lastFourDigit! ?? ""]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
        
@@ -485,14 +515,14 @@ class ActivationDebitCardOTPVerificationVC: BaseClassVC, UITextFieldDelegate {
         {
             if isfromATMON == true  || isfromPOSON == true {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
-                
+                vc.isfromFirstTimeEnter = false
                 self.navigationController?.pushViewController(vc, animated: true)
-                UpdateChannelStatus()
+//                UpdateChannelStatus()
             }
-            if isfromATMOFF == true || isfromPOSOFF == true
+           else if isfromATMOFF == true || isfromPOSOFF == true
             {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
-                
+               vc.isfromFirstTimeEnter = false
                 self.navigationController?.pushViewController(vc, animated: true)
             }
             

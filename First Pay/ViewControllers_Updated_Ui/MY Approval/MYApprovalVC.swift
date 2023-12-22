@@ -389,11 +389,7 @@ class MYApprovalVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource {
             "status" : "A",
             "requestId" : "\(requesterMoneyId!)"
         ]
-       
-//        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-//        let paramsencoded = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//
-//        print(paramsencoded)
+  
         APIs.postAPI(apiName: .updateRequestStatus, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             
             let model: UpdateRequestStatus? = APIs.decodeDataToObject(data: responseData)

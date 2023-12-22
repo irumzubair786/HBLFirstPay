@@ -40,8 +40,8 @@ class NetworkManager {
                 performDefaultValidation: false,
                 validateHost: true
             )
-            
         ]
+        
 //        let evaluators: [String: ServerTrustEvaluating] = [
 //            "https://bb.fmfb.pk": PublicKeysTrustEvaluator()
 //        ]

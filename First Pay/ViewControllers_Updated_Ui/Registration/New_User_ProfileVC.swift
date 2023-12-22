@@ -54,7 +54,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
 //        dismissKeyboard()
 //        TF_CnicNo.mode = .cnic
         //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-        blurView.alpha = 0.6
+        blurView.alpha = 0.8
         blurView.isHidden = true
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
         popviewView.isUserInteractionEnabled = true

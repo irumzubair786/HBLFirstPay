@@ -28,7 +28,7 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imagePopup.isUserInteractionEnabled = true
         imagePopup.addGestureRecognizer(tapGestureRecognizer)
-        
+        blurView.alpha = 0.9
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(move(tapGestureRecognizer:)))
         
