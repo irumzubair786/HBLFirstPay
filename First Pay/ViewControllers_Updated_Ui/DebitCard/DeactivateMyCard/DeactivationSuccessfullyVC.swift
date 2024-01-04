@@ -12,12 +12,17 @@ class DeactivationSuccessfullyVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        blurView.alpha = 0.9
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(Movetoback(tapGestureRecognizer:)))
         imagePopUp.isUserInteractionEnabled = true
         imagePopUp.addGestureRecognizer(tapGesture)
+       
+        
         // Do any additional setup after loading the view.
     }
     
+    
+    @IBOutlet weak var blurView: UIVisualEffectView!
     @IBOutlet weak var imagePopUp: UIImageView!
     @objc func Movetoback(tapGestureRecognizer: UITapGestureRecognizer)
     {

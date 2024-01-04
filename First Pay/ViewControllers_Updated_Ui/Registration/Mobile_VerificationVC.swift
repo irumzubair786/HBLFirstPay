@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import RNCryptor
 import Foundation
@@ -16,10 +16,25 @@ let systemVersion = UIDevice.current.systemVersion
 let devicemodel = UIDevice.current.localizedModel
 class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     var mobileRegistrationObj : mobileRegistrationModel?
+    @IBOutlet weak var titleName: UILabel!
+    var isFromLoginScreen = false
+
     let encryptionkey = "65412399991212FF65412399991212FF65412399991212FF"
+    
     override func viewDidLoad(){
         FBEvents.logEvent(title: .Signup_login_landed)
         super.viewDidLoad()
+        if isFromLoginScreen {
+            titleName?.text = "Sign-in"
+            btn_Explore.isHidden = true
+            
+
+        }
+        else {
+            TF_Mobileno.becomeFirstResponder()
+            titleName?.text = "Lets Get Started"
+            btn_Explore.isHidden = false
+        }
         getIMEI()
         getIPAddressmac()
         getWiFiAddress()
@@ -34,16 +49,30 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
        
     }
         
-//
+//    @objc func changeNumberInTextField() {
+//    let text = textFieldNumber.text!.replacingOccurrences(of: "+92-", with: "")
+//    if textFieldNumber.text?.count == 1 && text == "0" {
+//        textFieldNumber.text = nil
+//        return
+//    }
+//    textFieldNumber.text = format(with: "+92-XXX-XXXXXXX", phone: text)
+//}
     @objc func keyboardWillShow(_ notification: Notification) {
         // Hide your button here
         btnContinue.isHidden = false
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     @objc func changeTextInTextField() {
         print("end editing")
-       
-        if self.TF_Mobileno.text!.count != 11
+        let text = TF_Mobileno.text!.replacingOccurrences(of: "+92-", with: "")
+            if TF_Mobileno.text?.count == 1 && text == "0" {
+                TF_Mobileno.text = nil
+                return
+            }
+        TF_Mobileno.text = format(with: "+92-XXX-XXXXXXX", phone: text)
+        if self.TF_Mobileno.text!.count != 15
         {
             self.lblinvalid.isHidden = false
 //            self.lblinvalid.text = "Invalid Phone Number."
@@ -60,6 +89,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         self.lblinvalid.isHidden = true
         let image = UIImage(named:"]greenarrow")
         self.btn_next_arrow.setImage(image, for: .normal)
+    
         self.btnContinue.isUserInteractionEnabled = true
         self.btn_next_arrow.isUserInteractionEnabled = true
     }
@@ -68,7 +98,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     
     @objc func validateMobileNumber() {
             if let mobileNumber = TF_Mobileno.text {
-                if mobileNumber.count  < 11 {
+                if mobileNumber.count  < 15 {
                     lblinvalid.isHidden = false
 //                    lblinvalid.text = "Mobile number should be at least 11 digits"
                     let image = UIImage(named:"grayArrow")
@@ -85,7 +115,7 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
         }
     private func textFieldDidEndEditing(_ textField: NumberTextField) {
  
-        if TF_Mobileno.text?.count != 11
+        if TF_Mobileno.text?.count != 15
             {
 
                 TF_Mobileno .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
@@ -181,14 +211,14 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var btn_next_arrow: UIButton!
     //    Actions
     //    --------------------------------
-    var phoneArr = ["0301","0302","0303","0304","0305","0306","0307","0308","0309","0310","0311", "0312","0313","0314","0315","0316","0317","0318","0319","0320","0321","0322","0323","0324","0325","0331","0332","0333","0334","0335","0336","0340","0341","0342","0343","0344","0345","0346","0347","0348","0349","0355"]
+    var phoneArr = ["0301","0302","0303","0304","0305","0306","0307","0308","0309","0310","0311", "0312","0313","0314","0315","0316","0317","0318","0319","0320","0321","0322","0323","0324","0325","0331","0332","0333","0334","0335","0336","0339","0340","0341","0342","0343","0344","0345","0346","0347","0348","0349","0355"]
 
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
-         OTPVerifyVC.mobileNo = TF_Mobileno.text!
-        self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
-//        mobileRegistration()
+//        let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
+//         OTPVerifyVC.mobileNo = TF_Mobileno.text!
+//        self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
+        mobileRegistration()
     }
 //    private func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 //
@@ -244,11 +274,11 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
 
         if textField == TF_Mobileno {
 
-            return newLength <= 11 // Bool
+            return newLength <= 15 // Bool
         }
         else {
 
-            return newLength <= 11
+            return newLength <= 15
         }
     }
     
@@ -261,10 +291,8 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
     }
     func move_to_next()
     {
-        let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
-         OTPVerifyVC.mobileNo = TF_Mobileno.text!
-        DataManager.instance.mobNo =  TF_Mobileno.text!
-        self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
+        mobileRegistration()
+        
     }
 
     var AccesstokenAfterDecrypt = ""
@@ -285,78 +313,96 @@ class Mobile_VerificationVC: BaseClassVC, UITextFieldDelegate {
            }
         
     }
+    
+    var mobileNumber : String?
+    private func  mobileRegistration() {
 
-//    private func  mobileRegistration() {
-//
-//        if !NetworkConnectivity.isConnectedToInternet(){
-//            self.showToast(title: "No Internet Available")
-//            return
-//        }
-//        showActivityIndicator()
-//        if (TF_Mobileno.text?.isEmpty)!{
-//            TF_Mobileno.text = ""
-//        }
-//        let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/mobileRegistration"
-//        let a = TF_Mobileno.text!
-//
-//        var mobileNumber = a.replacingOccurrences(of: "-", with: "")
-//        mobileNumber = mobileNumber.replacingOccurrences(of: "_", with: "")
-//        DataManager.instance.mobNo = mobileNumber
-//        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo":(DataManager.instance.mobNo),"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)"]
-//
-//        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-//
-//        print(parameters)
-//
-//        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
-//        print(params)
-//        print(compelteUrl)
-//
-//        FBEvents.logEvent(title: .Signup_login_attempt)
-//        NetworkManager.sharedInstance.enableCertificatePinning()
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<mobileRegistrationModel>) in
-//
-//            self.hideActivityIndicator()
-//
-//            self.mobileRegistrationObj = response.result.value
-//            if response.response?.statusCode == 200 {
-//                FBEvents.logEvent(title: .Signup_login_success)
-//
-//                if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
-//                    if let accessToken = self.mobileRegistrationObj?.data?.token{
-//                        DataManager.instance.AuthToken = accessToken
-//                    }
-//
-//
-//                }
-//                else {
-//                    if let message = self.mobileRegistrationObj?.messages{
-//                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-//                    }
-//
-//                    // Html Parse
-//
-//                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-//                        if title.contains("Request Rejected") {
-//                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
-//                        }
-//                    }
-//                }
-//            }
-//            else {
-//                if let message = self.mobileRegistrationObj?.messages {
-//                    FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
-//                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-//                }
-//                else {
-//                    self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
-//                }
-////                print(response.result.value)
-////                print(response.response?.statusCode)
-//            }
-//        }
-//    }
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
+        showActivityIndicator()
+        if (TF_Mobileno.text?.isEmpty)!{
+            TF_Mobileno.text = ""
+        }
+        let compelteUrl = GlobalConstants.BASE_URL + "WalletCreation/v1/mobileRegistration"
+        let a = TF_Mobileno.text!
+        mobileNumber = a.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0")
+        
+//        "mobileNo": textFieldNumber.text!.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+92", with: "0"),
+      
+        DataManager.instance.mobNo = mobileNumber!
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","appVersion": DataManager.instance.appversion,"osVersion": systemVersion,"deviceModel": devicemodel,"mobileNo":(DataManager.instance.mobNo),"imeiNo":"\(DataManager.instance.imei!)","ipAddressA":"\(DataManager.instance.ipAddress!)","ipAddressP":"\(DataManager.instance.ipAddress!)"]
+
+        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
+
+        print(parameters)
+
+        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+        print(params)
+        print(compelteUrl)
+
+        FBEvents.logEvent(title: .Signup_login_attempt)
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<mobileRegistrationModel>) in
+            response in
+            self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.mobileRegistrationObj = Mapper<mobileRegistrationModel>().map(JSONObject: json)
+                
+                //            self.mobileRegistrationObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    FBEvents.logEvent(title: .Signup_login_success)
+                    
+                    if self.mobileRegistrationObj?.responsecode == 2 || self.mobileRegistrationObj?.responsecode == 1 {
+                        
+                        if let accessToken = self.mobileRegistrationObj?.data?.token{
+                            DataManager.instance.AuthToken = accessToken
+                            
+                        }
+                        otpScreenTimeOutRegistraryion = Int(self.mobileRegistrationObj?.data?.OTPTimeOut ?? "")
+                        let OTPVerifyVC = self.storyboard!.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
+                        OTPVerifyVC.mobileNo = self.TF_Mobileno.text!
+                        DataManager.instance.mobNo =  self.mobileNumber!
+                        self.navigationController!.pushViewController(OTPVerifyVC, animated: true)
+                        
+                        
+                    }
+                    else {
+                        if let message = self.mobileRegistrationObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                        
+                        // Html Parse
+                        if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                            if title.contains("Request Rejected") {
+                                self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                            }
+                            
+                        }
+                    }
+                }
+                else {
+                    if let message = self.mobileRegistrationObj?.messages {
+                        FBEvents.logEvent(title: .Signup_login_success, failureReason: message)
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                    }
+                    else {
+                        self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
+                    }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                }
+            }
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
 
 }

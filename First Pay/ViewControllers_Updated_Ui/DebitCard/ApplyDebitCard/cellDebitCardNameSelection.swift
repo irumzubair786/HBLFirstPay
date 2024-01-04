@@ -34,4 +34,11 @@ class cellDebitCardNameSelection: UICollectionViewCell {
 //           }
 //}
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        DispatchQueue.main.async {
+            self.backView.radiusLineDashedStroke(radius: self.backView.frame.size.height ,color: .clrGray)
+        }
+    }
 }

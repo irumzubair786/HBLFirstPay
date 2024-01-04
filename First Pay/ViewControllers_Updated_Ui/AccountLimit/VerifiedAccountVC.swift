@@ -51,6 +51,7 @@ class VerifiedAccountVC: UIViewController {
         buttonBack.setTitle("", for: .normal)
         
         CommaSepration()
+       
         
         fetchDataFromApi()
 

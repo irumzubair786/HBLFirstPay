@@ -74,6 +74,11 @@ class MobileTopUpPageControl: UIViewController , UIScrollViewDelegate, UIPageVie
         NotificationCenter.default.addObserver(self, selector:#selector(operationSelectionPrepaid), name: Notification.Name("operationSelectionPrepaid"),object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(operationSelectionPostpaid), name: Notification.Name("operationSelectionPostpaid"),object: nil)
 
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
+    }
+    
+    @objc func dismissViewController() {
+        self.dismiss(animated: true)
     }
 
     @objc func operationSelectionPrepaid() {

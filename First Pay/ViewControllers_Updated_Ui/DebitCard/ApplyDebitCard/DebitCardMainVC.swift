@@ -8,10 +8,10 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
-var debitCardFee : String?
-var debitCardFeeDeliveryCharges : String?
+var debitCardFee : Float?
+var debitCardFeeDeliveryCharges : Float?
 var homeAddrss: String?
 var userDebitCardName :String?
 class DebitCardMainVC: BaseClassVC {
@@ -27,6 +27,8 @@ class DebitCardMainVC: BaseClassVC {
     @IBOutlet weak var buttonContinue: UIButton!
     @IBAction func buttonContinue(_ sender: UIButton) {
         FBEvents.logEvent(title: .Debit_getonenow_click)
+        FaceBookEvents.logEvent(title: .Debit_getonenow_click)
+
         getDebitCardCheck()
     }
     @IBAction func buttonBack(_ sender: UIButton) {
@@ -63,28 +65,37 @@ class DebitCardMainVC: BaseClassVC {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
         FBEvents.logEvent(title: .Debit_ordername_attempt)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardCheckModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetDebitCardCheckModel>) in
+            response in
             self.hideActivityIndicator()
-            self.checkDebitCardObj = response.result.value
+            guard let data = response.data else { return }
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+            self.checkDebitCardObj = Mapper<GetDebitCardCheckModel>().map(JSONObject: json)
+                        
+
+//            self.checkDebitCardObj = response.result.value
             if response.response?.statusCode == 200 {
                 FBEvents.logEvent(title: .Debit_ordername_success)
                 if self.checkDebitCardObj?.responsecode == 2 || self.checkDebitCardObj?.responsecode == 1 {
                     let fullName = self.checkDebitCardObj?.data?.customerName
                     print("phone no",DataManager.instance.mobile_number)
                     //     let fullNameArr = fullName?.components(separatedBy: " ")/*fullName?.split{$0 == " "}.map(String.init)*/
-                    debitCardFee = self.checkDebitCardObj?.data?.dcCharges
-                    debitCardFeeDeliveryCharges = self.checkDebitCardObj?.data?.dcChargesWithDelivery
-                    homeAddrss = self.checkDebitCardObj?.data?.address
+                    debitCardFee = Float(self.checkDebitCardObj?.data?.dcCharges ?? "")
+                    debitCardFeeDeliveryCharges = Float(self.checkDebitCardObj?.data?.dcChargesWithDelivery ?? "")
+//                    change address here..
+//                    homeAddrss = self.checkDebitCardObj?.data?.address
                     userDebitCardName = self.checkDebitCardObj?.data?.customerName
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardNameSelectionVC") as!  DebitCardNameSelectionVC
                     vc.fullUserName = fullName!
-                    self.navigationController?.pushViewController(vc, animated: true)
+//                    self.present(vc, animated: true)
+                    self.navigationController?.pushViewController(vc, animated: false)
                 }
                 else {
                     
@@ -94,23 +105,23 @@ class DebitCardMainVC: BaseClassVC {
                     
                 }
             }
-            else {
-                FBEvents.logEvent(title: .Debit_ordername_failure)
-                if let message = self.checkDebitCardObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                   
-//                    self.movetoback()
-                }
-                else{
-                    if let message = self.checkDebitCardObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-//                    self.movetoback()
-                }
-                }
-                print(response.result.value)
-                print(response.response?.statusCode)
-//
+                            else {
+                                FBEvents.logEvent(title: .Debit_ordername_failure)
+                                if let message = self.checkDebitCardObj?.messages{
+                                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                                    
+                                    //                    self.movetoback()
+                                }
+                                else{
+                                    if let message = self.checkDebitCardObj?.messages{
+                                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                                        //                    self.movetoback()
+                                    }
+                                }
+                                print(response.value)
+                                print(response.response?.statusCode)
+                            }
             }
         }
     }

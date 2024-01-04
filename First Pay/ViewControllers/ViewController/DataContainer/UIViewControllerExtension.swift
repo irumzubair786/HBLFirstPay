@@ -11,15 +11,15 @@ import UIKit
 
 extension UIViewController {
     func showAlertCustomPopup(title:String? = "", message: String? = "", iconName: IconNames.iconNameError = .iconError, buttonNames: [[String: AnyObject]]? = [[
-        "buttonName": "OK",
+        "buttonName": "OKAY",
         "buttonBackGroundColor": UIColor.clrOrange,
-        "buttonTextColor": UIColor.white]] as? [[String: AnyObject]]
+        "buttonTextColor": UIColor.white] as [String : Any]] as? [[String: AnyObject]]
 //    ) {
                               , completion: ((String?) -> Void)? = nil) {
             
         let alertCustomPopup = UIStoryboard.init(name: "AlertPopup", bundle: nil).instantiateViewController(withIdentifier: "AlertPopupMessage") as! AlertPopupMessage
         alertCustomPopup.titleMessage = title!
-        alertCustomPopup.message = message!
+        alertCustomPopup.message = message ?? ""
         alertCustomPopup.arrayButtonNames = buttonNames!
         alertCustomPopup.iconName = iconName.rawValue
         
@@ -80,4 +80,24 @@ final class TableViewContentSized: UITableView {
         layoutIfNeeded()
         return CGSize(width: UIViewNoIntrinsicMetric, height: contentSize.height)
     }
+}
+
+extension UITableView {
+    func setEmptyMessage(iconName: String) {
+        let imageView = UIImageView(image: UIImage(named: iconName))
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
+        
+        var backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
+        imageView.center = backgroundView.center
+        imageView.frame.origin.y = backgroundView.frame.midX - 50
+        backgroundView.addSubview(imageView)
+        
+        self.backgroundView = backgroundView
+    }
+    
+    func removeEmptyMessage() {
+        self.backgroundView = nil
+    }
+    
 }

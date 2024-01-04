@@ -9,7 +9,7 @@
 import UIKit
 import iOSDropDown
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 var isFromReason : Bool = false
 class MoneyTransfer_ReasonVC: BaseClassVC {
@@ -23,10 +23,13 @@ class MoneyTransfer_ReasonVC: BaseClassVC {
     var Seclected_Rzn :String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .SendMoney_category_selection)
+        FaceBookEvents.logEvent(title: .SendMoney_category_selection)
+        
         tableView.delegate = self
         tableView.dataSource = self
 //        getReasonsForTrans()
-        tableView.rowHeight = 60
+        tableView.rowHeight = 80
         getReasonsForTrans()
 
     }
@@ -42,41 +45,49 @@ class MoneyTransfer_ReasonVC: BaseClassVC {
             return
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getFtTransPurpose"
-        let header = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/getFtTransPurpose"
+         let header: HTTPHeaders = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<GetReasonsModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<GetReasonsModel>) in
+            response in
             self.hideActivityIndicator()
-            if response.response?.statusCode == 200 {
-                self.reasonsObj = response.result.value
-                if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
-                    var aReq =  self.reasonsObj?.reasonsData!
-                    for i in self.reasonsObj?.reasonsData! ?? []
-                    {
-                        var temp = myreason()
-                        temp.code = (i.code!)
-                        temp.name = (i.descr ?? "")
-                        temp.id = (i.transactionPurposeId!)
-                        self.getrznid.append(temp)
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                //            self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
+                
+                if response.response?.statusCode == 200 {
+                    //                self.reasonsObj = response.result.value
+                    self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
+                    if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
+                        var aReq =  self.reasonsObj?.reasonsData!
+                        for i in self.reasonsObj?.reasonsData! ?? []
+                        {
+                            var temp = myreason()
+                            temp.code = (i.code!)
+                            temp.name = (i.descr ?? "")
+                            temp.id = (i.transactionPurposeId!)
+                            self.getrznid.append(temp)
+                        }
+                        self.reasonsList = self.reasonsObj!.stringReasons
+                        self.tableView.delegate = self
+                        self.tableView.dataSource = self
+                        self.tableView.reloadData()
+                        
+                        
                     }
-                    self.reasonsList = self.reasonsObj!.stringReasons
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
-                    self.tableView.reloadData()
-       
                     
                 }
-                
-            }
-            else {
-                
-                print(response.result.value)
-                print(response.response?.statusCode)
+                else {
+                    
+                    print(response.value)
+                    print(response.response?.statusCode)
+                }
             }
         }
     }

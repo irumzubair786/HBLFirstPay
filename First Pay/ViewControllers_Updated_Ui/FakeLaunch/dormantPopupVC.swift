@@ -9,7 +9,7 @@
 import UIKit
 import SwiftKeychainWrapper
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 class dormantPopupVC: BaseClassVC {
     var consentStatus : String?
     var loginHistoryId: Int?
@@ -60,7 +60,9 @@ class dormantPopupVC: BaseClassVC {
         }
         
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     var modelGeneric : GenericModel?
     {
         didSet{
@@ -131,7 +133,7 @@ class dormantPopupVC: BaseClassVC {
         var userCnic : String?
         
         //      let compelteUrl = GlobalConstants.BASE_URL + "v2/fundsTransferIbft"
-        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/login"
+        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v2/login"
         
         if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
             //            pessi = KeychainWrapper.standard.string(forKey: "userKey")
@@ -182,56 +184,71 @@ class dormantPopupVC: BaseClassVC {
         
         // longitude and latitude round off to 4 digits
         
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecret]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecret]
         
         
         print(params)
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
         //
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<login>) in
-        // Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
+//            [self] (response: DataResponse<login>) in
+        // Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<LoginActionModel>) in
+            response in
             self.hideActivityIndicator()
-            self.loginObj = response.result.value
-            if response.response?.statusCode == 200 {
-                self.loginObj = response.result.value
-                if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
-                    fetchdataFromAPI()
-//                    if self.loginObj?.data != nil{
-//
-//                        fetchdataFromAPI()
-//                    }
-                }
-                else{
-                    if let message = self.loginObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
-                            
-                            ["buttonName": "OK",
-                             "buttonBackGroundColor": UIColor.clrOrange,
-                             "buttonTextColor": UIColor.white]
-                            
-                            //                                ["buttonName": "CANCEL",
-                            //                                "buttonBackGroundColor": UIColor.clrOrange,
-                            //                                "buttonTextColor": UIColor.white]
-                            
-                            
-                        ] as? [[String: AnyObject]])
-                        
-                    }
-                    //            }
-                    
-                    else{
-                        self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
-                        //                if let message = self.loginObj?.messages{
-                        //                    self.showDefaultAlert(title: "", message: message)
-                        //                }
-                    }
-                    
-                    print(response.result.value)
-                    print(response.response?.statusCode)
-                    
-                }
+            guard let data = response.data else { return }
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+//            self.loginObj = Mapper<login>().map(JSONObject: json)
+            
+//            self.loginObj = response.result.value
+                            if response.response?.statusCode == 200 {
+                                //                self.loginObj = response.result.value
+                                self.loginObj = Mapper<login>().map(JSONObject: json)
+                                
+                                if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
+                                    fetchdataFromAPI()
+                                    //                    if self.loginObj?.data != nil{
+                                    //
+                                    //                        fetchdataFromAPI()
+                                    //                    }
+                                }
+                                if self.loginObj?.responsecode == nil{
+                                    if let message = self.loginObj?.messages{
+                                        self.showAlertCustomPopup(title: "", message: message)
+                                }
+                                }
+                                else{
+                                    if let message = self.loginObj?.messages{
+                                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
+                                            
+                                            ["buttonName": "OK",
+                                             "buttonBackGroundColor": UIColor.clrOrange,
+                                             "buttonTextColor": UIColor.white]
+                                            
+                                            //                                ["buttonName": "CANCEL",
+                                            //                                "buttonBackGroundColor": UIColor.clrOrange,
+                                            //                                "buttonTextColor": UIColor.white]
+                                            
+                                            
+                                        ] as? [[String: AnyObject]])
+                                        
+                                    }
+                                    //            }
+                                    
+                                    else{
+                                        self.showDefaultAlert(title: "Requested Rejected", message: "Network Connection Error! Please Check your internet Connection & try again.")
+                                        //                if let message = self.loginObj?.messages{
+                                        //                    self.showDefaultAlert(title: "", message: message)
+                                        //                }
+                                    }
+                                    
+                                    print(response.value)
+                                    print(response.response?.statusCode)
+                                    
+                                }
+                            }
             }
+                
         }
         
     }

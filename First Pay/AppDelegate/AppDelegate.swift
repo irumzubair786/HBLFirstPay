@@ -8,17 +8,17 @@
 
 import UIKit
 import SwiftKeychainWrapper
-import OneSignal
+import OneSignalFramework
 import Siren
 import IQKeyboardManager
 import FirebaseCore
 import GoogleMaps
-
+import FBSDKCoreKit
 
 let googleApiKey = "AIzaSyBM0HKZjq1TyOBA1HjVW2Wdhx1YfPJpJ3I" //MyAccountKey
 
 //let googleApiKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs" //HeyCab
-let googleApiPlacesKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs"
+//let googleApiPlacesKey = "AIzaSyA98nIRqiAFqF3MmPOQggdIQQ8avBJxmAs"
 
 //@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -44,10 +44,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return dateformat
             }()
     
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         IQKeyboardManager.shared().isEnabled = true
-       
+//        UIApplication.statusBarBackgroundColor = .red
+//        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+//           if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
+//                statusBar.backgroundColor = UIColor.red
+//            }
+            UIApplication.shared.statusBarStyle = .lightContent
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//
+//        window?.backgroundColor = UIColor.red
+        
+//        UserDefaults.standard.setValue("1430150995593", forKey: "userCnic")
         if !UserDefaults.standard.bool(forKey: "firstTimeLaunchOccurred"){
             KeychainWrapper.standard.removeAllKeys()
 //            print("\(KeychainWrapper.standard.removeAllKeys())")
@@ -67,6 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                let saveSuccessful : Bool = KeychainWrapper.standard.set(notiMessage, forKey: "notiMessage")
 ////                print("Notification Message SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
 //            }
+//            }
 //
 ////            let mainStoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 ////            let homePage = mainStoryboard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
@@ -81,40 +93,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //
 //                  }
 //              }
-//
-        //Remove this method to stop OneSignal Debugging
-         OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+
+        //OneSignal START
+        // Remove this method to stop OneSignal Debugging
+        //              OneSignal.Debug.setLogLevel(.LL_VERBOSE)
         // OneSignal initialization
-         OneSignal.initWithLaunchOptions(launchOptions)
-         OneSignal.setAppId("12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d")
-        // promptForPushNotifications will show the native iOS notification permission prompt.
-          // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
-          OneSignal.promptForPushNotifications(userResponse: { accepted in
+        OneSignal.initialize("12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d", withLaunchOptions: launchOptions)
+        
+        // requestPermission will show the native iOS notification permission prompt.
+        // We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+        OneSignal.Notifications.requestPermission({ accepted in
             print("User accepted notifications: \(accepted)")
-          })
+        }, fallbackToSettings: true)
+        
+        // Login your customer with externalId
+        // OneSignal.login("EXTERNAL_ID")
         
         // Set your customer userId
         // OneSignal.setExternalUserId("userId")
-//         //START OneSignal initialization code
-//         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false, kOSSettingsKeyInAppLaunchURL: false]
-//
-//
-//         OneSignal.initWithLaunchOptions(launchOptions,
-//           appId: "12bac3c2-4ee7-41aa-9176-52c5bc4e1a7d",
-//           handleNotificationAction: notificationOpenedBlock,
-//           settings: onesignalInitSettings)
-//
-//         OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
-//         OneSignal.promptForPushNotifications(userResponse: { accepted in
-////           print("User accepted notifications: \(accepted)")
-//         })
+        //OneSignal END
+
 
         FirebaseApp.configure()
         FBEvents.logEvent(title: .testOne, failureReason: "test fail")
         GMSServices.provideAPIKey(googleApiKey)
 
+        
+        ApplicationDelegate.shared.application(
+                    application,
+                    didFinishLaunchingWithOptions: launchOptions
+                )
+        
+        FaceBookEvents.logEvent(title: .testOne, failureReason: "test fail")
+        
+        
         return true
     }
+    
+    func application(
+            _ app: UIApplication,
+            open url: URL,
+            options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+        ) -> Bool {
+            ApplicationDelegate.shared.application(
+                app,
+                open: url,
+                sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+            )
+        }
     
     func setupSiren() {
         let sirenObj = Siren.sharedInstance
@@ -129,7 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        sirenObj.showAlertAfterCurrentVersionHasBeenReleasedForDays = 0
         sirenObj.alertType = .force
-        
+
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

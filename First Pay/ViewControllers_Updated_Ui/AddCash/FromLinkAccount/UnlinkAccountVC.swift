@@ -8,14 +8,16 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class UnlinkAccountVC: BaseClassVC {
     var flag = "false"
     var genericResponseObj : GenericResponseModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+//        add swipe Gesture
 //        blurView.alpha = 0.4
+        backView.dropShadow1()
         let tapGestureRecognizers = UITapGestureRecognizer(target: self, action: #selector(Movetoback(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizers)
@@ -38,9 +40,11 @@ class UnlinkAccountVC: BaseClassVC {
     @objc func Movetoback(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
-        self.navigationController?.popViewController(animated: false)
+        self.dismiss(animated: true)
+//        self.navigationController?.popViewController(animated: false)
     }
     
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var labelCancel: UILabel!
     @IBOutlet weak var labelDelink: UILabel!
     @objc func Delink(tapGestureRecognizer: UITapGestureRecognizer)
@@ -83,43 +87,48 @@ class UnlinkAccountVC: BaseClassVC {
         
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/deLinkAccount"
         
-        
+//        DataManager.instance.accountNo
         var userCnic : String?
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!,"accountNo":DataManager.instance.accountNo!]
-        
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!,"accountNo":GlobalData.userAcc ?? ""]
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
         
-        print(header)
-        print(compelteUrl)
         print(params)
+        print(compelteUrl)
+        print(parameters)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<GenericResponseModel>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
+//            [self] (response: DataResponse<GenericResponseModel>) in
+            response in
             self.hideActivityIndicator()
-            self.genericResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
-            
-                if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
-                    let vc = self.storyboard!.instantiateViewController(withIdentifier: "DelinkSuccessfullVC") as! DelinkSuccessfullVC
-                    self.navigationController?.pushViewController(vc, animated: true)
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genericResponseObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+                //            self.genericResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
+                    if self.genericResponseObj?.responsecode == 2 || self.genericResponseObj?.responsecode == 1 {
+                        let vc = self.storyboard!.instantiateViewController(withIdentifier: "DelinkSuccessfullVC") as! DelinkSuccessfullVC
+                        isfromPullFund = false
+//                        self.dismiss(animated: true)
+                        self.present(vc, animated: true)
+//                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                    }
+                    else {
+                        self.showAlertCustomPopup(title: "",message: genericResponseObj?.messages,iconName: .iconError)
+                    }
                 }
                 else {
+                    
                     self.showAlertCustomPopup(title: "",message: genericResponseObj?.messages,iconName: .iconError)
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-                self.showAlertCustomPopup(title: "",message: genericResponseObj?.messages,iconName: .iconError)
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }

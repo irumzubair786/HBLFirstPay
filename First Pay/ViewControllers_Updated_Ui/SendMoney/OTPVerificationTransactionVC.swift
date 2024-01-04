@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
 import LocalAuthentication
@@ -17,7 +17,7 @@ import Foundation
 import OTPTextField
 class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
     var fundsTransSuccessObj: FundsTransferApiResponse?
-    var totalSecond = 60
+    var totalSecond = 0
     var ForTransactionConsent:Bool = false
     var timer = Timer()
     var counter = 0
@@ -29,6 +29,8 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
     var OTPREQ : String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        labelPhoneNo.text = DataManager.instance.accountNo
         TF_otp.delegate = self
         btnVerify.isUserInteractionEnabled = false
         btnResendOtp.isUserInteractionEnabled = false
@@ -39,8 +41,11 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         IMG_NEXT_ARROW.isUserInteractionEnabled = true
         IMG_NEXT_ARROW.addGestureRecognizer(tapGestureRecognizerr)
+        self.TF_otp.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
+    
+    @IBOutlet weak var labelPhoneNo: UILabel!
     @IBOutlet weak var btnResendOtp: UIButton!
     @IBOutlet weak var TF_otp: OTPTextField!
     @IBOutlet weak var btnVerify: UIButton!
@@ -52,7 +57,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
 //    showToast(title: "OTP send")
     btnResendOtp.isUserInteractionEnabled = false
     btnResendOtp.setTitleColor(.gray ,for: .normal)
-        
+       
     startTimer()
         ResendOTP()
       
@@ -70,8 +75,9 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
              lbl_countResendotptime.text = "\(counter)"
          }
     func startTimer() {
-        totalSecond = 30
-       
+//        totalSecond = 30
+        totalSecond = otpScreenTimeOutWithoutRegistrartion ?? 0
+        
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     @objc func updateTime() {
@@ -136,9 +142,20 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         return newLength <= 4
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        let image  = UIImage(named: "]greenarrow")
-        IMG_NEXT_ARROW.image = image
-        btnVerify.isUserInteractionEnabled = true
+        
+        
+        if TF_otp.text?.count == 4
+        {
+            let image  = UIImage(named: "]greenarrow")
+            IMG_NEXT_ARROW.image = image
+            btnVerify.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named:"grayArrow")
+            IMG_NEXT_ARROW.image = image
+            btnVerify.isUserInteractionEnabled = false
+        }
         
     }
     @objc func changeTextInTextField() {
@@ -155,6 +172,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
             IMG_NEXT_ARROW.image = image
             btnVerify.isUserInteractionEnabled = false
         }
+  
 
     }
     @IBAction func Action_Verify(_ sender: UIButton) {
@@ -198,36 +216,43 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
         //
                 print(parameters)
                 print(compelteUrl)
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
 
-            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
+            response in
             self.hideActivityIndicator()
-            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-     
-                    
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+                        
+                        
+                    }
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -258,44 +283,51 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.AuthToken ?? "nil")"]
         //
                 print(parameters)
                 print(compelteUrl)
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
 
-            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
+            response in
             self.hideActivityIndicator()
-            self.genRespBaseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
-                    self.labelMessage.isHidden = false
-                    self.labelMessage.text = "OTP will be Resend after 30 Seconds"
-//                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-                        self.labelMessage.isHidden = true
-//                        self.blurView.isHidden = true
-//                        self.popupView.isHidden = true
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genRespBaseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
+//                        self.labelMessage.isHidden = false
+                        self.labelMessage.text = "OTP will be Resend after 30 Seconds"
+                        //                    self.showAlertCustomPopup(title: "", message: "OTP will be Resend after 30 Seconds")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                            self.labelMessage.isHidden = true
+                            //                        self.blurView.isHidden = true
+                            //                        self.popupView.isHidden = true
+                        }
+                        //
+                        
                     }
-//
-                    
+                    else {
+                        if let message = self.genRespBaseObj?.messages {
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genRespBaseObj?.messages {
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -322,8 +354,8 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
 
 
 //        let compelteUrl = GlobalConstants.BASE_URL + "fundsTransferIbft"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/fundsTransferIbft"
-
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/fundsTransferIbft"
+//v2
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"accountNo":number!,"accountIMD":GlobalData.Selected_bank_code,"amount":amount!,"transPurpose":GlobalData.moneyTransferReasocCode,"accountTitle":ToaccountTitle!,"benificiaryIBAN":DataManager.instance.accountNo!,"otp": TF_otp.text ?? "","accountType":DataManager.instance.accountType!]
         print(parameters)
@@ -334,7 +366,7 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
 
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
 
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
 
         print(params)
         print(compelteUrl)
@@ -342,30 +374,34 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
 
         NetworkManager.sharedInstance.enableCertificatePinning()
 
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
-
-
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<FundsTransferApiResponse>) in
+            response in
             self.hideActivityIndicator()
-
-            self.fundsTransSuccessObj = response.result.value
-            if response.response?.statusCode == 200 {
-
-                if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
-                    self.movetonext()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.fundsTransSuccessObj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
+                
+                //            self.fundsTransSuccessObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.fundsTransSuccessObj?.responsecode == 2 || self.fundsTransSuccessObj?.responsecode == 1 {
+                        self.movetonext()
+                    }
+                    else {
+                        if let message = self.fundsTransSuccessObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            //                        self.showToast(title: message)
+                            
+                        }
+                    }
                 }
                 else {
                     if let message = self.fundsTransSuccessObj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)
-//                        self.showToast(title: message)
-                        
-                    }
+                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)                }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.fundsTransSuccessObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .FailedTransaction)                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -383,8 +419,9 @@ class OTPVerificationTransactionVC: BaseClassVC, UITextFieldDelegate {
            
         var merge = "\(ToaccountTitle!)\(number!)"
         print("other wallet bank name", merge)
-         vc.number = merge
-            vc.Toaccounttitle = ToaccountTitle
+         vc.number = ToaccountTitle
+        vc.Toaccounttitle = ToaccountTitle
+        vc.AccountTitle = number
             self.navigationController?.pushViewController(vc, animated: true)
 //        }
         

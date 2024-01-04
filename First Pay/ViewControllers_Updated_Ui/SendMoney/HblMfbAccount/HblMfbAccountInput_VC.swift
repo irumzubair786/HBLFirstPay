@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import ContactsUI
 import libPhoneNumber_iOS
@@ -20,6 +20,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
     var reasonsList : [String]?
     override func viewDidLoad() {
         super.viewDidLoad()
+        tfAccountNo.becomeFirstResponder()
         back.setTitle("", for: .normal)
         btnPurposeField.setTitle("", for: .normal)
         lblAlertAmount.textColor = .gray
@@ -29,6 +30,7 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
         amountTextfield.addTarget(self, action: #selector(changeAmountInTextField), for: .editingChanged)
         amountTextfield.delegate = self
         getReasonsForTrans()
+       
         // Do any additional setup after loading the view.
     }
     
@@ -78,9 +80,12 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
         
     }
     
-        @objc func changeAmountInTextField() {
+    @objc func changeAmountInTextField() {
+        
+        if amountTextfield?.text?.count ?? 0 > 0
+        {
             
-            if amountTextfield?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
+            if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0 > Int((maxvalu) ?? 0)
             {
                 imgnextarrow.image = UIImage(named: "grayArrow")
                 imgnextarrow.isUserInteractionEnabled = false
@@ -88,19 +93,9 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
                 imgnextarrow.isUserInteractionEnabled = false
                 btn_next.isUserInteractionEnabled = false
             }
-            if amountTextfield?.text?.count != 0
+            else
             {
-               if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0 > Int((maxvalu) ?? 0)
-
-                        {
-                   lblAlertAmount.textColor = .gray
-                   imgnextarrow.image = UIImage(named: "grayArrow")
-                   imgnextarrow.isUserInteractionEnabled = false
-                   lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-                   btn_next.isUserInteractionEnabled = false
-
-                        }
-               else
+                if amountTextfield?.text?.count  != 0 && tfAccountNo?.text?.count != 0
                {
                    let image = UIImage(named:"]greenarrow")
                    imgnextarrow.image = image
@@ -109,229 +104,126 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
                    imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
                    lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
                    btn_next.isUserInteractionEnabled = true
-                   
                }
-        
+                else
+                {
+                    let image = UIImage(named:"]greenarrow")
+                    imgnextarrow.image = image
+                    let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+                    imgnextarrow.isUserInteractionEnabled = true
+                    imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+                    lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+                    btn_next.isUserInteractionEnabled = true
+                }
             }
-           
-            else if amountTextfield?.text?.count != 0 && tfAccountNo.text?.count != 0
-            {
-                
-                let image = UIImage(named:"]greenarrow")
-                imgnextarrow.image = image
-                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-                imgnextarrow.isUserInteractionEnabled = true
-                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
-                lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-                btn_next.isUserInteractionEnabled = true
-
-                
-            }
-            
-             }
-//        var text = amountTextfield.text!.replacingOccurrences(of: "", with: "")
-//        //    textFieldAmount.text = format(with: "PKR XXXXXX", phone: text)
-//        if text == "0" && text == "" {
-//            lblAlertAmount.textColor = .gray
-//            lblAlertAmount.textColor = .gray
-//            imgnextarrow.image = UIImage(named: "grayArrow")
-//            lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-//            imgnextarrow.isUserInteractionEnabled = false
-//
-//        }
-//        else if text > 0 && text.text < Int(maxvalu) {
-//
-//            else {
-//                let image = UIImage(named:"]greenarrow")
-//                imgnextarrow.image = image
-//                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-//                imgnextarrow.isUserInteractionEnabled = true
-//                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
-//                lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//                self.btn_next.isUserInteractionEnabled = true
-//
-//            }
-//        }
-//    }
-    
+        }
+    }
     func textFieldDidEndEditing(_ textField: UITextField) {
-//        if amountTextfield?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
-//        {
-//            lblAlertAmount.textColor = .gray
-//            imgnextarrow.image = UIImage(named: "grayArrow")
-//            lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-//            imgnextarrow.isUserInteractionEnabled = false
-//        }
-//        if amountTextfield?.text?.count != 0
-//        {
+        //
+        if amountTextfield?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
+        {
+            lblAlertAmount.textColor = .gray
+            imgnextarrow.image = UIImage(named: "grayArrow")
+            imgnextarrow.isUserInteractionEnabled = false
+        }
+        
+        
+        else  if textField == amountTextfield
+        {
+            if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  > Int((maxvalu) ?? 0)
+                
+            {
+                imgnextarrow.image = UIImage(named: "grayArrow")
+                imgnextarrow.isUserInteractionEnabled = false
+                lblAlertAmount.textColor =  UIColor.gray
+                imgnextarrow.isUserInteractionEnabled = false
+                btn_next.isUserInteractionEnabled = false
+                
+            }
+        }
 //
-//            if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0 > Int((maxvalu) ?? 0)
-//            {
-//                let image = UIImage(named:"]greenarrow")
-//                imgnextarrow.image = image
-//                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-//                imgnextarrow.isUserInteractionEnabled = true
-//                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
-//                lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//                self.btn_next.isUserInteractionEnabled = true
-//            }
+//        if amountTextfield?.text?.count  != 0 && tfAccountNo?.text?.count != 0
+//       {
+//           let image = UIImage(named:"]greenarrow")
+//           imgnextarrow.image = image
+//           let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//           imgnextarrow.isUserInteractionEnabled = true
+//           imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+//           lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//           btn_next.isUserInteractionEnabled = true
+//       }
+//
 //            else
 //            {
-//                lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
-//                imgnextarrow.image = UIImage(named: "grayArrow")
-//                lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-//                imgnextarrow.isUserInteractionEnabled = false
+//
+//                let image = UIImage(named:"]greenarrow")
+//                imgnextarrow.image = image
+//                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+//                imgnextarrow.isUserInteractionEnabled = true
+//                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+//                lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+//                btn_next.isUserInteractionEnabled = true
 //            }
-//
-//    }
-//                end
-        
-//        else  if textField == amountTextfield
-//        {
-//            if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  > Int((maxvalu) ?? 0)
-//
-//            {
-//                lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
-//                imgnextarrow.image = UIImage(named: "grayArrow")
-//                lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-//                imgnextarrow.isUserInteractionEnabled = false
-//
-//            }
-//        }
-        
-     
-       //
-        
-        
-        
-        
-        
-        
-        
-        
-//
-//        if textField == amountTextfield
-//        {
-//                    if Int(amountTextfield.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextfield.text!) ?? 0  > Int((maxvalu) ?? 0)
-//
-//                    {
-//                        lblAlertAmount.textColor = .gray
-//                        imgnextarrow.image = UIImage(named: "grayArrow")
-//                        imgnextarrow.isUserInteractionEnabled = false
-//           lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-//
-//                    }
-//
-//        }
-//
-//
-//        if amountTextfield?.text?.count ?? 0 < 0 || amountTextfield?.text?.count == 0
-//        {
-//            lblAlertAmount.textColor = .gray
-//            imgnextarrow.image = UIImage(named: "grayArrow")
-//            //
-//            imgnextarrow.isUserInteractionEnabled = false
-//        }
-//        else if amountTextfield?.text?.count != 0
-//        {
-//
-//            let image = UIImage(named:"]greenarrow")
-//            imgnextarrow.image = image
-//            let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-//            imgnextarrow.isUserInteractionEnabled = true
-//            imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
-//            lblAlertAmount.textColor = UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
-//            self.btn_next.isUserInteractionEnabled = true
-//        }
-//
-//
-        
-        
-        
-        
+       
     }
-
-//    override func viewWillAppear(_ animated: Bool) {
-//
-//            if tfAccountNo.text?.count == 0
-//            {
-////                PurposeTf.text = ""
-//            }
-//            else{
-////                PurposeTf.text = GlobalData.money_Reason
-//                if amountTextfield.text?.count != 0
-//                {
-////                    lblAlertAmount.textColor = .orange
-//
-//                    let image = UIImage(named:"]greenarrow")
-//                    imgnextarrow.image = image
-//                    let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
-//                                   imgnextarrow.isUserInteractionEnabled = true
-//                                   imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
-//
-//                    self.btn_next.isUserInteractionEnabled = true
-//                }
-//            }
-//
-//    }
-    
+              
+            
     @IBAction func Action_back(_ sender: UIButton) {
         self.dismiss(animated: true)
 //        self.navigationController?.popViewController(animated: true)
     }
     @IBAction func Action_Next(_ sender: UIButton) {
+        initiateFundTrasnfer()
     }
     @objc func PopUpHide(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        
-        initiateFundTrasnfer()
 
+        initiateFundTrasnfer()
     }
     private func getReasonsForTrans() {
-        
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getFtTransPurpose"
-        let header = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/getFtTransPurpose"
+         let header: HTTPHeaders = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
-        
         NetworkManager.sharedInstance.enableCertificatePinning()
-        
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<GetReasonsModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<GetReasonsModel>) in
+            response in
             self.hideActivityIndicator()
-            if response.response?.statusCode == 200 {
-                self.reasonsObj = response.result.value
-                if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
-                   
-//                    self.reasonsList = self.reasonsObj!.stringReasons
-//                    self.PurposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
-//                    GlobalData.money_Reason = self.PurposeTf.text ?? ""
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                
+                if response.response?.statusCode == 200 {
+                    self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
                     
+                    //                self.reasonsObj = response.result.value
+                    if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
+                        //                    self.reasonsList = self.reasonsObj!.stringReasons
+                        //                    self.PurposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
+                        //                    GlobalData.money_Reason = self.PurposeTf.text ?? ""
+                    }
                 }
-                
-            }
-            else {
-                
-                print(response.result.value)
-                print(response.response?.statusCode)
+                else {
+                    
+                    print(response.value)
+                    print(response.response?.statusCode)
+                }
             }
         }
     }
     
     private func initiateFundTrasnfer() {
-        
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
         }
-        
         showActivityIndicator()
-        
         var userCnic : String?
         
         if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
@@ -341,88 +233,77 @@ class HblMfbAccountInput_VC: BaseClassVC , UITextFieldDelegate{
         else{
             userCnic = ""
         }
-       
-        
 //        let compelteUrl = GlobalConstants.BASE_URL + "initiateLocalFT"
-//
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateLocalFT"
-             
-        
+//        v2
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/initiateLocalFT"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":tfAccountNo.text!,"amount":self.amountTextfield.text!,"transPurpose":"0350","accountType": DataManager.instance.accountType!] as [String : Any]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-        
-       
-        
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
-        
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+//         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
 //        print(result.apiAttribute1)
 //        print(result.apiAttribute2)
         print(params)
         print(compelteUrl)
 //        print(header)
-        
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FTApiResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<FTApiResponse>) in
             
-            //         Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundInitiateModel>) in
+            //         Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<FundInitiateModel>) in
           
+            response in
             self.hideActivityIndicator()
-            self.transactionApiResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
-                
-                        if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
-                            self.navigateToConfirmation()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
+                //            self.transactionApiResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
+                        self.navigateToConfirmation()
+                    }
+                    else {
+                        if let message = self.transactionApiResponseObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                        
+                    }
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
-                     
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.transactionApiResponseObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
     private func navigateToConfirmation(){
-        
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = tfAccountNo.text!
               vc.amount = amountTextfield.text!
-        
-           
         let a = transactionApiResponseObj?.data?.accountTitle!
         vc.ToaccountTitle = a?.replace(string: " ", replacement: "")
               isfromFirstPayWallet = false
               isfromHblMbfAccount = true
+        isfromBanktoBank = false
+        isfromOtherLocalBank =  false
         GlobalData.money_Reason = "Miscellaneous Payments"
         vc.harcodePurpose = "Miscellaneous Payments"
         GlobalData.moneyTransferReasocCode = "0350"
-        
         self.navigationController?.pushViewController(vc, animated: true)
-
     }
-    
 }
 extension HblMfbAccountInput_VC: CNContactPickerDelegate {
-
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
-        
         let phoneNumberCount = contact.phoneNumbers.count
       //  let name = "\(contact.givenName + contact.familyName)"
         let name = "\(contact.givenName) \(contact.familyName)"
-        
         self.tfAccountNo.text = name
-
         guard phoneNumberCount > 0 else {
             dismiss(animated: true)
             //show pop up: "Selected contact does not have a number"
@@ -454,22 +335,15 @@ extension HblMfbAccountInput_VC: CNContactPickerDelegate {
     }
 
     func setNumberFromContact(contactNumber: String) {
-
         //UPDATE YOUR NUMBER SELECTION LOGIC AND PERFORM ACTION WITH THE SELECTED NUMBER
-
         var contactNumber = contactNumber.replacingOccurrences(of: "-", with: "")
         contactNumber = contactNumber.replacingOccurrences(of: "(", with: "")
         contactNumber = contactNumber.replacingOccurrences(of: ")", with: "")
-        
-
-        
         let phoneUtil = NBPhoneNumberUtil()
-
           do {
             
             let phoneNumber: NBPhoneNumber = try phoneUtil.parse(contactNumber, defaultRegion: "PK")
             let formattedString: String = try phoneUtil.format(phoneNumber, numberFormat: .NATIONAL)
-
             print("Formatted String : \(formattedString)")
             self.tfAccountNo.text = replaceSpaceWithEmptyString(aStr: formattedString)
           }
@@ -477,8 +351,6 @@ extension HblMfbAccountInput_VC: CNContactPickerDelegate {
               print(error.localizedDescription)
           }
     }
-
     func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
-      
     }
 }

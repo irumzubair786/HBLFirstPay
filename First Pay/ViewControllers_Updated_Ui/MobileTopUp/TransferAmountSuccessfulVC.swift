@@ -15,12 +15,22 @@ class TransferAmountSuccessfulVC: BaseClassVC {
     var TransactionDate : String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .Easyload_confirmation_success)
+        FaceBookEvents.logEvent(title: .Easyload_confirmation_success)
+        
         btnCancel.setTitle("", for: .normal)
         btnFavourite.setTitle("", for: .normal)
         btnDownload.setTitle("", for: .normal)
         btnShare.setTitle("", for: .normal)
         updateui()
         // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissViewController), name: Notification.Name("dismissViewController"), object: nil)
+    }
+    
+    @objc func dismissViewController() {
+        dismiss(animated: true)
     }
     
     @IBOutlet weak var lblMainTitle: UILabel!
@@ -45,10 +55,10 @@ class TransferAmountSuccessfulVC: BaseClassVC {
     
     
     @IBAction func Action_DownLoad(_ sender: UIButton) {
-
-                mainView.snapshotView(afterScreenUpdates: true)
-                image = mainView.convertToImage()
-                print(image)
+        
+        mainView.snapshotView(afterScreenUpdates: true)
+        image = mainView.convertToImage()
+        print(image)
         UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
         showToast(title: "Photo Saved Succussfully!")
     }
@@ -56,54 +66,65 @@ class TransferAmountSuccessfulVC: BaseClassVC {
     
     @IBAction func Action_Share(_ sender: UIButton) {
         let image =  mainView.convertToImage()
-            
+        
         let imageShare = [ image ]
-            let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view
-            self.present(activityViewController, animated: true, completion: nil)
-           
+        let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
+        
     }
     
+    func dismissRootViewController() {
+        
+        NotificationCenter.default.post(name: Notification.Name("dismissViewController"), object: nil)
+    }
     
     @IBAction func Action_Cancel(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
-        self.present(vc, animated: true)
-       
+        //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+        //            self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+        //        }
+        dismissRootViewController()
+        //        DispatchQueue.main.async {
+        //            self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+        //        }
+        
+        
+        //        let storyboard = UIStoryboard(name: "TabBar", bundle: nil)
+        //        let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
+        //        self.present(vc, animated: true)
+        
         
     }
     
     func updateui() {
         
-        lblAmount.text = "Rs. \(Int(amount!)?.twoDecimal() ?? "0")"
+        lblAmount.text = "Rs. \(amount ?? "")"
         lblFee.text = "Rs. 0.00 Charged"
         lblTransationId.text = Trascationid
         lblSendTo.text = phoneNumber
         lblSendBy.text = "FirstPay Account\(DataManager.instance.accountNo!)"
-      
-        if GlobalData.topup == "Postpaid"
+        
+        if GlobalData.topup == "P O S T P A I D"
         {
             lblTransactionType.text = "Mobile Load Postpaid"
         }
         else{
             lblTransactionType.text = "Mobile Load Prepaid"
         }
-       
+        
         lblOperator.text = GlobalData.Selected_operator
         lblDateTime.text = TransactionDate
         
     }
-    
-
 }
 
 
 
 extension UIView {
-   func convertToImage() -> UIImage {
-       let renderer = UIGraphicsImageRenderer(bounds: bounds)
-       return renderer.image { rendererContext in
-           layer.render(in: rendererContext.cgContext)
-       }
-   }
+    func convertToImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
 }

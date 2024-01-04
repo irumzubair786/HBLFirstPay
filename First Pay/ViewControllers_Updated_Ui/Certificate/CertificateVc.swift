@@ -49,7 +49,7 @@ class CertificateVc: UIViewController {
         let k = " HBL Tower, Blue Area, Islamabad"
 
         let l = " Toll Free 0800-42563 OR 0800-34778"
-        var concateString = "\(a) \(b) \(c) \(d) \(e) \(f) \(g) \(h) \(i) \(j) \(k) \(l)"
+        let concateString = "\(a) \(b) \(c) \(d) \(e) \(f) \(g) \(h) \(i) \(j) \(k) \(l)"
         
         textvieww.text = concateString
     }

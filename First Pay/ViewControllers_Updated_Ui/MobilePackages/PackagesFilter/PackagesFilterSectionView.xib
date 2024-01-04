@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PackagesFilterSectionView" id="U6b-Vx-4bR" customClass="PackagesFilterSectionView" customModule="HBLFMB" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="8NR-bG-v7C">
+                    <rect key="frame" x="0.0" y="20" width="320" height="70"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="frr-9B-2zG">
+                            <rect key="frame" x="0.0" y="0.0" width="160" height="70"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                            <color key="textColor" red="0.090196078431372548" green="0.11764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UII-L7-yra">
+                            <rect key="frame" x="160" y="0.0" width="160" height="70"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="SW6-f4-Igx">
+                                    <rect key="frame" x="0.0" y="0.0" width="160" height="70"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CLEAR FILTERS" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FWa-LH-8RD">
+                                            <rect key="frame" x="0.0" y="0.0" width="132" height="70"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                            <color key="textColor" red="0.72941176470588232" green="0.72941176470588232" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clearFilter" translatesAutoresizingMaskIntoConstraints="NO" id="3Mq-ES-6e7">
+                                            <rect key="frame" x="140" y="0.0" width="20" height="70"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="Q4U-fz-oSJ"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IhG-6q-JoW">
+                                    <rect key="frame" x="0.0" y="0.0" width="160" height="70"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="IhG-6q-JoW" secondAttribute="trailing" id="B9j-Mq-tZJ"/>
+                                <constraint firstItem="IhG-6q-JoW" firstAttribute="top" secondItem="UII-L7-yra" secondAttribute="top" id="BDC-EX-Gz3"/>
+                                <constraint firstItem="SW6-f4-Igx" firstAttribute="leading" secondItem="UII-L7-yra" secondAttribute="leading" id="RpZ-aA-d12"/>
+                                <constraint firstAttribute="bottom" secondItem="SW6-f4-Igx" secondAttribute="bottom" id="Whu-dl-HGl"/>
+                                <constraint firstItem="SW6-f4-Igx" firstAttribute="top" secondItem="UII-L7-yra" secondAttribute="top" id="X88-zd-erQ"/>
+                                <constraint firstAttribute="trailing" secondItem="SW6-f4-Igx" secondAttribute="trailing" id="bmD-v3-NCK"/>
+                                <constraint firstItem="IhG-6q-JoW" firstAttribute="leading" secondItem="UII-L7-yra" secondAttribute="leading" id="dZJ-U9-mgH"/>
+                                <constraint firstAttribute="bottom" secondItem="IhG-6q-JoW" secondAttribute="bottom" id="tWy-ph-mHN"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="8NR-bG-v7C" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" id="FRy-gz-IUq"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="8NR-bG-v7C" secondAttribute="trailing" id="WP9-tM-WIK"/>
+                <constraint firstItem="8NR-bG-v7C" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="20" id="dPt-I4-UOQ"/>
+                <constraint firstAttribute="bottom" secondItem="8NR-bG-v7C" secondAttribute="bottom" id="npo-qL-N1v"/>
+            </constraints>
+            <connections>
+                <outlet property="buttonClearFilter" destination="IhG-6q-JoW" id="LDt-fS-lZh"/>
+                <outlet property="labelName" destination="frr-9B-2zG" id="MIh-Du-PAK"/>
+                <outlet property="labelOther" destination="FWa-LH-8RD" id="5HO-ZO-13Q"/>
+                <outlet property="viewClearFilter" destination="UII-L7-yra" id="6pd-jg-qMX"/>
+            </connections>
+            <point key="canvasLocation" x="138.93129770992365" y="19.718309859154932"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <image name="clearFilter" width="46" height="38"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

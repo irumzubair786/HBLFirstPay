@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import PasswordTextField
 import RNCryptor
@@ -20,6 +20,7 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
     var setLoginPinObj : setLoginPinModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+        enterPinTextField.becomeFirstResponder()
         Alert_view.isHidden = true
 //        lbl4.isHidden = true
         blur_view.alpha = 0.4
@@ -155,6 +156,9 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
         }
     }
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
 //        green
 //    #00CC96
     
@@ -328,57 +332,62 @@ class Set_PasswordVC:  BaseClassVC , UITextFieldDelegate {
             print(parameters)
             
             let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-            let header = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+             let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
             print(params)
             print(compelteUrl)
             
             NetworkManager.sharedInstance.enableCertificatePinning()
-            NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<setLoginPinModel>) in
-      
+            NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//                (response: DataResponse<setLoginPinModel>) in
+                response in
                 self.hideActivityIndicator()
-                self.setLoginPinObj = response.result.value
-                if response.response?.statusCode == 200 {
-                    
-                    if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
-                        UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
-                        let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
-                        print("Remover \(removePessi)")
-                        var userCnic : String?
-                        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-                            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-                        }
+                guard let data = response.data else { return }
+                if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                    self.setLoginPinObj = Mapper<setLoginPinModel>().map(JSONObject: json)
+                    //                self.setLoginPinObj = response.result.value
+                    if response.response?.statusCode == 200 {
+                        
+                        if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
+                            UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                            let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
+                            print("Remover \(removePessi)")
+                            var userCnic : String?
+                            if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                                userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+                            }
                             else{
                                 userCnic = ""
                             }
-                        self.Alert_view.isHidden = false
-                        self.blur_view.isHidden = false
-                      
-
-                    }
-                    else {
-                        
-                        if let message = self.setLoginPinObj?.messages{
-                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                            self.Alert_view.isHidden = false
+                            self.blur_view.isHidden = false
+                            
+                            
                         }
-                        
-                        // Html Parse
-                        
-                        if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                            if title.contains("Request Rejected") {
-                                self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                        else {
+                            
+                            if let message = self.setLoginPinObj?.messages{
+                                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                            }
+                            
+                            // Html Parse
+                            
+                            if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                                if title.contains("Request Rejected") {
+                                    self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                                }
                             }
                         }
                     }
-                }
-                else {
-                    if let message = self.setLoginPinObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                    }
                     else {
-                        self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
+                        if let message = self.setLoginPinObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                        else {
+                            self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
+                        }
+                        //                print(response.result.value)
+                        //                print(response.response?.statusCode)
                     }
-    //                print(response.result.value)
-    //                print(response.response?.statusCode)
                 }
             }
         }

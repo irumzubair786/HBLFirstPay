@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import MessageUI
 class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate{
@@ -52,8 +52,9 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         appendArray()
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(Send(tapGestureRecognizer:)))
         img_next.addGestureRecognizer(tapGestureRecognizerr)
-        
-        
+        buttonContinue.circle()
+        messageTextView.delegate = self
+        Tfname.delegate = self
     }
     func appendArray(){
         for i in arrCategory{
@@ -132,15 +133,13 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
 //        self.present(vc, animated: true)
 //
     }
-
+    let RISTRICTED_CHARACTERS = "'*=+[]\\|;:'\",<>/?%"
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
         if string.rangeOfCharacter(from: .letters) != nil || string == " " {
             return true
         }
         else if !(string == "" && range.length > 0) {
-        return false
-        
+            return false
         }
         return true
     }
@@ -148,24 +147,15 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
         if text.rangeOfCharacter(from: .letters) != nil || text == " " {
-                   return true
-               }
-               else if !(text == "" && range.length > 0) {
-               return false
-               }
-        if text == "\n"
-        {
+            return true
+        }
+        else if !(text == "" && range.length > 0) {
+            return false
+        }
+        if text == "\n" {
             messageTextView.resignFirstResponder()
         }
-//        if (Tfname.text == nil) || (messageTextView.text == nil)
-//            {
-//                buttonContinue.isUserInteractionEnabled = false
-//                let image = UIImage(named: "grayArrow")
-//                img_next.image = image
-//                img_next.isUserInteractionEnabled = false
-//            }
-
-               return true
+        return true
         
     }
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -194,37 +184,44 @@ class ContactUSVC: BaseClassVC,MFMessageComposeViewControllerDelegate, UITextFie
         print(result.apiAttribute2)
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
 
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
         print(compelteUrl)
 
         NetworkManager.sharedInstance.enableCertificatePinning()
 
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
             
-//        Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+//        Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<GenericResponse>) in
 
+            response in
             self.hideActivityIndicator()
-            self.genericObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                    self.btnAlertView.isHidden = false
-                    
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genericObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                        self.btnAlertView.isHidden = false
+                        
+                    }
+                    else {
+                        if let message = self.genericObj?.messages{
+                            self.showToast(title: message)
+                            //                        self.showDefaultAlert(title: "", message: message)
+                        }
+                    }
                 }
                 else {
                     if let message = self.genericObj?.messages{
                         self.showToast(title: message)
-//                        self.showDefaultAlert(title: "", message: message)
+                        self.showDefaultAlert(title: "", message: message)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.genericObj?.messages{
-                    self.showToast(title: message)
-                    self.showDefaultAlert(title: "", message: message)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
 
@@ -262,6 +259,7 @@ extension ContactUSVC: UICollectionViewDelegate, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionViewCategory .dequeueReusableCell(withReuseIdentifier: "cellCategory", for: indexPath) as! cellCategory
+        cell.btnCategory.circle()
         if(myarr[indexPath.row].isSeleccted == true){
             cell.btnCategory.setTitleColor(.white, for: .normal)  ///set title color here to white
             cell.btnCategory.backgroundColor = UIColor(hexValue: 0xF19434)

@@ -19,11 +19,16 @@ class MaintenenceCertificate: BaseClassVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
-        
+       
         
         pdfView.translatesAutoresizingMaskIntoConstraints = false
         pdfViewContainer.addSubview(pdfView)
-        pdfView.scaleFactor = pdfView.scaleFactorForSizeToFit
+        pdfView.frame = pdfViewContainer.frame
+        pdfView.frame.origin.x = 0
+        pdfView.frame.origin.y = 0
+        pdfView.backgroundColor = .white
+        
+        pdfView.scaleFactor = pdfView.maxScaleFactor
         pdfView.leadingAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.leadingAnchor).isActive = true
         pdfView.trailingAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.trailingAnchor).isActive = true
         pdfView.topAnchor.constraint(equalTo: pdfViewContainer.safeAreaLayoutGuide.topAnchor).isActive = true
@@ -51,11 +56,11 @@ class MaintenenceCertificate: BaseClassVC {
 
     @IBAction func buttonDownload(_ sender: UIButton) {
         let renderer = UIGraphicsImageRenderer(size: view.bounds.size)
-                let screenshot = renderer.image { ctx in
-                    view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
-                }
-                
-                UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
+        let screenshot = renderer.image { ctx in
+            view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
+        }
+        
+        UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
         showToast(title: "Certificate Download Successfully!")
         // Save the screenshot to the camera roll
             
@@ -83,5 +88,35 @@ class MaintenenceCertificate: BaseClassVC {
                 }
             }
         }
-    
+
+    static func getThumbnailForPDF(_ urlString:String, pageNumber:Int) -> UIImage? {
+        let bundle = Bundle.main
+        let path = bundle.path(forResource: urlString, ofType: "pdf")
+        let pdfURL = URL(fileURLWithPath: path!)
+
+        let pdf = CGPDFDocument(pdfURL as CFURL )!
+        let page = pdf.page(at: pageNumber)!
+        let rect = CGRect(x: 0, y: 0, width: 100.0, height: 70.0) //Image size here
+
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()!
+
+        context.saveGState()
+        context.translateBy(x: 0, y: rect.height)
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.setFillColor(gray: 1.0, alpha: 1.0)
+        context.fill(rect)
+
+
+        let pdfTransform = page.getDrawingTransform(CGPDFBox.mediaBox, rect: rect, rotate: 0, preserveAspectRatio: true)
+        context.concatenate(pdfTransform)
+        context.drawPDFPage(page)
+
+        let thumbImage = UIGraphicsGetImageFromCurrentImageContext()
+        context.restoreGState()
+
+        UIGraphicsEndImageContext()
+
+        return thumbImage
+    }
 }

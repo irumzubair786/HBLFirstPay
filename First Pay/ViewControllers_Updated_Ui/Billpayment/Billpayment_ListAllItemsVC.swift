@@ -8,9 +8,10 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SDWebImage
+import ObjectMapper
 class Billpayment_ListAllItemsVC: BaseClassVC , UISearchBarDelegate{
     var BillComapnyid : Int?
     var utilityBillCompany : String?
@@ -57,55 +58,61 @@ class Billpayment_ListAllItemsVC: BaseClassVC , UISearchBarDelegate{
         
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.BillComapnyid ?? 0)"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/getCompaniesById/\(self.BillComapnyid ?? 0)"
        
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<UtilityBillCompaniesModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<UtilityBillCompaniesModel>) in
             
             
+            response in
             self.hideActivityIndicator()
-            
-            self.billCompanyListObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
-                    if let companies = self.billCompanyListObj?.companies {
-                        self.comapniesList = companies
-                        self.bill_arr = self.billCompanyListObj?.stringCompaniesList
-                    }
-
-                    for i in self.billCompanyListObj?.companies! ?? []
-                    {
-                        let temp = BillCompany()
-                        temp.code = i.code!
-                        temp.id = i.ubpCompaniesId!
-                        temp.name = i.name!
-                        temp.path = i.path ?? ""
-                        self.getClassBillComapny.append(temp)
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
+                
+                //            self.billCompanyListObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
+                        if let companies = self.billCompanyListObj?.companies {
+                            self.comapniesList = companies
+                            self.bill_arr = self.billCompanyListObj?.stringCompaniesList
+                        }
                         
+                        for i in self.billCompanyListObj?.companies! ?? []
+                        {
+                            let temp = BillCompany()
+                            temp.code = i.code!
+                            temp.id = i.ubpCompaniesId!
+                            temp.name = i.name!
+                            temp.path = i.path ?? ""
+                            self.getClassBillComapny.append(temp)
+                            
+                        }
+                        self.filteredData =  self.getClassBillComapny
+                        self.tableView.delegate = self
+                        self.tableView.dataSource = self
+                        self.tableView.reloadData()
                     }
-                    self.filteredData =  self.getClassBillComapny
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
-                    self.tableView.reloadData()
+                    else {
+                        if let message = self.billCompanyListObj?.messages{
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
+                    }
                 }
                 else {
-                    if let message = self.billCompanyListObj?.messages{
-                        self.showAlert(title: "", message: message, completion: nil)
-                    }
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -131,6 +138,9 @@ extension Billpayment_ListAllItemsVC: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
         Selected_Company = (filteredData[indexPath.row].name)
+        FBEvents.logEvent(title: .PayBills_company_selection)
+        FaceBookEvents.logEvent(title: .PayBills_company_selection)
+
         for i in getClassBillComapny
         {
             if i.name == Selected_Company

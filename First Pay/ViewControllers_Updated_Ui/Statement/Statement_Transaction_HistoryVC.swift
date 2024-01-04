@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import PDFKit
 class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITableViewDataSource , UITextFieldDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -36,31 +36,41 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         aCell.btn.setTitle("", for: .normal)
         let aStatement = self.myStatementObj?.ministatement![indexPath.row]
         //        getDataStatemnt = self.myStatementObj?.ministatement![indexPath.row]
-        aCell.lblbankName.text = aStatement?.transDocsDescr
-        aCell.lbldate.text = aStatement?.transDate
+//        aCell.lblbankName.text = aStatement?.transDocsDescr
+//        aCell.lbldate.text = (aStatement?.transDate ?? "") + "| \()"
+        
         
         aCell.lblAmount.text = " Rs.\(aStatement?.txnAmt! ?? 0)"
         if aStatement?.amountType == "C"{
-            //            aCell.lblType.text = "Credit"
-            aCell.lblAmount.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+            
+            
+//            aCell.lblAmount.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
             aCell.img.image = #imageLiteral(resourceName: "Arrow Icon-1")
-            aCell.lblbankName.text = aStatement?.sourceBank
+            aCell.lblbankName.text = aStatement?.transDocsDescr
+//            amountType
+            aCell.lbldate.text = (aStatement?.transDate ?? "") + " | Credit"
+            
+            
+            
             //            self.miniStatementObj?.ministatement?[0].sourceBank
             //
         }
         else if aStatement?.amountType == "D" {
             //            aCell.lblType.text = "Debit"
-            aCell.lblAmount.textColor = #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1)
+//            aCell.lblAmount.textColor = #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1)
             aCell.img.image = #imageLiteral(resourceName: "Arrow Icon")
-            aCell.lblbankName.text = aStatement?.sourceBank
+            aCell.lblbankName.text = aStatement?.transDocsDescr
+            aCell.lbldate.text = (aStatement?.transDate ?? "") + " | Debit"
             
             //
         }
         
         aCell.btnDetail.setTitle("", for: .normal)
         aCell.btnDetail.tag = indexPath.row
-        
+        aCell.cellBackButton.tag = indexPath.row
+        aCell.cellBackButton.setTitle("", for: .normal)
         aCell.btnDetail.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
+        aCell.cellBackButton.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
         
         return aCell
     }
@@ -87,6 +97,7 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         detailsVC.strOpenningBalance = "\(aStatement?.openingbalance ?? 00)"
         detailsVC.strClosingBalance = "\(aStatement?.closingBalance ?? 00)"
         detailsVC.status = aStatement?.status
+        detailsVC.refferenceNo = aStatement?.transRefnum
         self.transRefNum = aStatement?.transRefnum
         if  withoutholdingtax != nil{
             detailsVC.whtAmt = aStatement?.whtAmt
@@ -118,12 +129,12 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         detailsVC.strSourceWallet = ("\(aStatement?.fromAccountTitle ?? "") \n\(aStatement?.fromAccountNo ?? "")")
         detailsVC.strDateTime = aStatement?.transDate
         detailsVC.strTransactionType = aStatement?.transDocsDescr
-        detailsVC.strPurpose = aStatement?.transRefnum
         detailsVC.strSourceBank = aStatement?.sourceBank
         detailsVC.strDestinationBank = aStatement?.destinationBank
         detailsVC.strChannel = aStatement?.channel
         detailsVC.strOpenningBalance = "\(aStatement?.openingbalance ?? 00)"
         detailsVC.strClosingBalance = "\(aStatement?.closingBalance ?? 00)"
+        detailsVC.refferenceNo = aStatement?.transRefnum
         detailsVC.status = aStatement?.status
         self.transRefNum = aStatement?.transRefnum
         if  withoutholdingtax != nil{
@@ -157,7 +168,7 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         btnDownLoad.setTitle("", for: .normal)
         btnBack.setTitle("", for: .normal)
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("disputeButtonPressed"), object: nil)
-        tableView.rowHeight = 109
+        tableView.rowHeight = 95
         getMiniStatementwithoutDates()
         btnShow.setTitle("", for: .normal)
         
@@ -257,21 +268,16 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         
         return nil
     }
-    
-    
-    
-    
-    
+  
     @IBAction func Show(_ sender: UIButton) {
-        
+        if ToDateTextfiled.text == "" {
+            
+        }
+        if fromDateTextfield.text == "" {
+            
+        }
         getMiniStatement()
-        
     }
-    
-    
-    
-    
-    
     @IBAction func back(_ sender: UIButton) {
         if isfromSideMenu == true
         {
@@ -288,6 +294,9 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
     }
     
     @IBAction func Action_download(_ sender: UIButton) {
+        if self.myStatementObj?.ministatement?.count == 0 {
+            return()
+        }
         screenshot()
     }
     // MARK: - API Call
@@ -307,37 +316,38 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         print(result.apiAttribute1)
         print(result.apiAttribute2)
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
         print(compelteUrl)
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<MiniStatementModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<MiniStatementModel>) in
+            response in
             self.hideActivityIndicator()
-            self.myStatementObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
-                    
-                    GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
-                    print("fetch transation refference Number",  GlobalData.transRefnum)
-                    
-                    
-                    
-                    
-                    self.tableView.reloadData()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.myStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
+                //            self.myStatementObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
+                        GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
+                        print("fetch transation refference Number",  GlobalData.transRefnum)
+                        self.tableView.reloadData()
+                    }
+                    else {
+                        if let message = self.myStatementObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.myStatementObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                    print(response.result.value)
+                    //                    print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.myStatementObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                    print(response.result.value)
-                //                    print(response.response?.statusCode)
             }
         }
     }
@@ -347,18 +357,45 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
             return
         }
         
-        let a = fromDateTextfield.text?.replacingOccurrences(of: "/", with: "-")
-        let stringFrom = self.formattedDateFromString(dateString: a!, withFormat: "yyyy-MM-dd")
-        let b = ToDateTextfiled?.text?.replacingOccurrences(of: "/", with: "-")
-        let stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
-        print("fromdate ", stringFrom)
-        print("fromto ", stringTo)
+        guard let a = fromDateTextfield.text?.replacingOccurrences(of: "/", with: "-") else {
+            return()
+        }
+        if a == "" {
+            return()
+        }
+//<<<<<<< HEAD
+//        let stringFrom = self.formattedDateFromString(dateString: a!, withFormat: "yyyy-MM-dd")
+////        let stringFrom = a
+//        let b = ToDateTextfiled?.text?.replacingOccurrences(of: "/", with: "-")
+////        let stringTo = b
+//        let stringTo = self.formattedDateFromString(dateString: b!, withFormat: "yyyy-MM-dd")
+//        print("fromdate ", stringFrom)
+//        print("fromto ", stringTo)
+//=======
+        var stringFrom = self.formattedDateFromString(dateString: a, withFormat: "yyyy-MM-dd")
+        stringFrom = "\(stringFrom!) 00:00:01"
+        
+        guard let b = ToDateTextfiled?.text?.replacingOccurrences(of: "/", with: "-") else {
+            return()
+        }
+        if b == "" {
+            return()
+        }
+        var stringTo = self.formattedDateFromString(dateString: b, withFormat: "yyyy-MM-dd")
+        stringTo = "\(stringTo!) 23:59:59"
+        print("fromdate ", stringFrom!)
+        print("fromto ", stringTo!)
+//>>>>>>> c5f6ff7 (Transaction History issue fixed)
         showActivityIndicator()
         var userCnic : String?
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/miniStatement"
-        //        2020-05-10 23:59:59
+//        //        2020-05-10 23:59:59
         let parameters = ["channelId":"\(DataManager.instance.channelID)","fromDate": stringFrom ?? "" + " 00:00:01","toDate": stringTo ?? ""  + " 23:59:59","accountType": DataManager.instance.accountType!,"cnic":userCnic!, "imeiNo":DataManager.instance.imei!]
+        
+//        let parameters = ["channelId":"\(DataManager.instance.channelID)","fromDate": stringTo ?? "" + " 00:00:01","toDate": stringFrom ?? ""  + " 23:59:59","accountType": DataManager.instance.accountType!,"cnic":userCnic!, "imeiNo":DataManager.instance.imei!]
+        
+        
         //        let parameters = ["" : ""]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
@@ -366,45 +403,49 @@ class Statement_Transaction_HistoryVC: BaseClassVC , UITableViewDelegate , UITab
         print(result.apiAttribute2)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
         print(compelteUrl)
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<MiniStatementModel>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<MiniStatementModel>) in
+            response in
             self.hideActivityIndicator()
-            self.myStatementObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
-                    GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
-                    print("fetch transation refference Number",  GlobalData.transRefnum)
-                    //                    if self.miniStatementObj != nil {
-                    //                        completionHandler(self.miniStatementObj!)
-                    //                    }
-                    self.tableView.reloadData()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.myStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
+                //            self.myStatementObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.myStatementObj?.responsecode == 2 || self.myStatementObj?.responsecode == 1 {
+                        GlobalData.transRefnum = (self.myStatementObj?.ministatement?[0].transRefnum)!
+                        print("fetch transation refference Number",  GlobalData.transRefnum)
+                        //                    if self.miniStatementObj != nil {
+                        //                        completionHandler(self.miniStatementObj!)
+                        //                    }
+                        self.tableView.reloadData()
+                    }
+                    else {
+                        
+                        if let message = self.myStatementObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
+                        self.tableView.reloadData()
+                    }
                 }
                 else {
-                    
                     if let message = self.myStatementObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
-                    self.tableView.reloadData()
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.myStatementObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                //                print(response.result.value)
-                //                print(response.response?.statusCode)
             }
         }
     }
 }
 extension Statement_Transaction_HistoryVC {
     func screenshot() -> UIImage{
-        
         var image = UIImage();
         UIGraphicsBeginImageContextWithOptions(self.tableView.contentSize, false, UIScreen.main.scale)
         // save initial values

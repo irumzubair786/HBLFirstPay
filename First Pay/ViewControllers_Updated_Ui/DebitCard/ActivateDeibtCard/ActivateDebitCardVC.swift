@@ -8,14 +8,15 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 var accountDebitCardId : String?
+var isfromActivateCard : Bool?
 class ActivateDebitCardVC: BaseClassVC {
 //    var accountDebitCardId : String?
   
     var getDebitDetailsObj : GetDebitCardModel?
-   
+    var MainTitle: String?
     override func viewDidLoad() {
 
         super.viewDidLoad()
@@ -23,9 +24,24 @@ class ActivateDebitCardVC: BaseClassVC {
         button1.setTitle("", for: .normal)
         button2.setTitle("", for: .normal)
         button3.setTitle("", for: .normal)
+       
 //        view2.isHidden = true
 //        view3.isHidden = true
         getDebitCard()
+        if isfromReactivateCard == true
+        {
+            view2.isHidden = false
+        }
+        else
+        {
+            view2.isHidden = true
+        }
+//        guard let alreadylogin =  UserDefaults.standard.string(forKey: "MainTitle")
+//        else {
+//            view2.isHidden = false
+//            return
+//        }
+//        view2.isHidden = true
     }
    
     @IBOutlet weak var buttonBack: UIButton!
@@ -45,14 +61,23 @@ class ActivateDebitCardVC: BaseClassVC {
     @IBOutlet weak var labelCardNumber: UILabel!
     
     @IBAction func button3(_ sender: UIButton) {
+       
     }
     @IBAction func button2(_ sender: UIButton) {
+        
+        FBEvents.logEvent(title: .Debit_activate_orderNew_card)
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardAddressVC") as!  DebitCardAddressVC
+        self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     @IBAction func button1(_ sender: UIButton) {
         FBEvents.logEvent(title: .Debit_activatepincreate_landing)
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationFourDigitNumberVc") as!  ActivationFourDigitNumberVc
         isFromDeactivate = false
+        isfromActivateCard  = true
+        
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -91,7 +116,7 @@ class ActivateDebitCardVC: BaseClassVC {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -104,56 +129,86 @@ class ActivateDebitCardVC: BaseClassVC {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<GetDebitCardModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            [self] (response: DataResponse<GetDebitCardModel>) in
             
+            response in
             self.hideActivityIndicator()
-            
-            self.getDebitDetailsObj = response.result.value
-            print(self.getDebitDetailsObj)
-        
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
                 
-                if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                //            self.getDebitDetailsObj = response.result.value
+                print(self.getDebitDetailsObj)
                 
-                    for anObject in self.getDebitDetailsObj?.debitCardData ?? []
-                    {
-                        if let name = anObject.debitCardTitle {
-                            self.labelName.text = name
-                        }
-                        if let pan = anObject.pan {
-                            self.labelCardNumber.text = pan
-                        }
-                        if let month = anObject.cardExpiryMonth {
-                            if let year = anObject.cardExpiryYear{
-                                self.labelDate.text = "\(month)" + "/\(year)"
+                if response.response?.statusCode == 200 {
+                    
+                    if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        
+                        if let anObject = self.getDebitDetailsObj?.data
+                        {
+                            if let name = anObject.debitCardTitle {
+                                self.labelName.text = name
+                            }
+                            if let pan = anObject.pan {
+                                self.labelCardNumber.text = pan
+                            }
+                            if let month = anObject.cardExpiryMonth {
+                                if let year = anObject.cardExpiryYear{
+                                    self.labelDate.text = "\(month)" + "/\(year)"
+                                }
+                            }
+                            
+                            if let accountID = anObject.accountDebitCardId{
+                                GlobalData.accountDebitCardId = Int(accountID)
+                                //                self.accountDebitCardId = "\(accountID)"
                             }
                         }
-                      
-                        if let accountID = anObject.accountDebitCardId{
-                            GlobalData.accountDebitCardId = Int(accountID)
-            //                self.accountDebitCardId = "\(accountID)"
+                        
+                        
+                        
+                        
+                        
+//                        for anObject in self.getDebitDetailsObj?.data ??
+//                        {
+//                            if let name = anObject.debitCardTitle {
+//                                self.labelName.text = name
+//                            }
+//                            if let pan = anObject.pan {
+//                                self.labelCardNumber.text = pan
+//                            }
+//                            if let month = anObject.cardExpiryMonth {
+//                                if let year = anObject.cardExpiryYear{
+//                                    self.labelDate.text = "\(month)" + "/\(year)"
+//                                }
+//                            }
+//                            
+//                            if let accountID = anObject.accountDebitCardId{
+//                                GlobalData.accountDebitCardId = Int(accountID)
+//                                //                self.accountDebitCardId = "\(accountID)"
+//                            }
+//                        }
+                        
+                        self.updateUI()
+                        
+                    }
+                    
+                    else {
+                        if let message = self.getDebitDetailsObj?.messages{
+                            
+                            
+                            
                         }
                     }
-                  
-                    self.updateUI()
-                    
                 }
-                
                 else {
-                    if let message = self.getDebitDetailsObj?.messages{
-                      
-
-
-                    }
+                    //                if let message = self.genResponse?.messages{
+                    //                    self.showDefaultAlert(title: "", message: message)
+                    //                    self.movetonext()
+                    //                }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-//                if let message = self.genResponse?.messages{
-//                    self.showDefaultAlert(title: "", message: message)
-//                    self.movetonext()
-//                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -185,7 +240,7 @@ class ActivateDebitCardVC: BaseClassVC {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -198,35 +253,41 @@ class ActivateDebitCardVC: BaseClassVC {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetDebitCardModel>) in
             
+            response in
             self.hideActivityIndicator()
-            
-            self.getDebitDetailsObj = response.result.value
-            print(self.getDebitDetailsObj)
-        
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
                 
-                if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
-                  
+                //            self.getDebitDetailsObj = response.result.value
+                print(self.getDebitDetailsObj)
                 
-                   
-                }
-                else {
-                    if let message = self.getDebitDetailsObj?.messages{
-                      
-
-                      
+                if response.response?.statusCode == 200 {
+                    
+                    if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        
+                        
+                        
+                    }
+                    else {
+                        if let message = self.getDebitDetailsObj?.messages{
+                            
+                            
+                            
+                        }
                     }
                 }
-            }
-            else {
-//                if let message = self.genResponse?.messages{
-//                    self.showDefaultAlert(title: "", message: message)
-//                    self.movetonext()
-//                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
+                else {
+                    //                if let message = self.genResponse?.messages{
+                    //                    self.showDefaultAlert(title: "", message: message)
+                    //                    self.movetonext()
+                    //                }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                }
             }
         }
     }
@@ -239,7 +300,7 @@ class ActivateDebitCardVC: BaseClassVC {
         if isfromReactivateCard == true{
             view3.isHidden = true
             labelView1.text = "Re- Activate My Card"
-            view2.isHidden = true
+//            view2.isHidden = true
           isFromDeactivate = false
             
             

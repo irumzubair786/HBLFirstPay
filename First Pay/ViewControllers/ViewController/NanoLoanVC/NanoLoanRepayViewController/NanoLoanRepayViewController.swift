@@ -95,10 +95,17 @@ class NanoLoanRepayViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        DispatchQueue.main.async {
+            self.viewBenifitRepaying.circle()
+            self.viewBenifitRepaying.radiusLineDashedStroke(radius: self.viewBenifitRepaying.frame.height / 2, color: .clrGreen)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        FBEvents.logEvent(title: .Loans_repay_landing)
+        FaceBookEvents.logEvent(title: .Loans_repay_landing)
         // Do any additional setup after loading the view.
         
         viewApplyButton.circle()
@@ -108,11 +115,6 @@ class NanoLoanRepayViewController: UIViewController {
         viewDescriptionIfDueDateBackground.backgroundColor = .clrLightRedWithOccupacy05
         
         viewMarkupCalendar.radius(radius: 18)
-        DispatchQueue.main.async {
-            self.viewBenifitRepaying.circle()
-            self.viewBenifitRepaying.radiusLineDashedStroke(radius: self.viewBenifitRepaying.frame.height / 2, color: .clrGreen)
-        }
-        
     }
     @IBAction func buttonMarkupCalendar(_ sender: Any) {
         openMarkupCalendar()
@@ -121,7 +123,9 @@ class NanoLoanRepayViewController: UIViewController {
         openNanoLoanBenifitVC()
     }
     @IBAction func buttonRepayNow(_ sender: Any) {
-        getActiveLoanToPay()
+        DispatchQueue.main.async {
+            self.getActiveLoanToPay()
+        }
     }
     
     func getActiveLoanToPay() {
@@ -142,16 +146,14 @@ class NanoLoanRepayViewController: UIViewController {
     
     func openNanoLoanRepayConfirmationVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanRepayConfirmationVC") as! NanoLoanRepayConfirmationVC
-        DispatchQueue.main.async {
-            vc.modelGetActiveLoanToPay = self.modelGetActiveLoanToPay
-            vc.modelGetActiveLoan = self.modelGetActiveLoan
-        }
+        vc.modelGetActiveLoanToPay = self.modelGetActiveLoanToPay
+        vc.modelGetActiveLoan = self.modelGetActiveLoan
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func openNanoLoanBenifitVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanBenifitVC") as! NanoLoanBenifitVC
-        vc.modalPresentationStyle = .overFullScreen
+//        vc.modalPresentationStyle = .overFullScreen
         self.present(vc, animated: true)
     }
     func openMarkupCalendar() {
@@ -174,9 +176,9 @@ extension NanoLoanRepayViewController {
     // MARK: - DataClass
     struct ModelGetActiveLoanToPayData: Codable {
         let loanNumber: String?
-        let statusDescr, dateTime: JSONNull?
+        let statusDescr, dateTime: String?
         let loanAvailedAmount, processingFee, daysTillDueDate: Int?
-        let transRefNum: JSONNull?
+        let transRefNum: String?
         let status: Int?
         let outstandingMarkupAmount: Double?
         let dueDate: String?

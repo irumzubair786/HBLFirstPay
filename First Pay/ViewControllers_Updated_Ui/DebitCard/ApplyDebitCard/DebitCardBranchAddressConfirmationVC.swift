@@ -8,13 +8,13 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class DebitCardBranchAddressConfirmationVC: BaseClassVC {
     var fullUserName : String?
     var address : String?
-    var cardFee : String?
-    var totalFee: String?
+    var cardFee : Float?
+    var totalFee: Float?
     var genericObj:GenericResponse?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,10 +64,10 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
         labelName.text = GlobalData.debitCardUserFullName
         labelBranchAddress.text = GlobalData.selectedBranch
         labelAddress.text = homeAddrss
-        labelCardFee.text = debitCardFee
-        labelTotalFee.text = debitCardFeeDeliveryCharges
+        labelCardFee.text = "\(debitCardFee!)"
+        labelTotalFee.text = "\(debitCardFeeDeliveryCharges!)"
         labelMobileNumber.text = DataManager.instance.accountNo
-        
+       
         
     }
     // MARK: - Api Call
@@ -96,37 +96,45 @@ class DebitCardBranchAddressConfirmationVC: BaseClassVC {
        
        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
        
-       let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+       let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
        
        print(params)
        print(compelteUrl)
        
        NetworkManager.sharedInstance.enableCertificatePinning()
        
-       NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+       NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//           (response: DataResponse<GenericResponse>) in
+           response in
            self.hideActivityIndicator()
-           self.genericObj = response.result.value
-           if response.response?.statusCode == 200 {
-               FBEvents.logEvent(title: .Debit_orderconfirm_success)
-
-               if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                   self.blurview.isHidden = false
-                   self.imagePopup.isHidden = false
-                  
+           guard let data = response.data else { return }
+           if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+               self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
+               
+               //           self.genericObj = response.result.value
+               if response.response?.statusCode == 200 {
+                   FBEvents.logEvent(title: .Debit_orderconfirm_success)
+                   FaceBookEvents.logEvent(title: .Debit_orderconfirm_success)
+                   
+                   if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                       self.blurview.isHidden = false
+                       self.imagePopup.isHidden = false
+                       
+                   }
+                   else {
+                       if let message = self.genericObj?.messages{
+                           self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                       }
+                   }
                }
                else {
+                   FBEvents.logEvent(title: .Debit_orderconfirm_failure)
+                   
                    if let message = self.genericObj?.messages{
                        self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                    }
+                   //
                }
-           }
-           else {
-               FBEvents.logEvent(title: .Debit_orderconfirm_failure)
-
-               if let message = self.genericObj?.messages{
-                   self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-               }
-//
            }
        }
    }

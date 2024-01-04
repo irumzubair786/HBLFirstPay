@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import PasswordTextField
 import RNCryptor
@@ -31,16 +31,19 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         enterPinTextField.delegate = self
         enterConfirmPinTextField.delegate = self
         enterPinTextField.isUserInteractionEnabled = true
-        enterConfirmPinTextField.isUserInteractionEnabled = true
+//        enterConfirmPinTextField.isUserInteractionEnabled = false
         self.lblMainTitle.text = "Reset Password"
         ConvertLanguage()
-        lbl1.text = "Password must contain atleast 1 Upper case,numeric and special character."
+        lbl1.text = "Password must contain 6 character."
         lbl1.textColor = UIColor.gray
         btnnext.isUserInteractionEnabled = true
         self.enterPinTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         self.enterConfirmPinTextField.addTarget(self, action: #selector(changeTextInTextField2), for: .editingDidEnd)
         
     }
+    @IBOutlet weak var lbl4: UILabel!
+    @IBOutlet weak var lbl3: UILabel!
+    @IBOutlet weak var lbl2: UILabel!
     @IBOutlet weak var Alert_view: UIView!
     @IBOutlet weak var Main_View: UIView!
     @IBOutlet weak var btn_next_arrow: UIButton!
@@ -73,12 +76,15 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         if isValidPassword() == true
         {
             movetonext()
-
+//            self.Alert_view.isHidden = false
+//            self.blur_view.isHidden = false
         }
 
             
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+           return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+       }
     
     @IBAction func Action_loginAgain(_ sender: UIButton) {
         
@@ -120,42 +126,52 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
             }
         
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            let newLength:Int = (textField.text?.count)! + string.count - range.length
             if textField ==  enterPinTextField
             {
-                if enterPinTextField.text?.count ?? 0 < 6
-                {
-                    
-                    lbl1.textColor = UIColor(hexValue: 0xFF3932)
-                   
-                    if isValidPassword() == true
-                        
-                    {
-                        print("test", enterPinTextField.text)
-                        print("test2", enterConfirmPinTextField.text)
-                    }
-                    else{
-//                        lbl1.textColor = UIColor(red: -0/255.0, green: 204/255.0, blue: 150/255.0, alpha: 1.0)
-                    }
+                return newLength <= 6
+                
+            }
+            if textField == enterConfirmPinTextField{
+                return newLength <= 6
+            }
+            return newLength <= 6
+                
+                
+//                if enterPinTextField.text?.count ?? 0 < 6
+//                {
 //
-                if isValidPassword() == true
-                        {
-                    lbl1.textColor = UIColor(hexValue : 0x00CC96)
-                    
-                }
-                   else
-                        {
-                       lbl1.textColor = UIColor(hexValue: 0xFF3932)
-                       
-                       
-                   }
-                        
-                       
-                    
-                    print("test", enterPinTextField.text)
-                    print("test2", enterConfirmPinTextField.text)
-                    }
-                    
-                }
+//                    lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//
+//                    if isValidPassword() == true
+//
+//                    {
+//                        print("test", enterPinTextField.text)
+//                        print("test2", enterConfirmPinTextField.text)
+//                    }
+//                    else{
+////                        lbl1.textColor = UIColor(red: -0/255.0, green: 204/255.0, blue: 150/255.0, alpha: 1.0)
+//                    }
+////
+//                if isValidPassword() == true
+//                        {
+//                    lbl1.textColor = UIColor(hexValue : 0x00CC96)
+//
+//                }
+//                   else
+//                        {
+//                       lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//
+//
+//                   }
+//
+//
+//
+//                    print("test", enterPinTextField.text)
+//                    print("test2", enterConfirmPinTextField.text)
+//                    }
+//
+//                }
     
             
             
@@ -202,50 +218,254 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
                 }
                 
             }
-            
-            let newLength:Int = (textField.text?.count)! + string.count - range.length
-            
-            if textField == enterPinTextField{
-                return newLength <= 6
-            }
-            if textField == enterConfirmPinTextField{
-                return newLength <= 6
-            }
-            return newLength <= 6
+           
     //        lbl1.textColor = UIColor.green
             
       }
-      
-        func textFieldDidEndEditing(_ textField: UITextField) {
-            
-            if textField == enterPinTextField {
-                enterConfirmPinTextField .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
-            } else if textField == enterConfirmPinTextField {
-                textField.resignFirstResponder()
-                if isValidPassword() == true{
-                  
+    
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if textField == enterPinTextField {
+            enterConfirmPinTextField .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
+        } else if textField == enterConfirmPinTextField {
+            textField.resignFirstResponder()
+            if isValidPassword() == true{
+                
+                if enterPinTextField?.text?.count == 6
+                {
+                    if isValidPassword() == true{
+                        lbl1.textColor = UIColor(hexValue : 0x00CC96)
+                        lbl1.textColor = UIColor(hexValue: 0x00CC96)
+                        lbl2.textColor = UIColor(hexValue: 0x00CC96)
+                        lbl3.textColor = UIColor(hexValue: 0x00CC96)
+                    }
+                    
                 }
+                else{
+                    lbl1.textColor = UIColor(hexValue: 0xFF3932)
+                    lbl2.textColor =  UIColor(hexValue: 0xFF3932)
+                    lbl3.textColor =  UIColor(hexValue: 0xFF3932)
+                }
+                if enterPinTextField.text == enterConfirmPinTextField.text{
+                    
+                    
+                    lbl1.textColor = UIColor(hexValue:  0x00CC96)
+                    lbl2.textColor = UIColor(hexValue: 0x00CC96)
+                    lbl3.textColor = UIColor(hexValue: 0x00CC96)
+                    lbl4.textColor = UIColor(hexValue: 0x00CC96)
+                    let image  = UIImage(named: "]greenarrow")
+                    btn_next_arrow.setImage(image, for: .normal)
+                    btnnext.isUserInteractionEnabled = true
+                    
+                    //                lbl4.textColor = UIColor.green
+                }
+                else
+                {
+                    lbl4.textColor = UIColor(hexValue:  0xFF3932)
+                    let image = UIImage(named: "grayArrow")
+                    btn_next_arrow.setImage(image, for: .normal)
+                    btnnext.isUserInteractionEnabled = false
+                }
+                if enterConfirmPinTextField?.text?.count == 0
+                {
+                    lbl4.textColor = UIColor(hexValue:  0xFF3932)
+                    let image = UIImage(named: "grayArrow")
+                    btn_next_arrow.setImage(image, for: .normal)
+                    btnnext.isUserInteractionEnabled = false
+                }
+                if enterPinTextField?.text?.count == 0
+                {
+                    lbl1.textColor = UIColor(hexValue:  0xFF3932)
+                    lbl2.textColor = UIColor(hexValue: 0xFF3932)
+                    lbl3.textColor = UIColor(hexValue:  0xFF3932)
+                    let image = UIImage(named: "grayArrow")
+                    btn_next_arrow.setImage(image, for: .normal)
+                    btnnext.isUserInteractionEnabled = false
+                }
+            }
+                
                 
             }
-      
-            if enterPinTextField.text == enterConfirmPinTextField.text{
-                let image  = UIImage(named: "]greenarrow")
-                lbl1.textColor = UIColor(hexValue : 0x00CC96)
-                
-                btn_next_arrow.setImage(image, for: .normal)
-                btnnext.isUserInteractionEnabled = true
-//                lbl4.textColor = UIColor.green
-            }
-            else if enterPinTextField.text != enterConfirmPinTextField.text
-            {
-                 lbl1.textColor = UIColor(hexValue: 0xFF3932)
-                let image = UIImage(named: "grayArrow")
-                btn_next_arrow.setImage(image, for: .normal)
-                btnnext.isUserInteractionEnabled = false
-            }
-         
             
         }
+  
+//        if enterPinTextField?.text?.count == 6
+//        {
+//            if isValidPassword() == true{
+//                lbl1.textColor = UIColor(hexValue : 0x00CC96)
+//                lbl1.textColor = UIColor(hexValue: 0x00CC96)
+//                lbl2.textColor = UIColor(hexValue: 0x00CC96)
+//                lbl3.textColor = UIColor(hexValue: 0x00CC96)
+//            }
+//
+//        }
+//        else{
+//            lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//            lbl2.textColor =  UIColor(hexValue: 0xFF3932)
+//            lbl3.textColor =  UIColor(hexValue: 0xFF3932)
+//        }
+//
+//
+//
+//        if enterPinTextField.text == enterConfirmPinTextField.text{
+//
+//
+//            lbl1.textColor = UIColor(hexValue:  0x00CC96)
+//            lbl2.textColor = UIColor(hexValue: 0x00CC96)
+//            lbl3.textColor = UIColor(hexValue: 0x00CC96)
+//            lbl4.textColor = UIColor(hexValue: 0x00CC96)
+//
+//            let image  = UIImage(named: "]greenarrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btnnext.isUserInteractionEnabled = true
+//
+////                lbl4.textColor = UIColor.green
+//        }
+//        else
+//        {
+//            lbl4.textColor = UIColor(hexValue:  0xFF3932)
+//            let image = UIImage(named: "grayArrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btnnext.isUserInteractionEnabled = false
+//        }
+//        if enterConfirmPinTextField?.text?.count == 0
+//        {
+//            lbl4.textColor = UIColor(hexValue:  0xFF3932)
+//            let image = UIImage(named: "grayArrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btnnext.isUserInteractionEnabled = false
+//        }
+//        if enterPinTextField?.text?.count == 0
+//        {
+//            lbl1.textColor = UIColor(hexValue:  0xFF3932)
+//            lbl2.textColor = UIColor(hexValue: 0xFF3932)
+//            lbl3.textColor = UIColor(hexValue:  0xFF3932)
+//           let image = UIImage(named: "grayArrow")
+//            btn_next_arrow.setImage(image, for: .normal)
+//            btnnext.isUserInteractionEnabled = false
+//        }
+//
+//
+//    }
+  
+   
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//    by irum
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//
+//        if enterPinTextField.text?.count == 6
+//        {
+//            enterConfirmPinTextField.isUserInteractionEnabled = true
+//        }
+//        if self.enterPinTextField.text?.count == 6  && enterConfirmPinTextField.text?.count == 6
+//        {
+//            if textField ==  enterPinTextField {
+//                enterConfirmPinTextField .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
+//            } else if textField == enterConfirmPinTextField {
+//                textField.resignFirstResponder()
+//                if isValidPassword() == true{
+//                    if enterPinTextField?.text?.count == 6
+//                    {
+//                        if isValidPassword() == true{
+//                            lbl1.textColor = UIColor(hexValue : 0x00CC96)
+//                            lbl1.textColor = UIColor(hexValue: 0x00CC96)
+//                            lbl2.textColor = UIColor(hexValue: 0x00CC96)
+//                            lbl3.textColor = UIColor(hexValue: 0x00CC96)
+//                        }
+//
+//                    }
+//                    else{
+//                        lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//                        lbl2.textColor =  UIColor(hexValue: 0xFF3932)
+//                        lbl3.textColor =  UIColor(hexValue: 0xFF3932)
+//                    }
+//
+//                    if enterPinTextField.text == enterConfirmPinTextField.text{
+//
+//
+//                        lbl1.textColor = UIColor(hexValue:  0x00CC96)
+//                        lbl2.textColor = UIColor(hexValue: 0x00CC96)
+//                        lbl3.textColor = UIColor(hexValue: 0x00CC96)
+//                        lbl4.textColor = UIColor(hexValue: 0x00CC96)
+//                        let image = UIImage(named: "]greenarrow")
+//                        btn_next_arrow.setImage(image, for: .normal)
+//                        btnnext.isUserInteractionEnabled = true
+//
+//                        //                lbl4.textColor = UIColor.green
+//                    }
+//                    else
+//                    {
+//                        lbl4.textColor = UIColor(hexValue:  0xFF3932)
+//                        let image = UIImage(named: "grayArrow")
+//                        btn_next_arrow.setImage(image, for: .normal)
+//                        btnnext.isUserInteractionEnabled = false
+//                    }
+//                    if enterConfirmPinTextField?.text?.count == 0
+//                    {
+//                        lbl4.textColor = UIColor(hexValue:  0xFF3932)
+//                        let image = UIImage(named: "grayArrow")
+//                        btn_next_arrow.setImage(image, for: .normal)
+//                        btnnext.isUserInteractionEnabled = false
+//                    }
+//                    if enterPinTextField?.text?.count == 0
+//                    {
+//                        lbl1.textColor = UIColor(hexValue:  0xFF3932)
+//                        lbl2.textColor = UIColor(hexValue: 0xFF3932)
+//                        lbl3.textColor = UIColor(hexValue:  0xFF3932)
+//                        let image = UIImage(named: "grayArrow")
+//                        btn_next_arrow.setImage(image, for: .normal)
+//                        btnnext.isUserInteractionEnabled = false
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
+//
+//
+    
+//        func textFieldDidEndEditing(_ textField: UITextField) {
+//
+//            if textField == enterPinTextField {
+//                enterConfirmPinTextField .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
+//            } else if textField == enterConfirmPinTextField {
+//                textField.resignFirstResponder()
+//                if isValidPassword() == true{
+//
+//                }
+//
+//            }
+//
+//            if enterPinTextField.text == enterConfirmPinTextField.text{
+//                let image  = UIImage(named: "]greenarrow")
+//                lbl1.textColor = UIColor(hexValue : 0x00CC96)
+//
+//                btn_next_arrow.setImage(image, for: .normal)
+//                btnnext.isUserInteractionEnabled = true
+////                lbl4.textColor = UIColor.green
+//            }
+//            else if enterPinTextField.text != enterConfirmPinTextField.text
+//            {
+//                 lbl1.textColor = UIColor(hexValue: 0xFF3932)
+//                let image = UIImage(named: "grayArrow")
+//                btn_next_arrow.setImage(image, for: .normal)
+//                btnnext.isUserInteractionEnabled = false
+//            }
+//
+//
+//        }
       
         func isValidPassword() -> Bool {
             // least one uppercase,
@@ -281,20 +501,23 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     }
     @objc func changeTextInTextField2() {
         
-        if self.enterConfirmPinTextField.text?.count == 6 {
+        if  enterConfirmPinTextField.text?.count == 6
+        {
             
             self.enterConfirmPinTextField.resignFirstResponder()
             
         }
-        print(self.enterConfirmPinTextField.text)
+        
     }
-        func movetonext()
-                         {
-                             print("doneeeeees")
-                             setLoginPin()
-
-                             
-            }
+    
+    func movetonext()
+    {
+        print("doneeeeees")
+//        setLoginPin()
+        self.Alert_view.isHidden = false
+        self.blur_view.isHidden = false
+        
+    }
     private func setLoginPin() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -321,67 +544,74 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
         print(params)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<setLoginPinModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<setLoginPinModel>) in
   
+            response in
             self.hideActivityIndicator()
-            self.setLoginPinObj = response.result.value
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.setLoginPinObj = Mapper<setLoginPinModel>().map(JSONObject: json)
                 
-                if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
-                    UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
-                    let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
-                    print("Remover \(removePessi)")
+                //            self.setLoginPinObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    var userCnic : String?
-                    if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-                        userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-                    }
+                    if self.setLoginPinObj?.responsecode == 2 || self.setLoginPinObj?.responsecode == 1 {
+                        UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                        let removePessi : Bool =  KeychainWrapper.standard.removeObject(forKey: "userKey")
+                        print("Remover \(removePessi)")
+                        
+                        var userCnic : String?
+                        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+                            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+                        }
                         else{
                             userCnic = ""
                         }
-                    UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
-                    if let passKey = self.enterPinTextField.text{
-                        let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
-                        print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-                        if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
-                            self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
-                            print("password saved"
-                            )
+                        UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                        if let passKey = self.enterPinTextField.text{
+                            let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                            print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                            if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
+                                self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
+                                print("password saved"
+                                )
+                            }
+                        }
+                        self.Alert_view.isHidden = false
+                        self.blur_view.isHidden = false
+                        
+                        
+                    }
+                    else {
+                        
+                        if let message = self.setLoginPinObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)                    }
+                        
+                        // Html Parse
+                        
+                        if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                            if title.contains("Request Rejected") {
+                                self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                            }
                         }
                     }
-                    self.Alert_view.isHidden = false
-                    self.blur_view.isHidden = false
-                  
-
                 }
                 else {
-                    
                     if let message = self.setLoginPinObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)                    }
-                    
-                    // Html Parse
-                    
-                    if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                        if title.contains("Request Rejected") {
-                            self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
-                        }
+                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    else {
+                        self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
+                    }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.setLoginPinObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                else {
-                    self.showDefaultAlert(title: "", message: "\(response.response?.statusCode ?? 500)")
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -394,124 +624,133 @@ class ResetPassword_SuccessfullVC: BaseClassVC , UITextFieldDelegate  {
     
     func login()
     {
-    self.showActivityIndicator()
-    if !NetworkConnectivity.isConnectedToInternet(){
-        self.showToast(title: "No Internet Available")
-        return
-    }
+        self.showActivityIndicator()
+        if !NetworkConnectivity.isConnectedToInternet(){
+            self.showToast(title: "No Internet Available")
+            return
+        }
         
-    
-    
-    
-    
-//        let compelteUrl = GlobalConstants.BASE_URL + "login"
-    let compelteUrl = GlobalConstants.BASE_URL + "v2/login"
-    
-            
-    if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
-        pessi = KeychainWrapper.standard.string(forKey: "userKey")
-    }
-    else if let password = self.enterPinTextField.text{
-        pessi = password
-    }
-    else{
-        self.showDefaultAlert(title: "", message: "Please Use Password for first time Login after Registration")
-        self.hideActivityIndicator()
-        return
-    }
-    if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-        userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-    }
-    else{
-        userCnic = ""
-    }
-
-    let parameters = ["cnic":userCnic!,"loginPin":pessi!,"imeiNo":DataManager.instance.imei!,"ipAddress":DataManager.instance.ipAddress!,"channelId":"\(DataManager.instance.channelID)","longitude":"\(DataManager.instance.Longitude!)","latitude":"\(DataManager.instance.Latitude!)","uuid":"\(DataManager.instance.userUUID ?? "")"]
-   
-    print(parameters)
-    
-    let result = splitString(stringToSplit: base64EncodedString(params: parameters))
-
-    let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-       let header = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
-    
-    
-    print(params)
-    print(compelteUrl)
-    NetworkManager.sharedInstance.enableCertificatePinning()
-    
-    NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
-//            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<LoginActionModel>) in
-           
-        self.loginObj = response.result.value
-
-        if response.response?.statusCode == 200 {
+        
+        
+        
+        
+        //        let compelteUrl = GlobalConstants.BASE_URL + "login"
+        let compelteUrl = GlobalConstants.BASE_URL + "v2/login"
+        
+        
+        if KeychainWrapper.standard.hasValue(forKey: "userKey") && viaBio == true {
+            pessi = KeychainWrapper.standard.string(forKey: "userKey")
+        }
+        else if let password = self.enterPinTextField.text{
+            pessi = password
+        }
+        else{
+            self.showDefaultAlert(title: "", message: "Please Use Password for first time Login after Registration")
             self.hideActivityIndicator()
-            self.loginObj = response.result.value
-            if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
-                if self.loginObj?.userData?.customerHomeScreens?[0].riskProfile == "Y"{
-//                   let createWalletVC = self.storyboard!.instantiateViewController(withIdentifier: "RiskProfileVC") as! RiskProfileVC
-//                    
-//                     if let accessToken = self.loginObj?.userData?.token{
-//                        DataManager.instance.accessToken = accessToken
-//                        DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
-//                        DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
-//                        print("\(accessToken)")
-//                     }
-//                    self.navigationController!.pushViewController(createWalletVC, animated: true)
-                }
-
-//
-            else{
-                
-             
-                
-                 if let accessToken = self.loginObj?.userData?.token{
-                    DataManager.instance.accessToken = accessToken
-                    DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
-                    DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
-                    print("\(accessToken)")
-                     UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
-                     if let passKey = self.enterPinTextField.text{
-                        let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
-                        print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
-                         if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
-                             self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
-                             print("password saved"
-                                   )
-                             }
-                         
-                         
-                         
-                    }
-                    self.saveInDataManager()
-                }
-                    else {
-             
-                if let message = self.loginObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-                // Html Parse
-                
-                if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
-                    if title.contains("Request Rejected") {
-                        self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
-                    }
-                }
-            }
+            return
+        }
+        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
+            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
+        }
+        else{
+            userCnic = ""
+        }
         
+        let parameters = ["cnic":userCnic!,"loginPin":pessi!,"imeiNo":DataManager.instance.imei!,"ipAddress":DataManager.instance.ipAddress!,"channelId":"\(DataManager.instance.channelID)","longitude":"\(DataManager.instance.Longitude!)","latitude":"\(DataManager.instance.Latitude!)","uuid":"\(DataManager.instance.userUUID ?? "")"]
+        
+        print(parameters)
+        
+        let result = splitString(stringToSplit: base64EncodedString(params: parameters))
+        
+        let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+        
+        
+        print(params)
+        print(compelteUrl)
+        NetworkManager.sharedInstance.enableCertificatePinning()
+        
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+            //        (response: DataResponse<LoginActionModel>) in
+            //            Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<LoginActionModel>) in
+            response in
+            self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.loginObj = Mapper<LoginActionModel>().map(JSONObject: json)
+                
+                //        self.loginObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    self.hideActivityIndicator()
+                    self.loginObj = Mapper<LoginActionModel>().map(JSONObject: json)
+                    
+                    //            self.loginObj = response.result.value
+                    if self.loginObj?.responsecode == 2 || self.loginObj?.responsecode == 1 {
+                        if self.loginObj?.userData?.customerHomeScreens?[0].riskProfile == "Y"{
+                            //                   let createWalletVC = self.storyboard!.instantiateViewController(withIdentifier: "RiskProfileVC") as! RiskProfileVC
+                            //
+                            //                     if let accessToken = self.loginObj?.userData?.token{
+                            //                        DataManager.instance.accessToken = accessToken
+                            //                        DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
+                            //                        DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
+                            //                        print("\(accessToken)")
+                            //                     }
+                            //                    self.navigationController!.pushViewController(createWalletVC, animated: true)
+                        }
+                        
+                        //
+                        else{
+                            
+                            
+                            
+                            if let accessToken = self.loginObj?.userData?.token{
+                                DataManager.instance.accessToken = accessToken
+                                DataManager.instance.accountType = self.loginObj?.userData?.customerHomeScreens?[0].accountType
+                                DataManager.instance.customerId = self.loginObj?.userData?.customerHomeScreens?[0].customerId
+                                print("\(accessToken)")
+                                UserDefaults.standard.set(self.enterPinTextField.text, forKey: "userKey")
+                                if let passKey = self.enterPinTextField.text{
+                                    let saveSuccessful : Bool = KeychainWrapper.standard.set(passKey, forKey: "userKey")
+                                    print("SuccessFully Added to KeyChainWrapper \(saveSuccessful)")
+                                    if KeychainWrapper.standard.hasValue(forKey: "userKey") && self.viaBio == true {
+                                        self.pessi = KeychainWrapper.standard.string(forKey: "userKey")
+                                        print("password saved"
+                                        )
+                                    }
+                                    
+                                    
+                                    
+                                }
+                                self.saveInDataManager()
+                            }
+                            else {
+                                
+                                if let message = self.loginObj?.messages{
+                                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                                }
+                                // Html Parse
+                                
+                                if let title = NSString(data: response.data!, encoding: String.Encoding.utf8.rawValue){
+                                    if title.contains("Request Rejected") {
+                                        self.showDefaultAlert(title: "", message: "Network Connection Error. Contact 0800 42563")
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                    else {
+                        
+                        self.showAlert(title: "", message: "Something Went Wrong", completion:nil)
+                        //                print(response.result.value)
+                        //                print(response.response?.statusCode)
+                    }
+                }
+                
+            }
         }
     }
-        else {
-        
-                self.showAlert(title: "", message: "Something Went Wrong", completion:nil)
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-        }
-  
-}
-}
-}
     func AccessTokenEncrypt(plaintext : String , password : String) -> String
        {
            let data: Data = plaintext.data(using: .utf8)!
@@ -572,3 +811,4 @@ private func navigateToHome(){
     
     
 }
+

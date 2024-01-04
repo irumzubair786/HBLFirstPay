@@ -12,6 +12,7 @@ class CalendarCurrentDateCell: UICollectionViewCell {
     
     static let reuseIdentifier = String(describing: CalendarCurrentDateCell.self)
     
+    @IBOutlet weak var viewBackGroundPrice: UIView!
     @IBOutlet weak var viewDateBackGround: UIView!
     @IBOutlet weak var viewMainBackGround: UIView!
     @IBOutlet weak var labelStatus: UILabel!
@@ -71,7 +72,7 @@ class CalendarCurrentDateCell: UICollectionViewCell {
         defaultCalendarDate()
         accessibilityHint = nil
         
-        labelPrice.text = "Rs. \(modelDate.markup)"
+        labelPrice.text = "Rs. \("\(modelDate.markup)".getIntegerValue())"
         labelStatus.text = "START DATE"
         
         labelPrice.isHidden = false

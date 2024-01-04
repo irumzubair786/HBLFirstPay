@@ -13,7 +13,8 @@ extension UIColor {
     static let _375D73 = UIColor(hexString: "375D73")
     static let _171D4B = UIColor(hexString: "171D4B")
     
-    
+    static let clrLightGraySelectionBackGround = UIColor(hexString: "F6F6F6")
+
     static let clrLightGrayCalendar = UIColor(hexString: "8F92A1")
 
     static let clrLightGray = UIColor(hexString: "BDBDBD")
@@ -24,14 +25,29 @@ extension UIColor {
     static let clrLightRed = UIColor(hexString: "EE6266")
     static let clrBlack = UIColor(hexString: "202734")
     static let clrGreen = UIColor(hexString: "00CC96")
+    static let clrLightGreen = UIColor(hexString: "70d478")
+    static let clrDarkGreen = UIColor(hexString: "5cc99a")
     static let clrTextNormal = UIColor(hexString: "202734")
+    static let clrGray = UIColor(hexString: "555555")
 
-    
+    static let clrLightGrayCalendarWithOccupacy05 = UIColor(hexString: "8F92A1", alpha: 0.05)
     static let clrGreenWithOccupacy20 = UIColor(hexString: "00CC96", alpha: 0.20)
     static let clrGreenWithOccupacy05 = UIColor(hexString: "00CC96", alpha: 0.05)
     static let clrBlackWithOccupacy20 = UIColor(hexString: "171717", alpha: 0.20)
     static let clrLightRedWithOccupacy05 = UIColor(hexString: "EE6266", alpha: 0.05)
+    static let clrLightRedWithOccupacy20 = UIColor(hexString: "EE6266", alpha: 0.20)
 
+    
+    
+    //Biometric Verification Screen Colors
+    
+    static let clrNavigationBarBVS = UIColor(hexString: "171E2C")
+    static let clrGreenBVS = UIColor(hexString: "00CC96")
+    static let clrNextButtonBackGroundBVS = UIColor(hexString: "F19434")
+
+    
+    
+    
     
 
 

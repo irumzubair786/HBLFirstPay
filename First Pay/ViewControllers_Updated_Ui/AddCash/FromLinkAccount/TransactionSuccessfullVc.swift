@@ -24,7 +24,9 @@ class TransactionSuccessfullVc: BaseClassVC {
         updateUi()
         // Do any additional setup after loading the view.
     }
-    @IBOutlet weak var imgview: UIImageView!
+    
+    @IBOutlet weak var imgview: UIView!
+//    @IBOutlet weak var imgview: UIImageView!
     @IBOutlet weak var buttonShare: UIButton!
     @IBOutlet weak var labelFeeCharged: UILabel!
     @IBOutlet weak var labelDateTime: UILabel!
@@ -35,12 +37,11 @@ class TransactionSuccessfullVc: BaseClassVC {
     @IBOutlet weak var labelTransactionAmount: UILabel!
     @IBOutlet weak var buttonDownload: UIButton!
     @IBAction func buttonShare(_ sender: UIButton) {
-        let image =  imgview.convertToImage()
-            
+        let image =  imgview.convertToImage() 
         let imageShare = [ image ]
-            let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view
-            self.present(activityViewController, animated: true, completion: nil)
+        let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     
@@ -56,7 +57,7 @@ class TransactionSuccessfullVc: BaseClassVC {
     func updateUi()
     {
         
-        labelTransactionAmount.text = transactionAmount
+        labelTransactionAmount.text = "\(transactionAmount?.floatValue ?? 0)"
         labelTransactionId.text = transactionId
         labelTransationType.text = transactionType
         labelBeneficiaryAccount.text = beneficiaryAccount

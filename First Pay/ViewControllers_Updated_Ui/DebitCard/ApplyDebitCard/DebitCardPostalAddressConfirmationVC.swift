@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class DebitCardPostalAddressConfirmationVC: BaseClassVC {
     var fullUserName : String?
@@ -62,10 +62,11 @@ class DebitCardPostalAddressConfirmationVC: BaseClassVC {
     }
     func updateui()
     {
+        
         labelName.text = GlobalData.debitCardUserFullName
         labelAddress.text = address
-        labelCardFee.text = debitCardFee
-        labelTotalFee.text = debitCardFeeDeliveryCharges
+        labelCardFee.text = "\(debitCardFee!)"
+        labelTotalFee.text = "\(debitCardFeeDeliveryCharges!)"
         labelMobileNumber.text = DataManager.instance.accountNo
     }
     // MARK: - Api Call
@@ -101,39 +102,44 @@ class DebitCardPostalAddressConfirmationVC: BaseClassVC {
        
        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
        
-       let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
        
        print(params)
        print(compelteUrl)
        
        NetworkManager.sharedInstance.enableCertificatePinning()
        
-       NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
-           
-           
+       NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//           (response: DataResponse<GenericResponse>) in
+           response in
            self.hideActivityIndicator()
-           
-           self.genericObj = response.result.value
-           if response.response?.statusCode == 200 {
+           guard let data = response.data else { return }
+           if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+               self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
                
-               if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                   self.blurview.isHidden = false
-                   self.imagePopup.isHidden = false
-                  
+               
+               //           self.genericObj = response.result.value
+               if response.response?.statusCode == 200 {
+                   
+                   if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                       self.blurview.isHidden = false
+                       self.imagePopup.isHidden = false
+                       
+                   }
+                   else {
+                       if let message = self.genericObj?.messages{
+                           self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                           
+                       }
+                   }
                }
                else {
                    if let message = self.genericObj?.messages{
                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                       
+                       //                   self.showDefaultAlert(title: "", message: message)
                    }
+                   //
                }
-           }
-           else {
-               if let message = self.genericObj?.messages{
-                   self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-//                   self.showDefaultAlert(title: "", message: message)
-               }
-//
            }
        }
    }

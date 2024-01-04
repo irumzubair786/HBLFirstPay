@@ -8,44 +8,89 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
     var genericresponseObj : otpVerificationModel?
     var accountList = [CbsData]()
+    var userCnic : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         textFieldMobileNo.delegate = self
+        textFieldCNIC.delegate = self
         buttonback.setTitle("", for: .normal)
-       
+        userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        textFieldCNIC.text = userCnic
         buttonContinue.isUserInteractionEnabled = false
-        
+        self.textFieldMobileNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingDidEnd)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imgNext.addGestureRecognizer(tapGestureRecognizer)
-       
-        // Do any additional setup after loading the view.
+        
+        self.textFieldMobileNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        buttonContinue.circle()
     }
     
     @IBOutlet weak var buttonback: UIButton!
     @IBAction func buttonback(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true
         )
+        
     }
     
     
-    @IBAction func textFieldMobileNo(_ sender: UITextField) {
-        if textFieldMobileNo?.text?.count == 11
+    
+    @IBOutlet weak var textFieldCNIC: NumberTextField!
+    @IBAction func textFieldCNIC(_ sender: UITextField) {
+       
+       
+    }
+    
+    @objc func changeTextInTextField() {
+       if (textFieldMobileNo.text?.count ?? 0 == 11)
         {
-            imgNext.image = UIImage(named: "]greenarrow")
-            buttonContinue.isUserInteractionEnabled = true
-            
-        }
-        else
-        {
-            imgNext.image = UIImage(named: "grayArrowrrow")
-            buttonContinue.isUserInteractionEnabled = false
+           imgNext.image = UIImage(named: "]greenarrow")
+           buttonContinue.isUserInteractionEnabled = true
+           imgNext.isUserInteractionEnabled = true
 
+       }
+        else if (textFieldMobileNo.text?.count ?? 0) < 11
+        {
+            imgNext.image = UIImage(named: "grayArrow")
+            buttonContinue.isUserInteractionEnabled = false
+            imgNext.isUserInteractionEnabled = false
         }
+        
+        
+        
+//        if (textFieldCNIC.text?.count ?? 0) == 13 && (textFieldMobileNo.text?.count ?? 0 == 11)
+//        {
+//            imgNext.image = UIImage(named: "]greenarrow")
+//            buttonContinue.isUserInteractionEnabled = true
+//            imgNext.isUserInteractionEnabled = true
+//
+//        }
+//        else if (textFieldCNIC.text?.count ?? 0) < 13 ||  (textFieldMobileNo.text?.count ?? 0) < 11
+//        {
+//            imgNext.image = UIImage(named: "grayArrow")
+//            buttonContinue.isUserInteractionEnabled = false
+//            imgNext.isUserInteractionEnabled = false
+//        }
+//
+        
+    }
+    @IBAction func textFieldMobileNo(_ sender: UITextField) {
+//        if textFieldMobileNo?.text?.count == 11
+//        {
+//            imgNext.image = UIImage(named: "]greenarrow")
+//            buttonContinue.isUserInteractionEnabled = true
+//
+//        }
+//        else
+//        {
+//            imgNext.image = UIImage(named: "grayArrowrrow")
+//            buttonContinue.isUserInteractionEnabled = false
+//
+//        }
         
         
     }
@@ -68,6 +113,11 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
             
             return newLength <= 11 // Bool
         }
+        if textField == textFieldCNIC {
+            
+            return newLength <= 13 // Bool
+        }
+        
         else {
             
             return newLength <= 11
@@ -84,7 +134,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
             return
         }
         
-        var userCnic : String?
+        
         
         showActivityIndicator()
         
@@ -98,7 +148,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         }
         
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"mobileNo":textFieldMobileNo.text!]
+        let parameters = ["channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":textFieldCNIC.text!,"mobileNo":textFieldMobileNo.text!]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         
@@ -107,7 +157,7 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
@@ -115,38 +165,42 @@ class LinkBankAccountDetailVc: BaseClassVC, UITextFieldDelegate {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<otpVerificationModel>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<otpVerificationModel>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.genericresponseObj = response.result.value
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
                 
-                if self.genericresponseObj?.responsecode == 2 || self.genericresponseObj?.responsecode == 1 {
-                    GlobalData.otpRequired = self.genericresponseObj?.data?.oTPREQ
-                
-                    let vc = self.storyboard!.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
-                    self.navigationController?.pushViewController(vc, animated: true)
+                //            self.genericresponseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    self.genericresponseObj = Mapper<otpVerificationModel>().map(JSONObject: json)
                     
-                    
+                    if self.genericresponseObj?.responsecode == 2 || self.genericresponseObj?.responsecode == 1 {
+                        GlobalData.otpRequired = self.genericresponseObj?.data?.oTPREQ
+                        
+                        let vc = self.storyboard!.instantiateViewController(withIdentifier: "LinkBankAccountOTPVerificationVc") as! LinkBankAccountOTPVerificationVc
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        
+                    }
+                    else {
+                        if let messsage = self.genericresponseObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: messsage, iconName: .iconError)
+                            //                        self.showToast(title: messsage)
+                        }
+                        
+                    }
                 }
                 else {
                     if let messsage = self.genericresponseObj?.messages{
                         self.showAlertCustomPopup(title: "", message: messsage, iconName: .iconError)
-//                        self.showToast(title: messsage)
+                        
                     }
+                    print(response.value)
+                    print(response.response?.statusCode)
                     
                 }
-            }
-            else {
-                if let messsage = self.genericresponseObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: messsage, iconName: .iconError)
-                    
-                }
-                print(response.result.value)
-                print(response.response?.statusCode)
-                
             }
         }
     }

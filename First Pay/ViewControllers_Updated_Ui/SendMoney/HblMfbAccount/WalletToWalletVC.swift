@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import ContactsUI
 import libPhoneNumber_iOS
@@ -19,6 +19,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
     var reasonsObj : GetReasonsModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+        tfAccountNo.becomeFirstResponder()
         back.setTitle("", for: .normal)
         btnContactList.setTitle("", for: .normal)
         amountTextField.delegate = self
@@ -30,6 +31,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         btnPurposeField.isUserInteractionEnabled = false
         btnDropdwonPurpose.isUserInteractionEnabled = false
         getReasonsForTrans()
+        self.amountTextField.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -124,29 +126,19 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
     }
 
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    @objc func changeTextInTextField() {
         
-        if amountTextField?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
+        if amountTextField.text?.count ?? 0 > 0
         {
-            lblAlertAmount.textColor = .gray
-            imgnextarrow.image = UIImage(named: "grayArrow")
-            lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-            imgnextarrow.isUserInteractionEnabled = false
-        }
-        
-        else  if textField == amountTextField
-        {
-                    if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0  > Int((maxvalu) ?? 0)
-
-                    {
-                        lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
-                        imgnextarrow.image = UIImage(named: "grayArrow")
-                       lblAlertAmount.textColor =  UIColor(hexValue: 0xFF3932)
-                        imgnextarrow.isUserInteractionEnabled = false
-//
-
-                    }
-        
+            if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0  > Int((maxvalu) ?? 0)
+            {
+                
+                    lblAlertAmount.textColor = UIColor(hexValue: 0xFF3932)
+                    imgnextarrow.image = UIImage(named: "grayArrow")
+                  
+                    imgnextarrow.isUserInteractionEnabled = false
+               
+            }
             else
             {
                 let image = UIImage(named:"]greenarrow")
@@ -158,17 +150,62 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
                 self.btn_next.isUserInteractionEnabled = true
             }
             
-
-            
+        }
+    }
+    
+    
+    
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+//
+        if amountTextField?.text?.count ?? 0 < 0 || tfAccountNo?.text?.count == 0
+        {
+            lblAlertAmount.textColor = .gray
+            imgnextarrow.image = UIImage(named: "grayArrow")
+            imgnextarrow.isUserInteractionEnabled = false
         }
 
+        else  if textField == amountTextField
+        {
+            if Int(amountTextField.text!) ?? 0  < Int((minvalu) ?? 0) || Int(amountTextField.text!) ?? 0  > Int((maxvalu) ?? 0)
+                
+            {
+                lblAlertAmount.textColor = UIColor.gray
+                imgnextarrow.image = UIImage(named: "grayArrow")
+                
+                imgnextarrow.isUserInteractionEnabled = false
+                
+            }
+            else  if amountTextField.text?.count == 0 {
+                lblAlertAmount.textColor = UIColor.gray
+                imgnextarrow.image = UIImage(named: "grayArrow")
+                imgnextarrow.isUserInteractionEnabled = false
+                
+            }
+            
         
-        
-        
-        
+            else
+            {
+                let image = UIImage(named:"]greenarrow")
+                imgnextarrow.image = image
+                let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
+                imgnextarrow.isUserInteractionEnabled = true
+                imgnextarrow.addGestureRecognizer(tapGestureRecognizerrr)
+                lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
+                self.btn_next.isUserInteractionEnabled = true
+            }
+
+
+
+        }
+
+
+
+
+
         else if amountTextField?.text?.count != 0 && tfAccountNo.text?.count != 0
         {
-            
+
             let image = UIImage(named:"]greenarrow")
             imgnextarrow.image = image
             let tapGestureRecognizerrr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
@@ -177,12 +214,7 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
             lblAlertAmount.textColor =  UIColor(red: 241/255, green: 147/255, blue: 52/255, alpha: 1)
             self.btn_next.isUserInteractionEnabled = true
         }
-        
-        
-        
-        
-        
-        
+
     }
     
     @objc func PopUpHide(tapGestureRecognizer: UITapGestureRecognizer)
@@ -212,17 +244,17 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         }
 //        let compelteUrl = GlobalConstants.BASE_URL + "initiateLocalFT"
 //
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/initiateLocalFT"
-         
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/initiateLocalFT"
+//         v2
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"accountNo":tfAccountNo.text!,"amount":self.amountTextField.text!,"transPurpose":"0350","accountType": DataManager.instance.accountType!] as [String : Any]
         print(parameters)
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
        
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+//         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
 //        print(result.apiAttribute1)
 //        print(result.apiAttribute2)
         print(params)
@@ -230,37 +262,45 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
 //        print(header)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FTApiResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<FTApiResponse>) in
             
-            //         Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundInitiateModel>) in
+            //         Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<FundInitiateModel>) in
+            response in
             self.hideActivityIndicator()
-            self.transactionApiResponseObj = response.result.value
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.transactionApiResponseObj = Mapper<FTApiResponse>().map(JSONObject: json)
                 
-                                if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
-                                 
-                                    
-                            self.navigateToConfirmation()
+                
+                //            self.transactionApiResponseObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.transactionApiResponseObj?.responsecode == 2 || self.transactionApiResponseObj?.responsecode == 1 {
+                        
+                        
+                        self.navigateToConfirmation()
+                    }
+                    else {
+                        if let message = self.transactionApiResponseObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            
+                        }
+                        
+                    }
                 }
                 else {
                     if let message = self.transactionApiResponseObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                        
                     }
-                     
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.transactionApiResponseObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
     private func navigateToConfirmation(){
-       
+//      pending issue oTPREQ
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "Hblmfb_MoneyTransferVC") as!  Hblmfb_MoneyTransferVC
               vc.number = tfAccountNo.text!
               vc.amount = amountTextField.text!
@@ -268,15 +308,15 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
         vc.OTPREQ = self.transactionApiResponseObj?.data?.oTPREQ!
               isfromFirstPayWallet = true
               isfromHblMbfAccount = false
+        isfromBanktoBank = false
+        isfromOtherLocalBank =  false
         GlobalData.money_Reason = "Miscellaneous Payments"
         vc.harcodePurpose = "Miscellaneous Payments"
         GlobalData.moneyTransferReasocCode = "0350"
         self.navigationController?.pushViewController(vc, animated: true)
 
     }
-    
-    
-    
+   
     private func getReasonsForTrans() {
         
         if !NetworkConnectivity.isConnectedToInternet(){
@@ -284,32 +324,37 @@ class WalletToWalletVC: BaseClassVC,UITextFieldDelegate {
             return
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getFtTransPurpose"
-        let header = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/getFtTransPurpose"
+         let header: HTTPHeaders = ["Accept":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<GetReasonsModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+            //            (response: DataResponse<GetReasonsModel>) in
+            response in
             self.hideActivityIndicator()
-            if response.response?.statusCode == 200 {
-                self.reasonsObj = response.result.value
-                if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
-                   
-//                    self.reasonsList = self.reasonsObj!.stringReasons
-//                    self.PurposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
-//                    GlobalData.money_Reason = self.PurposeTf.text ?? ""
-//                    GlobalData.moneyReasonid =  
-                    
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                if response.response?.statusCode == 200 {
+                    self.reasonsObj = Mapper<GetReasonsModel>().map(JSONObject: json)
+
+    //                self.reasonsObj = response.result.value
+                    if self.reasonsObj?.responsecode == 2 || self.reasonsObj?.responsecode == 1 {
+                        
+    //                    self.reasonsList = self.reasonsObj!.stringReasons
+    //                    self.PurposeTf.text =  self.reasonsObj?.reasonsData?[0].descr
+    //                    GlobalData.money_Reason = self.PurposeTf.text ?? ""
+    //                    GlobalData.moneyReasonid =
+                    }
                 }
-                
-            }
-            else {
-                
-                print(response.result.value)
-                print(response.response?.statusCode)
+                else {
+                    
+                    print(response.value)
+                    print(response.response?.statusCode)
+                }
             }
         }
     }

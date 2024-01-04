@@ -43,25 +43,16 @@ class NanoLoanRepayConfirmationVC: UIViewController {
                 self.showAlertCustomPopup(title: "Alert", message: modelPayActiveLoan?.messages ?? "Empty Message", iconName: .iconError, buttonNames:  [buttonFirst] as? [[String: AnyObject]])
             }
             else {
+                FBEvents.logEvent(title: .Loans_repayconfirm_success)
+                FaceBookEvents.logEvent(title: .Loans_repayconfirm_success)
                 self.openNanoLoanRepaySucessfullVC()
             }
         }
     }
     
-    var modelGetActiveLoanToPay: NanoLoanRepayViewController.ModelGetActiveLoanToPay? {
-        didSet {
-            if let getActiveLoanToPay = modelGetActiveLoanToPay?.data {
-                //                labelLoanNumber.text = "\(currentLoan.loanNo)"
-                labelAmount.text = "Rs. \((getActiveLoanToPay.payableTotalAmount ?? 0).twoDecimal())"
-                labelLoanNumber.text = "\(getActiveLoanToPay.loanNumber ?? "")"
-                labelLoanAvailedAmount.text = "Rs. \((getActiveLoanToPay.loanAvailedAmount ?? 0).twoDecimal())"
-                labelDueDate.text = getActiveLoanToPay.dueDate
-                labelProcessingFee.text = "\((getActiveLoanToPay.processingFee ?? 0).twoDecimal())"
-                labelMarkupCharged.text = "Rs. \((getActiveLoanToPay.outstandingMarkupAmount ?? 0).twoDecimal())"
-                viewBackGroundTotalAmount.radiusLineDashedStroke()
-            }
-        }
-    }
+    var modelGetActiveLoanToPay: NanoLoanRepayViewController.ModelGetActiveLoanToPay?
+    
+   
     
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
@@ -71,10 +62,17 @@ class NanoLoanRepayConfirmationVC: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        viewBackGroundTotalAmount.radius()
+        self.viewBackGroundTotalAmount.radiusLineDashedStroke()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewBackGroundTotalAmount.radius()
+        FBEvents.logEvent(title: .Loans_repayconfirm_landing)
+        FaceBookEvents.logEvent(title: .Loans_repayconfirm_landing)
+        
         viewBackGroundRepayNowButton.circle()
+        setData()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -82,6 +80,20 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     }
     @IBAction func buttonRepayNow(_ sender: Any) {
         payActiveLoan()
+    }
+    
+    func setData() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { }
+        if let getActiveLoanToPay = self.modelGetActiveLoanToPay?.data {
+            //                labelLoanNumber.text = "\(currentLoan.loanNo)"
+            
+            self.labelAmount.text = "Rs. \((getActiveLoanToPay.payableTotalAmount ?? 0).twoDecimal())"
+            self.labelLoanNumber.text = "\(getActiveLoanToPay.loanNumber ?? "")"
+            self.labelLoanAvailedAmount.text = "Rs. \((getActiveLoanToPay.loanAvailedAmount ?? 0).twoDecimal())"
+            self.labelDueDate.text = getActiveLoanToPay.dueDate
+            self.labelProcessingFee.text = "\((getActiveLoanToPay.processingFee ?? 0).twoDecimal())"
+            self.labelMarkupCharged.text = "Rs. \((getActiveLoanToPay.outstandingMarkupAmount ?? 0).twoDecimal())"
+        }
     }
     func payActiveLoan() {
         
@@ -102,9 +114,7 @@ class NanoLoanRepayConfirmationVC: UIViewController {
     
     func openNanoLoanRepaySucessfullVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanRepaySucessfullVC") as! NanoLoanRepaySucessfullVC
-        DispatchQueue.main.async {
-            vc.modelPayActiveLoan = self.modelPayActiveLoan
-        }
+        vc.modelPayActiveLoan = self.modelPayActiveLoan
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -112,24 +122,24 @@ class NanoLoanRepayConfirmationVC: UIViewController {
 extension NanoLoanRepayConfirmationVC {
     // MARK: - ModelPayActiveLoan
     struct ModelPayActiveLoan: Codable {
-        let responsecode: Int
+        let responsecode: Int?
         let data: ModelPayActiveLoanData?
         let responseblock: JSONNull?
-        let messages: String
+        let messages: String?
     }
 
     // MARK: - DataClass
     struct ModelPayActiveLoanData: Codable {
-        let loanAvailedAmount: Int
-        let statusDescr: String
-        let processingFee: Int
-        let payableTotalAmount: Double
+        let loanAvailedAmount: Int?
+        let statusDescr: String?
+        let processingFee: Int?
+        let payableTotalAmount: Double?
         let loanNumber: JSONNull?
-        let outstandingMarkupAmount: Double
-        let status, daysTillDueDate, nlDisbursementID: Int
-        let dateTime: String
+        let outstandingMarkupAmount: Double?
+        let status, daysTillDueDate, nlDisbursementID: Int?
+        let dateTime: String?
         let dueDate: JSONNull?
-        let transRefNum: Int
+        let transRefNum: Int?
         
         enum CodingKeys: String, CodingKey {
             case loanAvailedAmount, statusDescr, processingFee, payableTotalAmount, loanNumber, outstandingMarkupAmount, status, daysTillDueDate

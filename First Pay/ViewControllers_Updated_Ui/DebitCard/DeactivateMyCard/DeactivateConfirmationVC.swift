@@ -8,13 +8,14 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class DeactivateConfirmationVC: BaseClassVC {
     var flag = "false"
     var getDebitDetailsObj : GetDebitCardModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+        //        add swipe Gesture
         let tapGestureRecognizers = UITapGestureRecognizer(target: self, action: #selector(Movetoback(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizers)

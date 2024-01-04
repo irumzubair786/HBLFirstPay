@@ -14,9 +14,9 @@ extension NanoLoanApplyViewController {
     
     // MARK: - ModelGetActiveLoan
     struct ModelGetActiveLoan: Codable {
-        let messages: String
+        let messages: String?
         let responseblock: JSONNull?
-        let responsecode: Int
+        let responsecode: Int?
         let data: ModelActiveLoanData?
     }
     
@@ -55,16 +55,16 @@ extension NanoLoanApplyViewController {
     
     // MARK: - Datum
     struct ModelNanoLoanEligibilityCheckData: Codable {
-        let repaymentFrequency: String
+        let repaymentFrequency: String?
             let noOfDays: JSONNull?
-            let minAmount, nlProductID: Int
+            let minAmount, nlProductID: Int?
             let loanAmount: JSONNull?
-            let markupfee: Int
+            let markupfee: Int?
             let redirect: JSONNull?
-            let maxAmount: Int
+            let maxAmount: Int?
             let markupAmountPerDay: JSONNull?
-            let nlProductDescr: String
-            let avgAmount: Int
+            let nlProductDescr: String?
+            let avgAmount: Int?
             let processingFeeAmount: JSONNull?
 
             enum CodingKeys: String, CodingKey {
@@ -76,19 +76,19 @@ extension NanoLoanApplyViewController {
     
     // MARK: - ModelGetLoanCharges
     struct ModelGetLoanCharges: Codable {
-        let responsecode: Int
-        let data: ModelGetLoanChargesData
-        let responseblock: JSONNull?
-        let messages: String
+        let responsecode: Int?
+        let data: ModelGetLoanChargesData?
+        let responseblock: JSONNull??
+        let messages: String?
     }
 
     // MARK: - DataClass
     struct ModelGetLoanChargesData: Codable {
-        let loanAmount, processingFeeAmount: Int
-        let loanDuration, dueDate: String
-        let markupAmountPerDay: Double
-        let markupAmountTotal, amountToBeRepaid: Int
-        let fed: Double
+        let loanAmount, processingFeeAmount: Int?
+        let loanDuration, dueDate: String?
+        let markupAmountPerDay: Double?
+        let markupAmountTotal, amountToBeRepaid: Int?
+        let fed: Double?
     }
     
     // MARK: - Encode/decode helpers

@@ -12,14 +12,17 @@ import Kingfisher
 import CryptoSwift
 import SDWebImage
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SideMenu
+import FingerprintSDK
+
 var isfromReactivateCard :Bool?
+var MainTitle : String?
 var isFromDeactivate : Bool?
 var isFromChangePin : Bool?
 var isfromActivate : Bool?
-//var isfromServics : Bool?
+var isfromServics : Bool?
 var isfromATMON : Bool?
 var isfromATMOFF : Bool?
 var isfromPOSON : Bool?
@@ -27,17 +30,62 @@ var isfromPOSOFF: Bool?
 var isfromDisableService : Bool?
 var isfromServiceOTpVerification : Bool?
 var isfromOTPHblmfb : Bool?
-class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataSource{
+class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var homeObj : HomeModel?
     var banObj : GenericResponse?
     var getDebitDetailsObj : GetDebitCardModel?
     var availableLimitObj: AvailableLimitsModel?
-    var topBtnarr =  ["SendMoney", "Mobile Topup", "PayBill","First Option","DebitCard","SeeAll"]
+    let pageIndicator = UIPageControl()
+    var counter = 0
+    var banArray = [UIImage]()
+    var timerChangeBannerImage = Timer()
+    var banaryyString =  [String]()
+    var topBtnarr =  ["sendMoneyIcon", "mobileTopUpIcon", "payBillsIcon","getLoanIcon","debitCardIcon","sellAllIcon"]
+    var topBtnNameArray =  ["Send Money", "Mobile Top Up", "Pay Bills","Get Loan","Debit Card","See All"]
+    var fingerPrintVerification: FingerPrintVerification!
+    var fingerprintPngs : [Png]?
+      @IBOutlet weak var blurView: UIVisualEffectView!
+    var modelAcccountLevelUpgradeResponse: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? {
+        didSet {
+            print(modelAcccountLevelUpgradeResponse)
+            if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
+                NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
+                let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+                viewController.accountUpGradeSuccessfull = {
+                    self.getActiveLoan()
+                }
+                DispatchQueue.main.async {
+                    self.present(viewController, animated: true)
+                }
+            }
+            else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
+                self.showAlertCustomPopup(message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
+                    
+                }
+            }
+            else {
+                self.showAlertCustomPopup(message: "ERROR IN RESPONSE API") {_ in
+                    
+                }
+            }
+        }
+    }
 
     @IBOutlet weak var imgSeeAll: UIImageView!
+    
+    @IBOutlet weak var buttonSavings: UIButton!
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        timerChangeBannerImage.invalidate()
+    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
+    
     override func viewDidLoad() {
         FBEvents.logEvent(title: .Homescreen_Landing)
         super.viewDidLoad()
+        
         banapi()
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -48,11 +96,11 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         lblAmount.addGestureRecognizer(tapGestureRecognizerr)
         AddCash()
 //        imgLevel.isHidden = true
-        
+        buttonMobilepakegs.setTitle("", for: .normal)
         homeAction()
-        let tapGestureRecognizerrs = UITapGestureRecognizer(target: self, action: #selector(MovetoAccountLevel(tapGestureRecognizer:)))
-        imgLevel.isUserInteractionEnabled = true
-        imgLevel.addGestureRecognizer(tapGestureRecognizerrs)
+//        let tapGestureRecognizerrs = UITapGestureRecognizer(target: self, action: #selector(MovetoAccountLevel(tapGestureRecognizer:)))
+//        imgLevel.isUserInteractionEnabled = true
+//        imgLevel.addGestureRecognizer(tapGestureRecognizerrs)
         
         
         let tapGestureRecognizr = UITapGestureRecognizer(target: self, action: #selector(moveToDebitCard(tapGestureRecognizer:)))
@@ -64,17 +112,36 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         imgInviteFriend.addGestureRecognizer(tapGestureRecognizrz)
         
         let tapGestureRecognizrzSeeAll = UITapGestureRecognizer(target: self, action: #selector(moveToSeeAll(tapGestureRecognizer:)))
-        imgSeeAll.isUserInteractionEnabled = true
+//        imgSeeAll.isUserInteractionEnabled = true
         imgSeeAll.addGestureRecognizer(tapGestureRecognizrzSeeAll)
-        
+//        labelSeeAll.isUserInteractionEnabled = true
+        labelSeeAll.addGestureRecognizer(tapGestureRecognizrzSeeAll)
+       
 //        getActiveLoan()
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(homeAction), name: Notification.Name("updateAccountLevel"),object: nil)
+        NotificationCenter.default.removeObserver(self)
+            NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController), name: Notification.Name("move"),object: nil)
     }
+    
+    
+    @objc func dissmissViewController() {
+//        self.dismiss(animated: true,completion: nil)
+//        if isfRomRewuestSent == true
+//        {
+//
+//            self.dismiss(animated: true,completion: nil)
+//            homeAction()
+//        }
+//        isfRomRewuestSent = false
+//        NotificationCenter.default.post(name: Notification.Name("move"), object: nil)
+    }
+    @IBOutlet weak var pageView: UIPageControl!
+    @IBOutlet weak var sliderCollectionView: UICollectionView!
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBOutlet weak var imageAddCash: UIImageView!
     @IBOutlet weak var buttonLevelIcon: UIButton!
     @IBOutlet weak var viewDebitCard: UIImageView!
-    
-    
     @IBAction func buttonLevelIcon(_ sender: UIButton) {
         getAvailableLimits()
     }
@@ -83,36 +150,106 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
+    @IBAction func buttonSavings(_ sender: Any) {
+        openSavingScreens()
+    }
+    
+    @IBOutlet weak var labelSeeAll: UILabel!
+    
+    @IBOutlet weak var buttonMobilepakegs: UIButton!
+    @IBAction func buttonMobilepakegs(_ sender: UIButton) {
+//        return()
+        FBEvents.logEvent(title: .Bundles_HS_click)
+        FaceBookEvents.logEvent(title: .Bundles_HS_click)
+        let vc = UIStoryboard.init(name: "Mobile Bunldles", bundle: nil).instantiateViewController(withIdentifier: "MobilePackagesNavigationController")
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
+    }
+    
+    func openSavingScreens() {
+        let vc = UIStoryboard.init(name: "Savings", bundle: nil).instantiateViewController(withIdentifier: "SavingPlans")
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
+    }
+    
     func AddCash(){
         let tapGestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(btnAddCash(tapGestureRecognizer:)))
         imageAddCash.isUserInteractionEnabled = true
         imageAddCash.addGestureRecognizer(tapGestureRecognizer3)
     }
-
     @objc func btnAddCash(tapGestureRecognizer: UITapGestureRecognizer) {
         FBEvents.logEvent(title: .Homescreen_addcash_click)
         let storyBoard = UIStoryboard(name: Storyboard.AddCash.rawValue, bundle: Bundle.main)
         let vc = storyBoard.instantiateViewController(withIdentifier: "navigateToAddCash")
         self.present(vc, animated: true)
     }
-
+    
+ 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == sliderCollectionView
+        {
+            let size = self.sliderCollectionView.frame.size
+            return CGSize(width: size.width, height: size.height)
+        }
+        else
+        {
+            let itemsInRow = 4
+            let height = collectionView.bounds.height
+            let width = collectionView.bounds.width - 5
+            let cellWidth = width / CGFloat(itemsInRow)
+            return CGSize(width: cellWidth, height: height)
+        }
+       
+    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return topBtnarr.count
+        if collectionView == sliderCollectionView
+        {
+            return banaryyString.count
+            
+        }
+        else
+        {
+            return topBtnarr.count
+        }
+       return 0
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cella = collectionView .dequeueReusableCell(withReuseIdentifier: "cellmainfourTransaction", for: indexPath) as! cellmainfourTransaction
-        cella.btn.setTitle("", for: .normal)
-        cella.btn.tag = indexPath.row
-        cella.img.image = UIImage(named: topBtnarr[indexPath.row])
-        cella.btn.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
-        //        cella.img.image = topBtnarr[indexPath.row
-        return cella
+        if collectionView == sliderCollectionView
+        {
+            let cell = sliderCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+            if let vc = cell.viewWithTag(111) as? UIImageView {
+              
+//                let imgURL = URL(string: banaryyString[indexPath.row])
+//                vc.sd_setImage(with:(imgURL), placeholderImage: UIImage(named: ""))
+                if let urlString = banaryyString[indexPath.row].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                    if let imgURL = URL(string: urlString) {
+                        // Use imgURL for your purposes
+                        vc.sd_setImage(with:(imgURL), placeholderImage: UIImage(named: ""))
+                    } else {
+                        print("Invalid URL")
+                    }
+                } else {
+                    print("Encoding failed")
+                }
+                
+            }
+            return cell
+        }
+        else
+        {
+            let cella = collectionView .dequeueReusableCell(withReuseIdentifier: "cellmainfourTransaction", for: indexPath) as! cellmainfourTransaction
+            cella.btn.setTitle("", for: .normal)
+            cella.btn.tag = indexPath.row
+            cella.img.image = UIImage(named: topBtnarr[indexPath.row])
+            cella.lblName.text = topBtnNameArray[indexPath.row]
+            cella.btn.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
+            //        cella.img.image = topBtnarr[indexPath.row
+            return cella
+        }
+       
     }
-    
     @objc func buttontaped(_sender:UIButton) {
         let tag = _sender.tag
-        
         let cell = collectionView.cellForItem(at: IndexPath(row: tag, section: 0)) as! cellmainfourTransaction
         if tag == 0 {
             FBEvents.logEvent(title: .Homescreen_sendmoney_click)
@@ -131,18 +268,89 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             FBEvents.logEvent(title: .Homescreen_paybills_click)
             let storyboard = UIStoryboard(name: "BillPayment", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "moveToBillpayment")
-
+           
             self.present(vc, animated: true)
         }
+       
         else if tag == 3 {
             FBEvents.logEvent(title: .Homescreen_getloan_click)
-            getActiveLoan()
+            if DataManager.instance.accountLevel == "LEVEL 0" {
+//               call sdk
+//                let decode = [[
+//                    "fingerIndex" : 2,
+//                    "fingerTemplate" : 2,
+//                    "templateType" : "hbb"
+//                ],
+//                [
+//                    "fingerIndex" : 3,
+//                    "fingerTemplate" : 3,
+//                    "templateType" : "bb"
+//                ],
+//                [
+//                    "fingerIndex" : 4,
+//                    "fingerTemplate" : 4,
+//                    "templateType" : "oo"
+//                ],
+//                [
+//                    "fingerIndex" : 5,
+//                   "fingerTemplate" : 5,
+//                    "templateType" : "gg"
+//                ],
+//                [
+//                    "fingerIndex" : 7,
+//                    "fingerTemplate" : 7,
+//                    "templateType" : "hh"
+//                ],
+//                [
+//                    "fingerIndex" : 8,
+//                    "fingerTemplate" : 8,
+//                    "templateType" : "hjg"
+//                ],
+//                [
+//                    "fingerIndex" : 9,
+//                    "fingerTemplate" : 9,
+//                    "templateType" : "jj"
+//                ],
+//                [
+//                    "fingerIndex" : 10,
+//                    "fingerTemplate" : 10,
+//                    "templateType" : "nn"
+//                ]]
+//        //        self.acccountLevelUpgrade(fingerprints: decode)
+//                return
+//                fingerPrintVerification = FingerPrintVerification()
+//                DispatchQueue.main.async {
+//                    self.fingerPrintVerification(viewController: self)
+//                }
+                self.navigateToBiometricFlow()
+                //                dummy finger print api calling
+                //                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
+                
+            }
+           else {
+               getActiveLoan()
+            }
 //            self.navigationController?.pushViewController(vc, animated: true)
         }
         else if tag == 4 {
             getDebitCard()
         }
-       
+    }
+    
+    func navigateToBiometricFlow() {
+        //                dummy finger print api calling
+        //                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
+        let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "UnverifeidAccountMainVc") as! UnverifeidAccountMainVc
+        
+        viewController.accountUpGradeSuccessfull = {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                viewController.dismiss(animated: false)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    self.getActiveLoan()
+                }
+            }
+        }
+        self.present(viewController, animated: true)
     }
     
     var modelNanoLoanEligibilityCheck: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? {
@@ -155,7 +363,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
         }
     }
-    
     func nanoLoanEligibilityCheck() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters: Parameters = [
@@ -168,8 +375,6 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             self.modelNanoLoanEligibilityCheck = model
         }
     }
-    
-    
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
             
@@ -196,7 +401,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func openNanoLoan() {
-        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
+        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainerNavigatior")
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
@@ -212,12 +417,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         comabalanceLimit = (formatter.string(from: NSNumber(value: number)))!
     }
     
-    let pageIndicator = UIPageControl()
-    var counter = 0
-    var banArray = [UIImage]()
-    var timer = Timer()
-    var banaryyString =  [String]()
-    
+   
     @IBOutlet weak var buttonInvite: UIButton!
     
     @IBOutlet weak var imgLevel: UIImageView!
@@ -230,32 +430,66 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     @IBOutlet weak var LblMobNo: UILabel!
     @IBOutlet weak var img: UIImageView!
-   
+
+//    func changeImageTimerStart() {
+//        timerChangeBannerImage.invalidate()
+//        self.timerChangeBannerImage = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
+//    }
+//    @objc func changeImage() {
+//        if self.banaryyString.count == 0 {
+//            return()
+//        }
+//
+//        if counter < self.banaryyString.count {
+//
+//            let index = IndexPath.init(item: counter, section: 0)
+//
+//            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+//            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
+//            counter += 1
+//        } else {
+//            counter = 0
+//            let index = IndexPath.init(item: counter, section: 0)
+//            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+//            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "Button copy"))
+//            counter = 1
+//        }
+//    }
     @objc func changeImage() {
-        
-        if counter < self.banaryyString.count {
-            
+
+        if counter < banaryyString.count {
             let index = IndexPath.init(item: counter, section: 0)
-            
-            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
+            self.sliderCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+            pageView.currentPage = counter
             counter += 1
         } else {
             counter = 0
             let index = IndexPath.init(item: counter, section: 0)
-            let url = self.banaryyString[counter].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            img.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: ""))
+            self.sliderCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: false)
+            pageView.currentPage = counter
             counter = 1
         }
-        
+
+    }
+    func addDelegates(){
+        sliderCollectionView.delegate = self
+        sliderCollectionView.dataSource = self
+        }
+    func playSlider(){
+        if(!banaryyString.isEmpty){
+            DispatchQueue.main.async {
+                self.timerChangeBannerImage = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
+            }
+        }
     }
 
-    func homeAction() {
-        showActivityIndicator()
+    @objc func homeAction() {
         if !NetworkConnectivity.isConnectedToInternet(){
             self.showToast(title: "No Internet Available")
             return
         }
+        showActivityIndicator()
+
         //        showActivityIndicator()
         
         //        let compelteUrl = GlobalConstants.BASE_URL + "home"
@@ -264,7 +498,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         // IPA Paramsself    FirstPay.DashBoardVC    0x00007fbba2061000
         let params = ["":""] as [String : Any]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken  ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken  ?? "nil")"]
         
         
         print(params)
@@ -272,30 +506,38 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<HomeModel>) in
-            
-            self.homeObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                self.homeObj = response.result.value
-                if self.homeObj?.responsecode == 2 || self.homeObj?.responsecode == 1 {
-                 
-                    self.saveInDataManager(index: 0)
-                 
-                    self.hideActivityIndicator()
-//                    banapi()
-//
-                }
-                else {
-                    if let message = self.homeObj?.messages{
-                        self.showAlert(title: "", message: message, completion: nil)
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
+//            (response: DataResponse<HomeModel>) in
+            response in
+            self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                
+                //            self.homeObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    self.homeObj = Mapper<HomeModel>().map(JSONObject: json)
+                    
+                    //                self.homeObj = response.result.value
+                    if self.homeObj?.responsecode == 2 || self.homeObj?.responsecode == 1 {
+                        
+                        self.saveInDataManager(index: 0)
+                        
+                        self.hideActivityIndicator()
+                        //                    banapi()
+                        //
+                    }
+                    else {
+                        if let message = self.homeObj?.messages{
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
                     }
                 }
-            }
-            else {
-                //                self.showAlert(title: "", message: "Something Went Wrong", completion:nil)
-                                print(response.result.value)
-                                print(response.response?.statusCode)
+                else {
+                    //                self.showAlert(title: "", message: "Something Went Wrong", completion:nil)
+                    print(response.value)
+                    print(response.response?.statusCode)
+                }
             }
         }
     }
@@ -348,6 +590,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         if self.homeObj?.userData?[index].levelDescr == "LEVEL 1"
         {
             imgLevel.isHidden = false
+//            please change level here.... level 0 replace by level 1
             DataManager.instance.accountLevel = "LEVEL 1"
             imgLevel.image = UIImage(named: "Verified 24x")
         }
@@ -364,10 +607,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
     
     func banapi ()
     {
-//<<<<<<< HEAD
-//=======
-////        getActiveLoan()
-//>>>>>>> f3b7f8f (ui fixex)
+
         ServerManager.GEt_typeWithoutParmsfetchApiData_PostAppJSON(APIMethodName: APIMethods.banner.rawValue, Token: DataManager.instance.accessToken ?? "" ) { [self] (Result : MYBanersModel?) in
             
             //== check if api is responding or not
@@ -381,24 +621,21 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             print("Result",Result!)
             print("token is :",GlobalData.banner.data[0].brandCode)
             if GlobalData.banner.responsecode == 1 {
-                for data in GlobalData.banner.data {
+                for data in GlobalData.banner.data  ?? []{
                     if data.banner != nil {
-                        self.banaryyString.append(data.banner!) //step2
+                        self.banaryyString.append(data.banner ?? "") //step2
                         
                     }
                     
                 }
                 print("ban array is",banaryyString)
                 DispatchQueue.main.async {
-                    self.timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
+                    addDelegates()
+                    self.playSlider()
+
                 }
-                
             }
-           
-            
-            
         }
-        
     }
     
     @objc func MovetoStatement(tapGestureRecognizer: UITapGestureRecognizer)
@@ -419,12 +656,13 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         self.present(vc, animated: true)
         //        self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     @objc func moveToSeeAll(tapGestureRecognizer: UITapGestureRecognizer) {
-        FBEvents.logEvent(title: .Homescreen_seeall_click)
-
+//        FBEvents.logEvent(title: .Homescreen_seeall_click)
+//        let vc = storyboard?.instantiateViewController(withIdentifier: "OtherServices_VC") as! OtherServices_VC
+//        self.present(vc, animated: true)
+//        self.navigationController?.pushViewController(vc, animated: true)
+       
     }
-    
     @objc func MovetoAccountLevel(tapGestureRecognizer: UITapGestureRecognizer) {
         getAvailableLimits()
     }
@@ -459,37 +697,43 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardCheckModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetDebitCardCheckModel>) in
+            response in
             self.hideActivityIndicator()
-            self.checkDebitCardObj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.checkDebitCardObj?.responsecode == 2 || self.checkDebitCardObj?.responsecode == 1 {
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
-                            self.present(vc, animated: true)
-                }
-                  else
-                    {
-                      if let message = self.checkDebitCardObj?.messages
-                      {
-                          if message == "Debit Card Already Exists"
-                          {
-                              let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                              let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
-                              self.present(vc, animated: true)
-                          }
-
-                  }
-                      
-                  }
-                      
-                  
+            guard let data = response.data else { return }
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+            self.checkDebitCardObj = Mapper<GetDebitCardCheckModel>().map(JSONObject: json)
+            
+//            self.checkDebitCardObj = response.result.value
+                            if response.response?.statusCode == 200 {
+                                if self.checkDebitCardObj?.responsecode == 2 || self.checkDebitCardObj?.responsecode == 1 {
+                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                    let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
+                                    self.present(vc, animated: true)
+                                }
+                                else
+                                {
+                                    if let message = self.checkDebitCardObj?.messages
+                                    {
+                                        if message == "Debit Card Already Exists"
+                                        {
+                                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                            let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                                            self.present(vc, animated: true)
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                                
+                            }
               
                 }
               
@@ -526,84 +770,79 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-        
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(result.apiAttribute1)
         print(result.apiAttribute2)
-        
         print(params)
         print(compelteUrl)
         print(header)
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardModel>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetDebitCardModel>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.getDebitDetailsObj = response.result.value
-            print(self.getDebitDetailsObj)
-        
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
+                
+                //            self.getDebitDetailsObj = response.result.value
+                print(self.getDebitDetailsObj)
+                
+                if response.response?.statusCode == 200 {
                
-                if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
-                    if self.getDebitDetailsObj?.debitCardData != nil{
-                        GlobalData.accountDebitCardId = self.getDebitDetailsObj?.debitCardData?[0].accountDebitCardId
-                       
-                        if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ActivateCard"
-                        {
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
-                            self.present(vc, animated: true)
-                        }
-                        else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "DeactivateCard"
-                        {
+                    if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        if self.getDebitDetailsObj?.data != nil{
+                            GlobalData.accountDebitCardId = self.getDebitDetailsObj?.data.accountDebitCardId
                             
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
-                           isFromDeactivate  = true
-                            self.present(vc, animated: true)
-                            
-                            
-                        }
-                        else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ReactivateCard"
-                        {
-                            let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
-                            isfromReactivateCard = true
-                            self.present(vc, animated: true)
-                        }
-         
-                    }
-                    else
-                    {
-                        
-                        if self.getDebitDetailsObj?.newCarddata != nil{
-                            if
-                                self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
+                            if self.getDebitDetailsObj?.data.apiFlow == "NewCard"
                             {
+                                
                                 let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
                                 let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
                                 self.present(vc, animated: true)
+                                
                             }
-                            else if self.getDebitDetailsObj?.newCarddata?.apiFlow == "DeactivateCard"
+                            
+                            
+                            else
                             {
+                                if self.getDebitDetailsObj?.data.apiFlow == "ActivateCard"
+                                                            {
+                                                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                                           isfromReactivateCard = false
+                                                                self.present(vc, animated: true)
+                                                            }
                                 
-                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
-                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
-                                self.present(vc, animated: true)
                                 
-                            }
+                                else if self.getDebitDetailsObj?.data.apiFlow == "DeactivateCard"
+                                {
+                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                                    let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                                    isFromDeactivate  = true
+                                    isfromReactivateCard = false
+                                    isfromActivateCard = false
+                                    self.present(vc, animated: true)
+
+                                }
+//
+                                else if self.getDebitDetailsObj?.data.apiFlow == " ReactivateCard"
+                                {
+                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+//
+                                    let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                                    isfromReactivateCard = true
+//
+                                    
+                                    self.present(vc, animated: true)}}}
                         }
-                        
                     }
-                    
-                }
+                
                 else {
                     if let message = self.getDebitDetailsObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
-
                     }
                 }
             }
@@ -612,11 +851,59 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                     self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     
                 }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
             }
         }
     }
+                    
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            //                            GlobalData.accountDebitCardId = self.getDebitDetailsObj?.debitCardData?[0].accountDebitCardId
+                            //                            if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ActivateCard"
+                            //                            {
+                            //                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                            //                                self.present(vc, animated: true)
+                            //                            }
+                            //                            else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "DeactivateCard"
+                            //                            {
+                            //                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                            //                                isFromDeactivate  = true
+                            //                                self.present(vc, animated: true)
+                            //
+                            //                            }
+                            //                            else if self.getDebitDetailsObj?.debitCardData?[0].apiFlow == "ReactivateCard"
+                            //                            {
+                            //                                let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                let vc = storyboard.instantiateViewController(withIdentifier: "movetoDebitCardActivate")
+                            //                                isfromReactivateCard = true
+                            //                                self.present(vc, animated: true)}}
+                            //                        else
+                            //                        {
+                            //                            if self.getDebitDetailsObj?.newCarddata != nil{
+                            //                                if
+                            //                                    self.getDebitDetailsObj?.newCarddata?.apiFlow == "NewCard"
+                            //                                {
+                            //                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                    let vc = storyboard.instantiateViewController(withIdentifier: "moveToDebitCard")
+                            //                                    self.present(vc, animated: true)
+                            //                                }
+                            //                                else if self.getDebitDetailsObj?.newCarddata?.apiFlow == "DeactivateCard"
+                            //                                {
+                            //                                    let storyboard = UIStoryboard(name: "DebitCard", bundle: nil)
+                            //                                    let vc = storyboard.instantiateViewController(withIdentifier: "movetoCardDeactivation")
+                            //                                    self.present(vc, animated: true)
+                            //                                }}}
+                    
+    
     ////    ----------getaccountlimits
         private func getAvailableLimits() {
       //
@@ -624,7 +911,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
                   self.showToast(title: "No Internet Available")
                   return
               }
-      
+          
               showActivityIndicator()
               var userCnic : String?
               if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
@@ -648,40 +935,43 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
               let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
       
       
-              let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+               let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
       
               print(params)
               print(compelteUrl)
       
       
               NetworkManager.sharedInstance.enableCertificatePinning()
+              NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//                  (response: DataResponse<AvailableLimitsModel>) in
       
-      
-              NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<AvailableLimitsModel>) in
-      
+                  response in
                   self.hideActivityIndicator()
-      
-                  self.availableLimitObj = response.result.value
-      
-                  if response.response?.statusCode == 200 {
-      
-                      if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
-      
-                          self.updateUI()
-      //                                    self.fromlevel1()
+                  guard let data = response.data else { return }
+                  if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                      self.availableLimitObj = Mapper<AvailableLimitsModel>().map(JSONObject: json)
+                      //                  self.availableLimitObj = response.result.value
+                      
+                      if response.response?.statusCode == 200 {
+                          
+                          if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+                              
+                              self.updateUI()
+                              //                                    self.fromlevel1()
+                          }
+                          else {
+                              if let message = self.availableLimitObj?.messages{
+                                  self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                              }
+                          }
                       }
                       else {
                           if let message = self.availableLimitObj?.messages{
                               self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                           }
+                          //                  print(response.result.value)
+                          //                  print(response.response?.statusCode)
                       }
-                  }
-                  else {
-                      if let message = self.availableLimitObj?.messages{
-                          self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                      }
-    //                  print(response.result.value)
-    //                  print(response.response?.statusCode)
                   }
               }
           }
@@ -689,7 +979,7 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
         
         if DataManager.instance.accountLevel == "LEVEL 0" {
             FBEvents.logEvent(title: .Homescreen_Myaccount_click)
-
+            
             let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
             if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                 vc.balanceLimit = Int(balnceLimit)
@@ -738,9 +1028,10 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             }
             self.present(vc, animated: true)
         }
+        
         else if DataManager.instance.accountLevel == "LEVEL 1" {
             FBEvents.logEvent(title: .Homescreen_Myaccount_click)
-            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+            let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
             if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
                 vc.balanceLimit = Int(balnceLimit)
                 print("balnceLimit",balnceLimit)
@@ -795,12 +1086,194 @@ class DashBoardVC: BaseClassVC , UICollectionViewDelegate, UICollectionViewDataS
             self.present(vc, animated: true)
         }
     }
+        func fingerPrintVerification(viewController: UIViewController) {
+            //#if targetEnvironment(simulator)
+            //        #else
+
+            let customUI = CustomUI(
+                topBarBackgroundImage: nil,
+                topBarColor: .clrNavigationBarBVS,
+                topBarTextColor: .white,
+                containerBackgroundColor: UIColor.white,
+                scannerOverlayColor: UIColor.clrGreenBVS,
+                scannerOverlayTextColor: UIColor.white,
+                instructionTextColor: UIColor.white,
+                buttonsBackgroundColor: .clrNextButtonBackGroundBVS,
+                buttonsTextColor: UIColor.white,
+                imagesColor: .clrGreenBVS,
+                isFullWidthButtons: true,
+                guidanceScreenButtonText: "NEXT",
+                guidanceScreenText: "User Demo",
+                guidanceScreenAnimationFilePath: nil,
+                showGuidanceScreen: true)
+
+            let customDialog = CustomDialog(
+                dialogImageBackgroundColor: UIColor.white,
+                dialogImageForegroundColor: .green,
+                dialogBackgroundColor: UIColor.white,
+                dialogTitleColor: .clrGreenBVS,
+                dialogMessageColor: .clrBlack,
+                dialogButtonTextColor: UIColor.white,
+                dialogButtonBackgroundColor: .orange)
+            
+            let uiConfig = UIConfig(
+                splashScreenLoaderIndicatorColor: .clrBlack,
+                splashScreenText: "Please wait",
+                splashScreenTextColor: UIColor.white,
+                customUI: customUI,
+                customDialog: customDialog,
+                customFontFamily: nil)
+            
+            let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
+                                                      hand: .BOTH_HANDS,
+                                                      fingers: .EIGHT_FINGERS,
+                                                      isPackPng: true, uiConfig: uiConfig)
+            let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
+            
+            vc.fingerprintConfig = fingerprintConfig
+            vc.fingerprintResponseDelegate = viewController as? FingerprintResponseDelegate
+            viewController.present(vc, animated: true, completion: nil)
+            //        #endif
+        }
+    
     
 //class end
 }
-    
-    
 
+extension DashBoardVC: FingerprintResponseDelegate {
+    func onScanComplete(fingerprintResponse: FingerprintResponse) {
+        //Shakeel ! added
+        if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
+            fingerprintPngs = fingerprintResponse.pngList
+            var fingerprintsList = [FingerPrintVerification.Fingerprints]()
+            
+            var tempFingerPrintDictionary = [[String:Any]]()
+            if let fpPNGs = fingerprintPngs {
+                for item in fpPNGs {
+                    guard let imageString = item.binaryBase64ObjectPNG else { return }
+                    guard let instance = FingerPrintVerification.Fingerprints(fingerIndex: "\(item.fingerPositionCode)", fingerTemplate: imageString) else { return }
+                    
+                    tempFingerPrintDictionary.append(
+                        ["fingerIndex": "\(item.fingerPositionCode)",//getFingerIndex(index: item.fingerPositionCode),
+                         "fingerTemplate": imageString,
+                         "templateType": "WSQ"]
+                    )
+                }
+            }
+            self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
+        }else {
+            self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
+                //                self.dismiss(animated: true)
+            }
+        }
+    }
     
+    override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+        self.dismiss(animated: true)
+    }
     
+    func acccountLevelUpgrade(fingerprints: [[String:Any]]) {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+        ]
+        APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: self) {
+            responseData, success, errorMsg in
+            
+            print(responseData)
+            print(success)
+            print(errorMsg)
+            do {
+                let json: Any? = try JSONSerialization.jsonObject(with: (responseData ?? Data()), options: [.fragmentsAllowed])
+                print(json)
+            }
+            catch let error {
+                print(error)
+            }
+            
+            let model: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelAcccountLevelUpgradeResponse = model
+        }
+    }
+}
 
+func getFingerIndex(index: Int) -> String {
+    switch index {
+        case 1:
+            return "1"
+        case 2:
+            return "2"
+        case 3:
+            return "3"
+        case 4:
+            return "4"
+        case 5:
+            return "5"
+        case 6:
+            return "6"
+        case 7:
+            return "7"
+        case 8:
+            return "8"
+        case 9:
+            return "9"
+        case 10:
+            return "10"
+        default:
+            return ""
+    }
+}
+
+extension DashBoardVC {
+    // MARK: - Welcome
+    struct ModelAcccountLevelUpgrade: Codable {
+        let responsecode: Int
+        let data, responseblock: JSONNull?
+        let messages: String
+    }
+
+    // MARK: - Encode/decode helpers
+
+    class JSONNull: Codable, Hashable {
+
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+
+        public var hashValue: Int {
+            return 0
+        }
+
+        public init() {}
+
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
+    }
+}
+
+extension DashBoardVC {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
+}

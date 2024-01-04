@@ -8,9 +8,11 @@
 
 import Foundation
 import ObjectMapper
+
 struct login : Mappable {
     var responsecode : Int?
     var data : DataUser?
+    var responseblock: Responseblock?
     var messages : String?
 
     init?(map: Map) {
@@ -18,17 +20,18 @@ struct login : Mappable {
     }
 
     mutating func mapping(map: Map) {
-
+        responseblock <- map["responseblock"]
         responsecode <- map["responsecode"]
         data <- map["data"]
         messages <- map["messages"]
     }
 
 }
+
 struct DataUser : Mappable {
     var token : String?
     var customerHomeScreens : [HomeScreen]?
-
+    var otpScreenTimeOut : String?
     init?(map: Map) {
 
     }
@@ -37,6 +40,7 @@ struct DataUser : Mappable {
 
         token <- map["token"]
         customerHomeScreens <- map["customerHomeScreens"]
+        otpScreenTimeOut <- map["otpScreenTimeOut"]
     }
 
 }
@@ -57,6 +61,7 @@ struct HomeScreen : Mappable {
     var monthlyamtlmt : String?
     var monthlytranslmt : String?
     var yearlyamtlmt : String?
+    var accountDiscrepant : String?
     var yearlytranslmt : String?
     var levelDescr : String?
     var accountPic : String?
@@ -66,7 +71,8 @@ struct HomeScreen : Mappable {
     var emailVerified : String?
     var accountDormant : String?
     var loginHistoryId: Int?
-
+   
+    
     init?(map: Map) {
 
     }
@@ -98,7 +104,8 @@ struct HomeScreen : Mappable {
         emailVerified <- map["emailVerified"]
         accountDormant <- map["accountDormant"]
         loginHistoryId <- map["loginHistoryId"]
-        
+        accountDiscrepant <- map["accountDiscrepant"]
+//        otpScreenTimeOut <- map["otpScreenTimeOut"]
     }
 
 }

@@ -8,12 +8,13 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class Fetcing_OTP_VC: BaseClassVC {
     var mobileRegistrationObj : mobileRegistrationModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         lblPhoneNo.text = DataManager.instance.mobNo
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let OTPVerifyVC = self.storyboard?.instantiateViewController(withIdentifier: "OTP_Mobile_VerificationVC") as! OTP_Mobile_VerificationVC
@@ -26,7 +27,9 @@ class Fetcing_OTP_VC: BaseClassVC {
 //        mobileRegistration()
         // Do any additional setup after loading the view.
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
 
     @IBOutlet weak var lblPhoneNo: UILabel!
     //MARK: - Get IP Address
@@ -107,13 +110,13 @@ class Fetcing_OTP_VC: BaseClassVC {
 //        print(parameters)
 //
 //        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+//         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
 //        print(params)
 //        print(compelteUrl)
 //
 //        NetworkManager.sharedInstance.enableCertificatePinning()
 ////
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<mobileRegistrationModel>) in
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<mobileRegistrationModel>) in
 //
 //            self.hideActivityIndicator()
 //

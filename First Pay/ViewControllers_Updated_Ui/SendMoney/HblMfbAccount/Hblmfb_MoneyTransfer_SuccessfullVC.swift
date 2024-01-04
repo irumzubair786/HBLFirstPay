@@ -24,9 +24,13 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
     var TransactionId: String?
     var TransactionDate: String?
     var Toaccounttitle : String?
+    var AccountNo : String?
     override func viewDidLoad() {
         super.viewDidLoad()
       
+        FBEvents.logEvent(title: .SendMoney_category_selection)
+        FaceBookEvents.logEvent(title: .SendMoney_category_selection)
+       
         btnCross.setTitle("", for: .normal)
         btnDownlload.setTitle("", for: .normal)
         btnShare.setTitle("", for: .normal)
@@ -43,6 +47,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
     @IBOutlet weak var lblTransType: UILabel!
     @IBOutlet weak var lblTransactionId: UILabel!
    
+    @IBOutlet weak var lblbeneficiaryAccountNo: UILabel!
     @IBOutlet weak var btnCross: UIButton!
     @IBOutlet weak var btnDownlload: UIButton!
     @IBOutlet weak var btnShare: UIButton!
@@ -60,19 +65,15 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
     @IBOutlet weak var imgview: UIView!
     @IBAction func Action_Download(_ sender: UIButton) {
         imgview.snapshotView(afterScreenUpdates: true)
-        
         image = imgview.convertToImage()
         print(image)
        UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
         showToast(title: "Photo Saved Succussfully!")
         
     }
-    
-    
-    
+   
     @IBAction func Action_Share(_ sender: UIButton) {
         let image =  imgview.convertToImage()
-            
         let imageShare = [ image ]
             let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = self.view
@@ -93,7 +94,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
             lblDateTime.text = TransactionDate!
           
             lblBeneficiaryAccount.text = number!
-              
+            lblbeneficiaryAccountNo.text = AccountNo!
         }
         else if isfromHblMbfAccount == true
         {
@@ -103,7 +104,7 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
             lblSourceAccount.text = a
             lblDateTime.text = TransactionDate!
             lblBeneficiaryAccount.text = number!
-             
+            lblbeneficiaryAccountNo.text = AccountNo!
         }
             
 //        else if isfromOtherLocalBank == true{
@@ -139,19 +140,8 @@ class Hblmfb_MoneyTransfer_SuccessfullVC: BaseClassVC {
 //
 //
 //        }
-        
-        
-        
-        
-        
+      
     }
-    
-    
-    
-    
-    
-    
-    
-    
+     
     
 }

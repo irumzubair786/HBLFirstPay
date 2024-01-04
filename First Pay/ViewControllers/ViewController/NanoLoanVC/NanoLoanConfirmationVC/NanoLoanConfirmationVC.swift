@@ -64,28 +64,7 @@ class NanoLoanConfirmationVC: UIViewController {
         }
     }
     
-    var modelGetLoanCharges: NanoLoanApplyViewController.ModelGetLoanCharges? {
-        didSet {
-            let totalLoanAmount = (modelGetLoanCharges?.data.loanAmount ?? 0).twoDecimal()
-            let dailyMarkupFee = (modelGetLoanCharges?.data.markupAmountPerDay ?? 0).twoDecimal()
-            let totalMarkupFee = (modelGetLoanCharges?.data.markupAmountTotal ?? 0).twoDecimal()
-            let loanDuration = (modelGetLoanCharges?.data.loanDuration)
-            let dueDate = (modelGetLoanCharges?.data.dueDate)
-
-            let processingFee = (modelGetLoanCharges?.data.processingFeeAmount ?? 0).twoDecimal()
-            let processingFed = (modelGetLoanCharges?.data.fed ?? 0).twoDecimal()
-
-            let amountRapidOnDueDate = (modelGetLoanCharges?.data.amountToBeRepaid ?? 0)
-                                   
-            labelLoanAmount.text = "Rs. \(totalLoanAmount)"
-            labelOtherDescription.text = "Processing Fee of Rs. \(processingFee) and FED of Rs. \(processingFed) will be deducted upfront from the applied loan amount."
-            labelLoanDuration.text = loanDuration
-            labelDueDate.text = dueDate
-            labelDailyMarkupAmount.text = "Rs. \(dailyMarkupFee)"
-            labelTotalMonthlyMarkup.text = "Rs. \(totalMarkupFee)"
-            labelAmountRapidDueDate.text = "Rs. \(amountRapidOnDueDate)"
-        }
-    }
+    var modelGetLoanCharges: NanoLoanApplyViewController.ModelGetLoanCharges!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -93,7 +72,7 @@ class NanoLoanConfirmationVC: UIViewController {
         viewGetLoanButton.circle()
         viewLoanAmountBackGround.radius()
         viewBackGroundHint.radius()
-
+        setData()
     }
     @IBAction func buttonBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
@@ -103,6 +82,26 @@ class NanoLoanConfirmationVC: UIViewController {
     
     @IBAction func buttonGetLoan(_ sender: Any) {
         applyLoan()
+    }
+    
+    func setData() {
+        let totalLoanAmount = (modelGetLoanCharges?.data?.loanAmount ?? 0).twoDecimal()
+        let dailyMarkupFee = (modelGetLoanCharges?.data?.markupAmountPerDay ?? 0).twoDecimal()
+        let totalMarkupFee = (modelGetLoanCharges?.data?.markupAmountTotal ?? 0).twoDecimal()
+        let loanDuration = (modelGetLoanCharges?.data?.loanDuration)
+        let dueDate = (modelGetLoanCharges?.data?.dueDate)
+
+        let processingFee = (modelGetLoanCharges?.data?.processingFeeAmount ?? 0).twoDecimal()
+        let processingFed = (modelGetLoanCharges?.data?.fed ?? 0).twoDecimal()
+        let amountRapidOnDueDate = (modelGetLoanCharges?.data?.amountToBeRepaid ?? 0).twoDecimal()
+                               
+        labelLoanAmount.text = "Rs. \(totalLoanAmount)"
+        labelOtherDescription.text = "Processing Fee of Rs. \(processingFee) and FED of Rs. \(processingFed) will be deducted upfront from the applied loan amount."
+        labelLoanDuration.text = loanDuration
+        labelDueDate.text = dueDate
+        labelDailyMarkupAmount.text = "Rs. \(dailyMarkupFee)"
+        labelTotalMonthlyMarkup.text = "Rs. \(totalMarkupFee)"
+        labelAmountRapidDueDate.text = "Rs. \(amountRapidOnDueDate)"
     }
 
     func applyLoan() {
@@ -124,7 +123,7 @@ class NanoLoanConfirmationVC: UIViewController {
     
     func openNanoLoanConfirmationVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanSuccessfullVC") as! NanoLoanSuccessfullVC
-        
+        vc.modelApplyLoan = modelApplyLoan
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -132,20 +131,20 @@ class NanoLoanConfirmationVC: UIViewController {
 extension NanoLoanConfirmationVC {
     // MARK: - ModelApplyLoan
     struct ModelApplyLoan: Codable {
-        let responsecode: Int
-        let data: ModelApplyLoanData
+        let responsecode: Int?
+        let data: ModelApplyLoanData?
         let responseblock: JSONNull?
-        let messages: String
+        let messages: String?
     }
 
     // MARK: - DataClass
     struct ModelApplyLoanData: Codable {
-        let transactionID: Int
-        let dateTime, loanNo: String
-        let loanAmount: Int
-        let dueDate: String
-        let repaidAmount, processingFee: Int
-        let fed, disbursedAmount: Double
+        let transactionID: Int?
+        let dateTime, loanNo: String?
+        let loanAmount: Int?
+        let dueDate: String?
+        let repaidAmount, processingFee: Int?
+        let fed, disbursedAmount: Double?
 
         enum CodingKeys: String, CodingKey {
             case transactionID = "transactionId"

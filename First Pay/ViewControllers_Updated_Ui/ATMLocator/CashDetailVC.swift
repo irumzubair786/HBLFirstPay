@@ -12,9 +12,10 @@ class CashDetailVC: UIViewController {
     var flagFirstPreesed : Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
+        //        add swipe Gesture
         buttonCross.setTitle("", for: .normal)
         viewDetail.isHidden = true
-        buttonshowDetail.setTitle("", for: .normal)
+//        buttonshowDetail.setTitle("", for: .normal)
         self.view.backgroundColor = .clear
         buttonDepositByBranch.setTitle("", for: .normal)
         // Do any additional setup after loading the view.

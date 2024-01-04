@@ -30,7 +30,7 @@ struct mobileRegistrationModel : Mappable {
 
 struct MobRegistration : Mappable {
     var token : String?
-
+    var OTPTimeOut : String?
     init?(map: Map) {
 
     }
@@ -38,6 +38,7 @@ struct MobRegistration : Mappable {
     mutating func mapping(map: Map) {
 
         token <- map["token"]
+        OTPTimeOut <- map["OTPTimeOut"]
     }
 
 }

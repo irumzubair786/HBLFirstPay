@@ -8,10 +8,21 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import PinCodeTextField
 import SwiftKeychainWrapper
+import FittedSheets
+protocol DissmissDelegate{
+    func updatescreen(value: String?, tag :Int?,section:Int?)
+    
+}
+
 class changeLimitVC: BaseClassVC {
+   
+    var delegate : DissmissDelegate?
+    var tag: Int?
+    var section: Int?
+    @IBOutlet weak var buttonDismiss: UIButton!
     var genResponseObj : ChangeLimitModel?
     var daily :String?
     var dailyAmount :String?
@@ -21,72 +32,141 @@ class changeLimitVC: BaseClassVC {
     var convertdailymaxValue: Int?
     var LimitType : String?
     var AmounttType: String?
+    var refreshScreen: (()->())!
+    @IBAction func buttonDrawer(_ sender: UIButton) {
+    }
+   
+    @IBOutlet weak var buttonContinue: UIButton!
     
+    @IBOutlet weak var viewBackground: UIView!
     
+    override func viewDidAppear(_ animated: Bool) {
+//        self.view.drawBackgroundBlur(withTag: 999)
+//        self.viewBackground.roundCorners(corners: [.topLeft, .topRight], radius: 30)
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//
+//        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        blurView.alpha = 0.7
-        updateUI()
+        //        add swipe Gesture
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
-        blurView.isUserInteractionEnabled = true
-        blurView.addGestureRecognizer(tapGestureRecognizer)
+//        viewBackground.dropShadow1()
+     
         print("limit Type",LimitType)
         print("AmountType",AmounttType)
-       labelminamount.text
-//        print("ReceivinglimitType",ReceivingLimitType)
-//        Slider()
-        // Do any additional setup after loading the view.
+        buttonContinue.circle()
+        updateUI()
     }
     
+    @objc private func didSwipe(_ sender: UISwipeGestureRecognizer) {
+    }
+    @IBOutlet weak var imgvArrow: UIImageView!
     @IBOutlet weak var slider: CustomSlider!
     @IBOutlet weak var labelMaxamount: UILabel!
     @IBOutlet weak var labelminamount: UILabel!
     @IBOutlet weak var labelAmount: UILabel!
     @IBOutlet weak var labelname: UILabel!
-    @IBOutlet weak var blurView: UIVisualEffectView!
-   
-    func updateUI()
+    var maximumAmount : String?
+//    @IBOutlet weak var blurView: UIVisualEffectView!
+    var maxValue : Float?
+    func CommaSeprationSection1()
     {
+//        updateUI()
+       
+        var number = maxValue
+        var formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        //        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        maximumAmount = (formatter.string(from: NSNumber(value: number ?? 0)))!
+        print("successfuly DailyTotalLimit1", maximumAmount)
+        labelMaxamount.text = "Rs. \(maximumAmount!)"
+    }
+  
+    func updateUI() {
         labelname.text  = "Change \(daily!) Limit"
-        labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "") ?? "")"
+        labelAmount.text = "\(dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "Rs.") ?? "")"
+        dailyminValue = dailyminValue?.replacingOccurrences(of: "Consumed Rs. ", with: "")
+        dailyminValue = dailyminValue?.replacingOccurrences(of: "Consumed Rs.", with: "")
         
-        labelminamount.text = "\(dailyminValue?.replacingOccurrences(of: "Consumed Rs.", with: "") ?? "")"
-        labelMaxamount.text = "\(dailymaxValue?.replacingOccurrences(of: "Total Rs.", with: "") ?? "")"
-        convertdailyminValue = Int(labelminamount.text!)
-        convertdailymaxValue = Int(labelMaxamount.text!)
+        let minimumAmount = (Double("\(dailyminValue ?? "0")".getIntegerValue())?.commaRepresentation.removeSpecialCharsFromString() ?? "").components(separatedBy: ".").first ?? ""
+
+        maximumAmount = dailymaxValue
+        maxValue = Float(maximumAmount!)
+        labelminamount.text = "Rs. \(minimumAmount)"
+       
+        CommaSeprationSection1()
+        convertdailyminValue = Int(minimumAmount.getIntegerValue())
+        convertdailymaxValue = Int(maximumAmount?.getIntegerValue() ?? "")
+        if maximumAmount == "0" {
+            convertdailymaxValue = 200000
+        }
+        
         print("convertdailyminValue",convertdailyminValue as Any)
         print("convertdailymaxValue",convertdailymaxValue as Any)
-//        slider.minimumValue = Float((labelminamount.text! as NSString).intValue)
-//
-//        slider.maximumValue = Float((labelMaxamount.text! as NSString).intValue)
-        let a = labelminamount.text?.replacingOccurrences(of: ",", with: "")
-        let b =  labelMaxamount.text?.replacingOccurrences(of: ",", with: "")
-        slider.minimumValue =  (a! as NSString).floatValue
-        slider.maximumValue =     (b! as NSString).floatValue
+//        slider.minimumValue = Float(convertdailyminValue ?? 0)
+        slider.minimumValue = 0
+        slider.maximumValue = Float(convertdailymaxValue ?? 0)
+        let dailyAmountValue = dailyAmount?.replacingOccurrences(of: "Total Rs.", with: "").removeSpecialCharsFromString()
+        slider.value = Float(dailyAmountValue?.getIntegerValue() ?? "0") ?? 0
+        if daily!.lowercased() == "daily " {
+            slider.minimumTrackTintColor = .systemYellow
+        }
+        else if daily!.lowercased() == "monthly " {
+            slider.minimumTrackTintColor = .clrGreen
+        }
+        else if daily!.lowercased() == "yearly " {
+            slider.minimumTrackTintColor = .clrOrange
+        }
+
         print("slider minvalue",slider.minimumValue)
         print("slider maximumValue",slider.maximumValue)
     }
 
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
-
-        self.dismiss(animated: true)
+        
     }
+    
+    @IBAction func buttonDismiss(_ sender: Any) {
+//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
+//        self.present(vc, animated: true)
+//        self.dismiss(animated: true)
+        self.view.backgroundColor = .clear
+        self.view.viewWithTag(999)?.removeFromSuperview()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            
+            
+            self.delegate?.updatescreen(value:  self.labelAmount.text, tag: self.tag, section: self.section)
+            
+            self.dismiss(animated: true)
+            
+        }
+        
+
+    }
+    
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+            return 1
+        }
+    
+    
+  
     @IBAction func Action_Slider(_ sender: UISlider) {
         let value = sender.value
         let val = Int(value)
+        var amountCommaSeperated = "\(Double(value).commaRepresentation.removeSpecialCharsFromString())"
         
-        labelAmount.text = "\(value)"
-        
-        
-        
-        
+        amountCommaSeperated = amountCommaSeperated.components(separatedBy: ".").first!
+        labelAmount.text = "RS. \(amountCommaSeperated)"
+        imgvArrow.image = UIImage(named: "]greenarrow")
     }
     
-    
     @IBAction func buttonContinue(_ sender: UIButton) {
-       
-        apicall()
-        
+        if imgvArrow.image == UIImage(named: "]greenarrow") {
+            apicall()
+        }
     }
     
     func apicall()
@@ -95,48 +175,59 @@ class changeLimitVC: BaseClassVC {
         let parameters: Parameters = [
             "channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"imei":DataManager.instance.imei!,"amountType": AmounttType ?? "", "amount": labelAmount.text!, "limitType": LimitType ?? ""]
         print("parametres",Parameters.self)
-            
-            
+        
+        
         
         APIs.postAPI(apiName: .changeAcctLimits, parameters: parameters, viewController: self) {
             responseData, success, errorMsg in
-    
             
-                let model : ChangeLimitModel? = APIs.decodeDataToObject(data: responseData)
-                print("response",model)
-                self.modelGetAccount = model
-            }
-        
-        
-        
-        
+            
+            let model : ChangeLimitModel? = APIs.decodeDataToObject(data: responseData)
+            //                print("response",model)
+            self.modelGetAccount = model
+        }
     }
-    var modelGetAccount : ChangeLimitModel?
-    {
+    
+    var modelGetAccount : ChangeLimitModel? {
         didSet{
-            
             if self.modelGetAccount?.responsecode == 1  {
-                self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSucess)
+                self.showAlertCustomPopup(title: "",message: modelGetAccount?.messages ?? "",iconName: .iconSuccess,buttonNames: [
+                                ["buttonName": "OK",
+                                "buttonBackGroundColor": UIColor.clrOrange,
+                                "buttonTextColor": UIColor.white]
+                            ] as? [[String: AnyObject]]) { _ in
+                                self.refreshScreen()
+                                self.dismiss(animated: true)
+                            }
+                 
+//               move to dashboard
+//                self.dismiss(animated: true)
+//                DispatchQueue.main.async {
+//                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+//                }
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+//                    self.view.window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+//                }
+      
             }
             else {
+               
                 //MARK: - Loan Failed Successfully
-                self.showAlertCustomPopup(title: "Error!", message: modelGetAccount?.messages ?? "", iconName: .iconError) 
+                self.showAlertCustomPopup(title: "Error!", message: modelGetAccount?.messages ?? "", iconName: .iconError)
             }
-            
         }
-        
     }
 //    private func changeAcctLimits() {
-//        
+//
 //        if !NetworkConnectivity.isConnectedToInternet(){
 //            self.showToast(title: "No Internet Available")
 //            return
 //        }
 //        showActivityIndicator()
-//     
+//
 //
 //        let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/changeAcctLimitst"
-//        
+//
 //        var userCnic : String?
 //        if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
 //            userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
@@ -146,26 +237,26 @@ class changeLimitVC: BaseClassVC {
 //        }
 //        userCnic = UserDefaults.standard.string(forKey: "userCnic")
 //        let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!,"imei":DataManager.instance.imei!,"amountType": AmounttType ?? "", "amount": labelAmount.text!, "limitType": LimitType ?? ""] as [String : Any]
-//        
+//
 //        print(parameters)
 //        let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-//        
+//
 //        print(result.apiAttribute1)
 //        print(result.apiAttribute2)
-//        
+//
 //        let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-//        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+//         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
 //        print(params)
 //        print(compelteUrl)
 //        NetworkManager.sharedInstance.enableCertificatePinning()
-//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<ChangeLimitModel>) in
-//            
-//     //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
-//            
+//        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<ChangeLimitModel>) in
+//
+//     //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
+//
 //            self.hideActivityIndicator()
-//            
+//
 //            self.genResponseObj = response.result.value
-//            
+//
 //            if response.response?.statusCode == 200 {
 //                if self.genResponseObj?.responsecode == 2 || self.genResponseObj?.responsecode == 1 {
 ////
@@ -173,7 +264,7 @@ class changeLimitVC: BaseClassVC {
 ////                    let vc = storyboard.instantiateViewController(withIdentifier: "MainPageVC")
 ////                    self.present(vc, animated: true)
 //                }
-//                
+//
 //                else {
 //                    if let message = self.genResponseObj?.messages {
 //                        UtilManager.showAlertMessage(message: message, viewController: self)
@@ -190,7 +281,7 @@ class changeLimitVC: BaseClassVC {
 //                }
 ////                print(response.result.value)
 ////                print(response.response?.statusCode)
-//                
+//
 //            }
 //        }
 //    }
@@ -214,3 +305,4 @@ extension String {
         return (self as NSString).floatValue
     }
 }
+

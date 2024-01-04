@@ -17,6 +17,15 @@ class BioMetricLoginVc: UIViewController {
         buttonThumb.setTitle("", for: .normal)
         termsAccepted = false
         // Do any additional setup after loading the view.
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(dissmissViewController), name: Notification.Name("dissmissViewController"),object: nil)
+        buttonContinue.circle()
+    }
+    
+    @IBOutlet weak var buttonContinue: UIButton!
+    @objc func dissmissViewController() {
+        self.dismiss(animated: true)
+        NotificationCenter.default.post(name: Notification.Name("dissmissViewController2"), object: nil)
     }
     
     @IBAction func buttonTermsAndConditions(_ sender: UIButton) {
@@ -40,7 +49,7 @@ class BioMetricLoginVc: UIViewController {
     
     @IBAction func buttonContinue(_ sender: UIButton) {
         let webVC = self.storyboard?.instantiateViewController(withIdentifier:"TermsandConditionsloginMethodsVc") as! TermsandConditionsloginMethodsVc
-        UserDefaults.standard.set("true", forKey: "enableTouchID")
+       
 //        KeychainWrapper.standard.set(true, forKey: "enableTouchID")
         self.present(webVC, animated: true)
 //            self.navigationController?.pushViewController(webVC, animated: true)

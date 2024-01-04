@@ -8,9 +8,13 @@
 
 import UIKit
 import SwiftKeychainWrapper
-import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
+
 class UnverifeidAccountMainVc: BaseClassVC {
+    @IBOutlet weak var buttonUpgradeAccount: UIButton!
+    var accountUpGradeSuccessfull: (() -> ())!
+
+    
     var levelCode :String?
     var totalDailyLimitDr : Int?
     var totalMonthlyLimitDr : Int?
@@ -29,8 +33,23 @@ class UnverifeidAccountMainVc: BaseClassVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         buttonBack.setTitle("", for: .normal)
         // Do any additional setup after loading the view.
+        
+        buttonUpgradeAccount.circle()
+    }
+    
+
+    @IBAction func buttonUpgradeAccount(_ sender: Any) {
+        let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "BiometricScannerViewController") as! BiometricScannerViewController
+        
+        viewController.accountUpGradeSuccessfull = {
+            self.dismiss(animated: false)
+            
+            self.accountUpGradeSuccessfull!()
+        }
+        self.present(viewController, animated: true)
     }
 
     @IBOutlet weak var buttonBack: UIButton!
@@ -55,16 +74,28 @@ class UnverifeidAccountMainVc: BaseClassVC {
         vc.totalYearlyLimitDr = totalYearlyLimitDr
         vc.totalYearlyLimitDr1 = totalYearlyLimitDr1
         self.present(vc, animated: true)
-        
+//        UnVerifiedAccountVC
     }
     
-    @IBAction func buttonUpgrade(_ sender: UIButton) {
-        self.showAlertCustomPopup(title: "", message: "Please visit your nearest HBLMfB branch", iconName: .iconSucess, buttonNames: [
-            
-            ["buttonName": "OK",
-            "buttonBackGroundColor": UIColor.clrOrange,
-            "buttonTextColor": UIColor.white]
-        ] as? [[String: AnyObject]])
-    }
     
 }
+
+//extension UnverifeidAccountMainVc: FingerPrintVerificationDelegate {
+//    func onEightFingerComplition(success: Bool, fingerPrintApiHitCount: Int, apiResponseMessage: String) {
+//        if fingerPrintApiHitCount == 8 {
+//            self.showAlertCustomPopup(title: "Success", message: apiResponseMessage)
+//        }
+//    }
+//
+//    func onScanComplete(fingerprintsList: [FingerPrintVerification.Fingerprints]?) {
+//        if fingerprintsList?.count ?? 0 > 0 {
+////            for fingerprint in fingerprintsList! {
+////                fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprint)
+////            }
+//            fingerPrintVerification.acccountLevelUpgrade(fingerprints: fingerprintsList!)
+//        }
+//    }
+//
+//}
+
+

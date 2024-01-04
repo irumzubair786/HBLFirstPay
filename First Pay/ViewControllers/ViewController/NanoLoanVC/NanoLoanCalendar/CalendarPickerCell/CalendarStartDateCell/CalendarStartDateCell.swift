@@ -12,6 +12,7 @@ class CalendarStartDateCell: UICollectionViewCell {
 
     static let reuseIdentifier = String(describing: CalendarStartDateCell.self)
     
+    @IBOutlet weak var viewBackGroundPrice: UIView!
     @IBOutlet weak var viewDateBackGround: UIView!
     @IBOutlet weak var viewMainBackGround: UIView!
     @IBOutlet weak var labelStatus: UILabel!
@@ -49,8 +50,6 @@ class CalendarStartDateCell: UICollectionViewCell {
               self.labelDate.text = (day.number)
               accessibilityLabel = accessibilityDateFormatter.string(from: day.date)
               self.updateStatus()
-              
-//              updateSelectionStatus()
           }
         
       }
@@ -71,7 +70,7 @@ class CalendarStartDateCell: UICollectionViewCell {
         defaultCalendarDate()
         accessibilityHint = nil
         
-        labelPrice.text = "Rs. \(modelDate.markup)"
+        labelPrice.text = "Rs. \("\(modelDate.markup)".getIntegerValue())"
         labelStatus.text = "START DATE"
         
         labelPrice.isHidden = false
@@ -94,10 +93,10 @@ class CalendarStartDateCell: UICollectionViewCell {
             self.viewDateBackGround.backgroundColor = .clrGreenWithOccupacy05
         }
         else {
-            labelDate.textColor = .clrTextNormal
-            labelPrice.textColor = .clrTextNormal
-            self.viewDateBackGround.radiusLineDashedStroke(color: .clrTextNormal)
-            self.viewDateBackGround.backgroundColor = .white
+            labelDate.textColor = .clrGray
+            labelPrice.textColor = .clrGray
+            self.viewDateBackGround.radiusLineDashedStroke(color: .clrGray)
+            self.viewDateBackGround.backgroundColor = .clrLightGrayCalendarWithOccupacy05
         }
     }
     func defaultCalendarDate() {
@@ -117,17 +116,6 @@ class CalendarStartDateCell: UICollectionViewCell {
 
 // MARK: - Appearance
 private extension CalendarDateCollectionViewCell {
-  // 1
-  func updateSelectionStatus() {
-    guard let day = day else { return }
-      
-//    if day.isSelected {
-//      applySelectedStyle()
-//    } else {
-//      applyDefaultStyle(isWithinDisplayedMonth: day.isWithinDisplayedMonth)
-//    }
-  }
-
   // 2
   var isSmallScreenSize: Bool {
     let isCompact = traitCollection.horizontalSizeClass == .compact

@@ -26,6 +26,8 @@ class cellTransation_Statement_HistoryVc: UITableViewCell {
     @IBOutlet weak var img: UIImageView!
     @IBOutlet weak var lblAmount: UILabel!
     
+    @IBOutlet weak var cellBackButton: UIButton!
+    
     @IBOutlet weak var btn: UIButton!
     
     

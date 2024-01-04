@@ -8,9 +8,10 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SDWebImage
+import ObjectMapper
 class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     var successmodelobj : FundsTransferApiResponse?
     var refferenceNumber:String?
@@ -22,23 +23,28 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     var dueDate :String?
     var consumerNumber : String?
     var amountpaid : String?
+    var otpReq : String?
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        lblTitle.text =  GlobalData.SelectedCompanyname
         TextfieldAmount.delegate = self
         otpTextField.delegate = self
-        imageNextArrow.isUserInteractionEnabled = false
-        buttonNext.isUserInteractionEnabled = false
+        buttonNext.isUserInteractionEnabled = true
          UpdateUi()
         back.setTitle("", for: .normal)
+        self.TextfieldAmount.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        imageNextArrow.isUserInteractionEnabled = true
+        imageNextArrow.addGestureRecognizer(tapGestureRecognizerr)
+        
+        buttonNext.circle()
         // Do any additional setup after loading the view.
     }
     
+   
     @IBOutlet weak var TextfieldAmount: UITextField!
-    
     @IBOutlet weak var lbl_Status: UILabel!
     @IBOutlet weak var otpTextField: UITextField!
-   
     @IBOutlet weak var lblDate: UILabel!
     @IBOutlet weak var lblAmount: UILabel!
     @IBOutlet weak var Lbl_BiilingMonth: UILabel!
@@ -46,26 +52,55 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     @IBOutlet weak var lblRefferenceNo: UILabel!
     @IBOutlet weak var lb_consumer_name: UILabel!
     @IBOutlet weak var bank_logo: UIImageView!
-    @IBOutlet weak var lblMainTitle: UILabel!
+    @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var back: UIButton!
     
     @IBOutlet weak var imageNextArrow: UIImageView!
     @IBOutlet weak var buttonNext: UIButton!
     @IBAction func buttonNext(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPaymentOTPVerificationVC") as! BillPaymentOTPVerificationVC
-        vc.consumerNumber = consumerNumber!
-        vc.amount = TextfieldAmount.text!
-        vc.refferenceNumber = refferenceNumber
-        vc.company = company
-        vc.billingMonth = billingMonth
-        vc.amountDue = amountDue
-        vc.dueDate = dueDate
-        vc.totalAmount = TextfieldAmount.text!
-        self.navigationController?.pushViewController(vc, animated: true)
         
-//        billPyment()
-        
+        if otpReq == "Y"
+        {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPaymentOTPVerificationVC") as! BillPaymentOTPVerificationVC
+            
+            vc.consumerNumber = consumerNumber!
+            vc.amount = TextfieldAmount.text!
+            vc.refferenceNumber = refferenceNumber
+            vc.company = company
+            vc.billingMonth = billingMonth
+            vc.amountDue = amountDue
+            vc.dueDate = dueDate
+            vc.totalAmount = TextfieldAmount.text!
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else
+        {
+            billPyment()
+        }
     }
+        
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+        {
+            if otpReq == "Y"
+            {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "BillPaymentOTPVerificationVC") as! BillPaymentOTPVerificationVC
+              
+                vc.consumerNumber = consumerNumber!
+                vc.amount = TextfieldAmount.text!
+                vc.refferenceNumber = refferenceNumber
+                vc.company = company
+                vc.billingMonth = billingMonth
+                vc.amountDue = amountDue
+                vc.dueDate = dueDate
+                vc.totalAmount = TextfieldAmount.text!
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            else
+            {
+                billPyment()
+            }
+        }
+ 
     @IBAction func Action_Back(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
         
@@ -73,15 +108,15 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
     func UpdateUi()
     {
         
-        lb_consumer_name.text = DataManager.instance.accountTitle
+        lb_consumer_name.text = "NOT AVAILABLE"
         lblRefferenceNo.text = consumerNumber
         lblCompany.text = company
         Lbl_BiilingMonth.text = billingMonth
-        lblAmount.text = amountDue
+        lblAmount.text = "RS, \(amountDue ?? "")"
         lblDate.text = dueDate
         lbl_Status.text = status
-        TextfieldAmount.text = totalAmount
-        
+        TextfieldAmount.text = "PKR \(amountDue ?? "")"
+    
         var concateString = "\(GlobalConstants.BASE_URL)\(GlobalData.selected_operator_logo ?? "")"
         let url = URL(string: concateString)
         bank_logo.sd_setImage(with: url)
@@ -100,44 +135,53 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
             userCnic = ""
         }
         showActivityIndicator()
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billPayment"
+//        v2
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/billPayment"
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","cnic":userCnic!,"imei":DataManager.instance.imei!,"channelId":"\(DataManager.instance.channelID)","utilityBillCompany":GlobalData.Selected_Company_code!,"beneficiaryAccountTitle":"","utilityConsumerNo":consumerNumber!,"accountType" : DataManager.instance.accountType!,"amountPaid":self.TextfieldAmount.text!,"beneficiaryName":"","beneficiaryMobile":"","beneficiaryEmail":"","otp":otpTextField.text!,"addBeneficiary":"","utilityBillCompanyId":GlobalData.Selected_Company_id!] as [String : Any]
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(parameters)
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         print(params)
         print(compelteUrl)
         print(header)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<FundsTransferApiResponse>) in
-            self.hideActivityIndicator()
-             self.successmodelobj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
-                    self.move_to_next()
-//                    self.tablleview?.reloadData()
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+            //            (response: DataResponse<FundsTransferApiResponse>) in
+            response in
+            guard let data = response.data else { return }
+            //               let json = try? JSON(data:data)
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                
+                self.successmodelobj = Mapper<FundsTransferApiResponse>().map(JSONObject: json)
+                self.hideActivityIndicator()
+                
+                if response.response?.statusCode == 200 {
+                    if self.successmodelobj?.responsecode == 2 || self.successmodelobj?.responsecode == 1 {
+                        self.move_to_next()
+                        //                    self.tablleview?.reloadData()
+                    }
+                    else {
+                        if let message = self.successmodelobj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+                            //                        self.navigateToSuccessVC()
+                        }
+                    }
                 }
                 else {
                     if let message = self.successmodelobj?.messages{
                         self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-//                        self.navigateToSuccessVC()
+                        //                        self.navigateToSuccessVC()
                     }
+                    
                 }
-            }
-            else {
-                if let message = self.successmodelobj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-//                        self.navigateToSuccessVC()
-                    }
-
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
+                //                print(response.result.value)
+                //                print(response.response?.statusCode)
             }
         }
+    }
     
 
     func move_to_next()
@@ -169,6 +213,7 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
         return newLength <= 10
         
     }
+   
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if TextfieldAmount.text?.count != 0 && otpTextField.text?.count == 4
@@ -185,6 +230,25 @@ class BillPayment_ConfirmationVC: BaseClassVC , UITextFieldDelegate {
             buttonNext.isUserInteractionEnabled = false
         }
         
+        
+    }
+    
+    
+    @objc func changeTextInTextField() {
+        
+        if TextfieldAmount.text?.count != 0 && otpTextField.text?.count == 4
+        {
+            imageNextArrow.image = UIImage(named: "]greenarrow")
+            imageNextArrow.isUserInteractionEnabled = true
+            buttonNext.isUserInteractionEnabled = true
+        }
+        else
+        {
+//            let image = UIImage(named:"grayArrow")
+            imageNextArrow.image = UIImage(named: "grayArrow")
+            imageNextArrow.isUserInteractionEnabled = false
+            buttonNext.isUserInteractionEnabled = false
+        }
         
     }
 }

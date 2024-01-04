@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import ContactsUI
 import libPhoneNumber_iOS
@@ -16,13 +16,17 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
     var BillComapnyid : Int?
     var billtransactionOBj : BillAPiResponse?
     var utilityBillCompany:String?
+    var otpReq : String?
     override func viewDidLoad() {
+        FBEvents.logEvent(title: .PayBills_successrecept_landing)
+        FaceBookEvents.logEvent(title: .PayBills_successrecept_landing)
         super.viewDidLoad()
         blurView.isHidden = true
         back.setTitle("", for: .normal)
 //        btn_Continue.setTitle("", for: .normal)
         lblMainTitle.text = GlobalData.SelectedCompanyname ?? ""
-        lbl_SubTitle.text = GlobalData.SelectedCompanydecr ?? ""
+        lbl_SubTitle.text = GlobalData.SelectedCompanyname ?? ""
+        
         lblTitle.text = "Refference / Consumer Number"
         btn_Continue.isUserInteractionEnabled = false
         btn_img_next.setTitle("", for: .normal)
@@ -32,6 +36,8 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizerr)
+        self.enterconsumerNo.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+//
         // Do any additional setup after loading the view.
     }
     
@@ -48,7 +54,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
     @IBOutlet weak var btn_Continue: UIButton!
     @IBOutlet weak var btn_img_next: UIButton!
     @IBAction func Continue(_ sender: UIButton) {
-
+  print ("bill text", utilityBillCompany)
         getBillInquiry(utilityBillCompany: utilityBillCompany!)
         
     }
@@ -90,9 +96,9 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         showActivityIndicator()
         
   //      let compelteUrl = GlobalConstants.BASE_URL + "billInquiry"
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/billInquiry"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/billInquiry"
         
-        
+//        v2
         userCnic = UserDefaults.standard.string(forKey: "userCnic")
         let parameters = ["lat":"\(DataManager.instance.Latitude!)","lng":"\(DataManager.instance.Longitude!)","channelId":"\(DataManager.instance.channelID)","imei":DataManager.instance.imei!,"cnic":userCnic!,"utilityBillCompany":utilityBillCompany!,"utilityConsumerNo":self.enterconsumerNo.text!,"accountType": DataManager.instance.accountType!]
         
@@ -105,7 +111,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
@@ -113,27 +119,33 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<BillAPiResponse>) in
-
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<BillAPiResponse>) in
+            response in
             self.hideActivityIndicator()
-            self.billtransactionOBj = response.result.value
-            if response.response?.statusCode == 200 {
-                if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
-                    self.navigateToDetailsVC(code: utilityBillCompany!)
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billtransactionOBj = Mapper<BillAPiResponse>().map(JSONObject: json)
+                
+                //            self.billtransactionOBj = response.result.value
+                if response.response?.statusCode == 200 {
+                    if self.billtransactionOBj?.responsecode == 2 || self.billtransactionOBj?.responsecode == 1 {
+                        self.navigateToDetailsVC(code: utilityBillCompany!)
+                    }
+                    else {
+                        if let message = self.billtransactionOBj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+                            //                        self.showAlert(title: "", message: message, completion: nil)
+                        }
+                    }
                 }
                 else {
                     if let message = self.billtransactionOBj?.messages{
                         self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-//                        self.showAlert(title: "", message: message, completion: nil)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.billtransactionOBj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -142,51 +154,7 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
         private func navigateToDetailsVC(code:String){
             
             if let imdComp = self.billtransactionOBj?.data?.utilityCompanyId{
-                
-                
-//            if imdComp == "CC01BILL" || imdComp == "IN01BILL" || imdComp == "TP01BILL" || imdComp == "CAREEM01"{
-//
-//                let utilityBillPayOneBillConfirmVC = self.storyboard!.instantiateViewController(withIdentifier: "BillPayment_ConfirmationVC") as!
-//                BillPayment_ConfirmationVC
-////                if isFromQuickPay {
-////                    utilityBillPayOneBillConfirmVC.companyName = self.mainTitle
-////                }
-////                else {
-////                    utilityBillPayOneBillConfirmVC.companyName = self.sourceCompany
-////                }
-//                utilityBillPayOneBillConfirmVC.accountTitle = self.billtransactionOBj?.data?.subscriberName
-//                utilityBillPayOneBillConfirmVC.dueDate = self.billtransactionOBj?.data?.paymentDueDate
-//                utilityBillPayOneBillConfirmVC.totalAmountl = self.billtransactionOBj?.data?.totalAmountPayableWithinDueDate
-//                utilityBillPayOneBillConfirmVC.paidAmount = self.billtransactionOBj?.data?.actualDueAmount
-//    //            utilityBillPayOneBillConfirmVC.remainingAmount = self.billPaymentInquiryObj?.data?.remainingAmount
-//                utilityBillPayOneBillConfirmVC.amountAfterDD = self.billtransactionOBj?.data?.totalAmountPayableAfterDueDate
-//    //            utilityBillPayOneBillConfirmVC.remAmountAftrDD = self.billPaymentInquiryObj?.data?.remAmountAftrDD
-//                utilityBillPayOneBillConfirmVC.status = self.billtransactionOBj?.data?.billStatus
-//                utilityBillPayOneBillConfirmVC.companyName = GlobalData.SelectedCompanyname!
-//                utilityBillPayOneBillConfirmVC.utilityBillCompany = self.billtransactionOBj?.data?.utilityCompanyId
-//                utilityBillPayOneBillConfirmVC.otpReq = self.billtransactionOBj?.data?.oTPREQ
-//                utilityBillPayOneBillConfirmVC.utilityConsumerNo = self.enterconsumerNo.text!
-//                utilityBillPayOneBillConfirmVC.utilityCompanyID = self.billtransactionOBj?.data?.utilityCompanyId
-//                utilityBillPayOneBillConfirmVC.utilityBillCompanyId = Int(GlobalData.Selected_Company_code!)
-//
-//                print(utilityBillPayOneBillConfirmVC.accountTitle as Any)
-//                print("duedate",utilityBillPayOneBillConfirmVC.dueDate!)
-//                print(utilityBillPayOneBillConfirmVC.totalAmountl!)
-//                print(utilityBillPayOneBillConfirmVC.paidAmount!)
-//                print(utilityBillPayOneBillConfirmVC.remainingAmount!)
-//                print(utilityBillPayOneBillConfirmVC.amountAfterDD! as Any)
-//                print(utilityBillPayOneBillConfirmVC.remAmountAftrDD as Any)
-//                print(utilityBillPayOneBillConfirmVC.status as Any)
-//                print(utilityBillPayOneBillConfirmVC.companyName as Any)
-//                print(utilityBillPayOneBillConfirmVC.utilityBillCompany as Any)
-//                print(utilityBillPayOneBillConfirmVC.otpReq as Any)
-//                print(utilityBillPayOneBillConfirmVC.utilityConsumerNo!)
-//                print(utilityBillPayOneBillConfirmVC.utilityCompanyID!)
-//                print(utilityBillPayOneBillConfirmVC.utilityBillCompanyId!)
-//                self.navigationController!.pushViewController(utilityBillPayOneBillConfirmVC, animated: true)
-//            }
-//            else{
-                
+ 
                 let vc = self.storyboard!.instantiateViewController(withIdentifier: "BillPayment_ConfirmationVC") as! BillPayment_ConfirmationVC
                 vc.refferenceNumber = self.billtransactionOBj?.data?.transactionLogId
                 vc.company = GlobalData.Selected_bil_Company
@@ -194,13 +162,15 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
                 vc.amountDue = self.billtransactionOBj?.data?.actualDueAmount
                 vc.dueDate = self.billtransactionOBj?.data?.paymentDueDate
                 let statusCheck = self.billtransactionOBj?.data?.billStatus
+                vc.otpReq = self.billtransactionOBj?.data?.oTPREQ
+                print("otp req value",vc.otpReq)
                 if statusCheck == "P"
                 {
                     vc.status = "Paid"
                 }
                 else
                 {
-                    vc.status = "Un Paid"
+                    vc.status = "Unpaid"
                 }
                 
                 vc.consumerNumber = enterconsumerNo.text!
@@ -235,6 +205,20 @@ class Pay_BillPayment_VC: BaseClassVC, UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if enterconsumerNo.text?.count != 0
+        {
+            let image = UIImage(named: "]greenarrow")
+            img_next.image = image
+            btn_Continue.isUserInteractionEnabled = true
+        }
+        else
+        {
+            let image = UIImage(named: "grayArrow")
+            img_next.image = image
+            btn_Continue.isUserInteractionEnabled = false
+        }
+    }
+    @objc func changeTextInTextField() {
+        if enterconsumerNo.text?.count == 11 || enterconsumerNo.text?.count == 18
         {
             let image = UIImage(named: "]greenarrow")
             img_next.image = image

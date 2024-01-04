@@ -8,27 +8,61 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import RNCryptor
 import Kingfisher
 class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
-    var imgarrMobileLoad : [UIImage] =  [#imageLiteral(resourceName: "Bookme"), #imageLiteral(resourceName: "ComityLogo"), #imageLiteral(resourceName: "Discounts"), #imageLiteral(resourceName: "Donations"),#imageLiteral(resourceName: "Bookme"),#imageLiteral(resourceName: "Bookme"),#imageLiteral(resourceName: "Bookme"),#imageLiteral(resourceName: "Bookme")]
+    var imgarrMobileLoad: [UIImage] = []
+    var SendMoney:[UIImage] = []
+    var billpayments:[UIImage] = []
+    let image1 = UIImage(named: "postpaid")
+    let image2 = UIImage(named: "postpaid")
+    let image3 = UIImage(named: "mblPkg")
+    
+    let image4 = UIImage(named: "firstpayWallet")
+    let image5 = UIImage(named: "hblMfbAcc")
+    let image6 = UIImage(named: "otherbank")
+    let image7 = UIImage(named: "otherwallet")
+  
+    let image8 = UIImage(named: "internet")
+    let image9 = UIImage(named: "landline 1")
+    let image10 = UIImage(named: "elecricitypng")
+    let image11 = UIImage(named: "suigas")
+    let image12 = UIImage(named: "Water")
+    let image13 = UIImage(named: "investment 1")
+    let image14 = UIImage(named: "insurance 1")
+    let image15 = UIImage(named: "gov")
+    
 
-//    ["Bookme.png","ComityLogo.png","Discounts.png","Donations.png","Bookme.png","ComityLogo.png","Discounts.png","Donations.png"]
-    
-    var MobileLoaddarrName = ["Book Me", "Committee", "Discounts", "Donations","Book Me", "Committee", "Discounts", "Donations"]
-    
-    
     var filteredData: [UIImage]!
     var Seclected_City :String?
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        imgarrMobileLoad.append(image1!)
+        imgarrMobileLoad.append(image2!)
+        imgarrMobileLoad.append(image3!)
+        
+        SendMoney.append(image4!)
+        SendMoney.append(image5!)
+        SendMoney.append(image6!)
+        SendMoney.append(image7!)
+        
+        billpayments.append(image8!)
+        billpayments.append(image9!)
+        billpayments.append(image10!)
+        billpayments.append(image11!)
+        billpayments.append(image12!)
+        billpayments.append(image13!)
+        billpayments.append(image14!)
+        billpayments.append(image15!)
         btnback.setTitle("", for: .normal)
         collectionViewMobileLoad.delegate = self
         collectionViewMobileLoad.dataSource = self
         searchBar.delegate = self
-        
+        collectionViewLoans.isHidden = true
+        collectionViewTravel.isHidden = true
         collectionViewSendMoney.delegate = self
         collectionViewSendMoney.dataSource = self
         collectionViewBillPyment.delegate = self
@@ -38,6 +72,7 @@ class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
         collectionViewTravel.delegate = self
         collectionViewTravel.dataSource = self
         filteredData = imgarrMobileLoad
+        
         // Do any additional setup after loading the view.
     }
     
@@ -58,7 +93,7 @@ class OtherServices_VC: BaseClassVC , UISearchBarDelegate{
     
     @IBAction func back(_ sender: UIButton) {
         self.dismiss(animated: true)
-        
+        self.navigationController?.popViewController(animated: true)
         
         
         
@@ -91,11 +126,11 @@ extension OtherServices_VC : UICollectionViewDelegate , UICollectionViewDataSour
         }
         else if collectionView == collectionViewSendMoney
         {
-            return filteredData.count ?? 0
+            return SendMoney.count ?? 0
         }
         else if collectionView == collectionViewBillPyment
         {
-            return filteredData.count ?? 0
+            return billpayments.count ?? 0
         }
         else if collectionView == collectionViewLoans
         {
@@ -126,7 +161,7 @@ extension OtherServices_VC : UICollectionViewDelegate , UICollectionViewDataSour
         {
             let cellA = collectionViewSendMoney .dequeueReusableCell(withReuseIdentifier: "cellSendMoney", for: indexPath) as! cellSendMoney
             cellA.btnSendMoney.setTitle("", for: .normal)
-            cellA.btnSendMoney.setImage(filteredData[indexPath.row], for: UIControl.State.normal)
+            cellA.btnSendMoney.setImage(SendMoney[indexPath.row], for: UIControl.State.normal)
             cellA.btnSendMoney.tag = indexPath.row
             return cellA
         }
@@ -134,7 +169,7 @@ extension OtherServices_VC : UICollectionViewDelegate , UICollectionViewDataSour
         {
             let cellA = collectionViewBillPyment .dequeueReusableCell(withReuseIdentifier: "cellBillPayment", for: indexPath) as! cellBillPayment
             cellA.btnBillPayment.setTitle("", for: .normal)
-            cellA.btnBillPayment.setImage(filteredData[indexPath.row], for: UIControl.State.normal)
+            cellA.btnBillPayment.setImage(billpayments[indexPath.row], for: UIControl.State.normal)
             cellA.btnBillPayment.tag = indexPath.row
             return cellA
         }
@@ -154,6 +189,14 @@ extension OtherServices_VC : UICollectionViewDelegate , UICollectionViewDataSour
             cellC.btnTravel.tag = indexPath.row
             return cellC
 
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionViewMobileLoad == collectionView {
+            //MARK Apply this condition when click on mobile bundles
+            FBEvents.logEvent(title: .Bundles_SA_click)
+            FaceBookEvents.logEvent(title: .Bundles_SA_click)
         }
     }
     

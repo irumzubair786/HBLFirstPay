@@ -37,26 +37,41 @@ class NanoLoanSuccessfullVC: UIViewController {
     
     var modelApplyLoan: NanoLoanConfirmationVC.ModelApplyLoan? {
         didSet {
-            labelAmount.text = "Rs. \(modelApplyLoan?.data.disbursedAmount ?? 0)"
-            labelAmountDescription.text = "Processing fee of Rs. \((modelApplyLoan?.data.processingFee ?? 0).twoDecimal()) and FED of Rs. \((modelApplyLoan?.data.fed ?? 0).twoDecimal()) has been charged."
-            labelTransactionId.text = "\(modelApplyLoan?.data.transactionID ?? 0)"
-            labelDateTime.text = "\(modelApplyLoan?.data.dateTime ?? "")"
-            labelLoanNumber.text = "\(modelApplyLoan?.data.loanNo ?? "")"
-            labelLoanAvailedAmount.text = "Rs. \((modelApplyLoan?.data.loanAmount ?? 0).twoDecimal())"
-            labelRepaymentDueDate.text = "\(modelApplyLoan?.data.dueDate ?? "")"
-            labelAmountRapidDueDate.text = "Rs. \((modelApplyLoan?.data.repaidAmount ?? 0).twoDecimal())"
+            
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        FBEvents.logEvent(title: .Loans_applyconfirm_success)
+        FaceBookEvents.logEvent(title: .Loans_applyconfirm_success)
         viewBackGroundHint.radius()
+        setData()
+    }
+    func setData() {
+        labelAmount.text = "Rs. \(modelApplyLoan?.data?.disbursedAmount ?? 0)"
+        labelAmountDescription.text = "Processing fee of Rs. \((modelApplyLoan?.data?.processingFee ?? 0).twoDecimal()) and FED of Rs. \((modelApplyLoan?.data?.fed ?? 0).twoDecimal()) has been charged."
+        labelTransactionId.text = "\(modelApplyLoan?.data?.transactionID ?? 0)"
+        labelDateTime.text = "\(modelApplyLoan?.data?.dateTime ?? "")"
+        labelLoanNumber.text = "\(modelApplyLoan?.data?.loanNo ?? "")"
+        labelLoanAvailedAmount.text = "Rs. \((modelApplyLoan?.data?.loanAmount ?? 0).twoDecimal())"
+        labelRepaymentDueDate.text = "\(modelApplyLoan?.data?.dueDate ?? "")"
+        labelAmountRapidDueDate.text = "Rs. \((modelApplyLoan?.data?.repaidAmount ?? 0).twoDecimal())"
     }
     @IBAction func buttonCancel(_ sender: Any) {
-        dismissToViewController(viewController: AddCashMainVc.self)
+        if isPushViewControllerTemp {
+            dismissToViewController(viewController: AddCashMainVc.self)
+        }
+        else {
+            self.dismiss(animated: true)
+        }
     }
     @IBAction func buttonGetNewLoan(_ sender: Any) {
-        dismissToViewController(viewController: AddCashMainVc.self)
+        if isPushViewControllerTemp {
+            dismissToViewController(viewController: AddCashMainVc.self)
+        }
+        else {
+            self.dismiss(animated: true)
+        }
     }
     @IBAction func buttonDownLoad(_ sender: Any) {
         let myImageScreenShot: UIImage? = self.view.getScreenshot()

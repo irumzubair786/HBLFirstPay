@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 var DebitCardLast4digit : String?
 class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
@@ -32,20 +32,36 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
         {
             labelTitle.text = "ATM & POS ACCESSBILITY"
         }
-        if (isfromPOSON == true ) || (isfromATMOFF == true)
+       else  if (isfromPOSON == true ) || (isfromATMOFF == true)
         {
             labelTitle.text = "ATM & POS ACCESSBILITY"
         }
+       else  if isFromDeactivate == true
+        {
+        labelTitle.text = "DEACTIVATE MY CARD"
+        }
+       else if isfromActivateCard == true
+        {
+            labelTitle.text = "ACTIVATE MY CARD"
+        }
+       else if isFromChangePin == true{
+           
+           labelTitle.text = "UPDATE MY PIN"
+        }
+        
         self.textfieldLast4digit.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        
+        buttonContinue.circle()
     }
     
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelMainTitle: UILabel!
     
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer) {
-
+        
         if isFromChangePin == true
         {
+            
             
             isFromChangePin = true
             getDebitCardsCall()
@@ -60,31 +76,41 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
             isFromDeactivate = true
             getDebitCardsCall()
         }
-        if isfromATMON == true || isfromPOSON == true{
+        if isfromServics == true
+        {
+            if isfromATMON == true || isfromPOSON == true{
+                
+//                call here
+            let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+            
+            vc.cardId = cardId
+            vc.channel = serviceFlag
+            vc.accountDebitcardId =  GlobalData.accountDebitCardId
+            GlobalData.debitCardlastfourDigit = textfieldLast4digit.text!
+            vc.lastFourDigit = textfieldLast4digit.text!
+            vc.status = status
+            vc.isfromFirstTimeEnter = true
+                
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else  if  isfromATMOFF == true || isfromPOSOFF == true
+        {
+            FBEvents.logEvent(title: .Debit_activateotp_attempt)
+            
             let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
             vc.cardId = cardId
             vc.channel = serviceFlag
             vc.accountDebitcardId =  GlobalData.accountDebitCardId
-            vc.lastFourDigit = textfieldLast4digit.text!
             vc.status = status
+            vc.lastFourDigit = textfieldLast4digit.text!
+            //          isfromDisableService = true
+            vc.isfromFirstTimeEnter = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
-      else  if  isfromATMOFF == true || isfromPOSOFF == true
-        {
-          FBEvents.logEvent(title: .Debit_activateotp_attempt)
-
-          let vc = storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
-          vc.cardId = cardId
-          vc.channel = serviceFlag
-          vc.accountDebitcardId =  GlobalData.accountDebitCardId
-          vc.status = status
-          vc.lastFourDigit = textfieldLast4digit.text!
-          //          isfromDisableService = true
-          self.navigationController?.pushViewController(vc, animated: true)
-      }
-        else{
-            getDebitCardsCall()
-        }
+    }
+//        else{
+//            getDebitCardsCall()
+//        }
     }
     
     @IBAction func buttonBack(_ sender: UIButton) {
@@ -98,13 +124,53 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
     @IBAction func buttonContinue(_ sender: UIButton) {
         if isFromChangePin == true
         {
+            
+            
             isFromChangePin = true
             getDebitCardsCall()
         }
-        else{
+        
+        if isfromReactivateCard == true{
+            isFromDeactivate = false
+            getDebitCardsCall()
+        }
+        if isFromDeactivate == true
+        {
             isFromDeactivate = true
             getDebitCardsCall()
         }
+        if isfromServics == true
+        {
+            if isfromATMON == true || isfromPOSON == true{
+                
+//                call here
+            let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+            
+            vc.cardId = cardId
+            vc.channel = serviceFlag
+            vc.accountDebitcardId =  GlobalData.accountDebitCardId
+            GlobalData.debitCardlastfourDigit = textfieldLast4digit.text!
+            vc.lastFourDigit = textfieldLast4digit.text!
+            vc.status = status
+            vc.isfromFirstTimeEnter = true
+                
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else  if  isfromATMOFF == true || isfromPOSOFF == true
+        {
+            FBEvents.logEvent(title: .Debit_activateotp_attempt)
+            
+            let vc = storyboard?.instantiateViewController(withIdentifier: "ApplyAtmServicesVC") as! ApplyAtmServicesVC
+            vc.cardId = cardId
+            vc.channel = serviceFlag
+            vc.accountDebitcardId =  GlobalData.accountDebitCardId
+            vc.status = status
+            vc.lastFourDigit = textfieldLast4digit.text!
+            //          isfromDisableService = true
+            vc.isfromFirstTimeEnter = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
         
         
     }
@@ -188,7 +254,7 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -199,36 +265,53 @@ class ActivationFourDigitNumberVc: BaseClassVC, UITextFieldDelegate {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
        
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetDebitCardModel>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GetDebitCardModel>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.getDebitDetailsObj = response.result.value
-            print(self.getDebitDetailsObj ?? "")
-           
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.getDebitDetailsObj = Mapper<GetDebitCardModel>().map(JSONObject: json)
                 
-                if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as!  ActivationDebitCardOTPVerificationVC
-                    self.navigationController?.pushViewController(vc, animated: true)
+                //            self.getDebitDetailsObj = response.result.value
+                print(self.getDebitDetailsObj ?? "")
+                
+                if response.response?.statusCode == 200 {
                     
-                   
+                    if self.getDebitDetailsObj?.responsecode == 2 || self.getDebitDetailsObj?.responsecode == 1 {
+                        
+                       
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as!  ActivationDebitCardOTPVerificationVC
+                        vc.cardId = self.cardId
+                        vc.channel = serviceFlag
+                        GlobalData.debitCardChannel = serviceFlag
+                        vc.accountDebitcardId =  GlobalData.accountDebitCardId
+                        vc.lastFourDigit = self.textfieldLast4digit.text!
+                        vc.status = self.status
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        
+                    }
+                    else {
+                        if let message = self.getDebitDetailsObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                    }
                 }
                 else {
                     if let message = self.getDebitDetailsObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        
+                        //                    self.showDefaultAlert(title: "", message: message)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.getDebitDetailsObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
-//                    self.showDefaultAlert(title: "", message: message)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
+   
+
+    
 }

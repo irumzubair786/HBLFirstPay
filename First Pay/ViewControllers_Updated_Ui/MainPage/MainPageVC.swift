@@ -10,6 +10,8 @@ import UIKit
 import Foundation
 import KYDrawerController
 import SideMenu
+import Alamofire
+
 class MainPageVC: BaseClassVC {
     var sideMenu:  UISideMenuNavigationController!
     var selectedTabIndex  = 0
@@ -30,7 +32,9 @@ class MainPageVC: BaseClassVC {
         
         // Do any additional setup after loading the view.
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     func tapGestures(){
         
         
@@ -43,20 +47,24 @@ class MainPageVC: BaseClassVC {
         let storyBoard = UIStoryboard(name: Storyboard.TabBar.rawValue, bundle: Bundle.main)
         let vc = storyBoard.instantiateViewController(withIdentifier: "ToggleMenuVC") as! ToggleMenuVC
         
-        self.navigationController?.pushViewController(vc, animated: true)
+       
         if let presentedViewController = self.presentedViewController {
-            // yourViewController is currently presenting a view controller modally
+            print("jenfkjw")
+            
+            
         } else {
-            // yourViewController is not presenting a view controller modally
             present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
         }
-       
-        
-        
-        
-        
-    }
     
+    }
+    var modelExpiredCnicVerification: ModelExpiredCnicVerification? {
+        didSet {
+            
+        }
+    }
+    @IBOutlet weak var imgHome: UIImageView!
+    @IBOutlet weak var imgLocation: UIImageView!
+
     
     
     @IBOutlet weak var imgPromtionsPopup: UIImageView!
@@ -65,30 +73,31 @@ class MainPageVC: BaseClassVC {
     @IBOutlet weak var myContentView: UIView!
     @IBOutlet weak var lblHome: UILabel!
     @IBOutlet weak var btnHomes: UIButton!
-    @IBOutlet weak var lblNotification: UILabel!
+    @IBOutlet weak var lblLocator: UILabel!
     @IBOutlet weak var btnNotification: UIButton!
     @IBOutlet weak var btnScanQR: UIButton!
     @IBOutlet weak var btnAccount: UIButton!
     @IBOutlet weak var lblAccount: UILabel!
-    @IBOutlet weak var lblLocator: UILabel!
+  
     @IBOutlet weak var btnLocator: UIButton!
     @IBOutlet weak var toggleMenu: UIImageView!
     @IBAction func Action_Home(_ sender: UIButton) {
-        btnHomes.setImage(UIImage(named: "path0-6"), for: .normal)
-        btnNotification.setImage(UIImage(named: "BranchLocator"), for: .normal)
+        imgHome.image = UIImage(named: "path0-6")
+        imgLocation.image = UIImage(named: "BranchLocator")
         lblHome.textColor = UIColor.orange
-        lblNotification.textColor = UIColor.white
+        lblLocator.textColor = UIColor.white
         let  myDict = [ "name": "DashBoardVC"]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
     }
     @IBAction func Action_Notification(_ sender: UIButton) {
         print("done")
-        btnNotification.setImage(UIImage(named: "locatorOrange"), for: .normal)
-        btnHomes.setImage(UIImage(named: "grayHome"), for: .normal)
+        imgLocation.image = UIImage(named: "locatorOrange")
+        imgHome.image = UIImage(named: "grayHome")
+
         lblHome.textColor = UIColor.white
-        lblNotification.textColor = UIColor.orange
-        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
-        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
+        lblLocator.textColor = UIColor.orange
+//        btnLocator.setImage(UIImage(named: "Group 427320982"), for: .normal)
+//        btnAccount.setImage(UIImage(named: "path0-2 copy"), for: .normal)
         let  myDict = [ "name": "ATMLocatormainVc"]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post"), object: nil, userInfo: myDict)
 
@@ -280,8 +289,7 @@ class MainPageVC: BaseClassVC {
     
     
     
-    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
           sideMenuSetup()
 //        if let drawerController = self.parent?.parent as? KYDrawerController {
 //            drawerController.setDrawerState(.opened, animated: true)
@@ -289,7 +297,7 @@ class MainPageVC: BaseClassVC {
     }
   
     
-    
+//    sideMenu
     private func sideMenuSetup(){
         self.sideMenu = storyboard!.instantiateViewController(withIdentifier: "sideMenu") as? UISideMenuNavigationController
         SideMenuManager.default.menuLeftNavigationController = sideMenu
@@ -301,6 +309,8 @@ class MainPageVC: BaseClassVC {
         SideMenuManager.default.menuShadowOpacity = 1
         SideMenuManager.default.menuFadeStatusBar = false
     }
+    
+    
 }
  
 extension MainPageVC {
@@ -318,4 +328,47 @@ extension MainPageVC {
         VC.removeFromParentViewController()
     }
     
+}
+extension MainPageVC {
+    // This file was generated from JSON Schema using quicktype, do not modify it directly.
+    // To parse the JSON, add this file to your project and do:
+    
+    // MARK: - ModelGetActiveLoan
+    struct ModelExpiredCnicVerification: Codable {
+        let messages: String
+        let responseblock: Responseblock?
+        let responsecode: Int
+        let data: JSONNull?
+    }
+    
+    // MARK: - Responseblock
+    struct Responseblock: Codable {
+        let responseDescr, heading, responseType, responseCode: String
+        let field: String
+    }
+    // MARK: - Encode/decode helpers
+    class JSONNull: Codable, Hashable {
+        
+        public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+        }
+        
+        public var hashValue: Int {
+            return 0
+        }
+        
+        public init() {}
+        
+        public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+        }
+    }
 }

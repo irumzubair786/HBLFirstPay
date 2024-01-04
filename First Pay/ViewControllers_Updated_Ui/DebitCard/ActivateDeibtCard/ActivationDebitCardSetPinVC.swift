@@ -9,7 +9,7 @@
 import UIKit
 import PasswordTextField
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SwiftyRSA
 class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
@@ -28,7 +28,7 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imagePopup.isUserInteractionEnabled = true
         imagePopup.addGestureRecognizer(tapGestureRecognizer)
-        
+        blurView.alpha = 0.9
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(move(tapGestureRecognizer:)))
         
@@ -178,7 +178,7 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(result.apiAttribute1)
         print(result.apiAttribute2)
@@ -189,59 +189,64 @@ class ActivationDebitCardSetPinVC: BaseClassVC,UITextFieldDelegate {
         
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.genResponse = response.result.value
-            print(self.genResponse)
-        
-            if response.response?.statusCode == 200 {
-                FBEvents.logEvent(title: .Debit_activatepincreate_success)
-                FBEvents.logEvent(title: .Debit_activate_success)
-
-                if self.genResponse?.responsecode == 2 || self.genResponse?.responsecode == 1 {
-                  
-                    self.blurView.isHidden = false
-                    self.imagePopup.isHidden = false
-                    if isFromChangePin == true{
-                        let img = UIImage(named: "Group 427321154-7")
-                        self.imagePopup.image = img
-                    }
-                    if isfromReactivateCard == true{
-                        let image = UIImage(named: "Group 427321154-5")
-                        self.imagePopup.image = image
-                    }
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.genResponse = Mapper<GenericResponse>().map(JSONObject: json)
+                
+                //            self.genResponse = response.result.value
+                print(self.genResponse)
+                
+                if response.response?.statusCode == 200 {
+                    FBEvents.logEvent(title: .Debit_activatepincreate_success)
+                    FBEvents.logEvent(title: .Debit_activate_success)
                     
-                      if isFromDeactivate == true
-                    {
-                          let img = UIImage(named: "Group 427321154-5")
-                          self.imagePopup.image = img
-                      }
-                    else
-                    {
+                    if self.genResponse?.responsecode == 2 || self.genResponse?.responsecode == 1 {
                         
-//                        let image = UIImage(named: "Group 427321154-5")
-//                        self.imagePopup.image = image
+                        self.blurView.isHidden = false
+                        self.imagePopup.isHidden = false
+                        if isFromChangePin == true{
+                            let img = UIImage(named: "Group 427321154-7")
+                            self.imagePopup.image = img
+                        }
+                        if isfromReactivateCard == true{
+                            let image = UIImage(named: "Group 427321154-5")
+                            self.imagePopup.image = image
+                        }
+                        
+                        if isFromDeactivate == true
+                        {
+                            let img = UIImage(named: "Group 427321154-5")
+                            self.imagePopup.image = img
+                        }
+                        else
+                        {
+                            
+                            //                        let image = UIImage(named: "Group 427321154-5")
+                            //                        self.imagePopup.image = image
+                        }
+                        
                     }
-                    
+                    else {
+                        if let message = self.genResponse?.messages{
+                            
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                            
+                        }
+                    }
                 }
                 else {
+                    FBEvents.logEvent(title: .Debit_activatepincreate_failure)
+                    
                     if let message = self.genResponse?.messages{
-                      
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                FBEvents.logEvent(title: .Debit_activatepincreate_failure)
-
-                if let message = self.genResponse?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }

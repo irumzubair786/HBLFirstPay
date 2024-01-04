@@ -24,11 +24,12 @@ class Statement_History_Detail_VC: BaseClassVC {
     var strClosingBalance: String?
     var status : String?
     var whtAmt : Int?
+    var refferenceNo : String?
     var image :UIImage?
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
-        btnshare.setTitle("", for: .normal)
+//        btnshare.setTitle("", for: .normal)
         btndownload.setTitle("", for: .normal)
         btnreport.setTitle("", for: .normal)
         btnCancel.setTitle("", for: .normal)
@@ -48,7 +49,7 @@ class Statement_History_Detail_VC: BaseClassVC {
     @IBOutlet weak var ViewShare: UIView!
     @IBOutlet weak var btnCancel: UIButton!
 
-    @IBOutlet weak var btnshare: UIButton!
+  
     @IBOutlet weak var imgview: UIView!
     @IBOutlet weak var btndownload: UIButton!
     @IBOutlet weak var btnreport: UIButton!
@@ -62,6 +63,7 @@ class Statement_History_Detail_VC: BaseClassVC {
     @IBOutlet weak var lblOpeningBalance: UILabel!
     @IBOutlet weak var lblClosingBalance: UILabel!
 
+    @IBOutlet weak var labelRefferenceNo: UILabel!
     private func updateUI() {
       
         if let amount = strAmount {
@@ -106,12 +108,12 @@ class Statement_History_Detail_VC: BaseClassVC {
             lblTransactionType.text = ""
         }
         
-//        if let purpose = strPurpose {
-//            lblPurpose.text = purpose
-//        }
-//        else{
-//            lblPurpose.text = ""
-//        }
+        if let refferenceNo =   refferenceNo{
+            labelRefferenceNo.text = refferenceNo
+        }
+        else{
+            labelRefferenceNo.text = ""
+        }
         
         if let sourceBank = strSourceBank {
             lblSourceWallet.text = sourceBank
@@ -173,18 +175,17 @@ class Statement_History_Detail_VC: BaseClassVC {
         else{
             lblClosingBalance.text = ""
         }
-//        if let status = self.status{
-//
-//            if status == "Y"{
-//                self.btnreport.isUserInteractionEnabled = false
-//            }
-//                        else{
-//                self.btnreport.isUserInteractionEnabled = true
-//            }
-//        }
+        if let status = self.status{
+
+            if status == "Y"{
+                self.btnreport.isUserInteractionEnabled = false
+            }
+                        else{
+                self.btnreport.isUserInteractionEnabled = true
+            }
+        }
         
-        
-        
+
         
     }
 
@@ -220,6 +221,7 @@ class Statement_History_Detail_VC: BaseClassVC {
         imgview.snapshotView(afterScreenUpdates: true)
         image = imgview.convertToImage()
         print(image)
+        showToast(title: "Photo Saved Successfully!")
        UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
 
    }

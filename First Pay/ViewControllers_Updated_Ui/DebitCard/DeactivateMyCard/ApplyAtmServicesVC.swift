@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 var Title : String?
 class ApplyAtmServicesVC: BaseClassVC {
@@ -18,22 +18,12 @@ class ApplyAtmServicesVC: BaseClassVC {
     var cardId : String?
     var accountDebitcardId : Int?
     var status: String?
-    
+    var isfromFirstTimeEnter : Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonApply.setTitle("", for: .normal)
         buttonCancel.setTitle("", for: .normal)
-        
-        if isfromATMON == true || isfromPOSON == true
-        {
-            popupView.isHidden = true
-            ServiceView.isHidden = false
-        }
-        if isfromATMOFF == true || isfromPOSOFF == true
-        {
-            popupView.isHidden = false
-            ServiceView.isHidden = true
-        }
+        CheckValue()
   
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imgPopup.isUserInteractionEnabled = true
@@ -44,17 +34,40 @@ class ApplyAtmServicesVC: BaseClassVC {
         print("lastFourDigit",lastFourDigit)
         print("status",status)
         labelTitle.text = serviceFlag
-        
+
         
         
         // Do any additional setup after loading the view.
     }
+    
     var otpserviceobj : OTPserviceModel?
     @IBOutlet weak var imgPopup: UIImageView!
     @IBOutlet weak var popupView: UIView!
     @IBOutlet weak var ServiceView: UIView!
     @IBOutlet weak var buttonApply: UIButton!
     @IBOutlet weak var labelTitle: UILabel!
+    
+    
+    func CheckValue()
+    {
+       if  isfromFirstTimeEnter == true
+        {
+           
+           popupView.isHidden = true
+           ServiceView.isHidden = false
+           
+           
+       }
+        else
+        {
+            popupView.isHidden = false
+            ServiceView.isHidden = true
+        }
+    }
+    
+    
+    
+    
     @IBAction func buttonApply(_ sender: UIButton) {
         Sendotpinterfaceenable()
     }
@@ -68,14 +81,29 @@ class ApplyAtmServicesVC: BaseClassVC {
         if isfromATMON == true || isfromPOSON == true
         {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
-           
+         
             vc.lastFourDigit = lastFourDigit
             vc.channel  = channel
             vc.cardId = cardId
             vc.accountDebitcardId = GlobalData.accountDebitCardId
-            vc.status = status
+            vc.status = serviceFlag
+           
             self.navigationController?.pushViewController(vc, animated: true)
         }
+        
+          if isfromATMOFF == true || isfromPOSOFF == true
+        {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
+
+            vc.lastFourDigit = lastFourDigit
+            vc.channel  = channel
+            vc.cardId = cardId
+            vc.accountDebitcardId = GlobalData.accountDebitCardId
+            vc.status = serviceFlag
+
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+       
         else
         {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeavtivateDebitCardMainVC") as! DeavtivateDebitCardMainVC
@@ -85,22 +113,22 @@ class ApplyAtmServicesVC: BaseClassVC {
     }
 @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
     //
-      if isfromATMON == true || isfromPOSON == true
-    {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
-        vc.lastFourDigit = lastFourDigit
-        vc.channel  = channel
-        vc.cardId = cardId
-        vc.accountDebitcardId = GlobalData.accountDebitCardId
-        vc.status = status
-
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    else
-    {
+//      if isfromATMON == true || isfromPOSON == true
+//    {
+//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivationDebitCardOTPVerificationVC") as! ActivationDebitCardOTPVerificationVC
+//        vc.lastFourDigit = lastFourDigit
+//        vc.channel  = channel
+//        vc.cardId = cardId
+//        vc.accountDebitcardId = GlobalData.accountDebitCardId
+//        vc.status = status
+//
+//        self.navigationController?.pushViewController(vc, animated: true)
+//    }
+//    else
+//    {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeavtivateDebitCardMainVC") as! DeavtivateDebitCardMainVC
         self.navigationController?.pushViewController(vc, animated: true)
-    }
+//    }
 }
     private func Sendotpinterfaceenable() {
    //
@@ -131,39 +159,42 @@ class ApplyAtmServicesVC: BaseClassVC {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(params)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<OTPserviceModel>) in
-
-               self.hideActivityIndicator()
-               
-               self.otpserviceobj = response.result.value
-            if response.response?.statusCode == 200 {
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
+//            [self] (response: DataResponse<OTPserviceModel>) in
+            response in
+            self.hideActivityIndicator()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.otpserviceobj = Mapper<OTPserviceModel>().map(JSONObject: json)
                 
-                if self.otpserviceobj?.responsecode == 2 || self.otpserviceobj?.responsecode == 1 {
-                                           movetoNext()
+                //               self.otpserviceobj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    
-                }
-                
-                
-                else {
-                    if let message = self.otpserviceobj?.messages{
-                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
+                    if self.otpserviceobj?.responsecode == 2 || self.otpserviceobj?.responsecode == 1 {
+                        movetoNext()
                     }
+                   
+                    
+                    else {
+                        if let message = self.otpserviceobj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
+                        }
+                    }
+                    
+                    //                else {
+                    //                    if let message = self.servicesOBj?.messages{
+                    //                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
+                    //                    }
+                    //                    //                print(response.result.value)
+                    //                    //                print(response.response?.statusCode)
+                    //                }
                 }
-                
-//                else {
-//                    if let message = self.servicesOBj?.messages{
-//                        self.showAlertCustomPopup(title: "", message: message,iconName: .iconError)
-//                    }
-//                    //                print(response.result.value)
-//                    //                print(response.response?.statusCode)
-//                }
             }
            }
        }

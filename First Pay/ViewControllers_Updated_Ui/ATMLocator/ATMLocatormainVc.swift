@@ -8,19 +8,15 @@
 
 import UIKit
 import GoogleMaps
-import GooglePlaces
+//import GooglePlaces
 
 class ATMLocatormainVc: UIViewController {
     @IBOutlet weak var viewForMap: GMSMapView!
-    
-    
-    
     @IBOutlet weak var viewDetail: UIView!
     @IBOutlet weak var buttonDetail: UIButton!
     @IBOutlet weak var buttonATM: UIButton!
     @IBAction func buttonATM(_ sender: UIButton) {
         viewForMap.clear()
-
         branchFlag = false
         cashFlag = false
         atmFlag = true
@@ -30,30 +26,28 @@ class ATMLocatormainVc: UIViewController {
         buttonBranch.backgroundColor = UIColor.clear
         buttonBranch.borderColor = UIColor.gray
         buttonBranch.setTitleColor(UIColor.black, for: .normal)
-        
         buttonCash.backgroundColor = UIColor.clear
         buttonCash.borderColor = UIColor.gray
         buttonCash.setTitleColor(UIColor.black, for: .normal)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         viewDetail.isUserInteractionEnabled = true
         viewDetail.addGestureRecognizer(tapGestureRecognizer)
-
-       
         buttonDetail.isUserInteractionEnabled = true
         buttonDetail.backgroundColor = UIColor.clear
         if modelATMLocation?.data.atmLocation.count ?? 0 > 0 {
             let atmLocations = modelATMLocation?.data.atmLocation
-            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
+            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 12.0)
             for item in atmLocations! {
                 let coordinate2D = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
                 let markerColor = "markerAtm"
-                let marker = drawMarker(labelText: item.branchName, imageName: markerColor, coordinate2D: coordinate2D)
+                let locationNameAddressContact = "\(item.branchName ) \(item.branchCode)*\(item.branchAddress)*Number: \(item.branchContactNo)"
+                let marker = drawMarker(labelText: locationNameAddressContact, imageName: markerColor, coordinate2D: coordinate2D)
                 marker.map = self.viewForMap
             }
         }
     }
+    
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)    {
-
         if branchFlag == true{
             let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "test") as! test
             DispatchQueue.main.async {
@@ -98,7 +92,7 @@ class ATMLocatormainVc: UIViewController {
         
         if modelATMLocation?.data.branchLocation.count ?? 0 > 0 {
             let atmLocations = modelATMLocation?.data.branchLocation
-            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
+            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 12.0)
             for item in atmLocations! {
                 let coordinate2D = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
                 let markerColor = "markerCashPoints"
@@ -126,11 +120,9 @@ class ATMLocatormainVc: UIViewController {
         buttonATM.borderColor = UIColor.gray
         buttonATM.setTitleColor(UIColor.black, for: .normal)
         buttonDetail.isUserInteractionEnabled = true
-        
-        
         if modelATMLocation?.data.branchLocation.count ?? 0 > 0 {
             let atmLocations = modelATMLocation?.data.branchLocation
-            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
+            viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 12.0)
             for item in atmLocations! {
                 let coordinate2D = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
                 let markerColor = "markerBranch"
@@ -147,6 +139,7 @@ class ATMLocatormainVc: UIViewController {
             }
 //            ATMBranchDetailViewController
         }
+        
         else if cashFlag == true{
             let vc =  UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "CashDetailVC") as! CashDetailVC
             DispatchQueue.main.async {
@@ -155,45 +148,43 @@ class ATMLocatormainVc: UIViewController {
         }
         else
         {
-            let vc =  UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "ATMDetailVC") as! ATMDetailVC
+//            let vc =  UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "ATMDetailVC") as! ATMDetailVC
+//            DispatchQueue.main.async {
+//                self.present(vc, animated: true)
+//            }
+            
+            let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "test") as! test
             DispatchQueue.main.async {
                 self.present(vc, animated: true)
             }
         }
     }
-    
+
     var branchFlag : Bool = false
     var cashFlag :Bool = false
     var atmFlag : Bool = false
-    
     var modelATMLocation: ModelATMLocation? {
         didSet {
             viewForMap.clear()
-
             print(modelATMLocation)
             dump(modelATMLocation)
             viewForMap.clear()
-
             branchFlag = true
             cashFlag = false
             atmFlag = false
             buttonBranch.backgroundColor = UIColor(hexValue: 0x00CC96)
             buttonBranch.setTitleColor(.white, for: .normal)
             buttonBranch.borderColor = UIColor.clear
-            
             buttonCash.backgroundColor = UIColor.clear
             buttonCash.borderColor = UIColor.gray
             buttonCash.setTitleColor(UIColor.black, for: .normal)
-            
             buttonATM.backgroundColor = UIColor.clear
             buttonATM.borderColor = UIColor.gray
             buttonATM.setTitleColor(UIColor.black, for: .normal)
             buttonDetail.isUserInteractionEnabled = true
-            
-            
             if modelATMLocation?.data.branchLocation.count ?? 0 > 0 {
                 let atmLocations = modelATMLocation?.data.branchLocation
-                viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 10.0)
+                viewForMap.camera = GMSCameraPosition.camera(withLatitude: (atmLocations?.first?.latitude)!, longitude: (atmLocations?.first?.longitude)!, zoom: 12.0)
                 for item in atmLocations! {
                     let coordinate2D = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
                     let markerColor = "markerBranch"
@@ -201,14 +192,27 @@ class ATMLocatormainVc: UIViewController {
                     marker.map = self.viewForMap
                 }
             }
-            
+        
         }
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//            // your code here
+//            let coordinate2D = CLLocationCoordinate2D(latitude: 33.5651,longitude: 73.0169)
+//            let markerColor = "markerAtm"
+//            let marker = drawMarker(labelText: "Test branch 0092*Rawalpindi Pakistan tench bhatta shalimar street mughalabad factory quarters road*Number: 0519922334", imageName: markerColor, coordinate2D: coordinate2D)
+//            marker.map = self.viewForMap
+//        }
+    }
     override func viewDidLoad() {
-        
         super.viewDidLoad()
+        //Rawalpindi Latitude Longitude for default location
+        viewForMap.camera = GMSCameraPosition.camera(withLatitude: 33.5651, longitude: 73.0169, zoom: 12.0)
         buttonDetail.setTitle("", for: .normal)
         buttonDetail.isUserInteractionEnabled = false
+        viewForMap.delegate = self
+        
         // Do any additional setup after loading the view.
 //        viewForMap.camera = GMSCameraPosition.camera(withLatitude: 18.514043, longitude: 57.377796, zoom: 6.0)
         
@@ -254,8 +258,6 @@ class ATMLocatormainVc: UIViewController {
     }
 }
 
-
-
 func drawMarker(labelText: String, imageName: String, coordinate2D: CLLocationCoordinate2D) -> GMSMarker {
     let marker = GMSMarker()
     marker.position = coordinate2D
@@ -269,9 +271,49 @@ func drawMarker(labelText: String, imageName: String, coordinate2D: CLLocationCo
 }
 
 extension ATMLocatormainVc: GMSMapViewDelegate {
-    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        print("You tapped : \(marker.position.latitude),\(marker.position.longitude)")
+                
+        let vc = UIStoryboard.init(name: "ATMLocator", bundle: nil).instantiateViewController(withIdentifier: "LocationAddress") as! LocationAddress
+        
+        let addressTitleContact = marker.title?.components(separatedBy: "*")
+        vc.locationName = addressTitleContact?[0] ?? ""
+        if addressTitleContact?.count ?? 0 > 1 {
+            vc.locationAddress = addressTitleContact?[1] ?? ""
+        }
+        else {
+            vc.locationAddress = ""
+        }
+        if addressTitleContact?.count ?? 0 > 2 {
+            vc.locationContact = addressTitleContact?[2] ?? ""
+        }
+        else {
+            vc.locationContact = ""
+        }
+        if branchFlag == true {
+            vc.titleName = "BRANCH"
+        }
+        if atmFlag == true {
+            vc.titleName = "ATM"
+        }
+        
+        vc.getDirection = {
+            let url = "https://www.google.com/maps/dir/?api=1&destination=\(marker.position.latitude)%2C\(marker.position.longitude)"
+            DispatchQueue.main.async {
+                guard let googleUrl = URL.init(string: url) else {
+                    // handle error
+                    return
+                }
+                UIApplication.shared.open(googleUrl)
+            }
+        }
+        DispatchQueue.main.async {
+            self.present(vc, animated: true)
+        }
+        
+        return true // or false as needed.
+    }
 }
-
 
 extension ATMLocatormainVc {
     // MARK: - ModelinvitedFriendsList

@@ -8,10 +8,11 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import iOSDropDown
 import SDWebImage
+import ObjectMapper
 class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
     var banksObj:GetBankNames?
     var walletList = [WalletList]()
@@ -134,34 +135,41 @@ class SelectWalletVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate  {
         
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getImdList"
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/getImdList"
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<GetBankNames>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<GetBankNames>) in
+            response in
             self.hideActivityIndicator()
-            if response.response?.statusCode == 200 {
-                self.banksObj = response.result.value
-                if self.banksObj?.responsecode == 2 || self.banksObj?.responsecode == 1 {
-                    self.test()
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                
+                if response.response?.statusCode == 200 {
+                    //                self.banksObj = response.result.value
+                    self.banksObj = Mapper<GetBankNames>().map(JSONObject: json)
+                    if self.banksObj?.responsecode == 2 || self.banksObj?.responsecode == 1 {
+                        self.test()
+                    }
+                    else  {
+                        if let message = self.banksObj?.messages{
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
+                        }
+                        
+                    }
                 }
-                else  {
+                else {
                     if let message = self.banksObj?.messages{
                         self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
                     }
-                     
-                }
-            }
-            else {
-                if let message = self.banksObj?.messages{
-                    self.showAlertCustomPopup(title: "", message: message, iconName: .iconError)
-                }
-
-                    print(response.result.value)
+                    
+                    print(response.value)
                     print(response.response?.statusCode)
-                
+                    
+                }
             }
         }
     }

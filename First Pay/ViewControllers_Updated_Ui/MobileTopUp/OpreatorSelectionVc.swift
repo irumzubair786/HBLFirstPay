@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import SDWebImage
 class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
@@ -25,23 +25,44 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
     var returnData: (() -> ())!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        FBEvents.logEvent(title: .Easyload_category_selection)
+        FaceBookEvents.logEvent(title: .Easyload_category_selection)
+        
         print("get parentCompanyID", parentCompanyID!)
-      
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.reloadData()
         tableView.rowHeight = 90
-        getCompanies()
-//       if  GlobalData.topup == "Prepaid"
-//        {
-//           getCompanies()
-//       }
-//        else
-//        {
-//            getCompaniesPostPaid(id: parentCompanyID)
-//        }
+//          getCompanies()
+       if  GlobalData.topup == "Prepaid"
+        {
+           getCompanies()
+       }
+        else
+        {
+            getCompaniesPostPaid(id: parentCompanyID)
+        }
+    
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoStatement(tapGestureRecognizer:)))
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizerr)
         
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool){
+        
+        getCompanies()
+        
+        if  GlobalData.topup == "Prepaid"
+         {
+            getCompanies()
+        }
+         else
+         {
+             getCompaniesPostPaid(id: parentCompanyID)
+         }
     }
     @IBOutlet weak var blurView: UIImageView!
     
@@ -68,54 +89,58 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
        
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/getCompaniesById/\(self.parentCompanyID ?? 0)"
        
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<UtilityBillCompaniesModel>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<UtilityBillCompaniesModel>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.billCompanyListObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
-                    if let companies = self.billCompanyListObj?.companies {
-                        self.comapniesList = companies
-                        self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
+                
+                //            self.billCompanyListObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
+                        if let companies = self.billCompanyListObj?.companies {
+                            self.comapniesList = companies
+                            self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+                        }
+                        
+                        for i in self.billCompanyListObj?.companies! ?? []
+                        {
+                            let temp = myOperator()
+                            temp.code = i.code!
+                            temp.id = i.ubpCompaniesId!
+                            temp.name = i.name!
+                            temp.path = i.path ?? ""
+                            self.getOperator.append(temp)
+                        }
+                        
+                        self.tableView.delegate = self
+                        self.tableView.dataSource = self
+                        self.tableView.reloadData()
                     }
-                    
-                    for i in self.billCompanyListObj?.companies! ?? []
-                    {
-                        let temp = myOperator()
-                        temp.code = i.code!
-                        temp.id = i.ubpCompaniesId!
-                        temp.name = i.name!
-                        temp.path = i.path ?? ""
-                        self.getOperator.append(temp)
+                    else {
+                        if let message = self.billCompanyListObj?.messages{
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
                     }
-                    
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
-                    self.tableView.reloadData()
                 }
                 else {
-                    if let message = self.billCompanyListObj?.messages{
-                        self.showAlert(title: "", message: message, completion: nil)
-                    }
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -129,54 +154,59 @@ class OpreatorSelectionVc: BaseClassVC, UITextFieldDelegate {
        
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getCompaniesById/\(self.parentCompanyID ?? 0)"
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/getCompaniesById/\(self.parentCompanyID ?? 0)"
        
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<UtilityBillCompaniesModel>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<UtilityBillCompaniesModel>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.billCompanyListObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
-                    if let companies = self.billCompanyListObj?.companies {
-                        self.comapniesList = companies
-                        self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billCompanyListObj = Mapper<UtilityBillCompaniesModel>().map(JSONObject: json)
+                
+                //            self.billCompanyListObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    if self.billCompanyListObj?.responsecode == 2 || self.billCompanyListObj?.responsecode == 1 {
+                        
+                        
+                        if let companies = self.billCompanyListObj?.companies {
+                            self.comapniesList = companies
+                            self.dummyarr = self.billCompanyListObj?.stringCompaniesList
+                        }
+                        
+                        for i in self.billCompanyListObj?.companies! ?? []
+                        {
+                            let temp = myOperator()
+                            temp.code = i.code!
+                            temp.id = i.ubpCompaniesId!
+                            temp.name = i.name!
+                            temp.path = i.path ?? ""
+                            self.getOperator.append(temp)
+                        }
+                        
+                        
+                        self.tableView.reloadData()
                     }
-                    
-                    for i in self.billCompanyListObj?.companies! ?? []
-                    {
-                        let temp = myOperator()
-                        temp.code = i.code!
-                        temp.id = i.ubpCompaniesId!
-                        temp.name = i.name!
-                        temp.path = i.path ?? ""
-                        self.getOperator.append(temp)
+                    else {
+                        if let message = self.billCompanyListObj?.messages{
+                            self.showAlert(title: "", message: message, completion: nil)
+                        }
                     }
-                    
-                    self.tableView.delegate = self
-                    self.tableView.dataSource = self
-                    self.tableView.reloadData()
                 }
                 else {
-                    if let message = self.billCompanyListObj?.messages{
-                        self.showAlert(title: "", message: message, completion: nil)
-                    }
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -249,7 +279,7 @@ extension OpreatorSelectionVc: UITableViewDelegate, UITableViewDataSource
             self.navigationController?.popViewController(animated: false)
 //            self.dismiss(animated: false)
             DispatchQueue.main.async {
-                if  GlobalData.topup == "Prepaid" {
+                if  GlobalData.topup == "P R E P A I D" {
                     NotificationCenter.default.post(name: Notification.Name("showSelectedDataPrePaid"), object: nil)
                 }
                 else {

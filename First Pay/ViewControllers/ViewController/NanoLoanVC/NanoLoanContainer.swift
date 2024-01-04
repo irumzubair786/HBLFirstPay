@@ -40,6 +40,8 @@ class NanoLoanContainer: UIViewController {
         loadFirstController()
         
         getActiveLoan()
+        isPushViewControllerTemp = isPushViewController
+
     }
     
     func loadFirstController() {
@@ -191,7 +193,6 @@ class NanoLoanContainer: UIViewController {
         APIs.postAPI(apiName: .getActiveLoan, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: NanoLoanApplyViewController.ModelGetActiveLoan? = APIs.decodeDataToObject(data: responseData)
             self.modelGetActiveLoan = model
-
         }
     }
     

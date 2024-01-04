@@ -15,7 +15,10 @@ import RNCryptor
 import SwiftKeychainWrapper
 import WebKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
+import FingerprintSDK
+
+
 var CheckLanguage = ""
 var ThemeSelection = ""
 var  dateString  : String?
@@ -32,17 +35,17 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60
-         getcnic()
+        getcnic()
         lblAccountTitle.text = DataManager.instance.accountTitle
         lblAccountNumber.text = DataManager.instance.accountNo
         lblEmail.text = ""
         NotificationCenter.default.removeObserver(self)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(batteryLevelChanged), name: Notification.Name("batteryLevelChanged"), object: nil)
-//        let date = Date()
-//        let df = DateFormatter()
-//        df.dateFormat = "yyyy-MM-dd"
-//        dateString = df.string(from: date)
+        
+        //        let date = Date()
+        //        let df = DateFormatter()
+        //        df.dateFormat = "yyyy-MM-dd"
+        //        dateString = df.string(from: date)
         // Do any additional setup after loading the view.
     }
     @objc private func batteryLevelChanged(
@@ -197,6 +200,14 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         
         if cell.buttonSidebar.tag == 3
         {
+            let vc = UIStoryboard(name: "MyApproval", bundle: Bundle.main).instantiateViewController(withIdentifier: "MYApprovalVC") as! MYApprovalVC
+
+            self.present(vc, animated: true)
+           
+        }
+      
+        if cell.buttonSidebar.tag == 4
+        {
             let vc = UIStoryboard(name: "MaintenanceCertificate", bundle: Bundle.main).instantiateViewController(withIdentifier: "MaintenenceCertificate") as! MaintenenceCertificate
             vc.documentData = createPDF()
 
@@ -204,11 +215,11 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         }
         
         
-        if cell.buttonSidebar.tag == 4
+        if cell.buttonSidebar.tag == 5
         {
             
             let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
-         
+            vc.modalPresentationStyle = .fullScreen
           vc.forHTML = true
             vc.forFaqs = true
             vc.forTerms = false
@@ -217,7 +228,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         }
         
        
-        if cell.buttonSidebar.tag == 5
+        if cell.buttonSidebar.tag == 6
         {
             let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "WebView_VC") as! WebView_VC
           vc.forHTML = true
@@ -226,12 +237,22 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
             self.present(vc, animated: true)
 //            self.navigationController?.pushViewController(vc, animated: true)
         }
-      if cell.buttonSidebar.tag == 6
+      if cell.buttonSidebar.tag == 7
         {
           let vc = UIStoryboard(name: "ContactUs", bundle: Bundle.main).instantiateViewController(withIdentifier: "ContactUSVC") as! ContactUSVC
           self.present(vc, animated: true)
         }
-        if cell.buttonSidebar.tag ==  7
+        
+        if cell.buttonSidebar.tag ==  8
+        {
+//          move to notification
+            let vc = UIStoryboard(name: "NotificationsSettings", bundle: Bundle.main).instantiateViewController(withIdentifier: "NotificationSettingVC") as! NotificationSettingVC
+            self.present(vc, animated: true)
+            
+        }
+        
+        
+        if cell.buttonSidebar.tag ==  9
         {
             popUpLogout()
         }
@@ -271,7 +292,7 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
           let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
   
   
-          let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+           let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
   
           print(params)
           print(compelteUrl)
@@ -280,31 +301,36 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
           NetworkManager.sharedInstance.enableCertificatePinning()
   
   
-          NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<AvailableLimitsModel>) in
-  
+          NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//              (response: DataResponse<AvailableLimitsModel>) in
+              response in
               self.hideActivityIndicator()
-  
-              self.availableLimitObj = response.result.value
-  
-              if response.response?.statusCode == 200 {
-  
-                  if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
-  
-                      self.updateUI()
-  //                                    self.fromlevel1()
+              guard let data = response.data else { return }
+              if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                  self.availableLimitObj = Mapper<AvailableLimitsModel>().map(JSONObject: json)
+                  
+                  //              self.availableLimitObj = response.result.value
+                  
+                  if response.response?.statusCode == 200 {
+                      
+                      if self.availableLimitObj?.responsecode == 2 || self.availableLimitObj?.responsecode == 1 {
+                          
+                          self.updateUI()
+                          //                                    self.fromlevel1()
+                      }
+                      else {
+                          if let message = self.availableLimitObj?.messages{
+                              self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                          }
+                      }
                   }
                   else {
                       if let message = self.availableLimitObj?.messages{
                           self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                       }
+                      //                  print(response.result.value)
+                      //                  print(response.response?.statusCode)
                   }
-              }
-              else {
-                  if let message = self.availableLimitObj?.messages{
-                      self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                  }
-//                  print(response.result.value)
-//                  print(response.response?.statusCode)
               }
           }
       }
@@ -313,8 +339,10 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     
     private func updateUI(){
         
-        if   DataManager.instance.accountLevel == "LEVEL 0"
-        {
+        if DataManager.instance.accountLevel == "LEVEL 0" {
+//            DispatchQueue.main.async {
+//                self.fingerPrintVerification()
+//            }
             let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
             flagLevel0  = true
             flagLevel1  = false
@@ -326,23 +354,23 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                 vc.balanceLimit1 = Int(balnceLimit1)
                 print("balnceLimit",balnceLimit1)
             }
-            
+
             if let dailyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalDailyLimitCr{
                 vc.totalDailyLimitCr = Int(dailyTotalCr)
             }
             if let dailyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalDailyLimitCr{
                 vc.totalDailyLimitCr1 = Int(dailyTotalCr1)
             }
-            
-            
+
+
             if let monthlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalMonthlyLimitCr{
                 vc.totalMonthlyLimitCr = Int(monthlyTotalCr)
             }
             if let monthlyTotalCr1 = self.availableLimitObj?.limitsData?.levelLimits?[1].totalMonthlyLimitCr{
                 vc.totalMonthlyLimitCr1 = Int(monthlyTotalCr1)
             }
-            
-            
+
+
             if let yearlyTotalCr = self.availableLimitObj?.limitsData?.levelLimits?[0].totalYearlyLimitCr{
                 vc.totalYearlyLimitCr = Int(yearlyTotalCr)
             }
@@ -368,12 +396,9 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                 vc.totalYearlyLimitDr1 = Int(totalYearlyLimitDr1)
             }
             self.present(vc, animated: true)
-            
         }
-         
-            else if DataManager.instance.accountLevel == "LEVEL 1"
-            {
-                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "VerifiedAccountVC") as! VerifiedAccountVC
+        else if DataManager.instance.accountLevel == "LEVEL 1" {
+                let vc = UIStoryboard(name: "AccountLevel", bundle: Bundle.main).instantiateViewController(withIdentifier: "MyAccountLimitsVc") as! MyAccountLimitsVc
                 flagLevel1  = true
                 flagLevel0  = false
                 if let balnceLimit = self.availableLimitObj?.limitsData?.levelLimits?[0].balanceLimit{
@@ -450,9 +475,9 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
     var sideMenuOpen = false
     let pickerAccountType = UIPickerView()
     
-    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","My Transactions", "Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Log Out"]
+    let sideItemsArr   :[String] =  ["Login Methods","Account Limit Manager","My Transactions", "My Approvals","Maintenance Certificate","FAQ's", "Terms & Conditions","Contact Us","Notifications Settings","Log Out"]
    //Group 427321287.transactions 1
-       var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","transactions 1","Maintenance Certoficate","FAQ","Terms and","Group 427321287","Logout"]
+       var sideBarImgsArr: [String] =   ["FingerPrint 1","user 2","transactions 1","myApproval","Maintenance Certoficate","FAQ","Terms and","Group 427321287","path0-7","Logout"]
    
        
     
@@ -576,23 +601,23 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         let render = UIPrintPageRenderer()
         render.addPrintFormatter(fmt, startingAtPageAt: 0)
 
-        // 3. Assign paperRect and printableRect
+        let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8) // A4, 72 dpi
 
-        let page = CGRect(x: 0, y: 0, width: 612.2, height: 800.0) // A4, 72 dpi
         let printable = page.insetBy(dx: 0, dy: 0)
-
+        
         render.setValue(NSValue(cgRect: page), forKey: "paperRect")
         render.setValue(NSValue(cgRect: printable), forKey: "printableRect")
-       
-        // 4. Create PDF context and draw
 
+        // 4. Create PDF context and draw
         let pdfData = NSMutableData()
         UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
 
-        for i in 1...render.numberOfPages {
-            UIGraphicsBeginPDFPage();
-            let bounds = UIGraphicsGetPDFContextBounds()
-            render.drawPage(at: i - 1, in: bounds)
+        for i in 0...render.numberOfPages {
+            if i == 0 {
+                UIGraphicsBeginPDFPage();
+                let bounds = UIGraphicsGetPDFContextBounds()
+                render.drawPage(at: i , in: bounds)
+            }
         }
 
         UIGraphicsEndPDFContext();
@@ -600,6 +625,39 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         return pdfData as Data
     }
 
+    func createPDF2() -> Data {
+        // 1
+        
+        
+        let pdfMetaData = [
+            kCGPDFContextCreator: "Flyer Builder",
+            kCGPDFContextAuthor: "raywenderlich.com"
+        ]
+        let format = UIGraphicsPDFRendererFormat()
+        //      format.documentInfo = pdfMetaData as [String: Any]
+        
+        // 2
+        let pageWidth = 8.5 * 72.0
+        let pageHeight = 11 * 72.0
+        let pageRect = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
+        
+        // 3
+        let renderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
+        // 4
+        let data = renderer.pdfData { (context) in
+            // 5
+            context.beginPage()
+            // 6
+            let attributes = [
+                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 72)
+            ]
+            let html = ""
+            let text = html
+            text.draw(at: CGPoint(x: 0, y: 0), withAttributes: attributes)
+        }
+        
+        return data
+    }
     
     var userCnic : String?
     func getcnic()
@@ -619,30 +677,25 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                <body>
          <style>
             p {
-              font-family: Helvetica Neue;
-             font-size: 32px;
-              color: Light gray;
-            }
-               <h3>
-               <p style="text-align: center;"><b>ACCOUNT MAINTENANCE </b></p>
-                        <p style="text-align, Inter: center;"><b>
-                    <p style="text-align: center;">
-                   CERTIFICATE </b></p>
-               </h3>
-              <style>
-
-
-                         </style>
+                          font-family: Helvetica Neue;
+                         font-size: 32px;
+                          color: Light gray;
+                        }
+                        </style>
+                        <b></b>
+                        <p style="text-align: center;"style="font-size: 200px;">
+                        </p>
+        
                <p style="text-align: center;" style="font-size: 200px;">
-               This is to certify that</p>
+                   This is to certify that</p>
                <p style="text-align: center;">
                <b>\(DataManager.instance.accountTitle!)</b></p>
                <p style="text-align: center;">
-               having CNIC # <b>\(maskingCNic!)</b></p>
+               having CNIC # <b>\(maskingCNic ?? "")</b></p>
                <p style="text-align: center;">
                is maintaining  account  A/C# </p>
             <p style="text-align: center;">
-           <b>\(maskingAccountNo!)</b>
+           <b>\(maskingAccountNo ?? "")</b>
                </p>
                <p style="text-align: center;">
                This certificate is issued on request
@@ -657,8 +710,6 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
                <p style="text-align: center;">
                undersigned and part of the bank.
                </p>
-             <br>
-              </br>
              <p style="text-align: center;" style="font-size: 150px;">
                HBL Microfinance Bank Ltd
                16th & 17th Floor
@@ -676,8 +727,19 @@ class ToggleMenuVC:  BaseClassVC , UITableViewDelegate, UITableViewDataSource , 
         """
     }
 
-    
-   
+    func fingerPrintVerification() {
+        //#if targetEnvironment(simulator)
+        //        #else
+        let fingerprintConfig = FingerprintConfig(mode: .EXPORT_WSQ,
+                                                  hand: .BOTH_HANDS,
+                                                  fingers: .EIGHT_FINGERS,
+                                                  isPackPng: true)
+        let vc = FaceoffViewController.init(nibName: "FaceoffViewController", bundle: Bundle(for: FaceoffViewController.self))
+        vc.fingerprintConfig = fingerprintConfig
+        vc.fingerprintResponseDelegate = self
+        self.present(vc, animated: true, completion: nil)
+        //        #endif
+    }
 }
 
 extension ToggleMenuVC : SideMenuCellDelegate{
@@ -704,14 +766,33 @@ extension ToggleMenuVC : SideMenuCellDelegate{
     }
 }
                 
-                
-                
-                
-                
-                
-                
-                
-        
+extension ToggleMenuVC: FingerprintResponseDelegate {
     
-
-
+    func onScanComplete(fingerprintResponse: FingerprintResponse) {
+        //Shakeel ! added
+        if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
+            let vc = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+            DispatchQueue.main.async {
+                self.present(vc, animated: true)
+            }
+//            self.fingerprintPngs = fingerprintResponse.pngList
+//            var fingerprintsList = [Fingerprints2]()
+//            if let fpPNGs = self.fingerprintPngs {
+//                for item in fpPNGs {
+//                    guard let imageString = item.binaryBase64ObjectPNG else { return }
+//                    guard let instance = Fingerprints2(index: "\(item.fingerPositionCode)", template: imageString) else { return }
+//                    fingerprintsList.append(instance)
+//                }
+//            }
+        }else {
+            self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
+                self.dismiss(animated: true)
+            }
+            
+        }
+    }
+    override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+        self.dismiss(animated: true)
+    }
+}
+  

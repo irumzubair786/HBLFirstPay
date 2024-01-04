@@ -8,150 +8,160 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
+import ObjectMapper
 class DebitCardEnterAddressVc: BaseClassVC, UITextFieldDelegate {
     var Address : String?
+    var placeholderLabel : UILabel!
     var genericObj:GenericResponse?
     var fullUserName : String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        ButtonBack.setTitle("", for: .normal)
-        buttonEdit.setTitle("", for: .normal)
-        textFieldAddress.delegate  = self
-        buttonContinue.isUserInteractionEnabled = false
-        imageNextArrow.isUserInteractionEnabled = false
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(moveToNext(tapGestureRecognizer:)))
-        imageNextArrow.isUserInteractionEnabled = true
-        imageNextArrow.addGestureRecognizer(tapGesture)
-        labelName.text = fullUserName
+        viewBackGroundNextButton.circle()
+        viewBackGroundTextView.radius(radius: 12, color: UIColor.clrGreen)
+        placeHolderForTextView()
+        //        ButtonBack.setTitle("", for: .normal)
+        //        buttonEdit.setTitle("", for: .normal)
+        //        textFieldAddress.delegate  = self
+        //        buttonContinue.isUserInteractionEnabled = false
+        
+        //        imageNextArrow.isUserInteractionEnabled = false
+        //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(moveToNext(tapGestureRecognizer:)))
+        //        imageNextArrow.isUserInteractionEnabled = true
+        //        imageNextArrow.addGestureRecognizer(tapGesture)
+        //        labelName.text = fullUserName
         
         
         // Do any additional setup after loading the view.
     }
-    @objc func moveToNext(tapGestureRecognizer: UITapGestureRecognizer)
-    {
-       
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardPostalAddressConfirmationVC") as!  DebitCardPostalAddressConfirmationVC
-        vc.fullUserName = self.fullUserName!
-        vc.address = self.textFieldAddress.text!
-        self.navigationController?.pushViewController(vc, animated: true)
+    
+    
+    func placeHolderForTextView() {
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(textChanged), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
         
+        textView.delegate = self
+        placeholderLabel = UILabel()
+        placeholderLabel.text = "Ho. 568, St. 17, Near Bilal Mosque, G-10/1 Islamabad"
+        placeholderLabel.font = .italicSystemFont(ofSize: (textView.font?.pointSize)!)
+        placeholderLabel.sizeToFit()
+        textView.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 8, y: (textView.font?.pointSize)! / 2)
+        placeholderLabel.textColor = .tertiaryLabel
+        placeholderLabel.isHidden = !textView.text.isEmpty
         
+        labelAddresHInt.attributedText = attributedText(label: labelAddresHInt, withString: labelAddresHInt.text!, boldString: "Address Must Include:", boldStringColor: UIColor.clrOrange)
+        
+        labelAddressSample.attributedText = attributedText(label: labelAddressSample, withString: labelAddressSample.text!, boldString: "Sample Address:", boldStringColor: UIColor.clrLightGray)
+        
+        textView.textContainerInset = UIEdgeInsets(top: 8, left: 12, bottom: 4, right: 12)
         
     }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textFieldAddress.text?.count != 0
-        {
-            buttonContinue.isUserInteractionEnabled = true
-            imageNextArrow.image = UIImage(named: "]greenarrow")
-            imageNextArrow.isUserInteractionEnabled = true
-            Address  = textFieldAddress.text
+    @objc func textChanged() {
+        
+        if textView.text.count < 1 ||  textView.text.count < 20 {
+            imageViewForwardButton.image = UIImage(named: "forwardButtonGray")
+            imageViewForwardButton.tag = 0
+        }
+        else if textView.text.count > 19  {
+            imageViewForwardButton.image = UIImage(named: "forwardButtonGreenIcon")
+            imageViewForwardButton.tag = 1
+            if textView.text.count > 90 {
+                textView.text.removeLast()
+            }
+        }
+        else {
             
         }
-        else
-        {
-            buttonContinue.isUserInteractionEnabled = false
-            imageNextArrow.image = UIImage(named: "grayArrow")
-            imageNextArrow.isUserInteractionEnabled = false
-        }
+        labelCount.text = "\(textView.text.count)/90"
     }
-
-    @IBOutlet weak var buttonEdit: UIButton!
-    @IBOutlet weak var textFieldAddress: UITextField!
-    @IBOutlet weak var labelName: UILabel!
+    func attributedText(label: UILabel, withString string: String, boldString: String, boldStringColor: UIColor) -> NSAttributedString {
+        let font = label.font!
+        let completeString = string
+        let boldStringLocal = boldString
+        let labelWidth = label.frame.size.width
+        let myStyle = NSMutableParagraphStyle()
+        myStyle.tabStops = [NSTextTab(textAlignment: .left, location: 0.0, options: [:]),
+                            NSTextTab(textAlignment: .right, location: labelWidth, options: [:])]
+        
+        let attributedString = NSMutableAttributedString(
+            string: completeString,
+            attributes: [NSAttributedString.Key.font: font])
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: UIFont(name: "System Bold", size: font.pointSize) ?? UIFont.boldSystemFont(ofSize: font.pointSize)
+        ]
+        
+        let range = (completeString as NSString).range(of: boldStringLocal)
+        attributedString.addAttributes(boldFontAttribute, range: range)
+        attributedString.addAttribute(.foregroundColor, value: boldStringColor, range: range)
+        attributedString.addAttribute(.paragraphStyle, value: myStyle, range: range)
+        
+        return attributedString
+    }
+    
+    //    @objc func moveToNext(tapGestureRecognizer: UITapGestureRecognizer)
+    //    {
+    //
+    //        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardPostalAddressConfirmationVC") as!  DebitCardPostalAddressConfirmationVC
+    //        vc.fullUserName = self.fullUserName!
+    //        vc.address = self.textFieldAddress.text!
+    //        self.navigationController?.pushViewController(vc, animated: true)
+    //
+    //
+    //
+    //    }
+    //    func textFieldDidEndEditing(_ textField: UITextField) {
+    //        if textFieldAddress.text?.count != 0
+    //        {
+    //            buttonContinue.isUserInteractionEnabled = true
+    //            imageNextArrow.image = UIImage(named: "]greenarrow")
+    //            imageNextArrow.isUserInteractionEnabled = true
+    //            Address  = textFieldAddress.text
+    //
+    //        }
+    //        else
+    //        {
+    //            buttonContinue.isUserInteractionEnabled = false
+    //            imageNextArrow.image = UIImage(named: "grayArrow")
+    //            imageNextArrow.isUserInteractionEnabled = false
+    //        }
+    //    }
+    
+    @IBOutlet weak var buttonNext: UIButton!
+    @IBOutlet weak var viewBackGroundNextButton: UIView!
+    
+    @IBOutlet weak var imageViewForwardButton: UIImageView!
+    @IBOutlet weak var viewBackGroundTextView: UIView!
+    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var labelCount: UILabel!
+    @IBOutlet weak var labelAddresHInt: UILabel!
+    @IBOutlet weak var labelAddressSample: UILabel!
     @IBAction func ButtonBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-    
-    @IBAction func buttonEdit(_ sender: UIButton) {
-        textFieldAddress.text = ""
-        Address  = textFieldAddress.text
-    }
-    @IBOutlet weak var buttonContinue: UIButton!
-    
-    @IBOutlet weak var ButtonBack: UIButton!
-    
-    @IBOutlet weak var imageNextArrow: UIImageView!
-    
     @IBAction func buttonContinue(_ sender: UIButton) {
+        if textView.text.count < 20 {
+            self.showAlertCustomPopup(title: "Address too Short", message: "Please enter accurate and detailed mailing address for delivery", iconName: .iconError) { _ in
+                
+            }
+            return
+        }
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardPostalAddressConfirmationVC") as!  DebitCardPostalAddressConfirmationVC
+      
         vc.fullUserName = self.fullUserName!
-        vc.address = self.textFieldAddress.text!
+        vc.address = self.textView.text!
         self.navigationController?.pushViewController(vc, animated: true)
-
     }
-    
-    // MARK: - Api Call
-   
-   private func debitCardRequest() {
-       
-       if !NetworkConnectivity.isConnectedToInternet(){
-           self.showToast(title: "No Internet Available")
-           return
-       }
-       
-       var userCnic : String?
-       
-       if KeychainWrapper.standard.hasValue(forKey: "userCnic"){
-           userCnic = KeychainWrapper.standard.string(forKey: "userCnic")
-       }
-       else{
-           userCnic = ""
-       }
-       
-       
-       showActivityIndicator()
-       
-       
-       let compelteUrl = GlobalConstants.BASE_URL + "DebitCard/v1/getResponseOfDebitCardCreation"
-       userCnic = UserDefaults.standard.string(forKey: "userCnic")
-       let parameters = ["imei":"\(DataManager.instance.imei!)","cnic":userCnic!,"otp":"","channelId":"\(DataManager.instance.channelID)","NameonCard":fullUserName!,"deliveryType": "H","deliveryAddress":textFieldAddress.text!, "branchCode":""]
-
-       let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
-       
-       print(result.apiAttribute1)
-       print(result.apiAttribute2)
-       
-       let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-       
-       let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-       
-       print(params)
-       print(compelteUrl)
-       
-       NetworkManager.sharedInstance.enableCertificatePinning()
-       
-       NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
-           
-           
-           self.hideActivityIndicator()
-           
-           self.genericObj = response.result.value
-           if response.response?.statusCode == 200 {
-               
-               if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                   let vc = self.storyboard?.instantiateViewController(withIdentifier: "DebitCardPostalAddressConfirmationVC") as!  DebitCardPostalAddressConfirmationVC
-                   vc.fullUserName = self.fullUserName!
-                   vc.address = self.textFieldAddress.text!
-        
-                   self.navigationController?.pushViewController(vc, animated: true)
-                   
-               }
-               else {
-                   if let message = self.genericObj?.messages{
-                       self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                   }
-               }
-           }
-           else {
-               if let message = self.genericObj?.messages{
-                   self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-               }
-//
-           }
-       }
-   }
-    
-    
+}
+extension DebitCardEnterAddressVc : UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        placeholderLabel?.isHidden = !textView.text.isEmpty
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        placeholderLabel?.isHidden = !textView.text.isEmpty
+    }
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        placeholderLabel?.isHidden = true
+    }
 }

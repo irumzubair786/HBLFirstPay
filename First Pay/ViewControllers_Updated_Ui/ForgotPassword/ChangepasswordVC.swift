@@ -9,55 +9,216 @@
 import UIKit
 import PasswordTextField
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
     var genericObj:GenericResponse?
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonback.setTitle("", for: .normal)
+        oldPasswordTextfield.becomeFirstResponder()
+        newPasswordTextfield.becomeFirstResponder()
+        confirmPasswordTextfield.becomeFirstResponder()
         oldPasswordTextfield.delegate = self
         newPasswordTextfield.delegate = self
         confirmPasswordTextfield.delegate = self
         buttonContinue.isUserInteractionEnabled = false
+        newPasswordTextfield.isUserInteractionEnabled = false
+        confirmPasswordTextfield.isUserInteractionEnabled = false
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(MovetoNext(tapGestureRecognizer:)))
         imgNextArrow.isUserInteractionEnabled = true
         imgNextArrow.addGestureRecognizer(tapGestureRecognizerr)
-        // Do any additional setup after loading the view.
-        self.confirmPasswordTextfield.addTarget(self, action: #selector(changeTextInTextField2), for: .editingDidEnd)
-
+        self.newPasswordTextfield.addTarget(self, action: #selector(changeTextInTextField), for: .editingChanged)
+        self.confirmPasswordTextfield.addTarget(self, action: #selector(changeTextInTextField2), for: .editingChanged)
+        //        lbl1.textColor = UIColor(hexValue: 0xFF3932)
+        //        lbl2.textColor = UIColor(hexValue: 0xFF3932)
+        //        lbl3.textColor = UIColor(hexValue: 0xFF3932)
+        //        lbl4.textColor = UIColor(hexValue: 0xFF3932)
+        buttonContinue.circle()
+        
     }
     @objc func changeTextInTextField2() {
-        if oldPasswordTextfield.text?.count != 0 && newPasswordTextfield.text?.count != 0
-        {
-            if self.confirmPasswordTextfield.text?.count == 6 {
-
-                if isValidPassword() == true
-                        {
-                    labelPasswordlength.textColor = UIColor(hexValue : 0x00CC96)
-                    buttonContinue.isUserInteractionEnabled = true
-                    let img = UIImage(named: "]greenarrow")
-                    imgNextArrow.image = img
-                    
-                }
-                   else
-                        {
-                       labelPasswordlength.textColor = UIColor(hexValue: 0xFF3932)
-                       buttonContinue.isUserInteractionEnabled = false
-                       let img = UIImage(named: "grayArrow")
-                       imgNextArrow.image = img
-                       
-                       
-                   }
-                self.confirmPasswordTextfield.resignFirstResponder()
-                
+        if self.newPasswordTextfield.text?.count == 6  && oldPasswordTextfield.text?.count == 6 {
+            //            if isAlphabaticContain() {
+            lbl1.textColor = .clrGray
+            lbl2.textColor = .clrGray
+            lbl3.textColor = .clrGray
+            lbl4.textColor = .clrGray
+            let stringIntegersOnly = confirmPasswordTextfield.text!.getIntegerValue()
+            let stringStringOnly = confirmPasswordTextfield.text!.getStringValue()
+            
+            var isPasswordValid = 0
+            
+            if (confirmPasswordTextfield?.text!.count)! >= 6 {
+                lbl1.textColor = UIColor(hexValue: 0x00CC96)
+                isPasswordValid += 1
             }
+            if stringStringOnly != "" {
+                lbl2.textColor = UIColor(hexValue: 0x00CC96)
+                isPasswordValid += 1
+            }
+            if stringIntegersOnly != "" {
+                lbl3.textColor = UIColor(hexValue: 0x00CC96)
+                isPasswordValid += 1
+            }
+            if confirmPasswordTextfield.text! == newPasswordTextfield.text! {
+                lbl4.textColor = UIColor(hexValue: 0x00CC96)
+                isPasswordValid += 1
+            }
+            
+            if isPasswordValid >= 4 {
+                buttonContinue.isUserInteractionEnabled = true
+                let img = UIImage(named: "]greenarrow")
+                imgNextArrow.image = img
+            }
+            else {
+                buttonContinue.isUserInteractionEnabled = false
+                let img = UIImage(named: "grayArrow")
+                imgNextArrow.image = img
+            }
+            //            self.confirmPasswordTextfield.resignFirstResponder()
         }
         print(self.confirmPasswordTextfield.text)
     }
+    
+    
+    @objc func changeTextInTextField() {
+        if self.newPasswordTextfield.text?.count == 6 {
+            self.newPasswordTextfield.resignFirstResponder()
+            
+        }
+        print(self.newPasswordTextfield.text)
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    //    @objc func changeTextInTextField2() {
+    //        if oldPasswordTextfield.text?.count != 0 && newPasswordTextfield.text?.count != 0
+    //        {
+    //            if self.confirmPasswordTextfield.text?.count == 6 {
+    //
+    //                self.confirmPasswordTextfield.resignFirstResponder()
+    //
+    //                if isValidPassword() == true
+    //                        {
+    ////
+    //                    buttonContinue.isUserInteractionEnabled = true
+    //                    let img = UIImage(named: "]greenarrow")
+    //                    imgNextArrow.image = img
+    //
+    //                }
+    //                   else
+    //                        {
+    ////                       labelPasswordlength.textColor = UIColor(hexValue: 0xFF3932)
+    //                       buttonContinue.isUserInteractionEnabled = false
+    //                       let img = UIImage(named: "grayArrow")
+    //                       imgNextArrow.image = img
+    //
+    //
+    //                   }
+    //                self.confirmPasswordTextfield.resignFirstResponder()
+    //
+    //            }
+    //        }
+    //        print(self.confirmPasswordTextfield.text)
+    //    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if oldPasswordTextfield.text?.count == 6
+        {
+            
+            newPasswordTextfield.isUserInteractionEnabled = true
+            
+        }
+        if newPasswordTextfield.text?.count == 6
+        {
+            
+            confirmPasswordTextfield.isUserInteractionEnabled = true
+            
+        }
+        
+        
+        if self.newPasswordTextfield.text?.count == 6  && oldPasswordTextfield.text?.count == 6
+        {
+            if textField ==  newPasswordTextfield {
+                confirmPasswordTextfield .perform(#selector(becomeFirstResponder),with:nil, afterDelay:0.1)
+            } else if textField == confirmPasswordTextfield {
+                textField.resignFirstResponder()
+                if isValidPassword() == true{
+                    
+                    
+                    if newPasswordTextfield?.text?.count == 6
+                    {
+                        if isValidPassword() == true{
+                            lbl1.textColor = UIColor(hexValue : 0x00CC96)
+                            lbl1.textColor = UIColor(hexValue: 0x00CC96)
+                            lbl2.textColor = UIColor(hexValue: 0x00CC96)
+                            lbl3.textColor = UIColor(hexValue: 0x00CC96)
+                        }
+                        
+                    }
+                    else{
+                        lbl1.textColor = UIColor(hexValue: 0xFF3932)
+                        lbl2.textColor =  UIColor(hexValue: 0xFF3932)
+                        lbl3.textColor =  UIColor(hexValue: 0xFF3932)
+                    }
+                    
+                    
+                    
+                    if newPasswordTextfield.text == confirmPasswordTextfield.text{
+                        
+                        
+                        lbl1.textColor = UIColor(hexValue:  0x00CC96)
+                        lbl2.textColor = UIColor(hexValue: 0x00CC96)
+                        lbl3.textColor = UIColor(hexValue: 0x00CC96)
+                        lbl4.textColor = UIColor(hexValue: 0x00CC96)
+                        buttonContinue.isUserInteractionEnabled = true
+                        let img = UIImage(named: "]greenarrow")
+                        imgNextArrow.image = img
+                        
+                        //                lbl4.textColor = UIColor.green
+                    }
+                    else
+                    {
+                        lbl4.textColor = UIColor(hexValue:  0xFF3932)
+                        buttonContinue.isUserInteractionEnabled = false
+                        let img = UIImage(named: "grayArrow")
+                        imgNextArrow.image = img
+                    }
+                    if confirmPasswordTextfield?.text?.count == 0
+                    {
+                        lbl4.textColor = UIColor(hexValue:  0xFF3932)
+                        buttonContinue.isUserInteractionEnabled = false
+                        let img = UIImage(named: "grayArrow")
+                        imgNextArrow.image = img
+                    }
+                    if newPasswordTextfield?.text?.count == 0
+                    {
+                        lbl1.textColor = UIColor(hexValue:  0xFF3932)
+                        lbl2.textColor = UIColor(hexValue: 0xFF3932)
+                        lbl3.textColor = UIColor(hexValue:  0xFF3932)
+                        buttonContinue.isUserInteractionEnabled = false
+                        let img = UIImage(named: "grayArrow")
+                        imgNextArrow.image = img
+                    }
+                }
+            }
+        }
+    }
+    
     @IBOutlet weak var oldPasswordTextfield: PasswordTextField!
     
-    @IBOutlet weak var labelPasswordlength: UILabel!
+    @IBOutlet weak var lbl4: UILabel!
+    @IBOutlet weak var lbl3: UILabel!
+    @IBOutlet weak var lbl2: UILabel!
+    
+    @IBOutlet weak var lbl1: UILabel!
     @IBOutlet weak var newPasswordTextfield: PasswordTextField!
     @IBOutlet weak var confirmPasswordTextfield: PasswordTextField!
     @IBAction func newPasswordTextfield(_ sender: PasswordTextField) {
@@ -87,12 +248,13 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         if isValidPassword() == true
         {
             movetonext()
-
+            
         }
         
     }
-  func movetonext()
+    func movetonext()
     {
+        
         changePassword()
     }
     @objc func MovetoNext(tapGestureRecognizer: UITapGestureRecognizer)
@@ -101,44 +263,22 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField ==  newPasswordTextfield
-        {
-            if newPasswordTextfield.text?.count ?? 0 < 6
-            {
-                
-                labelPasswordlength.textColor = UIColor(hexValue: 0xFF3932)
-               
-                if isValidPassword() == true
-                    
-                {
-                    print("test", newPasswordTextfield.text)
-                    print("test2", confirmPasswordTextfield.text)
-                }
-                else{
-//                        lbl1.textColor = UIColor(red: -0/255.0, green: 204/255.0, blue: 150/255.0, alpha: 1.0)
-                }
-//
-            if isValidPassword() == true
-                    {
-                labelPasswordlength.textColor = UIColor(hexValue : 0x00CC96)
-                
-            }
-               else
-                    {
-                   labelPasswordlength.textColor = UIColor(hexValue: 0xFF3932)
-                   
-                   
-               }
-                    
-                   
-                
-                
-                }
-                
-            }
-
-        
-        
+        let newLength:Int = (textField.text?.count)! + string.count - range.length
+        //        if textField ==  newPasswordTextfield
+        //        {
+        //
+        //
+        if textField == oldPasswordTextfield{
+            return newLength <= 6
+        }
+        if textField == newPasswordTextfield{
+            return newLength <= 6
+        }
+        if textField == confirmPasswordTextfield{
+            return newLength <= 6
+        }
+        return newLength <= 6
+        //        lbl1.textColor = UIColor.green
         
         if textField == self.newPasswordTextfield {
             if range.length + range.location > (textField.text?.count)! {
@@ -152,61 +292,36 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
             print("\(numberresult)")
             
             if isValidPassword() == true{
-              print("doneee")
-            }
-          
-            else{
-
-                print("not done")
-                if newPasswordTextfield.text == confirmPasswordTextfield.text{
-//
-//                    lbl4.textColor = UIColor.green
-            }
-            else
-            {
-                
-//                    lbl4.textColor = UIColor.red
-//
-            }
-                
-            }
-           
-            if  numberresult == true /*&& newString.count == 6*/{
-//                callSubmit = true
-               
-//
-            }
-            else {
-//                callSubmit = false
-//
+                print("doneee")
             }
             
         }
         
-        let newLength:Int = (textField.text?.count)! + string.count - range.length
-        if textField == oldPasswordTextfield{
-            return newLength <= 6
-        }
-        if textField == newPasswordTextfield{
-            return newLength <= 6
-        }
-        if textField == confirmPasswordTextfield{
-            return newLength <= 6
-        }
-        return newLength <= 6
-//        lbl1.textColor = UIColor.green
         
-  }
+    }
     func isValidPassword() -> Bool {
         // least one uppercase,
         // least one digit
         // least one lowercase
         // least one symbol
         //  min 6 characters total
-        let passwordRegx = "^(?=.*?[a-z])(?=.*?[0-9]).{6,}$"
+        let passwordRegx = "^(?=.*?[a-zA-Z])(?=.*?[0-9]).{6,}$"
         let passwordCheck = NSPredicate(format: "SELF MATCHES %@",passwordRegx)
-        return passwordCheck.evaluate(with: newPasswordTextfield.text!)
+        return passwordCheck.evaluate(with: confirmPasswordTextfield.text!)
     }
+    
+    func isAlphabaticContain() -> Bool {
+        let passwordRegx = "^(?=.*?[a-zA-Z]).{0,}$"
+        let passwordCheck = NSPredicate(format: "SELF MATCHES %@",passwordRegx)
+        return passwordCheck.evaluate(with: confirmPasswordTextfield.text!)
+    }
+    
+    func isNumericContain() -> Bool {
+        let passwordRegx = "^(?=.*?[0-9])$"
+        let passwordCheck = NSPredicate(format: "SELF MATCHES %@",passwordRegx)
+        return passwordCheck.evaluate(with: confirmPasswordTextfield.text!)
+    }
+    
     // MARK: - API CALL
     
     private func changePassword() {
@@ -228,11 +343,12 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
             confirmPasswordTextfield.text = ""
         }
         
-//        let compelteUrl = GlobalConstants.BASE_URL + "changePassword"
+        //        let compelteUrl = GlobalConstants.BASE_URL + "changePassword"
         let compelteUrl = GlobalConstants.BASE_URL + "FirstPayInfo/v1/changePassword"
         
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
-        let parameters = ["channelId":"\(DataManager.instance.channelID ?? "")","oldpass":self.oldPasswordTextfield.text! ?? "","newpass":self.confirmPasswordTextfield.text! ?? "","imei": DataManager.instance.imei! ?? "" ,"cnic" : userCnic!  ?? ""]
+        let parameters = ["channelId":"\(DataManager.instance.channelID ?? "")","oldPass":self.oldPasswordTextfield.text! ?? "","newPass":self.confirmPasswordTextfield.text! ?? "","imei": DataManager.instance.imei! ?? "" ,"cnic" : userCnic!  ?? ""]
+        
         
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         print(parameters)
@@ -241,8 +357,8 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
-
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+        
         
         print(params)
         print(compelteUrl)
@@ -250,23 +366,46 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+            //            (response: DataResponse<GenericResponse>) in
             
-    
-//        Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
-        
             
+            //        Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<GenericResponse>) in
+            
+            
+            response in
             self.hideActivityIndicator()
-            
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
                 
-                self.genericObj = response.result.value
-                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                    if let message = self.genericObj?.messages{
-                        let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
-                        print("Remover \(removePessi)")
-                        self.showAlertCustomPopup(title: "", message: message)
-                        self.logoutUser()
+                if response.response?.statusCode == 200 {
+                    self.genericObj = Mapper<GenericResponse>().map(JSONObject: json)
+                    
+                    //                self.genericObj = response.result.value
+                    if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                        if let message = self.genericObj?.messages{
+                            let removePessi : Bool = KeychainWrapper.standard.removeObject(forKey: "userKey")
+                            print("Remover \(removePessi)")
+                            let  message = "Close this window & Login agian     \(self.genericObj?.messages!)"
+                            self.showAlertCustomPopup(title: "", message: message, iconName: .iconError, buttonNames: [
+                                
+                                ["buttonName": "LOGIN AGAIN",
+                                 "buttonBackGroundColor": UIColor.clrOrange,
+                                 "buttonTextColor": UIColor.white]
+                                
+                                
+                            ]
+                                                      //                     add completion button here....
+                                                      as? [[String: AnyObject]]){ _ in
+                                self.logoutUser()
+                            }
+                            
+                        }
+                    }
+                    else {
+                        if let message = self.genericObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
+                        }
                     }
                 }
                 else {
@@ -275,14 +414,19 @@ class ChangepasswordVC: BaseClassVC, UITextFieldDelegate {
                     }
                 }
             }
-            else {
-                if let message = self.genericObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message,iconName: .iconError)
-                }
-            }
         }
     }
-    
-  
+}
 
+
+extension String {
+    var isAlphabaticContain: Bool {
+        return !isEmpty && range(of: "[^a-zA-Z]", options: .regularExpression) == nil
+    }
+    var isNumericContain: Bool {
+        return !isEmpty && range(of: "[^0-9]", options: .regularExpression) == nil
+    }
+    var isAlphaNumericContain: Bool {
+        return !isEmpty && range(of: "[^a-zA-Z0-9]", options: .regularExpression) == nil
+    }
 }

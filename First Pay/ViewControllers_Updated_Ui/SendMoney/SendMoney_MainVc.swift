@@ -15,6 +15,9 @@ class SendMoney_MainVc: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .SendMoney_category_selection)
+        FaceBookEvents.logEvent(title: .SendMoney_category_selection)
+        
         btn1.setTitle("", for: .normal)
         btn2.setTitle("", for: .normal)
         btn3.setTitle("", for: .normal)
@@ -39,11 +42,7 @@ class SendMoney_MainVc: UIViewController {
        
         self.present(vc, animated: true)
     }
-    
-    
     @IBAction func Action_HBLMFb_Account(_ sender: UIButton) {
-        
-        
         let storyboard = UIStoryboard(name: "SendMoney_Local_Hblmfb", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "navigatetoHblMFBAccount")
         

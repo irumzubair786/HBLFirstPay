@@ -8,11 +8,42 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
+import FingerprintSDK
+
 class AddCashMainVc: BaseClassVC {
     var cbsAccountsObj : GetCBSAccounts?
     var LinkedAccountsObj : getLinkedAccountModel?
+    var fingerPrintVerification: FingerPrintVerification!
+    var fingerprintPngs : [Png]?
+
+    var modelAcccountLevelUpgradeResponse: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? {
+        didSet {
+            print(modelAcccountLevelUpgradeResponse)
+            if modelAcccountLevelUpgradeResponse?.responsecode == 1 {
+                NotificationCenter.default.post(name: Notification.Name("updateAccountLevel"), object: nil)
+                let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "AccountUpgradeSuccessullVC") as! AccountUpgradeSuccessullVC
+                viewController.accountUpGradeSuccessfull = {
+                    self.getActiveLoan()
+                }
+                DispatchQueue.main.async {
+                    self.present(viewController, animated: true)
+                }
+            }
+            else if modelAcccountLevelUpgradeResponse?.responsecode == 0 {
+                self.showAlertCustomPopup(message: modelAcccountLevelUpgradeResponse?.messages ?? "No Message from API") {_ in
+                    
+                }
+            }
+            else {
+                self.showAlertCustomPopup(message: "ERROR IN RESPONSE API") {_ in
+                    
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
@@ -44,23 +75,51 @@ class AddCashMainVc: BaseClassVC {
     
     @IBAction func buttonViabankTransfer(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "viaBankTransferStepsVc") as!   viaBankTransferStepsVc
-             self.navigationController?.pushViewController(vc,animated: true)
-       
+        self.navigationController?.pushViewController(vc,animated: true)
+        
     }
     @IBOutlet weak var buttonRequestMoney: UIButton!
     @IBAction func buttonRequestMoney(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "RequestMoneyDetailVc") as!   RequestMoneyDetailVc
-             self.navigationController?.pushViewController(vc,animated: true)
+        self.navigationController?.pushViewController(vc,animated: true)
     }
     @IBOutlet weak var buttonGetLoan: UIButton!
     
     @IBAction func buttonGetLoan(_ sender: UIButton) {
-        getActiveLoan()
+        FBEvents.logEvent(title: .Upgrade_Account_Level_NanoLoan)
+        
+        if DataManager.instance.accountLevel == "LEVEL 0" {
+        //   call sdk
+//            fingerPrintVerification = FingerPrintVerification()
+//            DispatchQueue.main.async {
+//                self.fingerPrintVerification.fingerPrintVerification(viewController: self)
+//            }
+            navigateToBiometricFlow()
+        }
+        else {
+            getActiveLoan()
+            //                dummy finger print api calling
+//                            self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
+        }
+    }
+    func navigateToBiometricFlow() {
+        //                dummy finger print api calling
+        //                self.acccountLevelUpgrade(fingerprints: fingerPrintDataHardCoded)
+        let viewController = UIStoryboard.init(name: "AccountLevel", bundle: nil).instantiateViewController(withIdentifier: "UnverifeidAccountMainVc") as! UnverifeidAccountMainVc
+        
+        viewController.accountUpGradeSuccessfull = {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                viewController.dismiss(animated: false)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    self.getActiveLoan()
+                }
+            }
+        }
+        self.present(viewController, animated: true)
     }
     
     var modelGetActiveLoan: NanoLoanApplyViewController.ModelGetActiveLoan? {
         didSet {
-            
             if modelGetActiveLoan?.data?.currentLoan.count ?? 0 > 0 {
                 self.openNanoLoan()
             }
@@ -84,9 +143,9 @@ class AddCashMainVc: BaseClassVC {
     }
     
     var modelNanoLoanEligibilityCheck: NanoLoanApplyViewController.ModelNanoLoanEligibilityCheck? {
-      didSet {
+        didSet {
             if modelNanoLoanEligibilityCheck?.responsecode ?? 0 == 0 {
-                showAlertCustomPopup(title: "Alert", message: modelNanoLoanEligibilityCheck?.messages ?? "", iconName: .iconError)
+                showAlertCustomPopup(message: modelNanoLoanEligibilityCheck?.messages ?? "", iconName: .iconError)
             }
             else {
                 openNanoLoan()
@@ -111,6 +170,7 @@ class AddCashMainVc: BaseClassVC {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanContainer") as! NanoLoanContainer
         vc.isPushViewController = true
         self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     private func getLinkAccounts() {
         
@@ -127,7 +187,7 @@ class AddCashMainVc: BaseClassVC {
         let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!]
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
@@ -135,38 +195,42 @@ class AddCashMainVc: BaseClassVC {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GetCBSAccounts>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+            //            (response: DataResponse<GetCBSAccounts>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.cbsAccountsObj = response.result.value
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.cbsAccountsObj = Mapper<GetCBSAccounts>().map(JSONObject: json)
                 
-                if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
-                    if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountListVC") as! LinkBankAccountListVC
-//                        vc.accountTitle = cbsAccountsObj?.accdata[0].cbsAccountTitle
-                        
-                        self.navigationController?.pushViewController(vc, animated: true)
-                       
+                //            self.cbsAccountsObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.cbsAccountsObj?.responsecode == 2 || self.cbsAccountsObj?.responsecode == 1 {
+                        if self.cbsAccountsObj?.accdata?.count ?? 0 > 0{
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkBankAccountListVC") as! LinkBankAccountListVC
+                            //                        vc.accountTitle = cbsAccountsObj?.accdata[0].cbsAccountTitle
+                            
+                            self.navigationController?.pushViewController(vc, animated: true)
+                            
+                        }
+                        else{
+                            
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NoBankAccountFoundVc") as! NoBankAccountFoundVc
+                            self.navigationController?.pushViewController(vc, animated: true)
+                            
+                        }
                     }
-                    else{
-                       
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NoBankAccountFoundVc") as! NoBankAccountFoundVc
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
+                    else {
+                        self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
                     }
                 }
                 else {
-                    self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -188,7 +252,7 @@ class AddCashMainVc: BaseClassVC {
         let parameters = ["channelId":"\(DataManager.instance.channelID)","cnic":userCnic!, "imei":DataManager.instance.imei!]
         let result = (splitString(stringToSplit: base64EncodedString(params: parameters)))
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
+        let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
@@ -196,39 +260,92 @@ class AddCashMainVc: BaseClassVC {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<getLinkedAccountModel>) in
-            
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+            //            [self] (response: DataResponse<getLinkedAccountModel>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.LinkedAccountsObj = response.result.value
-            if response.response?.statusCode == 200 {
-               
-                if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
-                    if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
-                        let vc = self.storyboard!.instantiateViewController(withIdentifier: "FromLinkAccountListVc") as! FromLinkAccountListVc
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.LinkedAccountsObj = Mapper<getLinkedAccountModel>().map(JSONObject: json)
+                
+                
+                //            self.LinkedAccountsObj = response.result.value
+                if response.response?.statusCode == 200 {
+                    
+                    if self.LinkedAccountsObj?.responsecode == 2 || self.LinkedAccountsObj?.responsecode == 1 {
+                        if self.LinkedAccountsObj?.data?.count ?? 0 > 0{
+                            let vc = self.storyboard!.instantiateViewController(withIdentifier: "FromLinkAccountListVc") as! FromLinkAccountListVc
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }
+                    }
+                    else{
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NobankExistsVc") as! NobankExistsVc
                         self.navigationController?.pushViewController(vc, animated: true)
-                        
-                        
-                       
+                    }
                 }
-                    
+                else {
+                    self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
                 }
-                else{
-                   
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "NobankExistsVc") as! NobankExistsVc
-                    self.navigationController?.pushViewController(vc, animated: true)
-                    
-                }
-            }
-            else {
-                self.showAlert(title: "", message: (self.cbsAccountsObj?.messages)!, completion: nil)
             }
         }
+    }
+}
 
+extension AddCashMainVc: FingerprintResponseDelegate {
+    func onScanComplete(fingerprintResponse: FingerprintResponse) {
+        //Shakeel ! added
+        if fingerprintResponse.response == Response.SUCCESS_WSQ_EXPORT {
+            fingerprintPngs = fingerprintResponse.pngList
+            var fingerprintsList = [FingerPrintVerification.Fingerprints]()
+            
+            var tempFingerPrintDictionary = [[String:Any]]()
+            if let fpPNGs = fingerprintPngs {
+                for item in fpPNGs {
+                    guard let imageString = item.binaryBase64ObjectPNG else { return }
+                    guard let instance = FingerPrintVerification.Fingerprints(fingerIndex: "\(item.fingerPositionCode)", fingerTemplate: imageString) else { return }
+                   
+                    tempFingerPrintDictionary.append(
+                        ["fingerIndex":"\(item.fingerPositionCode)",
+                         "fingerTemplate":imageString,
+                         "templateType":"WSQ"]
+                    )
+                }
+            }
+            self.acccountLevelUpgrade(fingerprints: tempFingerPrintDictionary)
+        }else {
+            self.showAlertCustomPopup(title: "Faceoff Results", message: fingerprintResponse.response.message, iconName: .iconError) {_ in
+//                self.dismiss(animated: true)
+            }
+        }
     }
     
+    override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+        self.dismiss(animated: true)
+    }
     
-    
-    
+    func acccountLevelUpgrade(fingerprints: [[String:Any]]) {
+        let userCnic = UserDefaults.standard.string(forKey: "userCnic")
+        let parameters: Parameters = [
+            "cnic" : userCnic!,
+            "imei" : DataManager.instance.imei!,
+            "channelId" : "\(DataManager.instance.channelID)",
+        ]
+        APIs.postAPIForFingerPrint(apiName: .acccountLevelUpgrade, parameters: parameters, apiAttribute3: fingerprints, viewController: self) {
+            responseData, success, errorMsg in
+            
+            print(responseData)
+            print(success)
+            print(errorMsg)
+            do {
+                let json: Any? = try JSONSerialization.jsonObject(with: (responseData ?? Data()), options: [.fragmentsAllowed])
+                print(json)
+            }
+            catch let error {
+                print(error)
+            }
+
+            let model: FingerPrintVerification.ModelAcccountLevelUpgradeResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelAcccountLevelUpgradeResponse = model
+        }
+    }
 }

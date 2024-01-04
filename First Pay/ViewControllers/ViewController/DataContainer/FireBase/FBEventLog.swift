@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseAnalytics
+import FBSDKCoreKit
 
 struct FBEvents {    
     static func logEvent(title: FBEvents.name, failureReason: String? = nil) {
@@ -115,7 +116,7 @@ struct FBEvents {
         case Debit_activatepincreate_success
         case Debit_activatepincreate_failure
         case Debit_activate_success
-        
+        case Debit_activate_orderNew_card
         //MARK: - Homescreen
         case Homescreen_Landing
         case Homescreen_Cashpoints_click
@@ -219,8 +220,34 @@ struct FBEvents {
         case Loans_repaybenefits_click
         case Loans_history_landing
         case Loans_historyrepay_click
-        
         case Transactions_active
+        
+//       Account Limits
+        case Upgrade_Account_Level
+        case Upgrade_Account_Level_Path2
+        case Upgrade_Account_Level_NanoLoan
+        case BioMetric_Sccanining
+        case BioMetric_Sccanining_Successful
+        
+//        Mobile Bundles
+        case Bundles_HS_click
+        case Bundles_SA_click
+        case Bundles_list_landing
+        case Bundles_list_attempt
+        case Bundles_list_success
+        case Bundles_list_failure
+        case Bundles_confirm_landing
+        case Bundles_confirm_attempt
+        case Bundles_confirm_success
+        case Bundles_confirm_failure
+        case Bundles_confirm_receipt
+        case Bundles_error_popup
+
+        //        MY Approval
+                case Request_Money_Selection
+        
+        
+        
         
 //        =======
         enum name: String {
@@ -251,4 +278,65 @@ struct FBEvents {
     }
 }
 
+struct FaceBookEvents {
+    static func logEvent(title: FBEvents.name, failureReason: String? = nil) {
+        if let userAccountNo = DataManager.instance.accountNo {
+            let titleName = title.rawValue
+                        
+            var parameter = [AppEvents.ParameterName : Any]()
+            if failureReason != nil {
+                parameter = [
+                    AppEvents.ParameterName.init("accountNo"):"\("userAccountNo")",
+                    AppEvents.ParameterName.init(titleName):titleName,
+                    AppEvents.ParameterName.init("FailureReason"):failureReason!,
+                ]
+            }
+            else {
+                parameter = [
+                    AppEvents.ParameterName.init("accountNo"):"\("userAccountNo")",
+                    AppEvents.ParameterName.init(titleName):titleName,
+                ]
+            }
+            
+            //MARK: - For Single Event
+//            AppEvents.shared.logEvent(AppEvents.Name(rawValue: titleName))
+            AppEvents.shared.logEvent(AppEvents.Name(rawValue: "AppEventName"), parameters: parameter)
+            
+        }
+    }
+
+    enum name: String {
+        //MARK: - Test Event
+        case testOne
+        
+        
+        //MARK: - Login
+        case Login_success
+        
+        //MARK: - Sign In Flow
+        case Acq_msisdn_input_landed
+        case Acq_set_pass_success
+        case Signup_login_success
+        case Debit_getonenow_click
+        
+        case Debit_orderconfirm_success
+        case Debit_activate_click
+        case Debit_activate_success
+        case PayBills_category_selection
+
+        case PayBills_company_selection
+        case PayBills_successrecept_landing
+        case SendMoney_category_selection
+        case SendMoney_confirmation_success
+        case Easyload_category_selection
+        case Easyload_confirmation_success
+        case Loans_apply_landing
+        case Loans_applyconfirm_success
+        case Loans_repay_landing
+        case Loans_repay_success
+        case Loans_repayconfirm_landing
+        case Loans_repayconfirm_success
+        case Transactions_active
+    }
+}
 

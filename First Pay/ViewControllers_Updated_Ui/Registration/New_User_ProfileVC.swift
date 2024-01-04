@@ -9,7 +9,7 @@
 import UIKit
 import IQDropDownTextField
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import SwiftKeychainWrapper
 import iOSDropDown
 var City_flag = ""
@@ -35,9 +35,14 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     var toDate = UIDatePicker()
     
     
+    @IBAction func buttonVerify(_ sender: Any) {
+    }
+    @IBOutlet weak var buttonVerify: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        TF_CnicNo.becomeFirstResponder()
         TF_IssueDate.placeholder = "  DD/MM/YYYY"
+        TF_CnicNo.placeholder = "3740516XXXXX5"
         print("fetch city", get_Seclected_City)
         TF_CnicNo.delegate = self
         TF_CityList.delegate = self
@@ -46,10 +51,10 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         labelInvalidIssuedate.isHidden = true
         lbl_InvalidCnic.isHidden = true
         blurView.backgroundColor = UIColor.gray
-        dismissKeyboard()
-        TF_CnicNo.mode = .cnic
+//        dismissKeyboard()
+//        TF_CnicNo.mode = .cnic
         //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-        blurView.alpha = 0.6
+        blurView.alpha = 0.8
         blurView.isHidden = true
         let tapGestureRecognizerr = UITapGestureRecognizer(target: self, action: #selector(PopUpHide(tapGestureRecognizer:)))
         popviewView.isUserInteractionEnabled = true
@@ -62,6 +67,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         blurView.isUserInteractionEnabled = true
         blurView.addGestureRecognizer(tapGestureRecognizerrr)
         btn_next.isUserInteractionEnabled = true
+        buttonVerify.circle()
         TF_CnicNo.addDoneButtonOnKeyboardWithAction { [self] in
             print("end editing")
             
@@ -161,7 +167,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
     @IBOutlet weak var lbl_CreateNewWallet: UILabel!
     @IBOutlet weak var lbl_Cnic_issuedate: UILabel!
     @IBOutlet weak var lbl_CniccardNumber: UILabel!
-    @IBOutlet weak var TF_CnicNo: NumberTextField!
+    @IBOutlet weak var TF_CnicNo: UITextField!
     @IBOutlet weak var lbl_InvalidCnic: UILabel!
     @IBOutlet weak var TF_IssueDate: UITextField!
     @IBOutlet weak var TF_CityList: UITextField!
@@ -271,12 +277,13 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         }
         
     }
-    
+
     @IBAction func Action_Mname1(_ sender: UIButton) {
         let image = UIImage(named: "Rectangle Orange")
         let emptyimage = UIImage(named: "Rectangle")
         
         btn_Mname1.setBackgroundImage(image, for: .normal)
+        btn_Mname1.cornerRadius = 20
         btn_Mname1.setTitleColor(.white, for: .normal)
         btn_Mname2.setBackgroundImage(emptyimage, for: .normal)
         btn_Mname3.setBackgroundImage(emptyimage, for: .normal)
@@ -294,6 +301,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         let image = UIImage(named: "Rectangle Orange")
         let emptyimage = UIImage(named: "Rectangle")
         btn_Mname2.setBackgroundImage(image, for: .normal)
+        btn_Mname2.cornerRadius = 20
         btn_Mname2.setTitleColor(.white, for: .normal)
         btn_Mname1.setBackgroundImage(emptyimage, for: .normal)
         btn_Mname3.setBackgroundImage(emptyimage, for: .normal)
@@ -311,6 +319,7 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         let emptyimage = UIImage(named: "Rectangle")
         
         btn_Mname3.setBackgroundImage(image, for: .normal)
+        btn_Mname3.cornerRadius = 20
         btn_Mname3.setTitleColor(.white, for: .normal)
         btn_Mname1.setBackgroundImage(emptyimage, for: .normal)
         btn_Mname2.setBackgroundImage(emptyimage, for: .normal)
@@ -327,8 +336,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         
         let image = UIImage(named: "Rectangle Orange")
         let emptyimage = UIImage(named: "Rectangle")
-        
+       
         btn_Mname4.setBackgroundImage(image, for: .normal)
+        btn_Mname4.cornerRadius = 20
         btn_Mname4.setTitleColor(.white, for: .normal)
         btn_Mname1.setBackgroundImage(emptyimage, for: .normal)
         btn_Mname2.setBackgroundImage(emptyimage, for: .normal)
@@ -546,7 +556,9 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         blurView.isHidden = true
     }
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+        }
     @objc func City_view_show(tapGestureRecognizer: UITapGestureRecognizer)
     {
         
@@ -652,76 +664,128 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
         print(params)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { [self] (response: DataResponse<cnicVerficationModel>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { [self]
+//            [self] (response: DataResponse<cnicVerficationModel>) in
+            response in
             self.hideActivityIndicator()
-            self.cnicVerificationObj = response.result.value
-            if response.response?.statusCode == 200 {
-                
-                if self.cnicVerificationObj?.responsecode == 2 || self.cnicVerificationObj?.responsecode == 1 {
-                    if cnicVerificationObj?.data != nil{
-                        
-                        self.View_mothername.isHidden = false
-                        
-                        self.blurView.isHidden = false
-                        flagMother_nameselected = false
-                        btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
-                        btn_Mname2.setTitle(cnicVerificationObj?.data?.motherNamesList?[1], for: .normal)
-                        
-                        btn_Mname3.setTitle(cnicVerificationObj?.data?.motherNamesList?[2], for: .normal)
-                        
-                        btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
-                    }
-                    
-                    
-                    
-                }
-                else{
-                    
-                    if let message = self.cnicVerificationObj?.messages{
-                        
-                        if let message = self.cnicVerificationObj?.messages{
-                            lbl_InvalidCnic.isHidden = false
-                            lbl_InvalidCnic.text = "Invalid Cnic"
-                            
-                            //                            self.showDefaultAlert(title: "", message: message)
-                        }
-                        //                        lbl_InvalidCnic.text
-                        if lbl_InvalidCnic.text == ""
-                        {
-                            if let message = self.cnicVerificationObj?.messages{
-                                labelInvalidIssuedate.isHidden = false
-                                labelInvalidIssuedate.text = "Invalid Issue Date"
-                                
-                                //                            self.showDefaultAlert(title: "", message: message)
+            guard let data = response.data else { return }
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+            self.cnicVerificationObj = Mapper<cnicVerficationModel>().map(JSONObject: json)
+            
+//            self.cnicVerificationObj = response.result.value
+                            if response.response?.statusCode == 200 {
+                                if self.cnicVerificationObj?.responsecode == 2 || self.cnicVerificationObj?.responsecode == 1 {
+                                    if self.cnicVerificationObj?.data != nil{
+                                        self.View_mothername.isHidden = false
+                                        self.blurView.isHidden = false
+                                        self.flagMother_nameselected = false
+                                        self.btn_Mname1.setTitle(cnicVerificationObj?.data?.motherNamesList?[0], for: .normal)
+                                        btn_Mname2.setTitle(cnicVerificationObj?.data?.motherNamesList?[1], for: .normal)
+                                        
+                                        self.btn_Mname3.setTitle(cnicVerificationObj?.data?.motherNamesList?[2], for: .normal)
+                                        
+                                        self.btn_Mname4.setTitle(cnicVerificationObj?.data?.motherNamesList?[3], for: .normal)
+                                    }
+                                }
+                                else
+                                {
+                                    checkValue()
+                                }
                             }
+            }
+        }
+        func checkValue()
+        {
+            if let checkInlineResponse = self.cnicVerificationObj?.responseblock
+            {
+                if checkInlineResponse.responseType == "I"
+                {
+                    if checkInlineResponse.field == "cnic"
+                    {
+                        lbl_InvalidCnic.isHidden = false
+                        lbl_InvalidCnic.text = checkInlineResponse.responseDescr
+                    }
+                    else
+                    {
+                        if checkInlineResponse.field == "idate"
+                        {
+                            labelInvalidIssuedate.isHidden = false
+                            labelInvalidIssuedate.text = checkInlineResponse.responseDescr
                         }
                         else
                         {
-                            
-                            if let message = self.cnicVerificationObj?.messages{
-                                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                                
-                            }
+                            let message = self.cnicVerificationObj?.messages
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                         }
                         
-                        
-                        //                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
                 }
-                
-                
-                
             }
+            else
+            {
+                let message = self.cnicVerificationObj?.messages
+                self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+            }
+            
         }
     }
-    
-    
+//
+//
+//
+//
+//
+//           if var checkResponse = self.cnicVerificationObj?.responseblock?.responseType == "I" {
+//
+//                    if let  mess =  self.cnicVerificationObj?.responseblock?.responseDescr &&  self.cnicVerificationObj?.responseblock?.field == "idate"
+//                    {
+//                        lbl_InvalidCnic.isHidden = false
+//                        lbl_InvalidCnic.text = mess
+//
+//                    }
+//
+//                    else
+//                    {
+//                        if let responseMessage = self.cnicVerificationObj?.responseblock?.responseDescr
+//                        {
+//                            labelInvalidIssuedate.isHidden = false
+//                            labelInvalidIssuedate.text = responseMessage
+//
+//                        }
+//                    }
+//                else
+//                {
+//
+//                    if let message = self.cnicVerificationObj?.responseblock?.responseType  == "P"{
+//                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+//                        //                                if  message == "HBL MFB-N142.0  cnic does not exists in NADRA database"{
+//                        //                                    lbl_InvalidCnic.isHidden = true
+//                        //
+//                        //
+//                        //                                }
+//                        //
+//                        //                                if message == "HBL MFB-N211.0  incorrect issue date"
+//                        //                                {
+//                        //                                    labelInvalidIssuedate.isHidden = true
+//                        //
+//                        //
+//                        //                                }
+//                        //                                else {
+//                        //
+//                        //                                }
+//
+//
+//
+//
+//                    }
+//                }
+//
+//            }
+//        }
     
     //    MARK: API
     private func  motherName() {
@@ -753,62 +817,69 @@ class New_User_ProfileVC: BaseClassVC, UITextFieldDelegate, UISearchBarDelegate{
         print(parameters)
         
         let params = ["apiAttribute1":result.apiAttribute1,"apiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.AuthToken]
         print(params)
         print(compelteUrl)
         NetworkManager.sharedInstance.enableCertificatePinning()
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponseModel>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponseModel>) in
+            response in
             self.hideActivityIndicator()
-            self.genericObj = response.result.value
-            if response.response?.statusCode == 200 {
-                
-                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
-                    if let message = self.genericObj?.messages {
-                        //MARK: - Shakeel Need to add Complition in alertCustomPopup for further action
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSucess) {_ in 
-                            //                        if message == "Customer Registered successfully"
-                            //                        if self.genericObj?.data != nil{
-                            
-                            UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
-                            print("Save user cnic  is ",DataManager.instance.userCnic)
-                            DataManager.instance.userCnic = DataManager.instance.userCnic!
-                            print("get cnic",DataManager.instance.userCnic)
-                            
-                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
-                            UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
-                            self.navigationController?.pushViewController(vc, animated: true)
-                            //                        }
-                            
-                            
-                            //                        }
-                        }
-                        
-                        //                    self.showAlert(title: message, message: "", completion: {
-                        ////                        if message == "Customer Registered successfully"
-                        ////                        if self.genericObj?.data != nil{
-                        //
-                        //                        UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
-                        //                        print("Save user cnic  is ",DataManager.instance.userCnic)
-                        //                        DataManager.instance.userCnic = DataManager.instance.userCnic!
-                        //                        print("get cnic",DataManager.instance.userCnic)
-                        //
-                        //                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
-                        //                            UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
-                        //                            self.navigationController?.pushViewController(vc, animated: true)
-                        ////                        }
-                        //
-                        //
-                        ////                        }
-                        //               })
-                        
-                    }
-                }
-                else{
-                    if let message = self.genericObj?.messages{
-                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSucess)
-                    }
-                    
-                }
+            guard let data = response.data else { return }
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+            self.genericObj = Mapper<GenericResponseModel>().map(JSONObject: json)
+            
+//            self.genericObj = response.result.value
+                            if response.response?.statusCode == 200 {
+                                
+                                if self.genericObj?.responsecode == 2 || self.genericObj?.responsecode == 1 {
+                                    if let message = self.genericObj?.messages {
+                                        //MARK: - Shakeel Need to add Complition in alertCustomPopup for further action
+                                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSuccess) {_ in 
+                                            //                        if message == "Customer Registered successfully"
+                                            //                        if self.genericObj?.data != nil{
+                                            
+                                            UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
+                                            print("Save user cnic  is ",DataManager.instance.userCnic)
+                                            DataManager.instance.userCnic = DataManager.instance.userCnic!
+                                            print("get cnic",DataManager.instance.userCnic)
+                                            
+                                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
+                                            UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
+                                            self.navigationController?.pushViewController(vc, animated: true)
+                                            //                        }
+                                            
+                                            
+                                            //                        }
+                                        }
+                                        
+                                        //                    self.showAlert(title: message, message: "", completion: {
+                                        ////                        if message == "Customer Registered successfully"
+                                        ////                        if self.genericObj?.data != nil{
+                                        //
+                                        //                        UserDefaults.standard.set(DataManager.instance.userCnic!, forKey: "userCnic")
+                                        //                        print("Save user cnic  is ",DataManager.instance.userCnic)
+                                        //                        DataManager.instance.userCnic = DataManager.instance.userCnic!
+                                        //                        print("get cnic",DataManager.instance.userCnic)
+                                        //
+                                        //                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Set_PasswordVC") as! Set_PasswordVC
+                                        //                            UserDefaults.standard.set("true", forKey: "FirstTimeLogin")
+                                        //                            self.navigationController?.pushViewController(vc, animated: true)
+                                        ////                        }
+                                        //
+                                        //
+                                        ////                        }
+                                        //               })
+                                        
+                                    }
+                                }
+                                else{
+                                    if let message = self.genericObj?.messages{
+                                        self.showAlertCustomPopup(title: "",message: message, iconName: .iconSuccess)
+                                    }
+                                    
+                                }
+                            }
             }
         }
         

@@ -163,6 +163,13 @@ class CalendarPickerViewController: UIViewController {
         let cellNibCurrent = UINib(nibName: "CalendarCurrentDateCell", bundle: nil)
         collectionView.register(cellNibCurrent, forCellWithReuseIdentifier: "CalendarCurrentDateCell")
         
+        let cellNibAfterDueDate = UINib(nibName: "CalendarAfterDueDateCell", bundle: nil)
+        collectionView.register(cellNibAfterDueDate, forCellWithReuseIdentifier: "CalendarAfterDueDateCell")
+        
+        let cellNibOverDueDate = UINib(nibName: "CalendarOverDueDateCell", bundle: nil)
+        collectionView.register(cellNibAfterDueDate, forCellWithReuseIdentifier: "CalendarOverDueDateCell")
+        
+        
         
         
         let layout = UICollectionViewFlowLayout()
@@ -327,7 +334,6 @@ private extension CalendarPickerViewController {
         guard let metadata = try? monthMetadata(for: baseDate) else {
             preconditionFailure("An error occurred when generating the metadata for \(baseDate)")
         }
-        
         let numberOfDaysInMonth = metadata.numberOfDays
         let offsetInInitialRow = metadata.firstDayWeekday
         let firstDayOfMonth = metadata.firstDay
@@ -482,6 +488,30 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
             cell.day = day
             return cell
         }
+        else if type.0 == "default" {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarLoanDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarLoanDateCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            return cell
+        }
+        else if type.0 == "afterDueDate" {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarAfterDueDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarAfterDueDateCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            return cell
+        }
+        else if type.0 == "overDueDate" {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CalendarOverDueDateCell.reuseIdentifier,
+                for: indexPath) as! CalendarOverDueDateCell
+            cell.modelGetSchCalendar = modelGetSchCalendar
+            cell.day = day
+            return cell
+        }
         else {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CalendarDefaultDateCell.reuseIdentifier,
@@ -522,6 +552,11 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
             }
             else {
                 if let _ = modelGetSchCalendar?.data.dates[tempDate] {
+                    if let compareDays = fetchCompareDaysFromCurrentDate(date: day!.date) {
+                        if compareDays == 0 {
+                            return ("currentDateRecord" , compareDays)
+                        }
+                    }
                     
                     if let startDate = modelGetSchCalendar?.data.startDate {
                         let compareDays = fetchCompareDaysFromDatetoToDate(fromDate: startDate, todate: day!.date)
@@ -529,32 +564,55 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
                             return ("startDateRecord" , compareDays)
                         }
                     }
-                    
                     if let endDate = modelGetSchCalendar?.data.endDate {
-                        
-                        let compareDays = fetchCompareDaysFromDatetoToDate(fromDate: endDate, todate: day!.date)
+                        let current = day!.date
+                        let compareDays = fetchCompareDaysFromDatetoToDate(fromDate: endDate, todate: current)
+                        if compareDays == 0 {
+                            return ("endDateRecord" , compareDays)
+                        }
+                    }
+                    if let overDueDate = modelGetSchCalendar?.data.endDate {
+                        let compareDays = fetchCompareDaysFromDatetoToDate(fromDate: overDueDate, todate: day!.date)
+                        if compareDays < 0 {
+                            return ("afterDueDate" , compareDays)
+                        }
+                    }
+                    
+                    return ("loanDateRecord" , 0)
+//                    if compareDays < 0 {
+//                        return ("afterDueDate" , compareDays)
+//                    }
+//                    return ("default" , compareDays)
+                }
+                else {
+                    if let endDate = modelGetSchCalendar?.data.endDate {
+                        let current = day!.date
+                        let compareDays = fetchCompareDaysFromDatetoToDate(fromDate: endDate, todate: current)
                         
                         if compareDays == 0 {
                             return ("endDateRecord" , compareDays)
                         }
                     }
-                    
-                    let compareDays = fetchCompareDaysFromCurrentDate(date: day!.date)
-                    
-                    if compareDays == 0 {
-                        return ("currentDateRecord" , compareDays)
-                    }
-                    else if compareDays > 0 {
-                        return ("loanDateRecord" , compareDays)
-                    }
-                    return ("default" , compareDays)
-                }
-                else {
-                    return ("recordFound" , 0)
+//                    let compareDays = fetchCompareDaysFromCurrentDate(date: day!.date)
+//                    print(day!.date)
+//                    print(compareDays)
+//                    
+//                    if compareDays > 0 {
+//                        return ("afterDueDate" , compareDays)
+//                    }
+                    return ("recordNotFound" , 0)
                 }
             }
         }
         else {
+            if let endDate = modelGetSchCalendar?.data.endDate {
+                let current = day!.date
+                let compareDays = fetchCompareDaysFromDatetoToDate(fromDate: endDate, todate: current)
+                
+                if compareDays == 0 {
+                    return ("endDateRecord" , compareDays)
+                }
+            }
             return ("default", 99)
         }
     }
@@ -572,7 +630,7 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
         return compareDays
     }
     
-    func fetchCompareDaysFromCurrentDate(date: Date) -> Int {
+    func fetchCompareDaysFromCurrentDate(date: Date) -> Int? {
         let dateCalendar = fetchFormatedDate(date: date)
         
         let dateFormatter = DateFormatter()

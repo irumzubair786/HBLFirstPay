@@ -25,23 +25,39 @@ class NanoLoanRepaySucessfullVC: UIViewController {
     
     var modelPayActiveLoan: NanoLoanRepayConfirmationVC.ModelPayActiveLoan? {
         didSet {
-            labelAmount.text = "Rs. \((modelPayActiveLoan?.data?.payableTotalAmount ?? 0).twoDecimal())"
-            labelTransactionId.text = "\(modelPayActiveLoan?.data?.transRefNum ?? 0)"
-            labelDateTime.text = modelPayActiveLoan?.data?.dateTime ?? ""
-            labelFee.text = "Rs. \((modelPayActiveLoan?.data?.processingFee ?? 0).twoDecimal())"
+            
         }
+    }
+    func setData() {
+        self.labelAmount.text = "Rs. \((modelPayActiveLoan?.data?.payableTotalAmount ?? 0).twoDecimal())"
+        self.labelTransactionId.text = "\(modelPayActiveLoan?.data?.transRefNum ?? 0)"
+        self.labelDateTime.text = modelPayActiveLoan?.data?.dateTime ?? ""
+        self.labelFee.text = "Rs. \((modelPayActiveLoan?.data?.processingFee ?? 0).twoDecimal())"
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        FBEvents.logEvent(title: .Loans_repay_success)
+        FaceBookEvents.logEvent(title: .Loans_repay_success)
         // Do any additional setup after loading the view.
+        
+        setData()
     }
     @IBAction func buttonCancel(_ sender: Any) {
-        dismissToViewController(viewController: AddCashMainVc.self)
+        if isPushViewControllerTemp {
+            dismissToViewController(viewController: AddCashMainVc.self)
+        }
+        else {
+            self.dismiss(animated: true)
+        }
     }
     @IBAction func buttonGetNewLoan(_ sender: Any) {
-        dismissToViewController(viewController: AddCashMainVc.self)
+        if isPushViewControllerTemp {
+            dismissToViewController(viewController: AddCashMainVc.self)
+        }
+        else {
+            self.dismiss(animated: true)
+        }
     }
     
     @IBAction func buttonDownLoad(_ sender: Any) {

@@ -30,6 +30,7 @@ class NanoLoanApplyViewController: UIViewController {
     
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var textFieldAmount: UITextField!
+    let amountArray = ["PKR 1000", "PKR 2500", "PKR 5000"]
     var selectedAmountIndex: Int? {
         didSet {
             let text = "\(getLoanAmount(index: selectedAmountIndex!))"
@@ -68,7 +69,7 @@ class NanoLoanApplyViewController: UIViewController {
                     labelLoanAmountDescription.text = "You can Apply a loan between Rs. \((modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0).twoDecimal()) - \((modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0).twoDecimal())"
                     
                     labelOtherDescription.text = "Enjoy the lowest markup rate of \((modelNanoLoanEligibilityCheck?.data?.first?.markupfee ?? 0).twoDecimal())% monthly on loans. Repay early and save on daily markup amount."
-                                        collectionViewLoanAmounts.reloadData()
+                    collectionViewLoanAmounts.reloadData()
                 }
                 else {
 
@@ -90,7 +91,10 @@ class NanoLoanApplyViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .Loans_apply_landing)
+        FaceBookEvents.logEvent(title: .Loans_apply_landing)
         // Do any additional setup after loading the view.
+        textFieldAmount.delegate = self
         textFieldAmount.text = "PKR "
         viewBackGround.isHidden = true
         
@@ -98,6 +102,7 @@ class NanoLoanApplyViewController: UIViewController {
         viewEnterLoanAmount.radius()
         ApplyAmountCell.register(collectionView: collectionViewLoanAmounts)
         textFieldAmount.addTarget(self, action: #selector(changeAmountInTextField), for: .editingChanged)
+        
         DispatchQueue.main.async {
             self.viewBenifitRepaying.circle()
             self.viewBenifitRepaying.radiusLineDashedStroke(radius: self.viewBenifitRepaying.frame.height / 2, color: .clrGreen)
@@ -105,7 +110,7 @@ class NanoLoanApplyViewController: UIViewController {
     }
     func validationError() -> Bool {
         let text = textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: "")
-        if text == "" {
+        if text == "" || text == "PKR" {
             return true
         }
         let minAmount = (modelNanoLoanEligibilityCheck?.data?.first?.minAmount ?? 0) - 1
@@ -123,7 +128,9 @@ class NanoLoanApplyViewController: UIViewController {
         getLoanCharges()
     }
     @IBAction func buttonCreditLimitImprove(_ sender: Any) {
+        let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanImproveCreditLimit") as! NanoLoanImproveCreditLimit
         
+        self.present(vc, animated: true)
     }
     func nanoLoanEligibilityCheck() {
         let userCnic = UserDefaults.standard.string(forKey: "userCnic")
@@ -163,11 +170,9 @@ class NanoLoanApplyViewController: UIViewController {
     
     func openConfirmationLoanVC() {
         let vc = UIStoryboard.init(name: "NanoLoan", bundle: nil).instantiateViewController(withIdentifier: "NanoLoanConfirmationVC") as! NanoLoanConfirmationVC
-        DispatchQueue.main.async {
-            vc.selectedAmount = Int(self.textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: ""))
-            vc.modelNanoLoanEligibilityCheck = self.modelNanoLoanEligibilityCheck
-            vc.modelGetLoanCharges = self.modelGetLoanCharges
-        }
+        vc.selectedAmount = Int(self.textFieldAmount.text!.replacingOccurrences(of: "PKR ", with: ""))
+        vc.modelNanoLoanEligibilityCheck = self.modelNanoLoanEligibilityCheck
+        vc.modelGetLoanCharges = self.modelGetLoanCharges
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -180,12 +185,32 @@ class NanoLoanApplyViewController: UIViewController {
             let maxAmount = (modelNanoLoanEligibilityCheck?.data?.first?.maxAmount ?? 0) + 1
 
             let selectedColor = (Int(text)! > minAmount && Int(text)! < maxAmount) ? UIColor.clrGreen : UIColor.clrLightRed
-            
+           
+            imageViewForwordButtonGray.image = selectedColor == .clrGreen ? UIImage(named: "forwardButtonGreenIcon") : UIImage(named: "forwardButtonGray")
             textFieldAmount.attributedText = attributedText(textField: textFieldAmount, withString: textFieldAmount.text!, boldString: text, boldStringColor: selectedColor)
+//            if selectedColor != .clrGreen {
+//                selectedAmountIndex = nil
+//                collectionViewLoanAmounts.reloadData()
+//            }
+        }
+        else {
+            textFieldAmount.text = "PKR"
+            imageViewForwordButtonGray.image = UIImage(named: "forwardButtonGray")
+//            selectedAmountIndex = nil
+//            collectionViewLoanAmounts.reloadData()
         }
     }
 }
-
+extension NanoLoanApplyViewController: UITextFieldDelegate {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+    }
+}
 
 
 extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -197,14 +222,13 @@ extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionV
         let cellWidth = width / CGFloat(itemsInRow)
         return CGSize(width: cellWidth, height: 50)
     }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return amountArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ApplyAmountCell", for: indexPath) as! ApplyAmountCell
-        cell.labelAmount.text = "PKR \(getLoanAmount(index: indexPath.item).twoDecimal())"
+        cell.labelAmount.text = "PKR \(getLoanAmount(index: indexPath.item))"
         if selectedAmountIndex != nil && indexPath.item == selectedAmountIndex {
             cell.viewBackGround.backgroundColor = .clrOrange
             cell.labelAmount.textColor = .white
@@ -243,8 +267,6 @@ extension NanoLoanApplyViewController: UICollectionViewDataSource, UICollectionV
             return 0
         }
     }
-    
-    
 }
 
 

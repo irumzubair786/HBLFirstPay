@@ -8,12 +8,12 @@
 
 import Foundation
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 
 class NetworkManager {
     
     static let sharedInstance = NetworkManager()
-    var sessionManager: SessionManager?
+    var sessionManager: Session?
     
     func enableCertificatePinning() {
 
@@ -24,16 +24,90 @@ class NetworkManager {
 //                    validateHost: true)
 
         // For PublicKey pining
-        let serverTrustPolicy = ServerTrustPolicy.pinPublicKeys(
-            publicKeys: ServerTrustPolicy.publicKeys(),
-            validateCertificateChain: true,
-            validateHost: true)
+//        let serverTrustPolicy = ServerTrustPolicy.pinPublicKeys(
+//            publicKeys: ServerTrustPolicy.publicKeys(),
+//            validateCertificateChain: true,
+//            validateHost: true)
+//
+//        let trustPolicies = [ "https://bb.fmfb.pk": serverTrustPolicy ]
+//        let policyManager =  ServerTrustManager(policies: trustPolicies)
+//        sessionManager = Session(
+//            configuration: .default,
+//            serverTrustManager: policyManager)
+        
+        let evaluators: [String: ServerTrustEvaluating] = [
+            "https://bb.fmfb.pk": PublicKeysTrustEvaluator(
+                performDefaultValidation: false,
+                validateHost: true
+            )
+        ]
+        
+//        let evaluators: [String: ServerTrustEvaluating] = [
+//            "https://bb.fmfb.pk": PublicKeysTrustEvaluator()
+//        ]
+        
+//        let evaluators: [String: ServerTrustEvaluating] = [
+//            "https://bb.fmfb.com": PublicKeysTrustEvaluator.publicKeys(),
+//          ]
+//        let evaluators: [String: ServerTrustEvaluating] = [
+//            "https://bb.fmfb.com": PinnedCertificatesTrustEvaluator(certificates: certificate()),
+//          ]
+        let serverTrustManager = ServerTrustManager(
+            allHostsMustBeEvaluated: false,
+            evaluators: evaluators
+        )
+        sessionManager = Session(serverTrustManager: serverTrustManager)
+        
+    }
+    
+    func certificate() -> [SecCertificate] {
+        let filePath = Bundle.main.path(forResource: "bb-fmfb-pk", ofType: "cer")!
+//        let data = try! Data(contentsOf: URL(fileURLWithPath: filePath))
+        var data : NSData = NSData(contentsOfFile: filePath)!
 
-        let trustPolicies = [ "https://bb.fmfb.pk": serverTrustPolicy ]
-        let policyManager =  ServerTrustPolicyManager(policies: trustPolicies)
-        sessionManager = SessionManager(
-            configuration: .default,
-            serverTrustPolicyManager: policyManager)
+        
+        var certificates: [SecCertificate] = []
+
+        do {
+            let pinnedCertificateData: CFData = try Data(contentsOf: URL(fileURLWithPath: filePath)) as CFData
+            let certificate = SecCertificateCreateWithData(nil, data as CFData)!
+            certificates.append(certificate)
+           
+        } catch {
+            //...
+            print("caught: \(error)")
+        }
+        
+        return certificates
+    }
+    
+    func pinnedCertificates() -> [SecCertificate] {
+        
+        var certificates: [SecCertificate] = []
+        let filePath = Bundle.main.path(forResource: "bb-fmfb-pk.cer", ofType: nil)!
+        
+        
+        let directoryContents: [URL] = [URL(fileURLWithPath: filePath)]
+        
+        let certificateName: String = "bb-fmfb-pk.cer" // Replaced for the demo
+        
+        let pinnedCertificateURL: URL? = directoryContents.first { (url: URL) in url.lastPathComponent == certificateName }
+        
+        if let pinnedCertificateURL: URL = pinnedCertificateURL {
+            do {
+                let pinnedCertificateData: CFData = try Data(contentsOf: pinnedCertificateURL) as CFData
+                if let pinnedCertificate: SecCertificate = SecCertificateCreateWithData(nil, pinnedCertificateData) {
+                    certificates.append(pinnedCertificate)
+                }
+                else {
+                    
+                }
+            } catch {
+                //...
+                print("caught: \(error)")
+            }
+        }
+        return certificates
     }
 }
 

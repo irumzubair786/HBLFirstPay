@@ -12,4 +12,5 @@ class cellmainfourTransaction: UICollectionViewCell {
     
     @IBOutlet weak var btn: UIButton!
     @IBOutlet weak var img: UIImageView!
+    @IBOutlet weak var lblName: UILabel!
 }

@@ -10,7 +10,7 @@ import UIKit
 import KYDrawerController
 import Toaster
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 import GolootloWebViewLibrary
 import SwiftyRSA
 import SafariServices
@@ -30,6 +30,10 @@ class BaseClassVC: UIViewController {
      private var plainDataLive = "UserId=TFMB&Password=YpBTLdMMkfWQdFSM&FirstName=\(DataManager.instance.firstName ?? "")&LastName=\(DataManager.instance.lastName ?? "")&Phone=\(DataManager.instance.accountNo ?? "")"
     
     private var golootloController:GolootloWebController!
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .darkContent // You can choose .default for dark text/icons or .lightContent for light text/icons
+    }
+    
     func Changelanguage()
    {
        
@@ -44,12 +48,14 @@ class BaseClassVC: UIViewController {
    }
     override func viewDidLoad() {
         super.viewDidLoad()
+         // Chan
         Changelanguage()
+        
         let delegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
         self.rootVC = delegate.window?.rootViewController
         DataManager.instance.Longitude = 41.40338
         DataManager.instance.Latitude = 2.17403
-        
+        hideKeyboardWhenTappedAround()
     }
     
     override func didReceiveMemoryWarning() {
@@ -335,7 +341,7 @@ class BaseClassVC: UIViewController {
     
     public  func  popUpLogout(){
    
-        let consentAlert = UIAlertController(title: "Alert", message: "Do you want to Logout?", preferredStyle: UIAlertControllerStyle.alert)
+        let consentAlert = UIAlertController(title: "", message: "Do you want to sign out from FirstPay Application?", preferredStyle: UIAlertControllerStyle.alert)
         
         consentAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
 //            firsttimenanoloan = "false"
@@ -348,7 +354,7 @@ class BaseClassVC: UIViewController {
 //            print("Handle Ok logic here")
         }))
             
-        consentAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+        consentAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
 //            print("Handle Cancel Logic here")
             self.dismiss(animated: true, completion:nil)
         }))
@@ -409,9 +415,15 @@ class BaseClassVC: UIViewController {
         let storyBoard = UIStoryboard(name: storyBoardName,bundle: nil)
        
         delegate.window?.rootViewController = storyBoard.instantiateInitialViewController()
+        
+//        test case
+//        let vc = storyBoard.instantiateViewController(withIdentifier: "Login_VC")
+//        self.navigationController?.pushViewController(vc, animated: true)
+//        self.present(vc, animated: true)
+        
+        
+        
 //        languageCode = UserDefaults.standard.string(forKey: "language-Code") ?? ""
-        
-        
     }
     
     
@@ -450,7 +462,7 @@ class BaseClassVC: UIViewController {
         
         let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":DataManager.instance.clientSecretReg]
 //
 //        print(params)
 //        print(compelteUrl)
@@ -458,13 +470,18 @@ class BaseClassVC: UIViewController {
         
         NetworkManager.sharedInstance.enableCertificatePinning()
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<GenericResponse>) in
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<GenericResponse>) in
             
-            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<VerifyOTP>) in
+            //       Alamofire.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response { (response: DataResponse<VerifyOTP>) in
             
+            response in
             self.hideActivityIndicator()
+            guard let data = response.data else { return }
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+            self.genRespBaseObj = Mapper<GenericResponse>().map(JSONObject: json)
             
-            self.genRespBaseObj = response.result.value
+//            self.genRespBaseObj = response.result.value
             
             if response.response?.statusCode == 200 {
                 if self.genRespBaseObj?.responsecode == 2 || self.genRespBaseObj?.responsecode == 1 {
@@ -478,13 +495,13 @@ class BaseClassVC: UIViewController {
                     }
                 }
             }
-            else {
-                if let message = self.genRespBaseObj?.messages {
-                    self.showAlert(title: "", message: message, completion: nil)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
+                            else {
+                                if let message = self.genRespBaseObj?.messages {
+                                    self.showAlert(title: "", message: message, completion: nil)
+                                }
+                                //                print(response.result.value)
+                                //                print(response.response?.statusCode)
+                            }
             }
         }
     }
@@ -517,7 +534,7 @@ class BaseClassVC: UIViewController {
         
         let params = ["ApiAttribute1":result.apiAttribute1,"ApiAttribute2":result.apiAttribute2,"channelId":"\(DataManager.instance.channelID)"]
         
-        let header = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"\(DataManager.instance.accessToken ?? "nil")"]
         
 //        print(params)
 //        print(compelteUrl)
@@ -527,30 +544,35 @@ class BaseClassVC: UIViewController {
         NetworkManager.sharedInstance.enableCertificatePinning()
         
         
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).responseObject { (response: DataResponse<MiniStatementModel>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, method: .post, parameters: params , encoding: JSONEncoding.default, headers:header).response {
+//            (response: DataResponse<MiniStatementModel>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.miniStatementObj = response.result.value
-            
-            if response.response?.statusCode == 200 {
-                if self.miniStatementObj?.responsecode == 2 || self.miniStatementObj?.responsecode == 1 {
-                    if self.miniStatementObj != nil {
-                        completionHandler(self.miniStatementObj!)
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.miniStatementObj = Mapper<MiniStatementModel>().map(JSONObject: json)
+                
+                //            self.miniStatementObj = response.result.value
+                
+                if response.response?.statusCode == 200 {
+                    if self.miniStatementObj?.responsecode == 2 || self.miniStatementObj?.responsecode == 1 {
+                        if self.miniStatementObj != nil {
+                            completionHandler(self.miniStatementObj!)
+                        }
+                    }
+                    else {
+                        if let message = self.miniStatementObj?.messages{
+                            self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
+                        }
                     }
                 }
                 else {
                     if let message = self.miniStatementObj?.messages{
                         self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
                     }
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
                 }
-            }
-            else {
-                if let message = self.miniStatementObj?.messages{
-                    self.showAlertCustomPopup(title: "",message: message, iconName: .iconError)
-                }
-//                print(response.result.value)
-//                print(response.response?.statusCode)
             }
         }
     }
@@ -670,16 +692,7 @@ extension UIViewController {
 
 extension String {
     /// Encode a String to Base64
-    func toBase64() -> String {
-        return Data(self.utf8).base64EncodedString()
-    }
-    
-    /// Decode a String from Base64. Returns nil if unsuccessful.
-    func fromBase64() -> String? {
-        guard let data = Data(base64Encoded: self) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
-    
+  
     func split(by length: Int) -> [String] {
         var startIndex = self.startIndex
         var results = [Substring]()
@@ -818,5 +831,14 @@ private struct JailBrokenHelper {
                 "/bin/bash",
                 "/Library/MobileSubstrate/MobileSubstrate.dylib"
         ]
+    }
+}
+extension UIApplication {
+    class var statusBarBackgroundColor: UIColor? {
+        get {
+            return (shared.value(forKey: "statusBar") as? UIView)?.backgroundColor
+        } set {
+            (shared.value(forKey: "statusBar") as? UIView)?.backgroundColor = newValue
+        }
     }
 }

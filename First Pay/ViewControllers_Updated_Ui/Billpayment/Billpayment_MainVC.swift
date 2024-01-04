@@ -8,13 +8,16 @@
 
 import UIKit
 import Alamofire
-import AlamofireObjectMapper
+import ObjectMapper
 class Billpayment_MainVC: BaseClassVC {
     var billCompanyObj : BillPaymentCompanies?
     var filteredCompanies = [SingleCompany]()
     var BillcompanyID : Int?
     override func viewDidLoad() {
         super.viewDidLoad()
+        FBEvents.logEvent(title: .PayBills_category_selection)
+        FaceBookEvents.logEvent(title: .PayBills_category_selection)
+        
         tableview.delegate = self
         tableview.dataSource = self
         tableview.rowHeight = 80
@@ -41,7 +44,7 @@ class Billpayment_MainVC: BaseClassVC {
       
         self.BillcompanyID =  self.billCompanyObj?.companies?[tag].ubpCompaniesId
         GlobalData.SelectedCompanyname = self.billCompanyObj?.companies?[tag].name
-        GlobalData.SelectedCompanydecr = self.billCompanyObj?.companies?[tag].descr
+//        GlobalData.SelectedCompanydecr = self.billCompanyObj?.companies?[tag].descr
         print("u selected company id", self.BillcompanyID)
          let vc = self.storyboard!.instantiateViewController(withIdentifier: "Billpayment_ListAllItemsVC") as! Billpayment_ListAllItemsVC
         vc.BillComapnyid = BillcompanyID!
@@ -67,45 +70,50 @@ class Billpayment_MainVC: BaseClassVC {
         
         showActivityIndicator()
         
-        let compelteUrl = GlobalConstants.BASE_URL + "Transactions/v1/getParentCompanies"
-        let header = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
+        let compelteUrl = GlobalConstants.BASE_URL + "\(transactionV1or2)/getParentCompanies"
+         let header: HTTPHeaders = ["Content-Type":"application/json","Authorization":"Bearer \(DataManager.instance.accessToken!)"]
         
         print(header)
         print(compelteUrl)
         
         NetworkManager.sharedInstance.enableCertificatePinning()
 
-        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).responseObject { (response: DataResponse<BillPaymentCompanies>) in
-            
+        NetworkManager.sharedInstance.sessionManager?.request(compelteUrl, headers:header).response {
+//            (response: DataResponse<BillPaymentCompanies>) in
+            response in
             self.hideActivityIndicator()
-            
-            self.billCompanyObj = response.result.value
-            if response.response?.statusCode == 200 {
+            guard let data = response.data else { return }
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                self.billCompanyObj = Mapper<BillPaymentCompanies>().map(JSONObject: json)
                 
-                if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
+                //            self.billCompanyObj = response.result.value
+                if response.response?.statusCode == 200 {
                     
-                    for aCompany in (self.billCompanyObj?.companies)!{
-                        if aCompany.ubpCompaniesId == 277 || aCompany.ubpCompaniesId == 276
-                        {
-                            
+                    if self.billCompanyObj?.responsecode == 2 || self.billCompanyObj?.responsecode == 1 {
+                        
+                        for aCompany in (self.billCompanyObj?.companies)!{
+                            if aCompany.ubpCompaniesId == 277 || aCompany.ubpCompaniesId == 276
+                            {
+                                
+                            }
+                            else if aCompany.code != "MBP" && aCompany.code != "MTUP"{
+                                self.filteredCompanies.append(aCompany)
+                                //                            self.filteredCompanies.removeLast()
+                                //                            self.filteredCompanies.removeLast()
+                            }
                         }
-                        else if aCompany.code != "MBP" && aCompany.code != "MTUP"{
-                            self.filteredCompanies.append(aCompany)
-//                            self.filteredCompanies.removeLast()
-//                            self.filteredCompanies.removeLast()
-                        }
+                        self.tableview.reloadData()
                     }
-                    self.tableview.reloadData()
+                    else {
+                        // self.showAlert(title: "", message: (self.shopInfo?.resultDesc)!, completion: nil)
+                    }
                 }
                 else {
-                    // self.showAlert(title: "", message: (self.shopInfo?.resultDesc)!, completion: nil)
+                    
+                    //                print(response.result.value)
+                    //                print(response.response?.statusCode)
+                    
                 }
-            }
-            else {
-                
-//                print(response.result.value)
-//                print(response.response?.statusCode)
-                
             }
         }
     }
@@ -178,11 +186,13 @@ extension Billpayment_MainVC : UITableViewDelegate, UITableViewDataSource
             cell.img.image = UIImage(named: "1bill")
 
         }
+        cell.btnNextAll.tag = indexPath.row
+        cell.btnNextAll.setTitle("", for: .normal)
         cell.btn_Next.tag = indexPath.row
         cell.btn.setTitle(aCompany.name, for: .normal)
         cell.btn_Next.setTitle("", for: .normal)
         cell.btn_Next.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
-
+        cell.btnNextAll.addTarget(self, action: #selector(buttontaped), for: .touchUpInside)
        
         
         
